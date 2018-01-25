@@ -5,9 +5,21 @@ import React, {Component} from "react";
 import Authentication from "./forms/Authentication";
 import Home from "./forms/Home";
 import NotFoundPage from "./NotFoundPage";
-import {Route, Switch} from "react-router-dom";
+import {Route, Switch, withRouter} from "react-router-dom";
 
-export default class Routes extends Component {
+class Routes extends Component {
+
+    componentDidUpdate(prevProps) {
+        if (this.props.location !== prevProps.location) {
+            this.props.onRouteChanged(this.props.location);
+            console.log(`this.props.location = ${this.props.location.pathname}`)
+            console.log(`prevProps.location = ${prevProps.location.pathname}`)
+
+        }
+    }
+
+
+
 
     render() {
         return (
@@ -20,3 +32,5 @@ export default class Routes extends Component {
         );
     }
 }
+
+export default withRouter(Routes);
