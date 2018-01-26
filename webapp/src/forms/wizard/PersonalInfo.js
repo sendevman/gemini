@@ -2,8 +2,8 @@
  * Created by fran on 1/25/18.
  */
 import React, {Component} from "react";
-import {ButtonToolbar, Col, ControlLabel, DropdownButton, FormControl, FormGroup, MenuItem, Row} from "react-bootstrap";
-const genders = {male: 'Masculino', female: 'Femenino'};
+import DatePicker from "react-datepicker";
+import moment from "moment";
 const countries = [{name: 'pr', desc: 'Puerto Rico'},
     {name: 'us', desc: 'Estados Unidos'},
     {name: 'pe', desc: 'Peru'},
@@ -13,90 +13,98 @@ export default class PersonalInfo extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {form: {genderLabel: 'Genero', gender: null, firstname: '', countryLabel: 'Pais'}};
+        this.state = {form: {genderLabel: 'Genero', gender: "-1", firstname: '', countryLabel: 'Pais', dob: null}};
+        this.handleDobChange = this.handleDobChange.bind(this);
+    }
+
+    handleDobChange(date){
+        this.setState({form: {...this.state.form, dob: date}});
     }
 
     render() {
         let form = this.state.form;
         return (
-            <form style={{marginTop: 40}}>
-                <Row>
-                    <Col xs={3}>
-                        <ControlLabel>Nombre:</ControlLabel>
-                        <FormGroup controlId="firstname">
-                            <FormControl type="text" placeholder="Nombre"/>
-                            <FormControl.Feedback />
-                        </FormGroup>
+            <form>
+                <div className="row">
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor="nameLabel">Nombre:</label>
+                            <input type="text" className="form-control" id="nameLabel" placeholder="Nombre"/>
+                        </div>
+                    </div>
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor="middleLabel">Segundo Nombre:</label>
+                            <input type="text" className="form-control" id="middleLabel" placeholder="Segundo Nombre"/>
+                        </div>
+                    </div>
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor="motherLabel">Apellido Maternal:</label>
+                            <input type="text" className="form-control" id="motherLabel"
+                                   placeholder="Apellido Maternal"/>
+                        </div>
+                    </div>
+                    <div className="col-md-3">
+                        <div className="form-group">
+                            <label htmlFor="fatherLabel">Apellido Paternal:</label>
+                            <input type="text" className="form-control" id="fatherLabel"
+                                   placeholder="Apellido Paternal"/>
+                        </div>
+                    </div>
+                </div>
 
-                    </Col>
-                    <Col xs={3}>
-                        <ControlLabel>Segundo Nombre:</ControlLabel>
-                        <FormGroup controlId="middlename">
-                            <FormControl type="text" placeholder="Segundo Nombre"/>
-                            <FormControl.Feedback />
-                        </FormGroup>
-                    </Col>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <label htmlFor="fatherLabel">Genero:</label>
+                            <select
+                                value={form.gender}
+                                onChange={(event) => {
+                                    this.setState({
+                                        form: {
+                                            ...form,
+                                            gender: event.target.value
+                                        }
+                                    });
+                                }} className="form-control" id="gender">
+                                <option value="-1">Seleccione su Genero</option>
+                                <option value="male">Masculino</option>
+                                <option value="female">Femenino</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <label htmlFor="dob">Fecha de Nacimiento:</label>
+                            <DatePicker className="form-control" selected={form.dob} onChange={this.handleDobChange}/>
+                        </div>
 
-                    <Col xs={3}>
-                        <ControlLabel>Apellido Materno:</ControlLabel>
-                        <FormGroup controlId="mother-lastname">
-                            <FormControl type="text" placeholder="Apellido Materno"/>
-                            <FormControl.Feedback />
-                        </FormGroup>
-                    </Col>
-                    <Col xs={3}>
-                        <ControlLabel>Apellido Paterno:</ControlLabel>
-                        <FormGroup controlId="father-lastname">
-                            <FormControl type="text" placeholder="Apellido Paterno"/>
-                            <FormControl.Feedback />
-                        </FormGroup>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={6}>
-                        <ControlLabel>Genero:</ControlLabel>
-                        <ButtonToolbar>
-                            <DropdownButton id="dropdown-size-medium"
-                                            title={form.genderLabel}
-                                            onSelect={(eventKey, event) => {
-                                                this.setState({
-                                                    form: {
-                                                        ...form,
-                                                        genderLabel: genders[eventKey],
-                                                        gender: eventKey
-                                                    }
-                                                })
-                                            }}>
-                                <MenuItem eventKey="male">Masculino</MenuItem>
-                                <MenuItem eventKey="female">Femenino</MenuItem>
-                            </DropdownButton>
-                        </ButtonToolbar>
-                    </Col>
-                    <Col xs={6}>
-                        <ControlLabel>Pais:</ControlLabel>
-                        <ButtonToolbar>
-                            <DropdownButton id="dropdown-size-medium"
-                                            title={form.countryLabel}
-                                            onSelect={(eventKey, event) => {
-                                                alert(countries[eventKey]);
-                                                this.setState({
-                                                    form: {
-                                                        ...form,
-                                                        countryLabel: countries[eventKey].desc,
-                                                    }
-                                                })
-                                            }}>
-                                {countries.map((country, i) => (
-                                    <MenuItem key={i} eventKey={i}>{country.desc}</MenuItem>
-                                ))}
-                            </DropdownButton>
-                        </ButtonToolbar>
-                    </Col>
-                </Row>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <label htmlFor="disableReason">Impedimento</label>
+                            <select id="disableReason" className="form-control">
+                                <option value="-1">Ninguno</option>
+                                <option value="blind">Ciego Legal</option>
+                                <option value="cojo">Cojo</option>
+                                <option value="manco">manco</option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div className="col-md-6">
+                       <div className="form-group">
+                           <label htmlFor="disableReasonOther">Otro Impedimento</label>
+                           <input type="text" className="form-control" id="disableReasonOther" placeholder="Escriba Otro impedimento"/>
+                       </div>
+                    </div>
+                </div>
             </form>
         );
     }
 }
-
-
-// row = () =>(di<);
