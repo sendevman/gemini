@@ -3,6 +3,10 @@ import {MenuItem, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {withRouter} from "react-router-dom";
 import "./App.css";
 import Routes from "./Routes";
+import moment from "moment";
+import esLocale from "moment/locale/es";
+moment.updateLocale('es', esLocale);
+
 
 class App extends Component {
     constructor(props) {
