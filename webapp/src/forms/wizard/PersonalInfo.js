@@ -3,11 +3,7 @@
  */
 import React, {Component} from "react";
 import DatePicker from "react-datepicker";
-import moment from "moment";
-const countries = [{name: 'pr', desc: 'Puerto Rico'},
-    {name: 'us', desc: 'Estados Unidos'},
-    {name: 'pe', desc: 'Peru'},
-    {name: 'me', desc: 'Mexico'}];
+import CodeSelect from "../../components/CodeSelect";
 
 export default class PersonalInfo extends Component {
 
@@ -17,7 +13,7 @@ export default class PersonalInfo extends Component {
         this.handleDobChange = this.handleDobChange.bind(this);
     }
 
-    handleDobChange(date){
+    handleDobChange(date) {
         this.setState({form: {...this.state.form, dob: date}});
     }
 
@@ -58,20 +54,20 @@ export default class PersonalInfo extends Component {
                     <div className="col-md-6">
                         <div className="form-group">
                             <label htmlFor="fatherLabel">Genero:</label>
-                            <select
-                                value={form.gender}
-                                onChange={(event) => {
-                                    this.setState({
-                                        form: {
-                                            ...form,
-                                            gender: event.target.value
-                                        }
-                                    });
-                                }} className="form-control" id="gender">
-                                <option value="-1">Seleccione su Genero</option>
-                                <option value="male">Masculino</option>
-                                <option value="female">Femenino</option>
-                            </select>
+                            <CodeSelect id="gender"
+                                        codeType="gender"
+                                        value={form.gender}
+                                        onChange={(event) => {
+                                            this.setState({
+                                                form: {
+                                                    ...form,
+                                                    gender: event.target.value
+                                                }
+                                            });
+                                        }}
+                                        placeholder="Seleccione su Genero"
+                            />
+
                         </div>
                     </div>
                     <div className="col-md-6">
@@ -87,21 +83,16 @@ export default class PersonalInfo extends Component {
                     <div className="col-md-6">
                         <div className="form-group">
                             <label htmlFor="disableReason">Impedimento</label>
-                            <select id="disableReason" className="form-control">
-                                <option value="-1">Ninguno</option>
-                                <option value="blind">Ciego Legal</option>
-                                <option value="cojo">Cojo</option>
-                                <option value="manco">manco</option>
-                            </select>
-
+                            <CodeSelect id="disableReason" placeholder="Ninguno" codeType="disabilityCodes"/>
                         </div>
                     </div>
 
                     <div className="col-md-6">
-                       <div className="form-group">
-                           <label htmlFor="disableReasonOther">Otro Impedimento</label>
-                           <input type="text" className="form-control" id="disableReasonOther" placeholder="Escriba Otro impedimento"/>
-                       </div>
+                        <div className="form-group">
+                            <label htmlFor="disableReasonOther">Otro Impedimento</label>
+                            <input type="text" className="form-control" id="disableReasonOther"
+                                   placeholder="Escriba Otro impedimento"/>
+                        </div>
                     </div>
                 </div>
             </form>

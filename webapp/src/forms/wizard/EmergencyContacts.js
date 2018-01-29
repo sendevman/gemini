@@ -3,12 +3,13 @@
  */
 import React, {Component} from "react";
 import {Button} from "react-bootstrap";
+import CodeSelect from "../../components/CodeSelect";
 
 export default class EmergencyContacts extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {form: {name: "", lastname: "", relationType: "", phoneNumber: ""}, contacts: []};
+        this.state = {form: {name: "", lastname: "", relationType: "", relationTypeDesc: "", phoneNumber: ""}, contacts: []};
 
         this.inputHandler = this.inputHandler.bind(this);
         this.save = this.save.bind(this);
@@ -42,6 +43,10 @@ export default class EmergencyContacts extends Component {
         let form = this.state.form;
         let element = e.target;
         form[element.id] = element.value;
+        if(element.id === "relationType") {
+            let index = element.selectedIndex;
+            form.relationTypeDesc = element[index].text;
+        }
         this.setState({...this.state, form: form});
     }
 
@@ -81,7 +86,7 @@ export default class EmergencyContacts extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-md-12">
-                                        <span className="label label-primary">{contact.relationType}</span>
+                                        <span className="label label-primary">{contact.relationTypeDesc}</span>
                                     </div>
                                 </div>
                             </div>
@@ -128,15 +133,11 @@ export default class EmergencyContacts extends Component {
                 <div className="col-md-6">
                     <div className="form-group">
                         <label htmlFor="relationType">Relacion</label>
-                        <select id="relationType" className="form-control"
-                                value={form.relationType}
-                                onChange={this.inputHandler}
-                        >
-                            <option value="-1">Seleccione relaci&oacute;n</option>
-                            <option value="friend">Amigo/a</option>
-                            <option value="uncle">Tio</option>
-
-                        </select>
+                        <CodeSelect id="relationType"
+                                    value={form.relationType}
+                                    onChange={this.inputHandler}
+                                    placeholder="Seleccione relación con el estudiante"
+                                    codeType="relationTypes"/>
                     </div>
                 </div>
 

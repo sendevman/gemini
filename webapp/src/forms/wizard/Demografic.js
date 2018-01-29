@@ -4,6 +4,7 @@
 import React, {Component} from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
+import CodeSelect from "../../components/CodeSelect";
 
 const countries = [{name: 'pr', desc: 'Puerto Rico'},
     {name: 'us', desc: 'Estados Unidos'},
@@ -37,43 +38,39 @@ export default class Demografic extends Component {
             <div className="row">
                 <div className="col-md-6">
                     <div className="form-group">
-                        <label htmlFor="fatherLabel">Pais de Nacimiento:</label>
-                        <select
-                            value={form.country}
-                            onChange={(event) => {
-                                this.setState({
-                                    form: {
-                                        ...form,
-                                        country: event.target.value
-                                    }
-                                });
-                            }} className="form-control" id="gender">
-                            <option value="-1">Seleccione su Pais de nacimiento</option>
-                            {countries.map((country, i) => (
-                                <option key={i} value={country.name}>{country.desc}</option>
-                            ))}
-                        </select>
+                        <label htmlFor="country">Pais de Nacimiento:</label>
+                        <CodeSelect id="country"
+                                    value={form.country}
+                                    onChange={(event) => {
+                                        this.setState({
+                                            form: {
+                                                ...form,
+                                                country: event.target.value
+                                            }
+                                        });
+                                    }}
+                                    placeholder="Seleccione su Pais de nacimiento"
+                                    codeType="countries"/>
+
                     </div>
                 </div>
                 <div className="col-md-6">
                     <div className="form-group" style={{paddingTop: 10}}>
                         <br/>
-                        <label className="radio-inline"><input type="radio" name="bornPR" disabled={true}/>Nacio en PR</label>
-                        <label className="radio-inline"><input type="radio" name="bornPR" disabled={true}/>Otro Pais</label>
+                        <label className="radio-inline"><input type="radio" name="bornPR" disabled={true}/>Nacio en
+                            PR</label>
+                        <label className="radio-inline"><input type="radio" name="bornPR" disabled={true}/>Otro
+                            Pais</label>
                     </div>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-6">
                     <div className="form-group">
-                        <label htmlFor="ethnicCode">Codigo de Origin</label>
-                        <select id="ethnicCode" className="form-control">
-                            <option value="-1">Seleccione Codigo de Origin</option>
-                            {ethnicCodes.map((code, i) => (
-                                    <option value={code.name}>{code.desc}</option>
-                                )
-                            )}
-                        </select>
+                        <label htmlFor="ethnicCode"> Codigo Etnico</label>
+                        <CodeSelect id="ethnicCode"
+                                    placeholder="Seleccione su Codigo Etnico"
+                                    codeType="ethnicCodes"/>
 
                     </div>
                 </div>
@@ -100,19 +97,17 @@ export default class Demografic extends Component {
                 <div className="col-md-6">
                     <div className="form-group">
                         <label htmlFor="residentialStatus">Estatus Residencial</label>
-                        <input type="text" className="form-control" id="residentialStatus" placeholder="Estatus Residencial (Preguntar que es??)"/>
+                        <CodeSelect id="residentialStatus"
+                                    placeholder="Seleccione su Estatus Residencial"
+                                    codeType="residentialStatus"/>
                     </div>
                 </div>
                 <div className="col-md-6">
                     <div className="form-group">
                         <label htmlFor="liveWith">Vive con:</label>
-                        <select id="liveWith" className="form-control">
-                            <option value="-1">Seleccione vive con</option>
-                            <option value="mother">Mam&aacute;</option>
-                            <option value="father">Pap&acute;</option>
-                            <option value="both">Ambos Padres</option>
-                            <option value="legalTutor">Tutor Legal</option>
-                        </select>
+                        <CodeSelect id="liveWith"
+                                    placeholder="Seleccione vive con"
+                                    codeType="relationTypes"/>
 
                     </div>
                 </div>
