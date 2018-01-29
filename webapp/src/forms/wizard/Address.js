@@ -3,6 +3,7 @@
  */
 import React, {Component} from "react";
 import {Button} from "react-bootstrap";
+import CodeSelect from "../../components/CodeSelect";
 
 export default class Address extends Component {
 
@@ -56,16 +57,13 @@ export default class Address extends Component {
                 <div className="col-md-4">
                     <div className="form-group">
                         <label htmlFor="city">Ciudad</label>
-                        <input type="text" className="form-control" id="city" placeholder="Ciudad"/>
+                        <CodeSelect id="city" placeholder="Seleccione municipio" codeType="municipios"/>
                     </div>
                 </div>
                 <div className="col-md-4">
                     <div className="form-group">
                         <label htmlFor="state">Estado</label>
-                        <select id="state" className="form-control" disabled={true}>
-                            <option value="pr">PR</option>
-                        </select>
-
+                        <CodeSelect id="state" placeholder="Seleccione Estado" codeType="states" value={"PR"} disabled={false}/>
                     </div>
                 </div>
 
