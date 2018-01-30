@@ -3,6 +3,7 @@
  */
 import React, {Component} from "react";
 import {Button, Col, ProgressBar, Row} from "react-bootstrap";
+//Tabs
 import StudentIdentification from "./wizard/StudentIdentification";
 import PersonalInfo from "./wizard/PersonalInfo";
 import Address from "./wizard/Address";
@@ -10,8 +11,12 @@ import Demografic from "./wizard/Demografic";
 import Enrollment from "./wizard/Enrollment";
 import EmergencyContacts from "./wizard/EmergencyContacts";
 import TutorInfo from "./wizard/TutorInfo";
-
-import "react-datepicker/dist/react-datepicker.css";
+import AdditionalInfo from "./wizard/AdditionalInfo";
+import LanguageInfo from "./wizard/LanguageInfo";
+import MedicalInfo from "./wizard/MedicalInfo";
+import MedicalInfoAdditional from "./wizard/MedicalInfoAdditional";
+import FinancialFamilyInfo from "./wizard/FinancialFamilyInfo";
+import TransportationInfo from "./wizard/TransportationInfo";
 
 
 function form(title, form) {
@@ -24,8 +29,8 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {currentForm: 0};
-        this.accountablePertangeForm = 6;
-        this.maxForms = 7;
+        this.accountablePertangeForm = 12;
+        this.maxForms = 13;
 
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
@@ -53,23 +58,30 @@ export default class Home extends Component {
             form("Direcci\u00f3n", <Address/>),
             form("Datos Demograficos", <Demografic/>),
             form("Matricula", <Enrollment/>),
+            form("Informaci\u00f3n Adicional", <AdditionalInfo/>),
             form("Contactos de Emergencia", <EmergencyContacts/>),
-            form("Tutores Legales", <TutorInfo/>)
+            form("Lenguajes", <LanguageInfo/>),
+            form("Informacion Medica", <MedicalInfo/>),
+            form("Informacion Medica Adicional", <MedicalInfoAdditional/>),
+            form("Tutores Legales", <TutorInfo/>),
+            form("Finanzas", <FinancialFamilyInfo/>),
+            form("Transportaci\u00f3n", <TransportationInfo/>),
         ];
 
         return (<div>
             <div className="container">
                 <Row>
                     <Col xs={12}>
-                        <h3>{wizardForms[this.state.currentForm].title}</h3>
+                        <h3>{wizardForms[current].title}</h3>
+
                     </Col>
                 </Row>
                 <div style={{marginTop: 20}}>
-                    {wizardForms[this.state.currentForm].form}
+                    {wizardForms[current].form}
                 </div>
             </div>
+            <div style={{marginTop: 70}}/>
             {this.renderFooter()}
-
         </div>);
     }
 
@@ -78,9 +90,8 @@ export default class Home extends Component {
         let percentage = Math.floor(((current - 1) / this.accountablePertangeForm) * 100);
         let initForm = current > 0;
         let showProgressBar = initForm
-            ? (    <Col xs={4}>
-                <label> {percentage} % Completed</label>
-                <ProgressBar now={percentage}/>
+            ? (    <Col xs={4} style={{paddingTop: 10}}>
+                <ProgressBar isChild now={percentage} label={`${percentage}%`}/>
             </Col>)
             : (<Col xs={4}/>);
 
@@ -89,8 +100,7 @@ export default class Home extends Component {
             <Row>
                 <Col xs={1}/>
                 {showProgressBar}
-                <Col xs={4}/>
-                <Col xs={3}>
+                <Col xs={7}>
                     <div style={{marginRight: 5, zIndex: 100}} className="pull-right">
                         {initForm
                             ? <Button onClick={this.previous} style={{marginRight: 5}}

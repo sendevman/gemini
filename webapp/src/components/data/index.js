@@ -6,15 +6,17 @@ import countries from "./codes/countries";
 import disabilityCodes from "./codes/disabilityCodes";
 import educationLevels from "./codes/educationLevels";
 import ethnicCodes from "./codes/ethnicCodes";
-import gender from "./constants/gender";
 import languageCodes from "./codes/languageCodes";
-import maritalStatuses from "./constants/maritalStatuses";
 import municipios from "./codes/municipios";
 import relationTypes from "./codes/relationTypes";
 import residentialStatus from "./codes/residentialStatus";
 import states from "./codes/states";
-import transportationTypes from "./codes/transportationTypes";
-
+import foodOptions from "./codes/foodOptions.js";
+import medicalConditions from "./codes/medicalConditions";
+//constant
+import gender from "./constants/gender";
+import maritalStatuses from "./constants/maritalStatuses";
+import transportationTypes from "./constants/transportationTypes";
 
 export default {
     contactTypes: contactTypes,
@@ -29,5 +31,7 @@ export default {
     residentialStatus: residentialStatus,
     relationTypes: relationTypes,
     states: states,
-    transportationTypes: transportationTypes
+    transportationTypes: transportationTypes,
+    foodOptions: foodOptions,
+    medicalConditions: medicalConditions
 };

@@ -5,6 +5,8 @@ import "./App.css";
 import Routes from "./Routes";
 import moment from "moment";
 import esLocale from "moment/locale/es";
+import "react-datepicker/dist/react-datepicker.min.css";
+
 moment.updateLocale('es', esLocale);
 
 

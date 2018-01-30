@@ -6,12 +6,6 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import CodeSelect from "../../components/CodeSelect";
 
-const countries = [{name: 'pr', desc: 'Puerto Rico'},
-    {name: 'us', desc: 'Estados Unidos'},
-    {name: 'pe', desc: 'Peru'},
-    {name: 'me', desc: 'Mexico'}];
-
-const ethnicCodes = [];
 export default class Demografic extends Component {
 
     constructor(props) {
@@ -27,7 +21,6 @@ export default class Demografic extends Component {
         //     startDate: date
         // });
         let inmigrantYears = moment().diff(date, 'years');
-        alert(moment().diff(date, 'years'))
         this.setState({form: {...this.state.form, inmigrantYears: inmigrantYears}})
     }
 
