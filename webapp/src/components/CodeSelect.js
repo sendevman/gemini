@@ -52,6 +52,12 @@ class CodeSelect extends Component {
             case "transportationTypes":
                 this.codes = Codes.transportationTypes;
                 break;
+            case "foodOptions":
+                this.codes = Codes.foodOptions;
+                break;
+            case "medicalConditions":
+                this.codes = Codes.medicalConditions;
+                break;
         }
     }
 

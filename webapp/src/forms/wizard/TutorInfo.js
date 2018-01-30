@@ -170,20 +170,22 @@ export default class TutorInfo extends Component {
         return (
             <form>
                 <div className="row">
-                    <Tabs
-                        activeKey={this.state.key}
-                        onSelect={this.handleSelect}
-                        id="controlled-tab-example">
-                        <Tab eventKey={1} title="Personal" style={{marginTop: 20}}>
-                            {this.renderPersonalTab(form.personal)}
-                        </Tab>
-                        <Tab eventKey={2} title="Trabajo" style={{marginTop: 20}}>
-                            {this.renderWorkTab(form.work)}
-                        </Tab>
-                        <Tab eventKey={3} title="Contacto" style={{marginTop: 20}}>
-                            {this.renderContactTab(form.contact)}
-                        </Tab>
-                    </Tabs>
+                    <div className="col-md-12">
+                        <Tabs
+                            activeKey={this.state.key}
+                            onSelect={this.handleSelect}
+                            id="controlled-tab-example">
+                            <Tab eventKey={1} title="Personal" style={{marginTop: 20}}>
+                                {this.renderPersonalTab(form.personal)}
+                            </Tab>
+                            <Tab eventKey={2} title="Trabajo" style={{marginTop: 20}}>
+                                {this.renderWorkTab(form.work)}
+                            </Tab>
+                            <Tab eventKey={3} title="Contacto" style={{marginTop: 20}}>
+                                {this.renderContactTab(form.contact)}
+                            </Tab>
+                        </Tabs>
+                    </div>
                 </div>
                 <div className="row">
                     <div className="col-md-12">
