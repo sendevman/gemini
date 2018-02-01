@@ -2,9 +2,10 @@
  * Created by fran on 1/24/18.
  */
 import React, {Component} from "react";
-import {Button, FormControl, FormGroup, Label, Row} from "react-bootstrap";
+import {Button, FormControl, FormGroup, Label} from "react-bootstrap";
 import "./Authentication.css";
-import logo from './logo.svg';
+import logo from "./logo.svg";
+import {Link} from "react-router-dom";
 
 
 export default  class Authentication extends Component {
@@ -44,8 +45,7 @@ export default  class Authentication extends Component {
                 <h1 className="title"><Label bsStyle="primary">Matricula en Linea</Label></h1>
                 <FormGroup
                     controlId="username"
-                    validationState={this.getValidationState(this.state.username)}
-                >
+                    validationState={this.getValidationState(this.state.username)}>
                     <FormControl
                         type="text"
                         value={this.state.username}
@@ -63,13 +63,31 @@ export default  class Authentication extends Component {
                     />
                     <FormControl.Feedback />
                 </FormGroup>
-                <Row>
-                    <Button className="login-button" bsStyle="primary" onClick={this.login}>Entrar</Button>
-                </Row>
+                <div style={{marginTop: -10, marginBottom: 10}}>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <Link to="/">Olvido credenciales?</Link>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="pull-right">
+                                <Link to="/registration">No posee cuenta?</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div className="row">
+                    <div className="col-md-12">
+                        <Button className="login-button" bsStyle="primary" onClick={this.login}>Entrar</Button>
+                    </div>
+                </div>
+
+
             </form>);
     }
 
-    login = ()=>{
+    login = () => {
         this.props.history.push("/Home")
     }
 
