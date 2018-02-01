@@ -1,14 +1,13 @@
 import React, {Component} from "react";
 import {MenuItem, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {withRouter} from "react-router-dom";
+import "react-datepicker/dist/react-datepicker.min.css";
 import "./App.css";
 import Routes from "./Routes";
 import moment from "moment";
 import esLocale from "moment/locale/es";
-import "react-datepicker/dist/react-datepicker.min.css";
-
 moment.updateLocale('es', esLocale);
-
+const baseContext = "mel";
 
 class App extends Component {
     constructor(props) {
@@ -22,8 +21,10 @@ class App extends Component {
     };
 
     componentDidMount() {
+        //double check
         if (!this.state.showMenu) {
-            if (window.location.pathname !== "/") {
+            let token = window.location.pathname.split("/")[1];
+            if (token !== baseContext && token !== "registration") {
                 this.setState({showMenu: true})
             }
         }
@@ -44,7 +45,7 @@ class App extends Component {
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href="#home">MEL</a>
+                            <a href={`/${baseContext}/Home`}>MEL</a>
                         </Navbar.Brand>
                     </Navbar.Header>
 
@@ -52,7 +53,7 @@ class App extends Component {
                         <NavDropdown eventKey={3} title="Juan Del Pueblo" id="navbarResponsive">
                             <MenuItem eventKey="profile">Perfil</MenuItem>
                             <MenuItem divider/>
-                            <MenuItem eventKey="logout" href="/">
+                            <MenuItem eventKey="logout" href="/mel/">
                                 Salir
                             </MenuItem>
                         </NavDropdown>

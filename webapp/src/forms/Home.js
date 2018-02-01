@@ -17,6 +17,7 @@ import MedicalInfo from "./wizard/MedicalInfo";
 import MedicalInfoAdditional from "./wizard/MedicalInfoAdditional";
 import FinancialFamilyInfo from "./wizard/FinancialFamilyInfo";
 import TransportationInfo from "./wizard/TransportationInfo";
+import SubmitRequest from "./SubmitRequest";
 
 
 function form(title, form) {
@@ -28,9 +29,9 @@ export default class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {currentForm: 0};
+        this.state = {currentForm: 0, finalStep: false};
         this.accountablePertangeForm = 12;
-        this.maxForms = 13;
+        this.maxForms = 14;
 
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
@@ -39,14 +40,16 @@ export default class Home extends Component {
 
     next() {
         let current = this.state.currentForm;
+        let finalStep = (this.maxForms - 2 ) === current;
+        console.log(`finalStep = ${finalStep}`)
         if (current < (this.maxForms - 1))
-            this.setState({currentForm: current + 1})
+            this.setState({currentForm: current + 1, finalStep: finalStep});
     }
 
     previous() {
         let current = this.state.currentForm;
         if (current > 0)
-            this.setState({currentForm: current - 1})
+            this.setState({currentForm: current - 1, finalStep: false})
     }
 
 
@@ -66,6 +69,7 @@ export default class Home extends Component {
             form("Tutores Legales", <TutorInfo/>),
             form("Finanzas", <FinancialFamilyInfo/>),
             form("Transportaci\u00f3n", <TransportationInfo/>),
+            form("Someter Solicitud", <SubmitRequest/>),
         ];
 
         return (<div>
@@ -89,9 +93,14 @@ export default class Home extends Component {
         let current = this.state.currentForm;
         let percentage = Math.floor(((current - 1) / this.accountablePertangeForm) * 100);
         let initForm = current > 0;
+        let lastForm = this.state.finalStep;
+        let previousLabel =  lastForm ? 'Cancelar' : 'Back';
+        let nextLabel = initForm
+            ? (lastForm ? 'Finalizar' : 'Next' )
+            : 'Comenzar';
         let showProgressBar = initForm
             ? (    <Col xs={4} style={{paddingTop: 10}}>
-                <ProgressBar isChild now={percentage} label={`${percentage}%`}/>
+                <ProgressBar now={percentage} label={`${percentage}%`}/>
             </Col>)
             : (<Col xs={4}/>);
 
@@ -104,9 +113,9 @@ export default class Home extends Component {
                     <div style={{marginRight: 5, zIndex: 100}} className="pull-right">
                         {initForm
                             ? <Button onClick={this.previous} style={{marginRight: 5}}
-                                      bsStyle="primary">Back</Button>
+                                      bsStyle="primary">{previousLabel}</Button>
                             : null}
-                        <Button onClick={this.next} bsStyle="primary">{initForm ? 'Next' : 'Comenzar'}</Button>
+                        <Button onClick={this.next} bsStyle="primary">{nextLabel}</Button>
                     </div>
                 </Col>
             </Row>

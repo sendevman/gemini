@@ -34,7 +34,7 @@ body {
 
 
 .footer {
-    z-index: 11;
+    z-index: 20;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -42,6 +42,7 @@ body {
     border-top-width: 1px;
     height: 60px;
     margin: auto;
+    background-color: #E5F3F5;
     padding-left: 15px;
     padding-top: 10px;
 }
@@ -61,10 +62,23 @@ body {
 }
 
 .progress {
-    height: 10px;
+    height: 100%;
+    background-color: #d6d6d6;
+}
+
+blockquote {
+    border-left: 5px solid #00b4d5;
 }
 
 /*Quick fix for date picker field*/
 html {
     font-size: 14px;
+}
+
+.react-datepicker-wrapper{
+    display: block;
+}
+
+.react-datepicker__input-container{
+    display: block;
 }
