@@ -3,6 +3,7 @@
  */
 
 import React, {Component} from "react";
+import DatePicker from "react-datepicker/es/index";
 
 export default class StudentIdentification extends Component {
 
@@ -28,7 +29,7 @@ export default class StudentIdentification extends Component {
             <div className="col-md-4">
                 <div className="form-group">
                     <label htmlFor="dob">Fecha nacimiento:</label>
-                    <input type="text" className="form-control" id="dob" placeholder="Fecha de nacimiento"/>
+                    <DatePicker id="dob" className="form-control" placeholderText="Fecha de nacimiento"/>
                 </div>
             </div>
         </div>);

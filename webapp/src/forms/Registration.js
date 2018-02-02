@@ -3,11 +3,17 @@
  */
 import React, {Component} from "react";
 import DatePicker from "react-datepicker/es/index";
+import {Button} from "react-bootstrap";
 
 export default class Registration extends Component {
 
     constructor(props) {
         super(props);
+        this.register = this.register.bind(this);
+    }
+
+    register() {
+        this.props.history.push("/");
     }
 
     render() {
@@ -39,7 +45,7 @@ export default class Registration extends Component {
                                 <div className="col-md-6">
                                     <div className="form-group">
                                         <label htmlFor="dob">Fecha de nacimiento</label>
-                                        <DatePicker id="dob" className="form-control"/>
+                                        <DatePicker id="dob" className="form-control" placeholderText="Fecha de nacimiento"/>
                                     </div>
                                 </div>
                                 <div className="col-md-3"/>
@@ -49,8 +55,16 @@ export default class Registration extends Component {
                                 <div className="col-md-6">
                                     <div className="form-group">
                                         <label htmlFor="">Lastname</label>
-                                        <input type="text" className="form-control" id="lastname" placeholder="Apellido"/>
+                                        <input type="text" className="form-control" id="lastname"
+                                               placeholder="Apellido"/>
                                     </div>
+                                </div>
+                                <div className="col-md-3"/>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-3"/>
+                                <div className="col-md-6">
+                                    <Button block bsStyle="primary" onClick={this.register}>Registrar</Button>
                                 </div>
                                 <div className="col-md-3"/>
                             </div>
@@ -58,6 +72,6 @@ export default class Registration extends Component {
                     </div>
                 </div>
             </div>
-           );
+        );
     }
 };

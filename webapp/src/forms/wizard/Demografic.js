@@ -5,7 +5,7 @@ import React, {Component} from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import CodeSelect from "../../components/CodeSelect";
-
+const PRCode = '1790';
 export default class Demografic extends Component {
 
     constructor(props) {
@@ -50,9 +50,13 @@ export default class Demografic extends Component {
                 <div className="col-md-6">
                     <div className="form-group" style={{paddingTop: 10}}>
                         <br/>
-                        <label className="radio-inline"><input type="radio" name="bornPR" disabled={true}/>Nacio en
+                        <label className="radio-inline"><input type="radio" name="bornPR"
+                                                               checked={form.country && form.country === PRCode}
+                                                               disabled={true}/>Nacio en
                             PR</label>
-                        <label className="radio-inline"><input type="radio" name="bornPR" disabled={true}/>Otro
+                        <label className="radio-inline"><input type="radio" name="bornPR"
+                                                               checked={form.country && form.country !== PRCode}
+                                                               disabled={true}/>Otro
                             Pais</label>
                     </div>
                 </div>
@@ -70,7 +74,8 @@ export default class Demografic extends Component {
                 <div className="col-md-3">
                     <div className="form-group">
                         <label htmlFor="inmigrantDate">Fecha de Inmigracion</label>
-                        <DatePicker className="form-control" selected={form.startDate} onChange={this.handleChange}/>
+                        <DatePicker className="form-control" placeholderText="Fecha de Inmigracion"
+                                    selected={form.startDate} onChange={this.handleChange}/>
                     </div>
                 </div>
 

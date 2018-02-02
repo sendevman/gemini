@@ -73,7 +73,7 @@ export default class PersonalInfo extends Component {
                     <div className="col-md-6">
                         <div className="form-group">
                             <label htmlFor="dob">Fecha de Nacimiento:</label>
-                            <DatePicker className="form-control" selected={form.dob} onChange={this.handleDobChange}/>
+                            <DatePicker className="form-control" placeholderText="Fecha de nacimiento" selected={form.dob} onChange={this.handleDobChange}/>
                         </div>
 
                     </div>
