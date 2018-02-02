@@ -19,11 +19,9 @@ import FinancialFamilyInfo from "./wizard/FinancialFamilyInfo";
 import TransportationInfo from "./wizard/TransportationInfo";
 import SubmitRequest from "./SubmitRequest";
 
-
 function form(title, form) {
     return {title: title, form: form};
 }
-
 
 export default class Home extends Component {
 
@@ -35,15 +33,16 @@ export default class Home extends Component {
 
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
-
     }
 
     next() {
         let current = this.state.currentForm;
         let finalStep = (this.maxForms - 2 ) === current;
-        console.log(`finalStep = ${finalStep}`)
         if (current < (this.maxForms - 1))
             this.setState({currentForm: current + 1, finalStep: finalStep});
+        else
+            this.props.history.push("/status")
+
     }
 
     previous() {
@@ -94,7 +93,7 @@ export default class Home extends Component {
         let percentage = Math.floor(((current - 1) / this.accountablePertangeForm) * 100);
         let initForm = current > 0;
         let lastForm = this.state.finalStep;
-        let previousLabel =  lastForm ? 'Cancelar' : 'Back';
+        let previousLabel = lastForm ? 'Cancelar' : 'Back';
         let nextLabel = initForm
             ? (lastForm ? 'Finalizar' : 'Next' )
             : 'Comenzar';

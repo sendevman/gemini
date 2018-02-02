@@ -7,6 +7,7 @@ import Home from "./forms/Home";
 import NotFoundPage from "./NotFoundPage";
 import {Route, Switch, withRouter} from "react-router-dom";
 import Registration from "./forms/Registration";
+import StatusForm from "./forms/StatusForm";
 
 class Routes extends Component {
 
@@ -22,6 +23,7 @@ class Routes extends Component {
                 <Route exact path="/" component={Authentication}/>
                 <Route path="/home" component={Home}/>
                 <Route path="/registration" component={Registration}/>
+                <Route path="/status" component={StatusForm}/>
                 {/*404 page*/}
                 <Route component={NotFoundPage}/>
             </Switch>

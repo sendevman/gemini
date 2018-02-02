@@ -17,14 +17,14 @@ class App extends Component {
     }
 
     onRouteChanged(nextRoute) {
-        this.setState({showMenu: nextRoute.pathname !== "/"});
+        this.setState({showMenu: nextRoute.pathname !== "/" && nextRoute.pathname !== "/registration" });
     };
 
     componentDidMount() {
         //double check
         if (!this.state.showMenu) {
-            let token = window.location.pathname.split("/")[1];
-            if (token !== baseContext && token !== "registration") {
+            let tokens = window.location.pathname.split("/");
+            if (tokens.length > 2 && tokens[2] && tokens[2] !== "registration") {
                 this.setState({showMenu: true})
             }
         }
