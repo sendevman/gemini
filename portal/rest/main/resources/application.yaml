@@ -1,0 +1,24 @@
+spring:
+  main:
+    web-environment: false
+
+  jpa:
+    show-sql: true
+    database: mysql
+    hibernate:
+      ddl-auto: create
+    generate-ddl: true
+  # TMAX103
+  #  datasource:
+  #    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
+  #    driver-class-name: oracle.jdbc.driver.OracleDriver
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/MEL
+    username: mel
+    password: 12345678
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      maximum-pool-size: 30
+
+
