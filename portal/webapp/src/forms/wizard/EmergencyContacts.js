@@ -4,12 +4,17 @@
 import React, {Component} from "react";
 import {Button} from "react-bootstrap";
 import CodeSelect from "../../components/CodeSelect";
+import PhoneInput from "../../components/PhoneInput";
+import TextInput from "../../components/TextInput";
 
 export default class EmergencyContacts extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {form: {name: "", lastname: "", relationType: "", relationTypeDesc: "", phoneNumber: ""}, contacts: []};
+        this.state = {
+            form: {name: "", lastname: "", relationType: "", relationTypeDesc: "", phoneNumber: ""},
+            contacts: []
+        };
 
         this.inputHandler = this.inputHandler.bind(this);
         this.save = this.save.bind(this);
@@ -23,7 +28,6 @@ export default class EmergencyContacts extends Component {
                 cloneObj[prop] = '';
         }
         return cloneObj;
-
     }
 
     save() {
@@ -43,7 +47,7 @@ export default class EmergencyContacts extends Component {
         let form = this.state.form;
         let element = e.target;
         form[element.id] = element.value;
-        if(element.id === "relationType") {
+        if (element.id === "relationType") {
             let index = element.selectedIndex;
             form.relationTypeDesc = element[index].text;
         }
@@ -107,49 +111,42 @@ export default class EmergencyContacts extends Component {
         return (<form id="contact-form">
             <div className="row">
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="name">Nombre:</label>
-                        <input type="text" className="form-control"
-                               id="name"
+                    <TextInput id="name"
+                               type="name"
+                               label="Nombre"
                                placeholder="Nombre"
                                value={form.name}
                                onChange={this.inputHandler}
-                        />
-                    </div>
+                    />
+
                 </div>
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="lastname">Apellido</label>
-                        <input type="text" className="form-control" id="lastname"
+                    <TextInput id="lastname"
+                               type="lastname"
+                               label="Apellido"
                                placeholder="Apellido"
                                value={form.lastname}
                                onChange={this.inputHandler}
-                        />
-                    </div>
+                    />
                 </div>
             </div>
 
             <div className="row">
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="relationType">Relacion</label>
-                        <CodeSelect id="relationType"
-                                    value={form.relationType}
-                                    onChange={this.inputHandler}
-                                    placeholder="Seleccione relación con el estudiante"
-                                    codeType="relationTypes"/>
-                    </div>
+                    <CodeSelect id="relationType"
+                                value={form.relationType}
+                                label="Relacion"
+                                onChange={this.inputHandler}
+                                placeholder="Seleccione relación con el estudiante"
+                                codeType="relationTypes"/>
                 </div>
 
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="phoneNumber">Tel&eacute;fono</label>
-                        <input type="text" className="form-control" id="phoneNumber"
-                               placeholder="Teléfono"
-                               value={form.phoneNumber}
-                               onChange={this.inputHandler}
-                        />
-                    </div>
+                    <PhoneInput id="phoneNumber"
+                                label="Teléfono"
+                                placeholder="Teléfono"
+                                value={form.phoneNumber}
+                                onChange={this.inputHandler}/>
                 </div>
             </div>
 

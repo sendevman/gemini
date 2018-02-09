@@ -2,8 +2,9 @@
  * Created by fran on 1/25/18.
  */
 import React, {Component} from "react";
-import DatePicker from "react-datepicker";
 import CodeSelect from "../../components/CodeSelect";
+import DateInput from "../../components/DateInput";
+import TextInput from "../../components/TextInput";
 
 export default class PersonalInfo extends Component {
 
@@ -23,77 +24,50 @@ export default class PersonalInfo extends Component {
             <form>
                 <div className="row">
                     <div className="col-md-3">
-                        <div className="form-group">
-                            <label htmlFor="nameLabel">Nombre:</label>
-                            <input type="text" className="form-control" id="nameLabel" placeholder="Nombre"/>
-                        </div>
+                        <TextInput id="nameLabel" type="name" label="Nombre" placeholder="Nombre"/>
                     </div>
                     <div className="col-md-3">
-                        <div className="form-group">
-                            <label htmlFor="middleLabel">Segundo Nombre:</label>
-                            <input type="text" className="form-control" id="middleLabel" placeholder="Segundo Nombre"/>
-                        </div>
+                        <TextInput id="middleLabel" type="name" label="Segundo Nombre" placeholder="Segundo Nombre"/>
                     </div>
                     <div className="col-md-3">
-                        <div className="form-group">
-                            <label htmlFor="motherLabel">Apellido Maternal:</label>
-                            <input type="text" className="form-control" id="motherLabel"
+                        <TextInput id="motherLabel" type="lastname" label="Apellido Maternal"
                                    placeholder="Apellido Maternal"/>
-                        </div>
                     </div>
                     <div className="col-md-3">
-                        <div className="form-group">
-                            <label htmlFor="fatherLabel">Apellido Paternal:</label>
-                            <input type="text" className="form-control" id="fatherLabel"
+                        <TextInput id="fatherLabel" type="lastname" label="Apellido Paternal"
                                    placeholder="Apellido Paternal"/>
-                        </div>
                     </div>
                 </div>
 
                 <div className="row">
                     <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="fatherLabel">Genero:</label>
-                            <CodeSelect id="gender"
-                                        codeType="gender"
-                                        value={form.gender}
-                                        onChange={(event) => {
-                                            this.setState({
-                                                form: {
-                                                    ...form,
-                                                    gender: event.target.value
-                                                }
-                                            });
-                                        }}
-                                        placeholder="Seleccione su Genero"
-                            />
+                        <CodeSelect id="gender"
+                                    label="Genero"
+                                    codeType="gender"
+                                    value={form.gender}
+                                    onChange={(event) => {
+                                        this.setState({
+                                            form: {
+                                                ...form,
+                                                gender: event.target.value
+                                            }
+                                        });
+                                    }}
+                                    placeholder="Seleccione su Genero"
+                        />
 
-                        </div>
                     </div>
                     <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="dob">Fecha de Nacimiento:</label>
-                            <DatePicker className="form-control" placeholderText="Fecha de nacimiento" selected={form.dob} onChange={this.handleDobChange}/>
-                        </div>
+                        <DateInput label="Fecha de Nacimiento"/>
 
                     </div>
                 </div>
 
                 <div className="row">
                     <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="disableReason">Impedimento</label>
-                            <CodeSelect id="disableReason" placeholder="Ninguno" codeType="disabilityCodes"/>
-                        </div>
+                        <CodeSelect id="disableReason" label="Impedimento" placeholder="Ninguno" codeType="disabilityCodes"/>
                     </div>
-
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="disableReasonOther">Otro Impedimento</label>
-                            <input type="text" className="form-control" id="disableReasonOther"
-                                   placeholder="Escriba Otro impedimento"/>
-                        </div>
-                    </div>
+                    <div className="col-md-6"/>
                 </div>
             </form>
         );

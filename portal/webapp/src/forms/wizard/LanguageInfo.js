@@ -4,6 +4,7 @@
 import React, {Component} from "react";
 import CodeSelect from "../../components/CodeSelect";
 import {ToggleButton, ToggleButtonGroup} from "react-bootstrap";
+import TextInput from "../../components/TextInput";
 
 export default class LanguageInfo extends Component {
 
@@ -32,51 +33,45 @@ export default class LanguageInfo extends Component {
             <div className="row">
 
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="schoolLanguage">Lenguaje de la Escuela</label>
-                        <CodeSelect id="schoolLanguage" codeType="languageCodes"
-                                    placeholder="Seleccione lenguaje de la escuela"/>
-                    </div>
+                    <CodeSelect id="schoolLanguage"
+                                label="Lenguaje de la Escuela"
+                                codeType="languageCodes"
+                                placeholder="Seleccione lenguaje de la escuela"/>
                 </div>
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="schoolLanguageOther">Otro Lenguaje de la Escuela</label>
-                        <CodeSelect id="schoolLanguageOther" codeType="languageCodes"
-                                    placeholder="Seleccione otro lenguaje de la escuela"/>
-                    </div>
+                    <CodeSelect id="schoolLanguageOther"
+                                label="Otro Lenguaje de la Escuela"
+                                codeType="languageCodes"
+                                placeholder="Seleccione otro lenguaje de la escuela"/>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="homeLanguage">Lenguaje de la Casa</label>
-                        <CodeSelect id="homeLanguage" codeType="languageCodes"
-                                    placeholder="Seleccione lenguaje de la casa"/>
-                    </div>
+                    <CodeSelect id="homeLanguage"
+                                label="Lenguaje de la Casa"
+                                codeType="languageCodes"
+                                placeholder="Seleccione lenguaje de la casa"/>
                 </div>
 
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="homeLanguageOther">Otro Lenguaje de la Casa</label>
-                        <CodeSelect id="homeLanguageOther" codeType="languageCodes"
-                                    placeholder="Seleccione otro lenguaje de la casa"/>
-                    </div>
+                    <CodeSelect id="homeLanguageOther"
+                                label="Otro Lenguaje de la Cas"
+                                codeType="languageCodes"
+                                placeholder="Seleccione otro lenguaje de la casa"/>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="responsibleLanguage">Lenguaje del padre o encargado</label>
-                        <CodeSelect id="responsibleLanguage" codeType="languageCodes"
-                                    placeholder="Seleccione otro lenguaje del padre o encargado"/>
-                    </div>
+                    <CodeSelect id="responsibleLanguage"
+                                label="Lenguaje del padre o encargado"
+                                codeType="languageCodes"
+                                placeholder="Seleccione otro lenguaje del padre o encargado"/>
                 </div>
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="responsibleLanguageOther">Otro Lenguaje del padre o encargado</label>
-                        <CodeSelect id="responsibleLanguageOther" codeType="languageCodes"
-                                    placeholder="Seleccione otro lenguaje del padre o encargado"/>
-                    </div>
+                    <CodeSelect id="responsibleLanguageOther"
+                                label="Otro Lenguaje del padre o encargado"
+                                codeType="languageCodes"
+                                placeholder="Seleccione otro lenguaje del padre o encargado"/>
                 </div>
             </div>
             <div className="row">
@@ -109,11 +104,7 @@ export default class LanguageInfo extends Component {
             </div>
             <div className="row">
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="speakSpanishIssues">Problemas con idioma Espa&ntilde;ol</label>
-                        <input type="text" className="form-control" id="speakSpanishIssues"
-                               placeholder="Problemas con idioma Espa&ntilde;ol"/>
-                    </div>
+                    <TextInput id="speakSpanishIssues" label="Problemas con idioma Espa&ntilde;ol" placeholder="Problemas con idioma Espa&ntilde;ol"/>
                 </div>
             </div>
         </form>);

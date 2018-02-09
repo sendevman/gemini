@@ -7,7 +7,7 @@ import {Button, Col, ProgressBar, Row} from "react-bootstrap";
 import StudentIdentification from "./wizard/StudentIdentification";
 import PersonalInfo from "./wizard/PersonalInfo";
 import Address from "./wizard/Address";
-import Demografic from "./wizard/Demografic";
+import Demographic from "./wizard/Demographic";
 import Enrollment from "./wizard/Enrollment";
 import EmergencyContacts from "./wizard/EmergencyContacts";
 import TutorInfo from "./wizard/TutorInfo";
@@ -58,7 +58,7 @@ export default class Home extends Component {
             form("Identificaci\u00f3n de Estudiante", <StudentIdentification/>),
             form("Informaci\u00f3n Personal", <PersonalInfo/>),
             form("Direcci\u00f3n", <Address/>),
-            form("Datos Demograficos", <Demografic/>),
+            form("Datos Demograficos", <Demographic/>),
             form("Matricula", <Enrollment/>),
             form("Informaci\u00f3n Adicional", <AdditionalInfo/>),
             form("Contactos de Emergencia", <EmergencyContacts/>),

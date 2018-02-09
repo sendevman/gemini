@@ -3,6 +3,7 @@
  */
 
 import React, {Component} from "react";
+import CodeSelect from "../../components/CodeSelect";
 
 export default class Enrollment extends Component {
 
@@ -40,53 +41,20 @@ export default class Enrollment extends Component {
             </div>
 
             <div className="row">
-
-                <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="school">Grado:</label>
-                        <select id="school" className="form-control">
-                            <option value="-1">Grado</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
-
-                    </div>
+                <div className="col-md-4">
+                    <CodeSelect id="municipio" label="Municipio" codeType="municipios" placeholder="Municipio"/>
                 </div>
 
-                <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="school">Escuela a matricular</label>
-                        <select id="school" className="form-control">
-                            <option value="-1">Seleccione escuela a matricular</option>
-                            <option value="123">Esc. A</option>
-                            <option value="456">Esc. B</option>
-                            <option value="789">Esc. C</option>
-                            <option value="0123">Esc. D</option>
-                        </select>
-                    </div>
+                <div className="col-md-4">
+                    <CodeSelect id="grades" label="Grado" codeType="grades" placeholder="Municipio"/>
                 </div>
 
-
-            </div>
-
-            <div className="row">
-                <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="">Razon para transferir de escuela</label>
-                        <input type="text" className="form-control" id="" placeholder="Razon para transferir"/>
-                    </div>
-                </div>
-
-                <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="">Otra razon para transferir de escuela</label>
-                        <input type="text" className="form-control" id=""
-                               placeholder="Otra razon para transferir de escuela"/>
-                    </div>
+                <div className="col-md-4">
+                    <CodeSelect id="schools" label="Escuela a matricular" codeType="schools"
+                                placeholder="Seleccione escuela"/>
                 </div>
             </div>
+
         </form>);
     }
 }

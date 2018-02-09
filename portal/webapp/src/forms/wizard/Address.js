@@ -4,6 +4,7 @@
 import React, {Component} from "react";
 import {Button} from "react-bootstrap";
 import CodeSelect from "../../components/CodeSelect";
+import TextInput from "../../components/TextInput";
 
 export default class Address extends Component {
 
@@ -53,7 +54,7 @@ export default class Address extends Component {
                             <div className="col-md-3" style={{marginLeft: 10}}>
                                 <Button onClick={this.copyAddress}
                                         bsSize="small"
-                                        bsStyle="primary">Copiar residencial apostal</Button>
+                                        bsStyle="primary">Copiar residencial a postal</Button>
                             </div>
 
                         </div>
@@ -82,44 +83,29 @@ export default class Address extends Component {
         return (<div>
             <div className="row">
                 <div className="col-md-12">
-                    <div className="form-group">
-                        <label htmlFor="line1">Linea 1</label>
-                        <input type="text" className="form-control" id={`${type}.line1`} placeholder="Linea 1"
+                    <TextInput type="addressLine" id={`${type}.line1`} label="Linea 1" placeholder="Linea 1"
                                value={address.line1} onChange={this.inputHandler}/>
-                    </div>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-12">
-                    <div className="form-group">
-                        <label htmlFor="line1">Linea 2</label>
-                        <input type="text" className="form-control" id={`${type}.line2`} placeholder="Linea 2"
+                    <TextInput type="addressLine" id={`${type}.line2`} label="Linea 2" placeholder="Linea 2"
                                value={address.line2} onChange={this.inputHandler}/>
-                    </div>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="city">Ciudad</label>
-                        <CodeSelect id={`${type}.city`} placeholder="Seleccione municipio" codeType="municipios"
-                                    value={address.city} onChange={this.inputHandler}/>
-                    </div>
+                    <CodeSelect id={`${type}.city`} label="Ciudad" placeholder="Seleccione municipio" codeType="municipios"
+                                value={address.city} onChange={this.inputHandler}/>
                 </div>
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="state">Estado</label>
-                        <CodeSelect id={`${type}.state`} placeholder="Seleccione Estado" codeType="states" value={"PR"}
-                                    disabled={false} onChange={this.inputHandler}/>
-                    </div>
+                    <CodeSelect id={`${type}.state`} label="Estado" placeholder="Seleccione Estado" codeType="states" value={"PR"}
+                                disabled={false} onChange={this.inputHandler}/>
                 </div>
 
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="zip">Codigo Postal</label>
-                        <input type="text" className="form-control" id={`${type}.zipcode`} placeholder="Zip Code"
+                    <TextInput type="zipcode" id={`${type}.zipcode`} label="Codigo Postal" placeholder="Zip Code"
                                value={address.zipcode} onChange={this.inputHandler}/>
-                    </div>
                 </div>
             </div>
         </div>);

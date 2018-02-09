@@ -1,13 +1,26 @@
 spring:
   main:
-    web-environment: false
+    web-environment: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: de.pentaho@gmail.com
+    password: #pass
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+    test-connection: true
+
 
   jpa:
     show-sql: true
     database: mysql
     hibernate:
-      ddl-auto: create
-    generate-ddl: true
+      ddl-auto: none
+    generate-ddl: false
+#    database-platform: default
+
   # TMAX103
   #  datasource:
   #    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
@@ -20,5 +33,13 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     hikari:
       maximum-pool-size: 30
+  smaxDatasource:
+    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
+    username: #USER
+    password: #PASS
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+security:
+  basic:
+    enabled: false
 
 

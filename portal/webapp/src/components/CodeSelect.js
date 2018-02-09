@@ -9,6 +9,15 @@ class CodeSelect extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {pristine: true};
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onChange(e) {
+        let value = e.target.value;
+        this.setState({pristine: value === "-1"});
+        if (this.props.onChange)
+            this.props.onChange(e)
     }
 
     componentWillMount() {
@@ -58,19 +67,35 @@ class CodeSelect extends Component {
             case "medicalConditions":
                 this.codes = Codes.medicalConditions;
                 break;
+            case "schools":
+                this.codes = Codes.schools;
+                break;
+            case "grades":
+                this.codes = Codes.grades;
+                break;
+            case "jobTypes":
+                this.codes = Codes.jobTypes;
+                break;
+            case "incomeTypes":
+                this.codes = Codes.incomeTypes;
+                break;
         }
     }
 
     render() {
-
+        let formGroupCss = "form-group ".concat(this.state.pristine ? "has-error" : "");
         let elementProps = Object.assign({}, this.props);
         delete elementProps.codeType;
-        return (<select className="form-control" {...elementProps}>
-            <option value="">{this.props.placeholder}</option>
-            {this.codes.map((code, i) => (
-                <option key={i} value={code.value}>{code.description}</option>
-            ))}
-        </select>);
+        return (
+            <div className={formGroupCss}>
+                <label htmlFor={this.props.id}>{this.props.label}:</label>
+                <select className="form-control" {...elementProps} onChange={this.onChange}>
+                    <option value="-1">{this.props.placeholder}</option>
+                    {this.codes.map((code, i) => (
+                        <option key={i} value={code.value}>{code.description}</option>
+                    ))}
+                </select>
+            </div>);
     }
 }
 

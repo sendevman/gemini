@@ -3,6 +3,7 @@
  */
 import React, {Component} from "react";
 import CodeSelect from "../../components/CodeSelect";
+import TextInput from "../../components/TextInput";
 
 export default class TransportationInfo extends Component {
 
@@ -16,20 +17,17 @@ export default class TransportationInfo extends Component {
         return (<form>
             <div className="row">
                 <div className="col-md-6">
-
-                    <div className="form-group">
-                        <label htmlFor="transportationType">Tipo de transportaci&oacute;n</label>
-                        <CodeSelect id="transportationType"
-                                    onChange={(e) => {
-                                        this.setState({
-                                            form: {
-                                                transportationType: e.target.value
-                                            }
-                                        });
-                                    }}
-                                    codeType="transportationTypes"
-                                    placeholder="Seleccione su tipo de transaportacion"/>
-                    </div>
+                    <CodeSelect id="transportationType"
+                                onChange={(e) => {
+                                    this.setState({
+                                        form: {
+                                            transportationType: e.target.value
+                                        }
+                                    });
+                                }}
+                                codeType="transportationTypes"
+                                label="Tipo de transportaci&oacute;n"
+                                placeholder="Seleccione su tipo de transaportacion"/>
                 </div>
                 <div className="col-md-6">
                     <div className="form-group">
@@ -52,11 +50,9 @@ export default class TransportationInfo extends Component {
 
             <div className="row">
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="transportationDistance">Distancia</label>
-                        <input type="text" className="form-control" id="transportationDistance"
-                               placeholder="Distancia"/>
-                    </div>
+                    <TextInput id="transportationDistance"
+                               type="number"
+                               placeholder="Distancia en Millas"/>
                 </div>
                 <div className="col-md-6">
                     <div className="form-group">

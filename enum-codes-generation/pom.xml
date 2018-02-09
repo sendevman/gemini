@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>MEL - JS Enum Code Generation </name>
+    <name>Registro en Linea - JS Enum Code Generation </name>
     <description>Standalone program to create JS Enum codes</description>
 
     <parent>

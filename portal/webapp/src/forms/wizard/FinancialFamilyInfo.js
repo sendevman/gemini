@@ -2,54 +2,40 @@
  * Created by fran on 1/30/18.
  */
 import React, {Component} from "react";
+import TextInput from "../../components/TextInput";
+import CurrencyInput from "../../components/CurrencyInput";
+import CodeSelect from "../../components/CodeSelect";
 
-export default class FinancialFamilyInfo extends Component{
+export default class FinancialFamilyInfo extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 
-    render(){
-        return(<form>
+    render() {
+        return (<form>
             <div className="row">
                 <div className="col-md-4">
-
-                    <div className="form-group">
-                        <label htmlFor="">Tipo de ingreso</label>
-                        <select id="" className="form-control">
-                            <option value="">Seleccione tipo de ingreso</option>
-                            <option value="PEN">Pension</option>
-                            <option value="SUE">Sueldo</option>
-                            <option value="AYU">Ayuda de Gobierno</option>
-                        </select>
-                    </div>
+                    <CodeSelect id="incomeType"
+                                codeType="incomeTypes"
+                                label="Tipo de ingreso"
+                                placeholder="Seleccione tipo de ingreso"/>
                 </div>
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="annualIncomeOthers">Otros Totales de ingresos </label>
-                        <input type="text" className="form-control" id="annualIncomeOthers" placeholder="Otros Totales de ingresos"/>
-                    </div>
+                    <CurrencyInput id="annualIncomeOthers" placeholder="Otros Totales de ingresos"/>
                 </div>
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="financialAidAmount">Total de Ayuda Recibida</label>
-                        <input type="text" className="form-control" id="financialAidAmount" placeholder="Total de Ayuda Recibida"/>
-                    </div>
+                    <CurrencyInput id="financialAidAmount" placeholder="Total de Ayuda Recibida"/>
                 </div>
             </div>
 
             <div className="row">
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="familyTotalMembers">Total de Integrantes en la Familia</label>
-                        <input type="text" className="form-control" id="familyTotalMembers" placeholder="Total de Integrantes en la Familia" disabled/>
-                    </div>
+                    <TextInput id="familyTotalMembers" type="number" placeholder="Total de Integrantes en la Familia"
+                               disabled/>
                 </div>
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="familyTotalIncome">Ingreso Total Anual</label>
-                        <input type="text" className="form-control" id="familyTotalIncome" placeholder="Ingreso Total Anual" disabled/>
-                    </div>
+                    <CurrencyInput id="familyTotalIncome" placeholder="Ingreso Total Anual" disabled/>
                 </div>
             </div>
         </form>);

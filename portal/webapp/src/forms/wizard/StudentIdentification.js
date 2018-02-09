@@ -3,7 +3,8 @@
  */
 
 import React, {Component} from "react";
-import DatePicker from "react-datepicker/es/index";
+import DateInput from "../../components/DateInput";
+import TextInput from "../../components/TextInput";
 
 export default class StudentIdentification extends Component {
 
@@ -14,23 +15,20 @@ export default class StudentIdentification extends Component {
     render() {
         return (<div className="row">
             <div className="col-md-4">
-                <div className="form-group">
-                    <label htmlFor="lastSsn">Ultimo 4 Digito Seguro Social:</label>
-                    <input type="text" className="form-control" id="lastSsn" placeholder="Ultimo 4 digitos seguro social"/>
-                </div>
+                <TextInput id="lastSsn"
+                           label="Ultimo 4 digitos seguro social"
+                           type="lastSSN"
+                           placeholder="Ultimo 4 digitos seguro social"/>
             </div>
             <div className="col-md-4">
-                <div className="form-group">
-                    <label htmlFor="sieStudentNumber">Numero del SIE:</label>
-                    <input type="text" className="form-control" id="sieStudentNumber" placeholder="Numero del SIE"/>
-                </div>
+                <TextInput id="sieStudentNumber"
+                           label="Numero de Estudiante SIE"
+                           type="studentNumber"
+                           placeholder="Numero de Estudiante SIE"/>
             </div>
 
             <div className="col-md-4">
-                <div className="form-group">
-                    <label htmlFor="dob">Fecha nacimiento:</label>
-                    <DatePicker id="dob" className="form-control" placeholderText="Fecha de nacimiento"/>
-                </div>
+                <DateInput id="dob" label="Fecha nacimiento"/>
             </div>
         </div>);
     }
