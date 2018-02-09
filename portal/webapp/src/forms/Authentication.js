@@ -36,12 +36,11 @@ export default  class Authentication extends Component {
         this.setState({password: e.target.value});
     }
 
-
     render() {
         return (
             <form className="login-block">
                 <img src={logo} className="App-logo" alt="logo"/>
-                <h1 className="title"><Label bsStyle="primary">Matricula en Linea</Label></h1>
+                <h1 className="title"><Label bsStyle="primary">Registro en Linea</Label></h1>
                 <FormGroup
                     controlId="username"
                     validationState={this.getValidationState(this.state.username)}>

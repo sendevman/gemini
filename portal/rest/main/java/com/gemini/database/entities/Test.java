@@ -1,4 +1,4 @@
-package com.gemini.mel.database;
+package com.gemini.database.entities;
 
 import javax.persistence.*;
 

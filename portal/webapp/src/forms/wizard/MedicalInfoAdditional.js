@@ -5,6 +5,7 @@ import React, {Component} from "react";
 import {Button} from "react-bootstrap";
 import MedicalConditionCheckbox from "../../components/MedicalConditionCheckbox";
 import CodeSelect from "../../components/CodeSelect";
+import TextInput from "../../components/TextInput";
 
 export default class MedicalInfoAdditional extends Component {
 
@@ -41,14 +42,11 @@ export default class MedicalInfoAdditional extends Component {
         return (<form>
             <div className="row">
                 <div className="col-md-4">
-
-                    <div className="form-group">
-                        <label htmlFor="condition">Otras Condicion Medica</label>
-                        <CodeSelect codeType="medicalConditions"
-                                    placeholder="Seleccione condicion"
-                                    onChange={this.onChange}
-                                    value={this.state.selectedCondition}/>
-                    </div>
+                    <CodeSelect codeType="medicalConditions"
+                                label="Otras Condicion Medica"
+                                placeholder="Seleccione condicion"
+                                onChange={this.onChange}
+                                value={this.state.selectedCondition}/>
                 </div>
                 <div className="col-md-2">
                     <div className="form-group">
@@ -84,18 +82,10 @@ export default class MedicalInfoAdditional extends Component {
                                       disabled={true}>
                 <div className="row">
                     <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor={`${condition.type}Condition`}>Condicion</label>
-                            <input type="text" className="form-control" id={`${condition.type}Condition`}
-                                   placeholder=""/>
-                        </div>
+                        <TextInput id={`${condition.type}Condition`} label="Condicion" placeholder=""/>
                     </div>
                     <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor={`${condition.type}Treatment`}>Tratamiento</label>
-                            <input type="text" className="form-control" id={`${condition.type}Treatment`}
-                                   placeholder=""/>
-                        </div>
+                        <TextInput id={`${condition.type}Treatment`} label="Condicion" placeholder=""/>
                     </div>
                 </div>
             </MedicalConditionCheckbox>

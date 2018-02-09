@@ -3,6 +3,7 @@
  */
 import React, {Component} from "react";
 import MedicalConditionCheckbox from "../../components/MedicalConditionCheckbox";
+import TextInput from "../../components/TextInput";
 
 export default class MedicalInfo extends Component {
 
@@ -17,16 +18,10 @@ export default class MedicalInfo extends Component {
                     <MedicalConditionCheckbox name="Posee Condicion Visual" id="visual">
                         <div className="row">
                             <div className="col-md-6">
-                                <div className="form-group">
-                                    <label htmlFor="visualCondition">Condicion</label>
-                                    <input type="text" className="form-control" id="visualCondition" placeholder=""/>
-                                </div>
+                                <TextInput id="visualCondition" label="Condicion" placeholder=""/>
                             </div>
                             <div className="col-md-6">
-                                <div className="form-group">
-                                    <label htmlFor="visualTreatment">Tratamiento</label>
-                                    <input type="text" className="form-control" id="visualTreatment" placeholder=""/>
-                                </div>
+                                <TextInput id="visualTreatment" label="Tratamiento" placeholder=""/>
                             </div>
                         </div>
                     </MedicalConditionCheckbox>
@@ -37,16 +32,10 @@ export default class MedicalInfo extends Component {
                     <MedicalConditionCheckbox name="Posee Condicion Auditiva" id="hearing">
                         <div className="row">
                             <div className="col-md-6">
-                                <div className="form-group">
-                                    <label htmlFor="hearingCondition">Condicion</label>
-                                    <input type="text" className="form-control" id="hearingCondition" placeholder=""/>
-                                </div>
+                                <TextInput id="hearingCondition" label="Condicion" placeholder=""/>
                             </div>
                             <div className="col-md-6">
-                                <div className="form-group">
-                                    <label htmlFor="visualTreatment">Tratamiento</label>
-                                    <input type="text" className="form-control" id="hearingTreatment" placeholder=""/>
-                                </div>
+                                <TextInput id="hearingTreatment" label="Condicion" placeholder=""/>
                             </div>
                         </div>
                     </MedicalConditionCheckbox>
@@ -57,16 +46,10 @@ export default class MedicalInfo extends Component {
                     <MedicalConditionCheckbox name="Posee Condicion Dental" id="dental">
                         <div className="row">
                             <div className="col-md-6">
-                                <div className="form-group">
-                                    <label htmlFor="visualCondition">Condicion</label>
-                                    <input type="text" className="form-control" id="dentalCondition" placeholder=""/>
-                                </div>
+                                <TextInput id="dentalCondition" label="Condicion" placeholder=""/>
                             </div>
                             <div className="col-md-6">
-                                <div className="form-group">
-                                    <label htmlFor="visualTreatment">Tratamiento</label>
-                                    <input type="text" className="form-control" id="dentalTreatment" placeholder=""/>
-                                </div>
+                                <TextInput id="dentalTreatment" label="Tratamiento" placeholder=""/>
                             </div>
                         </div>
                     </MedicalConditionCheckbox>

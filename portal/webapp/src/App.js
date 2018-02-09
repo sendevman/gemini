@@ -7,7 +7,7 @@ import Routes from "./Routes";
 import moment from "moment";
 import esLocale from "moment/locale/es";
 moment.updateLocale('es', esLocale);
-const baseContext = "mel";
+const baseContext = "registro";
 
 class App extends Component {
     constructor(props) {
@@ -45,7 +45,7 @@ class App extends Component {
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href={`/${baseContext}/home`}>MEL</a>
+                            <a href={`/${baseContext}/home`}>Registro en Linea</a>
                         </Navbar.Brand>
                     </Navbar.Header>
 
@@ -53,7 +53,7 @@ class App extends Component {
                         <NavDropdown eventKey={3} title="Juan Del Pueblo" id="navbarResponsive">
                             <MenuItem eventKey="profile" href={`/${baseContext}/profile`}>Perfil</MenuItem>
                             <MenuItem divider/>
-                            <MenuItem eventKey="logout" href="/mel/">
+                            <MenuItem eventKey="logout" href={`/${baseContext}`}>
                                 Salir
                             </MenuItem>
                         </NavDropdown>

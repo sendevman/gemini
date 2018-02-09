@@ -3,11 +3,18 @@
  */
 import React, {Component} from "react";
 import CodeSelect from "../../components/CodeSelect";
+import TextInput from "../../components/TextInput";
 
 export default class AdditionalInfo extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {form: {healthPlanDisabled: true}};
+        this.onClick = this.onClick.bind(this);
+    }
+
+    onClick(e) {
+        this.setState({form: {healthPlanDisabled: !e.target.checked}});
     }
 
     render() {
@@ -16,35 +23,23 @@ export default class AdditionalInfo extends Component {
                 <div className="col-md-6">
                     <div className="form-group">
                         <label htmlFor="insuranceHealthPlan">Seguro Medico:</label>
-                        <input type="text" className="form-control" id="insuranceHealthPlan"
-                               placeholder="Seguro Medico"/>
+                        <div className="input-group">
+                        <span className="input-group-addon">
+                            <input type="checkbox" onClick={this.onClick} aria-label="..."/>
+                        </span>
+                            <input type="text" className="form-control" aria-label="..." disabled={this.state.form.healthPlanDisabled}/>
+                        </div>
                     </div>
+
+
                 </div>
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="commitment">Commitment</label>
-                        <input type="text" className="form-control" id="commitment" placeholder="Commitment"/>
-                    </div>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="discussFamilyInfo">Discuss Family Info </label>
-                        <input type="text" className="form-control" id="discussFamilyInfo"
+                    <TextInput id="discussFamilyInfo"
+                               label="Discuss Family Info"
                                placeholder="Que significa?"/>
-                    </div>
                 </div>
-
-                <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="internetDisclosure">Internet Disclosure</label>
-                        <input type="text" className="form-control" id="internetDisclosure"
-                               placeholder="Que Significa?"/>
-                    </div>
-                </div>
-
             </div>
+           
             <div className="row">
                 <div className="col-md-6">
                     <div className="form-group">
@@ -84,10 +79,10 @@ export default class AdditionalInfo extends Component {
 
             <div className="row">
                 <div className="col-md-6">
-                    <div className="form-group">
-                        <label htmlFor="foodOptions">Opciones de Comida</label>
-                        <CodeSelect codeType="foodOptions" id="foodOptions" placeholder="Seleccione su opcion de comida"/>
-                    </div>
+                    <CodeSelect codeType="foodOptions"
+                                id="foodOptions"
+                                label="Opciones de Comida"
+                                placeholder="Seleccione su opcion de comida"/>
                 </div>
             </div>
         </form>);

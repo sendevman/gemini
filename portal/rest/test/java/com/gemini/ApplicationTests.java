@@ -1,4 +1,4 @@
-package com.gemini.mel;
+package com.gemini;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

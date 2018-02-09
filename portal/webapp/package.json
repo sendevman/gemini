@@ -2,13 +2,15 @@
   "name": "project-gemini",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://34.197.64.57/mel/",
+  "homepage": "http://34.197.64.57/registro/",
   "dependencies": {
     "moment": "^2.20.1",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.0",
     "react-datepicker": "^1.0.4",
     "react-dom": "^16.2.0",
+    "react-input-mask": "^1.1.2",
+    "react-number-format": "^3.1.4",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.0"
   },

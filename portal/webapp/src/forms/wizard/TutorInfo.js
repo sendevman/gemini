@@ -5,6 +5,9 @@ import React, {Component} from "react";
 import {Button, Glyphicon, Tab, Tabs} from "react-bootstrap";
 import {clear} from "../../Utils";
 import CodeSelect from "../../components/CodeSelect";
+import PhoneInput from "../../components/PhoneInput";
+import TextInput from "../../components/TextInput";
+import CurrencyInput from "../../components/CurrencyInput";
 
 export default class TutorInfo extends Component {
 
@@ -206,70 +209,58 @@ export default class TutorInfo extends Component {
         return (<div>
             <div className="row">
                 <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor="personal.name">Nombre:</label>
-                        <input type="text" className="form-control" id="personal.name" placeholder="Nombre"
-                               value={personal.name} onChange={this.inputHandler}/>
-                    </div>
+                    <TextInput id="personal.name" type="name"
+                               placeholder="Nombre" value={personal.name}
+                               onChange={this.inputHandler}/>
+
                 </div>
 
                 <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor="personal.middleName">Segundo Nombre:</label>
-                        <input type="text" className="form-control" id="personal.middleName"
-                               placeholder="Segundo Nombre" value={personal.middleName} onChange={this.inputHandler}/>
-                    </div>
+                    <TextInput id="personal.middleName"
+                               type="name"
+                               placeholder="Segundo Nombre" value={personal.middleName}
+                               onChange={this.inputHandler}/>
                 </div>
 
                 <div className="col-md-3">
-                    <div className="form-group">
-                        <label htmlFor="personal.fatherLastname">Apellido Paterno</label>
-                        <input type="text" className="form-control" id="personal.fatherLastname"
+                    <TextInput id="personal.fatherLastname"
+                               type="lastname"
                                placeholder="Apellido Paterno"
-                               value={personal.fatherLastname} onChange={this.inputHandler}/>
-                    </div>
+                               value={personal.fatherLastname}
+                               onChange={this.inputHandler}/>
                 </div>
 
                 <div className="col-md-3">
-
-                    <div className="form-group">
-                        <label htmlFor="personal.motherLastname">Apellido Materno</label>
-                        <input type="text" className="form-control" id="personal.motherLastname"
+                    <TextInput id="personal.motherLastname"
+                               type="lastname"
                                placeholder="Apellido Materno"
                                value={personal.motherLastname} onChange={this.inputHandler}/>
-                    </div>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="personal.relationType">Relaci&oacute;n</label>
-                        <CodeSelect id="personal.relationType"
-                                    value={personal.relationType}
-                                    onChange={this.inputHandler}
-                                    placeholder="Seleccione su relacion con el estudiante"
-                                    codeType="relationTypes"/>
-                    </div>
+                    <CodeSelect id="personal.relationType"
+                                label="Relaci&oacute;n"
+                                value={personal.relationType}
+                                onChange={this.inputHandler}
+                                placeholder="Seleccione su relacion con el estudiante"
+                                codeType="relationTypes"/>
                 </div>
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="personal.maritalStatus">Estatus Civil</label>
-                        <CodeSelect id="personal.maritalStatus"
-                                    value={personal.maritalStatus}
-                                    onChange={this.inputHandler}
-                                    placeholder="Seleccione su estatus civil"
-                                    codeType="maritalStatuses"/>
-                    </div>
+                    <CodeSelect id="personal.maritalStatus"
+                                label="Estatus Civil"
+                                value={personal.maritalStatus}
+                                onChange={this.inputHandler}
+                                placeholder="Seleccione su estatus civil"
+                                codeType="maritalStatuses"/>
                 </div>
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="personal.gender">Genero:</label>
-                        <CodeSelect id="personal.gender"
-                                    value={personal.gender}
-                                    onChange={this.inputHandler}
-                                    placeholder="Seleccione Genero"
-                                    codeType="gender"/>
-                    </div>
+                    <CodeSelect id="personal.gender"
+                                label="Genero"
+                                value={personal.gender}
+                                onChange={this.inputHandler}
+                                placeholder="Seleccione Genero"
+                                codeType="gender"/>
                 </div>
             </div>
         </div>);
@@ -280,54 +271,38 @@ export default class TutorInfo extends Component {
             <div className="row">
 
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="work.educationLevel">Nivel de Educacion</label>
-                        <CodeSelect id="work.educationLevel"
-                                    value={work.educationLevel}
-                                    onChange={this.inputHandler}
-                                    placeholder="Seleccione su nivel educacional"
-                                    codeType="educationLevels"/>
-                    </div>
+                    <CodeSelect id="work.educationLevel"
+                                label="Nivel de Educacion"
+                                value={work.educationLevel}
+                                onChange={this.inputHandler}
+                                placeholder="Seleccione su nivel educacional"
+                                codeType="educationLevels"/>
                 </div>
 
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="work.jobType">Tipo Trabajo:</label>
-
-                        <select id="work.jobType" className="form-control" value={work.jobType}
-                                onChange={this.inputHandler}>
-                            <option value="">Seleccione</option>
-                            <option value="1">Recepcionista</option>
-                            <option value="2">Programador</option>
-                            <option value="3">Gerente</option>
-                        </select>
-                    </div>
+                    <CodeSelect id="work.jobType"
+                                label="Tipo Trabajo"
+                                codeType="jobTypes"
+                                placeholder="Seleccione su Tipo Trabajo"
+                                value={work.jobType}
+                                onChange={this.inputHandler}/>
                 </div>
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="work.workplace">Lugar de Trabajo:</label>
-                        <input type="text" className="form-control" id="work.workplace"
+                    <TextInput id="work.workplace"
                                placeholder="Lugar de Trabajo" value={work.workplace} onChange={this.inputHandler}/>
-                    </div>
                 </div>
 
             </div>
             <div className="row">
 
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="work.workPhone">Telefono del trabajo</label>
-                        <input type="text" className="form-control" id="work.workPhone"
-                               placeholder="Telefono del trabajo" value={work.workPhone} onChange={this.inputHandler}/>
-                    </div>
+                    <PhoneInput id="work.workPhone" placeholder="Telefono del trabajo" value={work.workPhone}
+                                onChange={this.inputHandler}/>
                 </div>
 
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="work.annualIncome">Ingreso Anual:</label>
-                        <input type="text" className="form-control" id="work.annualIncome"
-                               placeholder="Ingreso Anual" value={work.annualIncome} onChange={this.inputHandler}/>
-                    </div>
+                    <CurrencyInput id="work.annualIncome"
+                                   placeholder="Ingreso Anual" value={work.annualIncome} onChange={this.inputHandler}/>
                 </div>
 
 
@@ -339,46 +314,37 @@ export default class TutorInfo extends Component {
         return (<div>
             <div className="row">
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="mobilePhone">Telefono Movil</label>
-                        <input type="text" className="form-control" id="contact.mobilePhone"
-                               placeholder="Telefono Movil" value={contact.mobilePhone} onChange={this.inputHandler}/>
-                    </div>
+                    <PhoneInput id="contact.mobilePhone"
+                                placeholder="Telefono Movil" value={contact.mobilePhone}
+                                onChange={this.inputHandler}/>
                 </div>
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="residentialPhone">Telefono Residencial</label>
-                        <input type="text" className="form-control" id="contact.residentialPhone"
-                               placeholder="Telefono Residencial" value={contact.residentialPhone}
-                               onChange={this.inputHandler}/>
-                    </div>
+                    <PhoneInput id="contact.residentialPhone"
+                                placeholder="Telefono Residencial" value={contact.residentialPhone}
+                                onChange={this.inputHandler}/>
                 </div>
 
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input type="text" className="form-control" id="contact.email" placeholder="Email"
+                    <TextInput id="contact.email"
+                               type="email"
+                               placeholder="Email"
                                value={contact.email} onChange={this.inputHandler}/>
-                    </div>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="emergencyContact">Contacto de Emergencia</label>
-                        <input type="text" className="form-control" id="contact.emergencyContact"
-                               placeholder="Contacto de Emergencia" value={contact.emergencyContact}
+                    <TextInput id="contact.emergencyContact"
+                               placeholder="Contacto de Emergencia"
+                               value={contact.emergencyContact}
                                onChange={this.inputHandler}/>
-                    </div>
                 </div>
 
                 <div className="col-md-4">
-                    <div className="form-group">
-                        <label htmlFor="emergencyContactPhone">Telefono del Contacto</label>
-                        <input type="text" className="form-control" id="contact.emergencyContactPhone"
-                               placeholder="Telefono del contacto de Emergencia" value={contact.emergencyContactPhone}
-                               onChange={this.inputHandler}/>
-                    </div>
+                    <PhoneInput id="contact.emergencyContactPhone"
+                                label="Telefono del Contacto"
+                                placeholder="Telefono del contacto de Emergencia"
+                                value={contact.emergencyContactPhone}
+                                onChange={this.inputHandler}/>
                 </div>
             </div>
         </div>);
