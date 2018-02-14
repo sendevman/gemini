@@ -30,11 +30,11 @@ export default class PersonalInfo extends Component {
                         <TextInput id="middleLabel" type="name" label="Segundo Nombre" placeholder="Segundo Nombre"/>
                     </div>
                     <div className="col-md-3">
-                        <TextInput id="motherLabel" type="lastname" label="Apellido Maternal"
+                        <TextInput id="motherLabel" type="lastname" label="Apellido"
                                    placeholder="Apellido Maternal"/>
                     </div>
                     <div className="col-md-3">
-                        <TextInput id="fatherLabel" type="lastname" label="Apellido Paternal"
+                        <TextInput id="fatherLabel" type="lastname" label="Apellido Materno"
                                    placeholder="Apellido Paternal"/>
                     </div>
                 </div>
@@ -59,7 +59,6 @@ export default class PersonalInfo extends Component {
                     </div>
                     <div className="col-md-6">
                         <DateInput label="Fecha de Nacimiento"/>
-
                     </div>
                 </div>
 

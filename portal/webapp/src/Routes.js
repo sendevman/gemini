@@ -6,9 +6,11 @@ import Authentication from "./forms/Authentication";
 import Home from "./forms/Home";
 import NotFoundPage from "./NotFoundPage";
 import {Route, Switch, withRouter} from "react-router-dom";
-import Registration from "./forms/Registration";
+import Registration from "./forms/registration/Registration";
+import Activation from "./forms/registration/Activation";
 import StatusForm from "./forms/StatusForm";
 import Profile from "./forms/Profile";
+import Result from "./forms/registration/Result";
 
 class Routes extends Component {
 
@@ -24,6 +26,8 @@ class Routes extends Component {
                 <Route exact path="/" component={Authentication}/>
                 <Route path="/home" component={Home}/>
                 <Route path="/registration" component={Registration}/>
+                <Route path="/activate/result/:result(success|error)" component={Result}/>
+                <Route path="/activate/:activationCode" component={Activation}/>
                 <Route path="/status" component={StatusForm}/>
                 <Route path="/profile" component={Profile}/>
 

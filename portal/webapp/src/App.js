@@ -6,6 +6,10 @@ import "./App.css";
 import Routes from "./Routes";
 import moment from "moment";
 import esLocale from "moment/locale/es";
+import {connect} from "react-redux";
+import * as types from "./redux/types";
+import ReduxBlockUi from 'react-block-ui/redux';
+
 moment.updateLocale('es', esLocale);
 const baseContext = "registro";
 
@@ -17,7 +21,7 @@ class App extends Component {
     }
 
     onRouteChanged(nextRoute) {
-        this.setState({showMenu: nextRoute.pathname !== "/" && nextRoute.pathname !== "/registration" });
+        this.setState({showMenu: nextRoute.pathname !== "/" && nextRoute.pathname !== "/registration"});
     };
 
     componentDidMount() {
@@ -32,10 +36,12 @@ class App extends Component {
 
     render() {
         return (
-            <div>
-                {this.renderNavbar()}
-                <Routes onRouteChanged={this.onRouteChanged}/>
-            </div>
+            <ReduxBlockUi tag="div" block={types.blockUIActions} unblock={types.unblockUIActions}>
+                <div>
+                    {this.renderNavbar()}
+                    <Routes onRouteChanged={this.onRouteChanged}/>
+                </div>
+            </ReduxBlockUi>
         );
     }
 
@@ -68,4 +74,4 @@ class App extends Component {
 
 }
 
-export default withRouter(App)
+export default withRouter(connect()(App));

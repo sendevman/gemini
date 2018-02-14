@@ -5,6 +5,7 @@ let onlyNumber = /^[0-9]*$/;
 let onlyLetterAndNumber = /^.*$/;
 let emailAcceptedChar = /^\S*$/;
 let emailValidation = /[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})/;
+let passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&'])[^ ]{8,}$/;
 let field = {
     string: {min: 1, max: 128, regex: onlyLetter},
     number: {min: 1, max: 6, regex: onlyNumber},
@@ -14,10 +15,16 @@ let field = {
     lastSSN: {length: 4, regex: onlyNumber},
     studentNumber: {min: 4, max: 9, regex: onlyNumber},
     zipcode: {length: 5, regex: onlyNumber},
-    addressLine: {min: 1, max: 100, regex: onlyLetterAndNumber}
+    addressLine: {min: 1, max: 100, regex: onlyLetterAndNumber},
+    password: {min: 4, max: 20, regex: emailAcceptedChar, validation: onlyLetterAndNumber}
 };
 
+//TODO: fran check when lost focus weird behaviour
 export default class TextInput extends Component {
+
+    static defaultProps = {
+        required: true,
+    };
 
     constructor(props) {
         super(props);
@@ -25,6 +32,10 @@ export default class TextInput extends Component {
         this.state = {value: '', hasError: true};
         this.inputHandler = this.inputHandler.bind(this);
         // this.onKeyDown = this.onKeyDown.bind(this)
+    }
+
+    valid() {
+        return !this.state.hasError;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -61,6 +72,9 @@ export default class TextInput extends Component {
                 case 'zipcode':
                     this.config = field.zipcode;
                     break;
+                case 'password':
+                    this.config = field.password;
+                    break;
             }
         }
     }
@@ -73,6 +87,7 @@ export default class TextInput extends Component {
     }
 
     inputHandler(e) {
+        e.persist();
         this.editing = true;
 
         let value = e.target.value;
@@ -82,13 +97,15 @@ export default class TextInput extends Component {
 
         this.setState({value: value, hasError: this.hasError(value)}, () => {
             this.editing = false;
+            if (this.props.onChange)
+                this.props.onChange(e);
         });
-        if (this.props.onChange)
-            this.props.onChange(e);
+
     }
 
     render() {
-        let hasError = this.state.hasError;
+        let isPassword = this.props.type === 'password';
+        let hasError = this.state.hasError && this.props.required;
         let groupClass = "form-group ".concat(hasError ? "has-error" : "");
         let props = {...this.props};
         if (this.config.max || this.config.length)
@@ -97,7 +114,7 @@ export default class TextInput extends Component {
             <div className={groupClass}>
                 <label htmlFor={this.props.id}>{this.props.label || this.props.placeholder}:</label>
                 <input {...props}
-                       type="text"
+                       type={isPassword ? "password" : "text"}
                        className="form-control"
                        onChange={this.inputHandler}
                        value={this.state.value}

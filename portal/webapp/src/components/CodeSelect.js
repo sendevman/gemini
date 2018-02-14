@@ -20,6 +20,10 @@ class CodeSelect extends Component {
             this.props.onChange(e)
     }
 
+    valid() {
+        return !this.state.pristine;
+    }
+
     componentWillMount() {
         switch (this.props.codeType) {
             case "contactTypes":
@@ -78,6 +82,9 @@ class CodeSelect extends Component {
                 break;
             case "incomeTypes":
                 this.codes = Codes.incomeTypes;
+                break;
+            case "registrationRelations":
+                this.codes = Codes.registrationRelations;
                 break;
         }
     }

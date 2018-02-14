@@ -1,4 +1,4 @@
-package com.gemini.database.beans;
+package com.gemini.database.dao.beans;
 
 import java.util.Date;
 

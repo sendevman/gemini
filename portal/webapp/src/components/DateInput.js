@@ -7,6 +7,10 @@ import moment from "moment";
 
 export default class DateInput extends Component {
 
+    static defaultProps = {
+        showFormat: true,
+    };
+
     constructor(props) {
         super(props);
         this.state = {day: '', month: '', year: '', valid: false, pristine: true, value: null};
@@ -16,6 +20,10 @@ export default class DateInput extends Component {
 
     componentDidMount() {
         this.populateDate(this.props.value)
+    }
+
+    valid() {
+        return this.state.valid;
     }
 
 
@@ -40,6 +48,7 @@ export default class DateInput extends Component {
     }
 
     inputHandler(e) {
+        // e.persist();
         this.editing = true;
         let form = this.state;
         let element = e.target;
@@ -50,17 +59,21 @@ export default class DateInput extends Component {
         let result = this.checkValid();
         form.valid = result.valid;
         form.value = result.value;
-        this.setState({...this.state});
-        console.log(JSON.stringify(form))
-        if (this.props.onValidDate && form.valid)
-            this.props.onValidDate(form.value.toDate());
-        this.editing = false;
+        this.setState({...this.state}, () => {
+            this.editing = false;
+            if (this.props.onValidDate && form.valid) {
+                this.props.onValidDate(form.value.toDate());
+            } else {
+                if (this.props.onInvalidDate)
+                    this.props.onInvalidDate();
+            }
+        });
 
 
     }
 
     render() {
-        let format = "(dd/mm/yyyy)";
+        let format = this.props.showFormat ? "(dd/mm/yyyy)" : "";
         // if (this.state.valid || this.props.value) {
         //     let date = moment(this.state.value || this.props.value);
         //     let day = date.format("DD");
@@ -79,29 +92,29 @@ export default class DateInput extends Component {
         let props = {disabled: this.props.disabled};
         return (
             <div className="row ">
-                <div className="col-xs-3">
-                    <div className={formGroup}>
+                <div className="col-xs-4" style={{textAlign: "center", paddingRight: 0}}>
+                    <div className={formGroup} style={{display: "inline-flex"}}>
                         <InputMask {...props}
                                    mask="99" maskChar=" " placeholder="Dia" className="form-control" id="day"
                                    value={this.state.day}
                                    onChange={this.inputHandler}/>
+                        <div style={{textAlign: "center", paddingLeft: 10}}>
+                            <span style={{fontSize: "xx-large"}}>/</span>
+                        </div>
+
                     </div>
                 </div>
-                <div className="col-xs-1" style={{textAlign: "center", paddingLeft: 0, paddingRight: 0}}>
-                    <span style={{fontSize: "xx-large"}}>/</span>
-                </div>
 
-                <div className="col-xs-3">
-                    <div className={formGroup}>
+                <div className="col-xs-4" style={{textAlign: "center", paddingRight: 0}}>
+                    <div className={formGroup} style={{display: "inline-flex"}}>
                         <InputMask {...props}
                                    mask="99" maskChar=" " placeholder="Mes" className="form-control" id="month"
                                    value={this.state.month}
                                    onChange={this.inputHandler}/>
+                        <div style={{textAlign: "center", paddingLeft: 10}}>
+                            <span style={{fontSize: "xx-large"}}>/</span>
+                        </div>
                     </div>
-                </div>
-
-                <div className="col-xs-1" style={{textAlign: "center", paddingLeft: 0, paddingRight: 0}}>
-                    <span style={{fontSize: "xx-large"}}>/</span>
                 </div>
 
                 <div className="col-xs-4">

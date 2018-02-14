@@ -1,7 +1,7 @@
 package com.gemini.database.dao;
 
-import com.gemini.database.beans.ParentBean;
-import com.gemini.database.beans.StudentBean;
+import com.gemini.database.dao.beans.ParentBean;
+import com.gemini.database.dao.beans.StudentBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -85,8 +85,7 @@ public class SchoolmaxDao extends JdbcDaoSupport {
             "AND (C.SEQ = 1 OR C.SEQ IS NULL)                 \n" +
             "AND B.FLEX_OWNER_ID = 603             \n" +
             "AND ((I.SEQ = 1 AND J.IS_ACTIVE_IND = 1) OR I.SEQ IS NULL) ";
-
-    //    123Abc
+    
     @PostConstruct
     private void init() {
         setDataSource(smaxDatasource);

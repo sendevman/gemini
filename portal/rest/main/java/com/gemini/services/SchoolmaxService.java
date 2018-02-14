@@ -1,8 +1,8 @@
 package com.gemini.services;
 
-import com.gemini.database.beans.ParentBean;
-import com.gemini.database.beans.StudentBean;
+import com.gemini.database.dao.beans.ParentBean;
 import com.gemini.database.dao.SchoolmaxDao;
+import com.gemini.database.dao.beans.StudentBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
