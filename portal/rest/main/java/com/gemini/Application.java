@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Primary;
 import javax.sql.DataSource;
 
 @SpringBootApplication
-@EnableConfigurationProperties
 @EnableAutoConfiguration
+@EnableConfigurationProperties
 @ComponentScan
 public class Application {
     public static void main(String[] args) {

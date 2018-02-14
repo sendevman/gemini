@@ -1,4 +1,4 @@
-package com.gemini.beans;
+package com.gemini.beans.integration;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +12,6 @@ public class ParentResponse {
     private String middleName;
     private String lastName;
     private String occupation;
-    private Long familyPortalId;  //can be null
     private boolean found;
 
     public String getFirstName() {
@@ -45,14 +44,6 @@ public class ParentResponse {
 
     public void setOccupation(String occupation) {
         this.occupation = occupation;
-    }
-
-    public Long getFamilyPortalId() {
-        return familyPortalId;
-    }
-
-    public void setFamilyPortalId(Long familyPortalId) {
-        this.familyPortalId = familyPortalId;
     }
 
     public boolean isFound() {

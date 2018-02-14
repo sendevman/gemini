@@ -1,6 +1,8 @@
 package com.gemini.services;
 
+import com.gemini.beans.UserBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -19,36 +21,54 @@ public class MailService {
 
     @Autowired
     private JavaMailSender mailSender;
+    @Value("${email.from}")
+    private String fromEmail;
+    @Value("${website.url}")
+    private String publicUrl;
 
 
-    private SimpleMailMessage accountRegisterMail(String to) {
+    private SimpleMailMessage accountRegisterMail(UserBean user, String link) {
         SimpleMailMessage registerMail = new SimpleMailMessage();
-        registerMail.setFrom("");
-        registerMail.setTo(to);
+        registerMail.setFrom(fromEmail);
+        registerMail.setTo(user.getEmail());
         registerMail.setSubject("Registro en Linea - Activar Cuenta");
-//        registerMail.setText();
+        registerMail.setText(link);
         return registerMail;
     }
 
     private SimpleMailMessage forgetPasswordMail(String to) {
-        SimpleMailMessage registerMail = new SimpleMailMessage();
-        registerMail.setFrom("");
-        registerMail.setTo(to);
-        registerMail.setSubject("Registro en Linea - Olvido Contraseña");
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom(fromEmail);
+        mail.setTo(to);
+        mail.setSubject("Registro en Linea - Olvido Contraseña");
 //        registerMail.setText();
-        return registerMail;
+        return mail;
     }
 
     private SimpleMailMessage forgetUserMail(String to) {
-        SimpleMailMessage registerMail = new SimpleMailMessage();
-        registerMail.setFrom("");
-        registerMail.setTo(to);
-        registerMail.setSubject("Registro en Linea - Olvido Usuario");
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom(fromEmail);
+        mail.setTo(to);
+        mail.setSubject("Registro en Linea - Olvido Usuario");
 //        registerMail.setText();
-        return registerMail;
+        return mail;
     }
 
-    public void send(SimpleMailMessage message) {
+    public boolean sendRegisterEmail(UserBean userBean, String activationCode) {
+        String link = String.format("%s/registro/activate/%s", publicUrl, activationCode);
+        return send(accountRegisterMail(userBean, link));
+    }
+
+    public void sendUserForgotEmail(String email) {
+        send(forgetUserMail(email));
+    }
+
+    public void sendPassowrdForgotEmail(String email) {
+        send(forgetPasswordMail(email));
+    }
+
+    public boolean send(SimpleMailMessage message) {
+        boolean sent = false;
         try {
             final MimeMessageHelper helper =
                     new MimeMessageHelper(mailSender.createMimeMessage(), true, "UTF-8"); // true = multipart
@@ -57,9 +77,11 @@ public class MailService {
             helper.setTo(message.getTo());
             helper.setText(message.getText(), true);
             mailSender.send(helper.getMimeMessage());
+            sent = true;
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+        return sent;
 
     }
 

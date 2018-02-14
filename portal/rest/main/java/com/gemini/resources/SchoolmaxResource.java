@@ -1,9 +1,10 @@
 package com.gemini.resources;
 
-import com.gemini.beans.ParentResponse;
-import com.gemini.beans.StudentResponse;
-import com.gemini.database.beans.ParentBean;
-import com.gemini.database.beans.StudentBean;
+import com.gemini.utils.CopyUtils;
+import com.gemini.beans.integration.ParentResponse;
+import com.gemini.beans.integration.StudentResponse;
+import com.gemini.database.dao.beans.ParentBean;
+import com.gemini.database.dao.beans.StudentBean;
 import com.gemini.services.SchoolmaxService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,7 @@ public class SchoolmaxResource {
 
 
         ParentBean parentBean = smaxService.retrieveHouseHeadInfo(lastSSN, dateOfBirth, lastname);
-        ParentResponse response = new ParentResponse();
-        BeanUtils.copyProperties(parentBean, response);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok().body(CopyUtils.convert(parentBean, ParentResponse.class));
     }
 
     @RequestMapping(value = "/search/student/lastssn/{lastSSN}/student/number/{studentNumber}/dob/{dob}")

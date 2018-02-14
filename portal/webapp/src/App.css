@@ -88,3 +88,10 @@ html {
     font-size: 18px;
     color: #317eac;
 }
+
+.loading-bullet {
+    display: inline-block;
+    opacity: 0;
+    font-size: 2em;
+    color: #317eac;
+}

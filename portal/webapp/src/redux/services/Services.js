@@ -1,0 +1,84 @@
+import {buildUrl} from "../../Utils";
+
+export default class Services {
+
+    constructor(store) {
+        this.store = store;
+    }
+
+    //accounts
+    registerAccount(user){
+        return this._post("/account/register", user);
+    }
+
+    activateAccount(activationForm){
+        return this._post(`/account/activate`, activationForm);
+    }
+
+    existsCode(code){
+        return this._getRaw(`/account/activate/${code}`);
+    }
+
+
+    _get(path) {
+        return fetch(buildUrl(path), this._addHeader())
+            .then((response) => this._handleHttpCode(response))
+            .then((response) => response.json())
+            .catch((e) => {
+            })
+    }
+
+
+    _getRaw(path) {
+        return fetch(buildUrl(path), this._addHeader())
+            .then((response) => this._handleHttpCode(response))
+            .then((response) => response.text())
+            .catch((e) => {
+            })
+    }
+
+    _post(path, body) {
+        return fetch(buildUrl(path), {method: "POST", body: JSON.stringify(body), ...this._addHeader()})
+            .then((response) => this._handleHttpCode(response))
+            .catch((e) => {});
+    }
+
+    _put(path, body) {
+        return fetch(buildUrl(path), {method: "PUT", body: JSON.stringify(body), ...this._addHeader()})
+            .then((response) => this._handleHttpCode(response))
+            .catch((e) => {});
+    }
+
+    _addHeader() {
+        let user = this.store.getState().user;
+        console.log("adding header " + JSON.stringify(this.store.getState().user));
+        let token = user !== undefined && user.jwt;
+        return {
+            headers: token ? {"x-access-token": token} : {
+                Accept: 'application/json',
+                "Content-Type": 'application/json'
+            }
+        };
+    }
+
+    _handleHttpCode(response) {
+
+        let httpStatus = response.status;
+        if ((httpStatus >= 200 && httpStatus < 300) || (httpStatus > 400 && httpStatus <= 403) || httpStatus === 423) {
+            return response;
+        } else {
+            console.log(`internal server error, error info: ${response.statusText}`);
+            let error = new Error(response.statusText);
+            error.response = response;
+            throw error;
+            /*
+             if (manageException) {
+             this.triggerError(error)
+             } else {
+             throw error;
+             }
+             */
+        }
+    }
+
+}

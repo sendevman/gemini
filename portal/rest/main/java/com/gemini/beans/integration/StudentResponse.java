@@ -1,4 +1,4 @@
-package com.gemini.beans;
+package com.gemini.beans.integration;
 
 import java.util.Date;
 

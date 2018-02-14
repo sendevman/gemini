@@ -1,12 +1,17 @@
+server:
+  context-path: /api
+  port: 8081
+
 spring:
   main:
     web-environment: true
+
 
   mail:
     host: smtp.gmail.com
     port: 587
     username: de.pentaho@gmail.com
-    password: #pass
+    password: d3r3ply2@!4
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -17,8 +22,8 @@ spring:
     show-sql: true
     database: mysql
     hibernate:
-      ddl-auto: none
-    generate-ddl: false
+      ddl-auto: create-drop
+    generate-ddl: true
 #    database-platform: default
 
   # TMAX103
@@ -35,11 +40,16 @@ spring:
       maximum-pool-size: 30
   smaxDatasource:
     url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
-    username: #USER
-    password: #PASS
+    username: PRDE_TMAXIO1
+    password: PRDE_TMAXIO1
     driver-class-name: oracle.jdbc.driver.OracleDriver
 security:
   basic:
     enabled: false
+#    Since we are using GMAIL, we have to use the same email address because GMAIL doesn't allow to change the FROM property
+email:
+  from: de.pentaho@gmail.com
+website:
+  url: localhost:3000
 
 

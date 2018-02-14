@@ -22,6 +22,8 @@ import maritalStatuses from "./constants/maritalStatuses";
 import transportationTypes from "./constants/transportationTypes";
 import jobTypes from "./constants/jobTypes";
 import incomeTypes from "./constants/incomeTypes";
+import registrationRelationTypes from "./constants/registrationRelationTypes";
+
 
 export default {
     contactTypes: contactTypes,
@@ -42,5 +44,6 @@ export default {
     schools: dummySchools,
     grades: dummyGrades,
     jobTypes: jobTypes,
-    incomeTypes: incomeTypes
+    incomeTypes: incomeTypes,
+    registrationRelations: registrationRelationTypes
 };
