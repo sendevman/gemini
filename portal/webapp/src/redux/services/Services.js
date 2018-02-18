@@ -19,6 +19,11 @@ export default class Services {
         return this._getRaw(`/account/activate/${code}`);
     }
 
+    //smax interface
+    searchStudent(criteria){
+        return this._get(`/smax/interface/search/student/lastssn/${criteria.lastSSN}/student/number/${criteria.studentNumber}/dob/${criteria.dob}`);
+    }
+
 
     _get(path) {
         return fetch(buildUrl(path), this._addHeader())

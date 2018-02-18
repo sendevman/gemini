@@ -32,7 +32,7 @@ public class MailService {
         registerMail.setFrom(fromEmail);
         registerMail.setTo(user.getEmail());
         registerMail.setSubject("Registro en Linea - Activar Cuenta");
-        registerMail.setText(link);
+        registerMail.setText(String.format("<html> <a href=\"http://%s\">Confirmar Email</a></html>", link));
         return registerMail;
     }
 

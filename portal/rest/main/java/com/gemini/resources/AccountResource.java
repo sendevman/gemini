@@ -32,7 +32,7 @@ public class AccountResource {
             return ResponseEntity.ok(RegisterResponse.error("User already exists"));
         }
 
-//        todo: make a schedule process to resent activation emails
+        //todo: make a schedule process to resent activation emails
         String activationCode = userService.createUser(userBean);
         boolean mailSent = mailService.sendRegisterEmail(userBean, activationCode);
         userService.saveSentActivationResult(userBean.getEmail(), mailSent);

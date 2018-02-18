@@ -15,7 +15,8 @@ public final class CopyUtils {
     public static <T, R> R convert(T object, Class<R> clazz) {
         try {
             R convertObject = clazz.newInstance();
-            BeanUtils.copyProperties(object, convertObject, clazz);
+            if (object != null)
+                BeanUtils.copyProperties(object, convertObject, clazz);
             return convertObject;
         } catch (Exception e) {
             e.printStackTrace();

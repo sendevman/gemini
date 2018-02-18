@@ -4,7 +4,6 @@
 import env from "./env";
 import moment from "moment";
 
-
 export function clear(form) {
     let cloneObj = Object.assign({}, form);
     for (let prop in cloneObj) {
@@ -29,4 +28,8 @@ export function isEmpty(value) {
 
 export function validDate(value) {
     return value && moment(value).isValid();
+}
+
+export function format(date, format){
+    return moment(date).format(format);
 }

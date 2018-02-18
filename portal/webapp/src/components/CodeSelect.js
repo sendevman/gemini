@@ -90,7 +90,7 @@ class CodeSelect extends Component {
     }
 
     render() {
-        let formGroupCss = "form-group ".concat(this.state.pristine ? "has-error" : "");
+        let formGroupCss = "form-group ".concat(this.state.pristine || !this.props.value ? "has-error" : "");
         let elementProps = Object.assign({}, this.props);
         delete elementProps.codeType;
         return (

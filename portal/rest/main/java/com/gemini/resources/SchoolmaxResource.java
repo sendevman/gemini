@@ -1,12 +1,11 @@
 package com.gemini.resources;
 
-import com.gemini.utils.CopyUtils;
 import com.gemini.beans.integration.ParentResponse;
 import com.gemini.beans.integration.StudentResponse;
 import com.gemini.database.dao.beans.ParentBean;
 import com.gemini.database.dao.beans.StudentBean;
 import com.gemini.services.SchoolmaxService;
-import org.springframework.beans.BeanUtils;
+import com.gemini.utils.CopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -58,8 +57,8 @@ public class SchoolmaxResource {
             return ResponseEntity.badRequest().body(null);
 
         StudentBean studentBean = smaxService.retrieveStudentInfo(lastSSN, studentNumber, dateOfBirth);
-        StudentResponse response = new StudentResponse();
-        BeanUtils.copyProperties(studentBean, response);
+        StudentResponse response = CopyUtils.convert(studentBean, StudentResponse.class);
+        response.setFound(studentBean != null);
         return ResponseEntity.ok().body(response);
 
     }

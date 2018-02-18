@@ -92,29 +92,30 @@ class Registration extends Component {
                         <form onSubmit={this.register}>
                             <div className="row">
                                 <div className="col-md-3">
-                                    <TextInput id="firstName" type="name" label="Nombre" placeholder="Nombre"
+                                    <TextInput id="firstName" type="name"
+                                               placeholder="Nombre"
                                                ref="firstName"
                                                onChange={this.inputHandler}
                                                value={form.firstName}/>
                                 </div>
                                 <div className="col-md-3">
-                                    <TextInput id="middleName" type="name" label="Segundo Nombre"
+                                    <TextInput id="middleName" type="name"
                                                required={false}
                                                placeholder="Segundo Nombre"
                                                onChange={this.inputHandler}
                                                value={form.middleName}/>
                                 </div>
                                 <div className="col-md-3">
-                                    <TextInput id="fatherLastName" type="lastname" label="Apellido"
+                                    <TextInput id="fatherLastName" type="lastname"
                                                ref="fatherLastName"
-                                               placeholder="Apellido Maternal"
+                                               placeholder="Apellido Paterno"
                                                onChange={this.inputHandler}
                                                value={form.fatherLastName}/>
                                 </div>
                                 <div className="col-md-3">
-                                    <TextInput id="motherLastName" type="lastname" label="Apellido Materno"
+                                    <TextInput id="motherLastName" type="lastname"
                                                ref="motherLastName"
-                                               placeholder="Apellido Paternal"
+                                               placeholder="Apellido Materno"
                                                onChange={this.inputHandler}
                                                value={form.motherLastName}/>
                                 </div>
@@ -138,14 +139,16 @@ class Registration extends Component {
                                                value={form.confirmEmail}/>
                                 </div>
                                 <div className="col-md-3">
-                                    <DateInput showFormat={false} label="Fecha de Nacimiento"
+                                    <DateInput showFormat={false}
+                                               label="Fecha de Nacimiento"
                                                ref="dob"
                                                onValidDate={this.onValidDate}
                                                onInvalidDate={this.onInvalidDate}
                                                value={form.dateOfBirth}/>
                                 </div>
                                 <div className="col-md-3">
-                                    <CodeSelect id="relationType" label="Seleccione relacion"
+                                    <CodeSelect id="relationType"
+                                                label="Seleccione relacion"
                                                 ref="registrationRelations"
                                                 codeType="registrationRelations"
                                                 value={form.relationType}

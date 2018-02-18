@@ -38,6 +38,13 @@ export default class TextInput extends Component {
         return !this.state.hasError;
     }
 
+    componentDidMount() {
+        if (this.props.value) {
+            let value = this.props.value;
+            this.setState({value: this.props.value, hasError: this.hasError(value)});
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.value && !this.editing) {
             this.setState({hasError: this.hasError(nextProps.value), value: nextProps.value})
