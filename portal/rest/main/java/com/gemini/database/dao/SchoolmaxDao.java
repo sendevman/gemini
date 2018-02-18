@@ -25,6 +25,7 @@ public class SchoolmaxDao extends JdbcDaoSupport {
     @Qualifier(value = "smaxDatasource")
     DataSource smaxDatasource;
 
+//  TODO: fran create views of these queries to keep the code more readable
     private final String PARENT_SQL = "SELECT \n" +
             "A.FAMILY_ID\n" +
             ",A.DATE_OF_BIRTH AS DOB\n" +
@@ -103,16 +104,11 @@ public class SchoolmaxDao extends JdbcDaoSupport {
         return list.isEmpty() ? null : list.get(0);
     }
 
-//    void findStudentDemographicsInfo() {
-//    }
-//
-//    void findAddress() {
-//    }
-//
-//    void findSchoolsByCity() {
-//    }
-//
-//    void findGradeLevelBySchool() {
-//    }
+//    void findStudentDemographicsInfo() {}
+//    void findAddress() {}
+//    void findRecentStudentEnrollment(){}
+//    void findSchoolsByRegions() {}
+//    void findSchoolsByCity() {}
+//    void findGradeLevelBySchool() {}
 
 }

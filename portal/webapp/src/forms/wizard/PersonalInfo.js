@@ -5,8 +5,10 @@ import React, {Component} from "react";
 import CodeSelect from "../../components/CodeSelect";
 import DateInput from "../../components/DateInput";
 import TextInput from "../../components/TextInput";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 
-export default class PersonalInfo extends Component {
+class PersonalInfo extends Component {
 
     constructor(props) {
         super(props);
@@ -19,24 +21,27 @@ export default class PersonalInfo extends Component {
     }
 
     render() {
-        let form = this.state.form;
+        let student = this.props.student;
         return (
             <form>
                 <div className="row">
                     <div className="col-md-3">
-                        <TextInput id="nameLabel" type="name" label="Nombre" placeholder="Nombre"/>
+                        <TextInput id="nameLabel" type="name" placeholder="Nombre" value={student.firstName}/>
                     </div>
                     <div className="col-md-3">
-                        <TextInput id="middleLabel" type="name" label="Segundo Nombre" placeholder="Segundo Nombre"/>
+                        <TextInput id="middleLabel" type="name" placeholder="Segundo Nombre"
+                                   required={false}
+                                   value={student.middleName}/>
                     </div>
                     <div className="col-md-3">
-                        <TextInput id="motherLabel" type="lastname" label="Apellido"
-                                   placeholder="Apellido Maternal"/>
+                        <TextInput id="fatherLabel" type="lastname" placeholder="Apellido Paternal"
+                                   value={student.lastName}/>
                     </div>
                     <div className="col-md-3">
-                        <TextInput id="fatherLabel" type="lastname" label="Apellido Materno"
-                                   placeholder="Apellido Paternal"/>
+                        <TextInput id="motherLabel" type="lastname" placeholder="Apellido Maternal"
+                                   value={student.lastName}/>
                     </div>
+
                 </div>
 
                 <div className="row">
@@ -44,11 +49,10 @@ export default class PersonalInfo extends Component {
                         <CodeSelect id="gender"
                                     label="Genero"
                                     codeType="gender"
-                                    value={form.gender}
+                                    value={student.gender}
                                     onChange={(event) => {
                                         this.setState({
                                             form: {
-                                                ...form,
                                                 gender: event.target.value
                                             }
                                         });
@@ -62,13 +66,25 @@ export default class PersonalInfo extends Component {
                     </div>
                 </div>
 
-                <div className="row">
-                    <div className="col-md-6">
-                        <CodeSelect id="disableReason" label="Impedimento" placeholder="Ninguno" codeType="disabilityCodes"/>
-                    </div>
-                    <div className="col-md-6"/>
-                </div>
+                {/*<div className="row">*/}
+                {/*<div className="col-md-6">*/}
+                {/*<CodeSelect id="disableReason" label="Impedimento" placeholder="Ninguno" codeType="disabilityCodes"/>*/}
+                {/*</div>*/}
+                {/*<div className="col-md-6"/>*/}
+                {/*</div>*/}
             </form>
         );
     }
 }
+
+
+function mapStateToProps(store) {
+    return {student: store.studentLookup.student};
+}
+
+function mapDispatchToActions(dispatch) {
+    return bindActionCreators({}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(PersonalInfo);
+

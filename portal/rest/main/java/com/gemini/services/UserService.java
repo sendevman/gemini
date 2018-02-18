@@ -25,8 +25,8 @@ import static com.gemini.utils.DateUtils.toDate;
 @Service
 public class UserService {
     @Autowired
-    UserRepository userRepository;
-    Long expireInHours = 48L;
+    private UserRepository userRepository;
+    private Long expireInHours = 48L;
 
     public boolean existsUser(String username) {
         return userRepository.findByEmail(username) != null;

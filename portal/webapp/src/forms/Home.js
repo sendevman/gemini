@@ -37,9 +37,22 @@ export default class Home extends Component {
 
     next() {
         let current = this.state.currentForm;
-        let finalStep = (this.maxForms - 2 ) === current;
-        if (current < (this.maxForms - 1))
-            this.setState({currentForm: current + 1, finalStep: finalStep});
+        let finalStep = (this.maxForms - 2) === current;
+        if (current < (this.maxForms - 1)) {
+            //before change validate current view
+            // this.page.onPress();
+            console.log(current);
+            let idx = `page${current}`;
+            console.log(this.refs[idx].getWrappedInstance());
+            this.refs[idx].getWrappedInstance().onPress(
+                () => {
+                    this.setState({currentForm: current + 1, finalStep: finalStep})
+                },
+                () => {
+                    alert("Ha ocurrido un error")
+                }
+            );
+        }
         else
             this.props.history.push("/status")
 
@@ -54,33 +67,35 @@ export default class Home extends Component {
 
     render() {
         let current = this.state.currentForm;
-        let wizardForms = [
-            form("Identificaci\u00f3n de Estudiante", <StudentIdentification/>),
-            form("Informaci\u00f3n Personal", <PersonalInfo/>),
-            form("Direcci\u00f3n", <Address/>),
-            form("Datos Demograficos", <Demographic/>),
-            form("Matricula", <Enrollment/>),
-            form("Informaci\u00f3n Adicional", <AdditionalInfo/>),
-            form("Contactos de Emergencia", <EmergencyContacts/>),
-            form("Lenguajes", <LanguageInfo/>),
-            form("Informacion Medica", <MedicalInfo/>),
-            form("Informacion Medica Adicional", <MedicalInfoAdditional/>),
-            form("Tutores Legales", <TutorInfo/>),
-            form("Finanzas", <FinancialFamilyInfo/>),
-            form("Transportaci\u00f3n", <TransportationInfo/>),
-            form("Someter Solicitud", <SubmitRequest/>),
+
+        let c = 0;
+        this.wizardForms = [
+            form("Identificaci\u00f3n de Estudiante", <StudentIdentification ref={`page${c++}`}/>),
+            form("Informaci\u00f3n Personal", <PersonalInfo ref={`page${c++}`}/>),
+            form("Direcci\u00f3n", <Address ref={`page${c++}`}/>),
+            form("Datos Demograficos", <Demographic ref={`page${c++}`}/>),
+            form("Matricula", <Enrollment ref={`page${c++}`}/>),
+            form("Informaci\u00f3n Adicional", <AdditionalInfo ref={`page${c++}`}/>),
+            form("Contactos de Emergencia", <EmergencyContacts ref={`page${c++}`}/>),
+            form("Lenguajes", <LanguageInfo ref={`page${c++}`}/>),
+            form("Informacion Medica", <MedicalInfo ref={`page${c++}`}/>),
+            form("Informacion Medica Adicional", <MedicalInfoAdditional ref={`page${c++}`}/>),
+            form("Tutores Legales", <TutorInfo ref={`page${c++}`}/>),
+            form("Finanzas", <FinancialFamilyInfo ref={`page${c++}`}/>),
+            form("Transportaci\u00f3n", <TransportationInfo ref={`page${c++}`}/>),
+            form("Someter Solicitud", <SubmitRequest ref={`page${c++}`}/>),
         ];
 
         return (<div>
             <div className="container">
                 <Row>
                     <Col xs={12}>
-                        <h3>{wizardForms[current].title}</h3>
+                        <h3>{this.wizardForms[current].title}</h3>
 
                     </Col>
                 </Row>
                 <div style={{marginTop: 20}}>
-                    {wizardForms[current].form}
+                    {this.wizardForms[current].form}
                 </div>
             </div>
             <div style={{marginTop: 70}}/>
@@ -95,10 +110,10 @@ export default class Home extends Component {
         let lastForm = this.state.finalStep;
         let previousLabel = lastForm ? 'Cancelar' : 'Back';
         let nextLabel = initForm
-            ? (lastForm ? 'Finalizar' : 'Next' )
+            ? (lastForm ? 'Finalizar' : 'Next')
             : 'Comenzar';
         let showProgressBar = initForm
-            ? (    <Col xs={4} style={{paddingTop: 10}}>
+            ? (<Col xs={4} style={{paddingTop: 10}}>
                 <ProgressBar now={percentage} label={`${percentage}%`}/>
             </Col>)
             : (<Col xs={4}/>);

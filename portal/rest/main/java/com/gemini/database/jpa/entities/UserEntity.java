@@ -13,13 +13,12 @@ import java.util.Date;
  * Date: 2/12/18
  * Time: 3:04 PM
  */
-//http://www.baeldung.com/registration-with-spring-mvc-and-spring-security
 @Entity
 @Table(name = "users")
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
 
     @Enumerated(EnumType.STRING)

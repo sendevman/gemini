@@ -13,7 +13,7 @@ let store = setupStore();
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router basename="/registro">
+        <Router basename="/srs">
             <App/>
         </Router>
     </Provider>,

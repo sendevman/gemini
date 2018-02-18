@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public class StudentBean {
     private Long studentId;
+    private Long extStudentNumber;
     private String firstName;
     private String middleName;
     private String lastName;
@@ -36,6 +37,14 @@ public class StudentBean {
 
     public void setStudentId(Long studentId) {
         this.studentId = studentId;
+    }
+
+    public Long getExtStudentNumber() {
+        return extStudentNumber;
+    }
+
+    public void setExtStudentNumber(Long extStudentNumber) {
+        this.extStudentNumber = extStudentNumber;
     }
 
     public String getFirstName() {
