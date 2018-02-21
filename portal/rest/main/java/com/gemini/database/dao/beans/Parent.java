@@ -9,7 +9,7 @@ package com.gemini.database.dao.beans;
 
 import java.util.Date;
 
-public class ParentBean {
+public class Parent {
 
     private String familyId;
     private Date dateOfBirth;

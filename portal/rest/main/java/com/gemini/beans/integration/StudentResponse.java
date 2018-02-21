@@ -2,6 +2,8 @@ package com.gemini.beans.integration;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.StringTokenizer;
+import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
@@ -107,9 +109,9 @@ public class StudentResponse {
     }
 
     public void setLastName(String lastName) {
-        String tokens[] = lastName.trim().split(" ");
-        this.fatherLastName = Optional.ofNullable(tokens[0]).orElse("");
-        this.motherLastName = Optional.ofNullable(tokens[1]).orElse("");
+        StringTokenizer tokenizer = new StringTokenizer(lastName.trim(), " ");
+        this.fatherLastName = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
+        this.motherLastName = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
     }
 
     public String getFullName() {

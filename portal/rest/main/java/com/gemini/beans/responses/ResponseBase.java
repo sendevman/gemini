@@ -6,12 +6,22 @@ package com.gemini.beans.responses;
  * Date: 2/20/18
  * Time: 10:24 PM
  */
-public class ResponseBase {
+public class ResponseBase<T> {
+    private Long requestId;
     private String message;
     private boolean successfulOperation;
     private boolean errorOperation;
+    private T responseBean;
 
     public ResponseBase() {
+    }
+
+    public Long getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
     }
 
     public String getMessage() {
@@ -38,9 +48,17 @@ public class ResponseBase {
         this.errorOperation = errorOperation;
     }
 
-    public static ResponseBase success() {
+    public static ResponseBase success(Long requestId) {
         ResponseBase base = new ResponseBase();
         base.successfulOperation = true;
+        base.requestId = requestId;
+        return base;
+    }
+
+
+    public static <T> ResponseBase success(Long requestId, T responseBean) {
+        ResponseBase base = success(requestId);
+        base.responseBean = responseBean;
         return base;
     }
 

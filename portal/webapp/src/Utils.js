@@ -11,7 +11,13 @@ export function clear(form) {
             cloneObj[prop] = '';
     }
     return cloneObj;
+}
 
+export function copyProps(formSrc, formDest) {
+    for (let prop in formSrc) {
+        if (formDest.hasOwnProperty(prop))
+            formDest[prop] = formSrc[prop];
+    }
 }
 
 export function buildUrl(path) {

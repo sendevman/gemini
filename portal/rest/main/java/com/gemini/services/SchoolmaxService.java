@@ -1,9 +1,10 @@
 package com.gemini.services;
 
 import com.gemini.database.dao.SchoolmaxDao;
-import com.gemini.database.dao.beans.ParentBean;
+import com.gemini.database.dao.beans.EnrollmentInfo;
+import com.gemini.database.dao.beans.Parent;
+import com.gemini.database.dao.beans.Student;
 import com.gemini.database.dao.beans.StudentAddress;
-import com.gemini.database.dao.beans.StudentBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +22,26 @@ public class SchoolmaxService {
     private SchoolmaxDao smaxDao;
 
 
-    public ParentBean retrieveHouseHeadInfo(String lastSsn, Date dob, String lastname) {
+    public Parent retrieveHouseHeadInfo(String lastSsn, Date dob, String lastname) {
         return smaxDao.findHouseHead(lastSsn, dob, lastname);
     }
 
-    public StudentBean retrieveStudentInfo(String lastSsn, Long studentNumber, Date dob) {
+    public Student retrieveStudentInfo(String lastSsn, Long studentNumber, Date dob) {
         return smaxDao.findStudent(lastSsn, dob, studentNumber);
     }
 
-    public StudentBean retrieveStudentInfo(Long studentNumber) {
+    public Student retrieveStudentInfo(Long studentNumber) {
         return smaxDao.findStudent(studentNumber);
     }
 
     public StudentAddress retrieveStudentAddress(Long studentNumber) {
         return smaxDao.findAddress(studentNumber);
     }
+
+    public EnrollmentInfo retrieveMostRecentEnrollment(Long studentId) {
+        return smaxDao.findRecentStudentEnrollment(studentId);
+    }
+
+
 
 }

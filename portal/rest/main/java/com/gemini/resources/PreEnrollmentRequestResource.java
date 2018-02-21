@@ -1,5 +1,7 @@
 package com.gemini.resources;
 
+import com.gemini.beans.forms.PreEnrollmentAddressBean;
+import com.gemini.beans.forms.PreEnrollmentBean;
 import com.gemini.beans.requests.PreEnrollmentInitialRequest;
 import com.gemini.beans.responses.ResponseBase;
 import com.gemini.services.PreEnrollmentService;
@@ -23,13 +25,12 @@ public class PreEnrollmentRequestResource {
 
     @RequestMapping(value = "/{requestId}")
     public ResponseEntity<ResponseBase> retrieve(@PathVariable Long requestId) {
-        return ResponseEntity.ok(ResponseBase.success());
+        return ResponseEntity.ok(ResponseBase.success(requestId));
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBase> savePreEnrollmentRequest(@RequestBody PreEnrollmentInitialRequest initialRequest) {
-
-        boolean created;
+    public ResponseEntity<ResponseBase<PreEnrollmentBean>> savePreEnrollmentRequest(@RequestBody PreEnrollmentInitialRequest initialRequest) {
+        PreEnrollmentBean preEnrollmentBean;
         if (ValidationUtils.valid(initialRequest.getStudentNumber())
                 || ValidationUtils.valid(
                 initialRequest.getFirstName(),
@@ -37,11 +38,37 @@ public class PreEnrollmentRequestResource {
                 initialRequest.getMotherLastName(),
                 initialRequest.getDateOfBirth(),
                 initialRequest.getGender()))
-            created = preEnrollmentService.createPreEnrollment(initialRequest);
+            preEnrollmentBean = preEnrollmentService.createPreEnrollment(initialRequest);
         else
             return ResponseEntity.badRequest().body(ResponseBase.error("Missing fields to create pre-enrollment"));
 
-        return ResponseEntity.ok(created ? ResponseBase.success() : ResponseBase.error("Error saving pre-enrollment"));
+        ResponseBase<PreEnrollmentBean> response;
+        if (preEnrollmentBean != null)
+            response = ResponseBase.<PreEnrollmentBean>success(preEnrollmentBean.getId(), preEnrollmentBean);
+        else
+            response = ResponseBase.error("Error saving pre-enrollment");
+        return ResponseEntity.ok(response);
 
     }
+
+    @RequestMapping(value = "/{requestId}/address")
+    public ResponseEntity<PreEnrollmentAddressBean> getPreEnrollmentAddress(@PathVariable Long requestId) {
+        PreEnrollmentAddressBean addressBean = preEnrollmentService.getAddress(requestId);
+        return ResponseEntity.ok(addressBean);
+    }
+
+
+    @RequestMapping(value = "/{requestId}/address/save", method = RequestMethod.POST)
+    public ResponseEntity<ResponseBase> savePreEnrollmentAddress(@PathVariable Long requestId, @RequestBody PreEnrollmentAddressBean request) {
+        boolean validRequest = preEnrollmentService.validAddressForRequestId(requestId, request.getPhysical(), request.getPostal());
+        if (validRequest) {
+            boolean saved;
+            saved = preEnrollmentService.updateStudentAddress(request.getPhysical());
+            saved &= preEnrollmentService.updateStudentAddress(request.getPostal());
+            return ResponseEntity.ok(saved ? ResponseBase.success(requestId) : ResponseBase.error("Error saving address"));
+        }
+        return ResponseEntity.badRequest().body(ResponseBase.error("Address are not attached to this request"));
+    }
+
+
 }

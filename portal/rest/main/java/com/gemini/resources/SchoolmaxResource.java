@@ -2,8 +2,8 @@ package com.gemini.resources;
 
 import com.gemini.beans.integration.ParentResponse;
 import com.gemini.beans.integration.StudentResponse;
-import com.gemini.database.dao.beans.ParentBean;
-import com.gemini.database.dao.beans.StudentBean;
+import com.gemini.database.dao.beans.Parent;
+import com.gemini.database.dao.beans.Student;
 import com.gemini.services.SchoolmaxService;
 import com.gemini.utils.CopyUtils;
 import com.gemini.utils.ValidationUtils;
@@ -41,7 +41,7 @@ public class SchoolmaxResource {
             return ResponseEntity.badRequest().body(null);
 
 
-        ParentBean parentBean = smaxService.retrieveHouseHeadInfo(lastSSN, dateOfBirth, lastname);
+        Parent parentBean = smaxService.retrieveHouseHeadInfo(lastSSN, dateOfBirth, lastname);
         return ResponseEntity.ok().body(CopyUtils.convert(parentBean, ParentResponse.class));
     }
 
@@ -55,7 +55,7 @@ public class SchoolmaxResource {
                 && studentNumber != null && studentNumber > 0L))
             return ResponseEntity.badRequest().body(null);
 
-        StudentBean studentBean = smaxService.retrieveStudentInfo(lastSSN, studentNumber, dateOfBirth);
+        Student studentBean = smaxService.retrieveStudentInfo(lastSSN, studentNumber, dateOfBirth);
         StudentResponse response = CopyUtils.convert(studentBean, StudentResponse.class);
         response.setFound(studentBean != null);
         if (studentBean != null)

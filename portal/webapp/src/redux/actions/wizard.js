@@ -12,8 +12,8 @@ const formFlow = [
     {type: "STUDENT_LOOKUP", footerType: IN_PROGRESS, success: 3, failure: 2, waitForResult: true},
     {type: "NOT_FOUND_QUESTION", yes: 1, no: 4, footerType: QUESTION},
     {type: "FOUND_INFO", footerType: CONTINUE},
-    {type: "PERSONAL_INFO", footerType: IN_PROGRESS, waitForResult: true},
-    {type: "ADDRESS", footerType: IN_PROGRESS, waitForResult: true},
+    {type: "PERSONAL_INFO", footerType: IN_PROGRESS},
+    {type: "ADDRESS", footerType: IN_PROGRESS},
     {type: "ENROLLMENT_QUESTION", yes: 8, no: 7, footerType: QUESTION},
     {type: "ENROLLMENT", footerType: IN_PROGRESS, waitForResult: true},
     {type: "SUBMIT", footerType: END}];
@@ -36,6 +36,8 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
 
     if (currentForm.type.lastIndexOf("_QUESTION") > 0) {
         next = currentForm.yes;
+    } else if (current === 5) {
+
     }
 
     onPress((result) => {

@@ -8,7 +8,7 @@ import java.util.Date;
  * Date: 2/9/18
  * Time: 1:25 AM
  */
-public class StudentBean {
+public class Student {
     private Long studentId;
     private Long extStudentNumber;
     private String firstName;

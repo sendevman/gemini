@@ -1,4 +1,4 @@
-package com.gemini.beans;
+package com.gemini.beans.forms;
 
 import com.gemini.beans.types.RelationType;
 

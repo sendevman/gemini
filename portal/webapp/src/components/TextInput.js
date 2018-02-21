@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import * as Utils from "../Utils";
 
 let onlyLetter = /^[^0-9]*$/;
 let onlyNumber = /^[0-9]*$/;
@@ -39,15 +40,13 @@ export default class TextInput extends Component {
     }
 
     componentDidMount() {
-        if (this.props.value) {
-            let value = this.props.value;
-            this.setState({value: this.props.value, hasError: this.hasError(value)});
-        }
+        let value = this.props.value;
+        this.setState({value: this.props.value ? this.props.value : "", hasError: this.hasError(value)});
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.value && !this.editing) {
-            this.setState({hasError: this.hasError(nextProps.value), value: nextProps.value})
+        if (!this.editing) {
+            this.setState({hasError: this.hasError(nextProps.value), value: nextProps.value ? nextProps.value : ""})
         }
     }
 
@@ -88,7 +87,8 @@ export default class TextInput extends Component {
 
     hasError(value) {
         let config = this.config;
-        return (config.min && value.length < config.min)
+        return Utils.isEmpty(value)
+            || (config.min && value.length < config.min)
             || (config.length && value.length !== config.length)
             || (config.validation && !config.validation.test(value))
     }
@@ -114,7 +114,7 @@ export default class TextInput extends Component {
         let isPassword = this.props.type === 'password';
         let hasError = this.state.hasError && this.props.required;
         let groupClass = "form-group ".concat(hasError ? "has-error" : "");
-        let props = {...this.props};
+        let props = Object.assign({}, this.props);
         if (this.config.max || this.config.length)
             props = {...props, maxLength: this.config.max || this.config.length};
         return (
@@ -125,7 +125,6 @@ export default class TextInput extends Component {
                        className="form-control"
                        onChange={this.inputHandler}
                        value={this.state.value}
-
                 />
             </div>);
     }
