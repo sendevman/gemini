@@ -12,9 +12,9 @@ _Student Registration System (SRS)_
 * Ask if the student will keep in the previous enrolled school
 * Show the pre-enrollment form prefilled if data exists
 * If the data doesn't exists, request the region, grade level and school (Show physical address of the school to avoid confussion with names)
-* Request Parente contact info, we have the email already, only request telephones (residentials and mobile)
+* Request Parent contact info, we have the email already, only request telephones (residentials and mobile)
 * Last Final Review form to submit the pre-enrollment
-* Once the Pre-enrollment is submitted a email will be received for the parents. Also a status form will always show of the pre-enrollment submited
+* Once the Pre-enrollment is submitted a email will be received for the parents. Also a status form will always show of the pre-enrollment submitted
 * Always present the option to pre-enroll another student
 
 
@@ -30,7 +30,7 @@ _Student Registration System (SRS)_
 * User should evaluate the request approve and denied with comments
 * Dashboard show present the data given user's hierarchy access level
 * Profile form should not be editable
-* Config form will be only for SIE_ADMIN users to manage date limits on pre-enrolloment submit data and among other stuff
+* Config form will be only for SIE_ADMIN users to manage date limits on pre-enrollment submit data and among other stuff
 
 #####Important Links
 

@@ -21,10 +21,10 @@ public class StudentEntity {
     private Long id;
 
     @Column(nullable = false)
-    private Long externalStudentNumber;
+    private Long extStudentNumber = -1L;
 
     @Column(nullable = false)
-    private Long sisStudentId;
+    private Long sisStudentId = -1L;
 
     @Column(nullable = false)
     private Date dateOfBirth;
@@ -32,7 +32,7 @@ public class StudentEntity {
     @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column
     private String middleName;
 
     @Column(nullable = false)
@@ -61,12 +61,12 @@ public class StudentEntity {
         this.id = id;
     }
 
-    public Long getExternalStudentNumber() {
-        return externalStudentNumber;
+    public Long getExtStudentNumber() {
+        return extStudentNumber;
     }
 
-    public void setExternalStudentNumber(Long externalStudentNumber) {
-        this.externalStudentNumber = externalStudentNumber;
+    public void setExtStudentNumber(Long extStudentNumber) {
+        this.extStudentNumber = extStudentNumber;
     }
 
     public Long getSisStudentId() {

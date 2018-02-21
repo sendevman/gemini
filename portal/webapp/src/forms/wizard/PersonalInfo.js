@@ -7,39 +7,60 @@ import DateInput from "../../components/DateInput";
 import TextInput from "../../components/TextInput";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import {savePreEnrollment, loadPersonalInfo} from "../../redux/actions";
 
 class PersonalInfo extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {form: {genderLabel: 'Genero', gender: "-1", firstname: '', countryLabel: 'Pais', dob: null}};
+        this.state = {form: {}};
         this.handleDobChange = this.handleDobChange.bind(this);
+        this.onError = this.onError.bind(this);
+    }
+
+    componentWillMount(){
+        this.props.loadPersonalInfo();
+    }
+
+    onError() {
+        alert("Ha ocurrido un error disculpe el incoveniente");
     }
 
     handleDobChange(date) {
         this.setState({form: {...this.state.form, dob: date}});
     }
 
+    onPress(onResult) {
+        let form = this.props.student;
+        this.props.savePreEnrollment(form, onResult, this.onError);
+    }
+
     render() {
-        let student = this.props.student;
+        let studentLookupResult = this.props.student;
+        let student = studentLookupResult || {};
+        let studentExists = !(studentLookupResult === null || studentLookupResult === undefined);
         return (
             <form>
                 <div className="row">
                     <div className="col-md-3">
-                        <TextInput id="nameLabel" type="name" placeholder="Nombre" value={student.firstName}/>
+                        <TextInput id="nameLabel" type="name" placeholder="Nombre" value={student.firstName}
+                                   disabled={studentExists}/>
                     </div>
                     <div className="col-md-3">
                         <TextInput id="middleLabel" type="name" placeholder="Segundo Nombre"
                                    required={false}
-                                   value={student.middleName}/>
+                                   value={student.middleName}
+                                   disabled={studentExists}/>
                     </div>
                     <div className="col-md-3">
                         <TextInput id="fatherLabel" type="lastname" placeholder="Apellido Paternal"
-                                   value={student.lastName}/>
+                                   value={student.fatherLastName}
+                                   disabled={studentExists}/>
                     </div>
                     <div className="col-md-3">
                         <TextInput id="motherLabel" type="lastname" placeholder="Apellido Maternal"
-                                   value={student.lastName}/>
+                                   value={student.motherLastName}
+                                   disabled={studentExists}/>
                     </div>
 
                 </div>
@@ -50,28 +71,15 @@ class PersonalInfo extends Component {
                                     label="Genero"
                                     codeType="gender"
                                     value={student.gender}
-                                    onChange={(event) => {
-                                        this.setState({
-                                            form: {
-                                                gender: event.target.value
-                                            }
-                                        });
-                                    }}
                                     placeholder="Seleccione su Genero"
+                                    disabled={studentExists}
                         />
 
                     </div>
                     <div className="col-md-6">
-                        <DateInput label="Fecha de Nacimiento"/>
+                        <DateInput label="Fecha de Nacimiento" value={student.dateOfBirth} disabled={studentExists}/>
                     </div>
                 </div>
-
-                {/*<div className="row">*/}
-                {/*<div className="col-md-6">*/}
-                {/*<CodeSelect id="disableReason" label="Impedimento" placeholder="Ninguno" codeType="disabilityCodes"/>*/}
-                {/*</div>*/}
-                {/*<div className="col-md-6"/>*/}
-                {/*</div>*/}
             </form>
         );
     }
@@ -79,11 +87,11 @@ class PersonalInfo extends Component {
 
 
 function mapStateToProps(store) {
-    return {student: store.studentLookup.student};
+    return {student: store.studentInfo.student};
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({}, dispatch)
+    return bindActionCreators({loadPersonalInfo, savePreEnrollment}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(PersonalInfo);

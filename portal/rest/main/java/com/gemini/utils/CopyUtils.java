@@ -1,8 +1,13 @@
 package com.gemini.utils;
 
+import com.gemini.beans.integration.StudentResponse;
+import com.gemini.database.dao.beans.StudentBean;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Random;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,11 +30,24 @@ public final class CopyUtils {
     }
 
     public static void main(String[] args) {
-        int n = 100;
-        while (n > 0) {
-            System.out.println(generateActivationCode("rodriguez perez"));
-            n--;
-        }
+//        int n = 100;
+//        while (n > 0) {
+//            System.out.println(generateActivationCode("rodriguez perez"));
+//            n--;
+//        }
+        StudentBean bean = new StudentBean();
+        bean.setFirstName("Francisco");
+        bean.setLastName("Palou Quezada");
+        StudentResponse response = CopyUtils.convert(bean, StudentResponse.class);
+
+        System.out.println(Stream.of("abc", null, "ghi", "jkl")
+                .filter(s -> s != null && !s.isEmpty())
+                .collect(joining(" ")));
+
+        System.out.println(response.getFirstName());
+        System.out.println(response.getFatherLastName());
+        System.out.println(response.getMotherLastName());
+
     }
 
     public static String generateActivationCode(String lastName) {

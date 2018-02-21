@@ -6,6 +6,7 @@ import com.gemini.database.dao.beans.ParentBean;
 import com.gemini.database.dao.beans.StudentBean;
 import com.gemini.services.SchoolmaxService;
 import com.gemini.utils.CopyUtils;
+import com.gemini.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -35,7 +34,7 @@ public class SchoolmaxResource {
     public ResponseEntity<ParentResponse> searchParent(@PathVariable(value = "lastSSN") String lastSSN,
                                                        @PathVariable(value = "dob") @DateTimeFormat(pattern = "yyyyMMdd") String dob,
                                                        @PathVariable(value = "lastname") String lastname) {
-        Date dateOfBirth = validDate(dob);
+        Date dateOfBirth = ValidationUtils.validDate(dob);
         if (!(StringUtils.hasLength(lastname)
                 && StringUtils.hasLength(lastSSN) && lastSSN.matches("[0-9]{4}")
                 && dateOfBirth != null))
@@ -50,7 +49,7 @@ public class SchoolmaxResource {
     public ResponseEntity<StudentResponse> searchStudent(@PathVariable(value = "lastSSN") String lastSSN,
                                                          @PathVariable(value = "studentNumber") Long studentNumber,
                                                          @PathVariable(value = "dob") @DateTimeFormat(pattern = "yyyyMMdd") String dob) {
-        Date dateOfBirth = validDate(dob);
+        Date dateOfBirth = ValidationUtils.validDate(dob);
         if (!(dateOfBirth != null
                 && StringUtils.hasLength(lastSSN) && lastSSN.matches("[0-9]{4}")
                 && studentNumber != null && studentNumber > 0L))
@@ -59,22 +58,10 @@ public class SchoolmaxResource {
         StudentBean studentBean = smaxService.retrieveStudentInfo(lastSSN, studentNumber, dateOfBirth);
         StudentResponse response = CopyUtils.convert(studentBean, StudentResponse.class);
         response.setFound(studentBean != null);
+        if (studentBean != null)
+            response.setStudentNumber(studentBean.getExtStudentNumber());
         return ResponseEntity.ok().body(response);
 
-    }
-
-
-    private Date validDate(String dateParam) {
-        Date date = null;
-        try {
-            if (StringUtils.hasLength(dateParam)) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-                date = sdf.parse(dateParam);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
     }
 
 

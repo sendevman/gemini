@@ -34,7 +34,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String firstName;
 
-    @Column()
+    @Column
     private String middleName;
 
     @Column(nullable = false)

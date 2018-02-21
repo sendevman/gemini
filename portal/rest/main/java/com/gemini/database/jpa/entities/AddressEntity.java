@@ -21,19 +21,19 @@ public class AddressEntity {
     @Column(nullable = false)
     private AddressType type;
 
-    @Column(nullable = false)
+    @Column
     private String line1;
 
     @Column
     private String line2;
 
-    @Column(nullable = false)
+    @Column
     private String city;
 
     @Column(nullable = false)
     private String country = "PR";
 
-    @Column(nullable = false)
+    @Column
     private String zipcode;
 
     public Long getId() {

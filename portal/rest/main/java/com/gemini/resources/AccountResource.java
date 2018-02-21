@@ -1,6 +1,6 @@
 package com.gemini.resources;
 
-import com.gemini.beans.RegisterResponse;
+import com.gemini.beans.responses.RegisterResponse;
 import com.gemini.beans.UserBean;
 import com.gemini.beans.requests.UserActivationRequest;
 import com.gemini.services.MailService;
