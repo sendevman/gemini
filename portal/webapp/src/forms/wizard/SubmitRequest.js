@@ -2,11 +2,21 @@
  * Created by fran on 2/1/18.
  */
 import React, {Component} from "react";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 
-export default class SubmitRequest extends Component {
+// import {withRouter} from 'react-router-dom'
+
+
+class SubmitRequest extends Component {
 
     constructor(props) {
         super(props);
+    }
+
+    onPress() {
+        this.props.history.push("/status")
+
     }
 
     render() {
@@ -39,3 +49,14 @@ export default class SubmitRequest extends Component {
             </div>);
     }
 }
+
+function mapStateToProps(store) {
+    return {};
+}
+
+function mapDispatchToActions(dispatch) {
+    return bindActionCreators({}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(SubmitRequest);
+

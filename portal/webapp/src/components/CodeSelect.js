@@ -9,19 +9,30 @@ class CodeSelect extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {pristine: true};
+        this.state = {value: null};
         this.onChange = this.onChange.bind(this);
     }
 
     onChange(e) {
+        e.persist();
         let value = e.target.value;
-        this.setState({pristine: value === "-1"});
-        if (this.props.onChange)
-            this.props.onChange(e)
+        this.setState({value: value}, () => {
+            if (this.props.onChange)
+                this.props.onChange(e)
+        });
+
     }
 
     valid() {
-        return !this.state.pristine;
+        let valid = false;
+        for (let code of this.codes) {
+            if (this.props.value)
+                if (code.value === this.props.value) {
+                    valid = true;
+                    break;
+                }
+        }
+        return valid;
     }
 
     componentWillMount() {
@@ -90,7 +101,7 @@ class CodeSelect extends Component {
     }
 
     render() {
-        let formGroupCss = "form-group ".concat(this.state.pristine || !this.props.value ? "has-error" : "");
+        let formGroupCss = "form-group ".concat(!this.valid() ? "has-error" : "");
         let elementProps = Object.assign({}, this.props);
         delete elementProps.codeType;
         return (

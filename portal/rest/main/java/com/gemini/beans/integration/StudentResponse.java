@@ -1,6 +1,10 @@
 package com.gemini.beans.integration;
 
 import java.util.Date;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,14 +14,25 @@ import java.util.Date;
  */
 public class StudentResponse {
 
+    private Long studentNumber;
     private String firstName;
     private String middleName;
-    private String lastName;
+    private String fatherLastName;
+    private String motherLastName;
     private Date dateOfBirth;
     private String gender;
     private boolean isEnrolled;
     private int currentGradeLevel;
     private boolean found;
+
+
+    public Long getStudentNumber() {
+        return studentNumber;
+    }
+
+    public void setStudentNumber(Long studentNumber) {
+        this.studentNumber = studentNumber;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -35,12 +50,20 @@ public class StudentResponse {
         this.middleName = middleName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getFatherLastName() {
+        return fatherLastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFatherLastName(String fatherLastName) {
+        this.fatherLastName = fatherLastName;
+    }
+
+    public String getMotherLastName() {
+        return motherLastName;
+    }
+
+    public void setMotherLastName(String motherLastName) {
+        this.motherLastName = motherLastName;
     }
 
     public Date getDateOfBirth() {
@@ -81,6 +104,18 @@ public class StudentResponse {
 
     public void setFound(boolean found) {
         this.found = found;
+    }
+
+    public void setLastName(String lastName) {
+        String tokens[] = lastName.trim().split(" ");
+        this.fatherLastName = Optional.ofNullable(tokens[0]).orElse("");
+        this.motherLastName = Optional.ofNullable(tokens[1]).orElse("");
+    }
+
+    public String getFullName() {
+        return Stream.of(firstName, middleName, fatherLastName, motherLastName)
+                .filter(s -> s != null && !s.isEmpty())
+                .collect(joining(" "));
     }
 
 }

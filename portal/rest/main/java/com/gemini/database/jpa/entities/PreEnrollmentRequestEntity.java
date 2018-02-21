@@ -14,8 +14,8 @@ import java.util.Date;
  * Time: 2:28 PM
  */
 @Entity
-@Table(name = "enrollment_requests")
-public class EnrollmentRequestEntity {
+@Table(name = "pre_enrollment_requests")
+public class PreEnrollmentRequestEntity {
 
     @Id
     @GeneratedValue
@@ -24,6 +24,10 @@ public class EnrollmentRequestEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RequestStatus requestStatus = RequestStatus.ACTIVE;
+
+    @OneToOne
+    @JoinColumn(name = "student_id")
+    private StudentEntity student;
 
     @Column(nullable = false)
     private Long schoolYear;
@@ -67,6 +71,14 @@ public class EnrollmentRequestEntity {
 
     public void setRequestStatus(RequestStatus requestStatus) {
         this.requestStatus = requestStatus;
+    }
+
+    public StudentEntity getStudent() {
+        return student;
+    }
+
+    public void setStudent(StudentEntity student) {
+        this.student = student;
     }
 
     public Long getSchoolYear() {

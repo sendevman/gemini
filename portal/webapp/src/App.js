@@ -11,7 +11,7 @@ import * as types from "./redux/types";
 import ReduxBlockUi from 'react-block-ui/redux';
 
 moment.updateLocale('es', esLocale);
-const baseContext = "registro";
+const baseContext = "srs";
 
 class App extends Component {
     constructor(props) {

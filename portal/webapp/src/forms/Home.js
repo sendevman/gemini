@@ -7,83 +7,80 @@ import {Button, Col, ProgressBar, Row} from "react-bootstrap";
 import StudentIdentification from "./wizard/StudentIdentification";
 import PersonalInfo from "./wizard/PersonalInfo";
 import Address from "./wizard/Address";
-import Demographic from "./wizard/Demographic";
-import Enrollment from "./wizard/Enrollment";
-import EmergencyContacts from "./wizard/EmergencyContacts";
-import TutorInfo from "./wizard/TutorInfo";
-import AdditionalInfo from "./wizard/AdditionalInfo";
-import LanguageInfo from "./wizard/LanguageInfo";
-import MedicalInfo from "./wizard/MedicalInfo";
-import MedicalInfoAdditional from "./wizard/MedicalInfoAdditional";
-import FinancialFamilyInfo from "./wizard/FinancialFamilyInfo";
-import TransportationInfo from "./wizard/TransportationInfo";
-import SubmitRequest from "./SubmitRequest";
+import PreEnrollment from "./wizard/PreEnrollment";
+import SubmitRequest from "./wizard/SubmitRequest";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {load, onNextAction, onPreviousAction} from "../redux/actions";
+import Question from "./wizard/Question";
 
 function form(title, form) {
     return {title: title, form: form};
 }
 
-export default class Home extends Component {
+class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {currentForm: 0, finalStep: false};
-        this.accountablePertangeForm = 12;
-        this.maxForms = 14;
-
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
     }
 
+    componentWillMount() {
+        this.props.load();
+    }
+
     next() {
-        let current = this.state.currentForm;
-        let finalStep = (this.maxForms - 2) === current;
-        if (current < (this.maxForms - 1)) {
-            //before change validate current view
-            // this.page.onPress();
-            console.log(current);
-            let idx = `page${current}`;
-            console.log(this.refs[idx].getWrappedInstance());
-            this.refs[idx].getWrappedInstance().onPress(
-                () => {
-                    this.setState({currentForm: current + 1, finalStep: finalStep})
-                },
-                () => {
-                    alert("Ha ocurrido un error")
-                }
-            );
-        }
-        else
-            this.props.history.push("/status")
+        let idx = `page${this.props.current}`;
+        let pageRef = this.refs[idx].getWrappedInstance ? this.refs[idx].getWrappedInstance() : null;
+        this.props.onNextAction((callback) => {
+            if (pageRef && pageRef.onPress) {
+                pageRef.onPress(callback);
+            }
+            else {
+                callback();
+            }
+        })
 
     }
 
     previous() {
-        let current = this.state.currentForm;
-        if (current > 0)
-            this.setState({currentForm: current - 1, finalStep: false})
+        this.props.onPreviousAction();
+    }
+
+    unusedForms() {
+        /* form("Datos Demograficos", <Demographic ref={`page${c++}`}/>),
+         form("Informaci\u00f3n Adicional", <AdditionalInfo ref={`page${c++}`}/>),
+         form("Contactos de Emergencia", <EmergencyContacts ref={`page${c++}`}/>),
+         form("Lenguajes", <LanguageInfo ref={`page${c++}`}/>),
+         form("Informacion Medica", <MedicalInfo ref={`page${c++}`}/>),
+         form("Informacion Medica Adicional", <MedicalInfoAdditional ref={`page${c++}`}/>),
+         form("Tutores Legales", <TutorInfo ref={`page${c++}`}/>),
+         form("Finanzas", <FinancialFamilyInfo ref={`page${c++}`}/>),
+         form("Transportaci\u00f3n", <TransportationInfo ref={`page${c++}`}/>)*/
+
     }
 
 
     render() {
-        let current = this.state.currentForm;
-
+        let current = this.props.current;
+        let student = this.props.student;
         let c = 0;
         this.wizardForms = [
+            form("", <Question question="Tiene usted su hijo matriculado en Departamento de Educacion de PR"
+                               ref={`page${c++}`}/>),
             form("Identificaci\u00f3n de Estudiante", <StudentIdentification ref={`page${c++}`}/>),
+            form("", <Question
+                question="Estudiante no fue encontrado con la informacion provista, desea realizar nuevamente la busqueda"
+                ref={`page${c++}`}/>),
+            form("", <Question
+                question={`Hemos encontrado al estudiante ${student && student.fullName}, desea pre-matricularlo para año escolar 2019 (2018-2019)`}
+                ref={`page${c++}`}/>),
             form("Informaci\u00f3n Personal", <PersonalInfo ref={`page${c++}`}/>),
             form("Direcci\u00f3n", <Address ref={`page${c++}`}/>),
-            form("Datos Demograficos", <Demographic ref={`page${c++}`}/>),
-            form("Matricula", <Enrollment ref={`page${c++}`}/>),
-            form("Informaci\u00f3n Adicional", <AdditionalInfo ref={`page${c++}`}/>),
-            form("Contactos de Emergencia", <EmergencyContacts ref={`page${c++}`}/>),
-            form("Lenguajes", <LanguageInfo ref={`page${c++}`}/>),
-            form("Informacion Medica", <MedicalInfo ref={`page${c++}`}/>),
-            form("Informacion Medica Adicional", <MedicalInfoAdditional ref={`page${c++}`}/>),
-            form("Tutores Legales", <TutorInfo ref={`page${c++}`}/>),
-            form("Finanzas", <FinancialFamilyInfo ref={`page${c++}`}/>),
-            form("Transportaci\u00f3n", <TransportationInfo ref={`page${c++}`}/>),
-            form("Someter Solicitud", <SubmitRequest ref={`page${c++}`}/>),
+            form("", <Question question="Su estudiante permanece en la misma escuela" ref={`page${c++}`}/>),
+            form("Matricula", <PreEnrollment ref={`page${c++}`}/>),
+            form("Someter Solicitud", <SubmitRequest history={this.props.history} ref={`page${c++}`}/>)
         ];
 
         return (<div>
@@ -103,18 +100,12 @@ export default class Home extends Component {
         </div>);
     }
 
+
     renderFooter() {
-        let current = this.state.currentForm;
-        let percentage = Math.floor(((current - 1) / this.accountablePertangeForm) * 100);
-        let initForm = current > 0;
-        let lastForm = this.state.finalStep;
-        let previousLabel = lastForm ? 'Cancelar' : 'Back';
-        let nextLabel = initForm
-            ? (lastForm ? 'Finalizar' : 'Next')
-            : 'Comenzar';
-        let showProgressBar = initForm
+        let props = {...this.props.wizard};
+        let showProgressBar = props.initForm
             ? (<Col xs={4} style={{paddingTop: 10}}>
-                <ProgressBar now={percentage} label={`${percentage}%`}/>
+                <ProgressBar now={props.percentage} label={`${props.percentage}%`}/>
             </Col>)
             : (<Col xs={4}/>);
 
@@ -125,16 +116,30 @@ export default class Home extends Component {
                 {showProgressBar}
                 <Col xs={7}>
                     <div style={{marginRight: 5, zIndex: 100}} className="pull-right">
-                        {initForm
+                        {props.previousLabel
                             ? <Button onClick={this.previous} style={{marginRight: 5}}
-                                      bsStyle="primary">{previousLabel}</Button>
+                                      bsStyle="primary">{props.previousLabel}</Button>
                             : null}
-                        <Button onClick={this.next} bsStyle="primary">{nextLabel}</Button>
+                        <Button onClick={this.next} bsStyle="primary">{props.nextLabel}</Button>
                     </div>
                 </Col>
             </Row>
         </footer>)
     }
-
-
 }
+
+function mapStateToProps(store) {
+    return {
+        current: store.wizard.current,
+        wizard: store.wizard,
+        student: store.studentLookup.student
+
+    };
+}
+
+function mapDispatchToActions(dispatch) {
+    return bindActionCreators({load, onNextAction, onPreviousAction}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToActions)(Home);
+

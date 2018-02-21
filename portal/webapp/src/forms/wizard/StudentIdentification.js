@@ -7,7 +7,7 @@ import DateInput from "../../components/DateInput";
 import TextInput from "../../components/TextInput";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {searchStudent, studentLookupChange} from "../../redux/actions";
+import {searchStudent} from "../../redux/actions";
 
 class StudentIdentification extends Component {
 
@@ -15,6 +15,7 @@ class StudentIdentification extends Component {
         super(props);
         this.inputHandler = this.inputHandler.bind(this);
         this.onValidDate = this.onValidDate.bind(this);
+        this.onError = this.onError.bind(this);
     }
 
     inputHandler(e) {
@@ -28,9 +29,13 @@ class StudentIdentification extends Component {
         form.dob = date;
     }
 
-    onPress(successCallBack, errorCallback) {
+    onError() {
+        alert("Ha ocurrido un error")
+    }
+
+    onPress(successCallBack) {
         let form = this.props.form;
-        this.props.searchStudent(form, successCallBack, errorCallback);
+        this.props.searchStudent(form, successCallBack, this.onError);
     }
 
     render() {
@@ -66,7 +71,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({searchStudent, studentLookupChange}, dispatch)
+    return bindActionCreators({searchStudent}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(StudentIdentification);

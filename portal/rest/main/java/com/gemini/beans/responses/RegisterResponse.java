@@ -1,4 +1,4 @@
-package com.gemini.beans;
+package com.gemini.beans.responses;
 
 /**
  * Created with IntelliJ IDEA.

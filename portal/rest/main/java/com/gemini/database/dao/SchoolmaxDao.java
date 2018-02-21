@@ -1,6 +1,7 @@
 package com.gemini.database.dao;
 
 import com.gemini.database.dao.beans.ParentBean;
+import com.gemini.database.dao.beans.StudentAddress;
 import com.gemini.database.dao.beans.StudentBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,7 +26,7 @@ public class SchoolmaxDao extends JdbcDaoSupport {
     @Qualifier(value = "smaxDatasource")
     DataSource smaxDatasource;
 
-//  TODO: fran create views of these queries to keep the code more readable
+    //  TODO: fran create views of these queries to keep the code more readable
     private final String PARENT_SQL = "SELECT \n" +
             "A.FAMILY_ID\n" +
             ",A.DATE_OF_BIRTH AS DOB\n" +
@@ -86,7 +87,28 @@ public class SchoolmaxDao extends JdbcDaoSupport {
             "AND (C.SEQ = 1 OR C.SEQ IS NULL)                 \n" +
             "AND B.FLEX_OWNER_ID = 603             \n" +
             "AND ((I.SEQ = 1 AND J.IS_ACTIVE_IND = 1) OR I.SEQ IS NULL) ";
-    
+
+    private final String STUDENT_ADDRESS_SQL = "  SELECT a.family_id,\n" +
+            "       C.STUDENT_ID,\n" +
+            "       D.EXT_STUDENT_NUMBER,\n" +
+            "       a.address_line_1 AS \"POSTAL_ADDRESS_1\",\n" +
+            "       a.address_line_2 AS \"POSTAL_ADDRESS_2\",\n" +
+            "       a.city           AS \"POSTAL_CITY\",\n" +
+            "       a.state          AS \"POSTAL_STATE\",\n" +
+            "       a.zip_code       AS \"POSTAL_ZIPCODE\",\n" +
+            "       B.FIELD_3        AS \"PHYSICAL_ADDRESS_1\",\n" +
+            "       B.FIELD_4        AS \"PHYSICAL_ADDRESS_2\",\n" +
+            "       B.FIELD_5        AS \"PHYSICAL_CITY\",\n" +
+            "       B.FIELD_9        AS \"PHYSICAL_STATE\",\n" +
+            "       B.FIELD_6        AS \"PHYSICAL_ZIPCODE\"\n" +
+            "  FROM CE_FAMILY A\n" +
+            "  INNER JOIN SY_FLEX_DATA B ON A.FAMILY_ID = B.TYPE_ID\n" +
+            "  INNER JOIN CE_FAMILY_TO_MEMBER C ON A.FAMILY_ID =C.FAMILY_ID \n" +
+            "  INNER JOIN CE_FAMILY_MEMBER D ON D.STUDENT_ID = C.STUDENT_ID " +
+            " WHERE B.FLEX_OWNER_ID = 601\n" +
+            "   AND C.LIVES_WITH_IND = 1\n" +
+            "   AND C.PRIMARY_FAMILY_IND = 1\n";
+
     @PostConstruct
     private void init() {
         setDataSource(smaxDatasource);
@@ -104,11 +126,23 @@ public class SchoolmaxDao extends JdbcDaoSupport {
         return list.isEmpty() ? null : list.get(0);
     }
 
+    public StudentBean findStudent(Long studentNumber) {
+        String sql = STUDENT_SQL.concat(" AND EXT_STUDENT_NUMBER = ?");
+        List<StudentBean> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(StudentBean.class), studentNumber);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+    public StudentAddress findAddress(Long studentNumber) {
+        String sql = STUDENT_ADDRESS_SQL.concat(" AND EXT_STUDENT_NUMBER = ? ");
+        List<StudentAddress> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(StudentAddress.class), studentNumber);
+        return list.isEmpty() ? null : list.get(0);
+    }
+//    void findRecentStudentEnrollment(Long studentId){}
+//    void findSchoolsByRegions(Long regionId) {}
+//    void findSchoolsByRegionAndCity() {Long regionId, String cityCode}
+//    void findSchoolsByGradeLevelAndRegionAndCity() {String gradeLevel, Long regionId, String cityCode}
+
 //    void findStudentDemographicsInfo() {}
-//    void findAddress() {}
-//    void findRecentStudentEnrollment(){}
-//    void findSchoolsByRegions() {}
-//    void findSchoolsByCity() {}
-//    void findGradeLevelBySchool() {}
+
 
 }

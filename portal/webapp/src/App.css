@@ -95,3 +95,9 @@ html {
     font-size: 2em;
     color: #317eac;
 }
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}

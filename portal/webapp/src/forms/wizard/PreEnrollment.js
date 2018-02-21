@@ -5,7 +5,7 @@
 import React, {Component} from "react";
 import CodeSelect from "../../components/CodeSelect";
 
-export default class Enrollment extends Component {
+export default class PreEnrollment extends Component {
 
     constructor(props) {
         super(props);

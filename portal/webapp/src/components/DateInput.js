@@ -30,13 +30,16 @@ export default class DateInput extends Component {
     populateDate(date) {
         if (date) {
             let form = this.state;
-            form.day = date.format("DD");
-            form.month = date.format("MM");
-            form.year = date.format("YYYY");
-            let result = this.checkValid();
-            form.valid = result.valid;
-            form.value = result.value;
-            this.setState({...form});
+            date = moment(date);
+            if(date.format) {
+                form.day = date.format("DD");
+                form.month = date.format("MM");
+                form.year = date.format("YYYY");
+                let result = this.checkValid();
+                form.valid = result.valid;
+                form.value = result.value;
+                this.setState({...form});
+            }
         }
     }
 
