@@ -1,7 +1,7 @@
 package com.gemini.utils;
 
 import com.gemini.beans.integration.StudentResponse;
-import com.gemini.database.dao.beans.StudentBean;
+import com.gemini.database.dao.beans.Student;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Random;
@@ -35,7 +35,7 @@ public final class CopyUtils {
 //            System.out.println(generateActivationCode("rodriguez perez"));
 //            n--;
 //        }
-        StudentBean bean = new StudentBean();
+        Student bean = new Student();
         bean.setFirstName("Francisco");
         bean.setLastName("Palou Quezada");
         StudentResponse response = CopyUtils.convert(bean, StudentResponse.class);

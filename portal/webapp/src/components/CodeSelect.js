@@ -9,7 +9,7 @@ class CodeSelect extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {value: null};
+        this.state = {value: '-1'};
         this.onChange = this.onChange.bind(this);
     }
 
@@ -107,7 +107,7 @@ class CodeSelect extends Component {
         return (
             <div className={formGroupCss}>
                 <label htmlFor={this.props.id}>{this.props.label}:</label>
-                <select className="form-control" {...elementProps} onChange={this.onChange}>
+                <select className="form-control" {...elementProps} onChange={this.onChange} value={this.state.value}>
                     <option value="-1">{this.props.placeholder}</option>
                     {this.codes.map((code, i) => (
                         <option key={i} value={code.value}>{code.description}</option>

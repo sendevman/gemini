@@ -15,24 +15,19 @@ class PersonalInfo extends Component {
         super(props);
         this.state = {form: {}};
         this.handleDobChange = this.handleDobChange.bind(this);
-        this.onError = this.onError.bind(this);
     }
 
     componentWillMount(){
         this.props.loadPersonalInfo();
     }
 
-    onError() {
-        alert("Ha ocurrido un error disculpe el incoveniente");
-    }
-
     handleDobChange(date) {
         this.setState({form: {...this.state.form, dob: date}});
     }
 
-    onPress(onResult) {
+    onPress(onResult, onError) {
         let form = this.props.student;
-        this.props.savePreEnrollment(form, onResult, this.onError);
+        this.props.savePreEnrollment(form, onResult, onError);
     }
 
     render() {

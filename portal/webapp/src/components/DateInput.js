@@ -18,6 +18,10 @@ export default class DateInput extends Component {
         this.editing = false;
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.populateDate(nextProps.value)
+    }
+
     componentDidMount() {
         this.populateDate(this.props.value)
     }
@@ -31,7 +35,7 @@ export default class DateInput extends Component {
         if (date) {
             let form = this.state;
             date = moment(date);
-            if(date.format) {
+            if (date.format) {
                 form.day = date.format("DD");
                 form.month = date.format("MM");
                 form.year = date.format("YYYY");

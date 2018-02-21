@@ -15,7 +15,6 @@ class StudentIdentification extends Component {
         super(props);
         this.inputHandler = this.inputHandler.bind(this);
         this.onValidDate = this.onValidDate.bind(this);
-        this.onError = this.onError.bind(this);
     }
 
     inputHandler(e) {
@@ -29,13 +28,9 @@ class StudentIdentification extends Component {
         form.dob = date;
     }
 
-    onError() {
-        alert("Ha ocurrido un error")
-    }
-
-    onPress(successCallBack) {
+    onPress(onResult, onError) {
         let form = this.props.form;
-        this.props.searchStudent(form, successCallBack, this.onError);
+        this.props.searchStudent(form, onResult, onError);
     }
 
     render() {

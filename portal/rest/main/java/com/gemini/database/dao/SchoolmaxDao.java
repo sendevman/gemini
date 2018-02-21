@@ -1,8 +1,6 @@
 package com.gemini.database.dao;
 
-import com.gemini.database.dao.beans.ParentBean;
-import com.gemini.database.dao.beans.StudentAddress;
-import com.gemini.database.dao.beans.StudentBean;
+import com.gemini.database.dao.beans.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -88,7 +86,7 @@ public class SchoolmaxDao extends JdbcDaoSupport {
             "AND B.FLEX_OWNER_ID = 603             \n" +
             "AND ((I.SEQ = 1 AND J.IS_ACTIVE_IND = 1) OR I.SEQ IS NULL) ";
 
-    private final String STUDENT_ADDRESS_SQL = "  SELECT a.family_id,\n" +
+    private final String STUDENT_ADDRESS_SQL = "SELECT a.family_id,\n" +
             "       C.STUDENT_ID,\n" +
             "       D.EXT_STUDENT_NUMBER,\n" +
             "       a.address_line_1 AS \"POSTAL_ADDRESS_1\",\n" +
@@ -109,26 +107,35 @@ public class SchoolmaxDao extends JdbcDaoSupport {
             "   AND C.LIVES_WITH_IND = 1\n" +
             "   AND C.PRIMARY_FAMILY_IND = 1\n";
 
+    private final String REGION_SQL = "SELECT\n" +
+            "DISTRICT_ZONE_ID AS REGION_ID\n" +
+            ",EXT_ZONE_NUMBER\n" +
+            ",NAME\n" +
+            ",DESCRIPTION\n" +
+            "FROM SY_DISTRICT_ZONE WHERE DISTRICT_NUMBER = 1000 AND IS_ACTIVE_IND = \n";
+
+    private final String ENROLLMENT_SQL = "SELECT * FROM VW_SIE_STUDENT_ENROLLMENT ";
+
     @PostConstruct
     private void init() {
         setDataSource(smaxDatasource);
     }
 
-    public ParentBean findHouseHead(String lastSsn, Date dob, String lastname) {
+    public Parent findHouseHead(String lastSsn, Date dob, String lastname) {
         String sql = PARENT_SQL.concat(" AND SUBSTR(A.SSN, -4) = ? AND DATE_OF_BIRTH = ? and LAST_NAME like '" + lastname + "%'");
-        List<ParentBean> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(ParentBean.class), lastSsn, dob);
+        List<Parent> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(Parent.class), lastSsn, dob);
         return list.isEmpty() ? null : list.get(0);
     }
 
-    public StudentBean findStudent(String lastSsn, Date dob, Long studentNumber) {
+    public Student findStudent(String lastSsn, Date dob, Long studentNumber) {
         String sql = STUDENT_SQL.concat(" AND SUBSTR(A.SSN, -4) = ? AND DATE_OF_BIRTH = ? and EXT_STUDENT_NUMBER = ?");
-        List<StudentBean> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(StudentBean.class), lastSsn, dob, studentNumber);
+        List<Student> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(Student.class), lastSsn, dob, studentNumber);
         return list.isEmpty() ? null : list.get(0);
     }
 
-    public StudentBean findStudent(Long studentNumber) {
+    public Student findStudent(Long studentNumber) {
         String sql = STUDENT_SQL.concat(" AND EXT_STUDENT_NUMBER = ?");
-        List<StudentBean> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(StudentBean.class), studentNumber);
+        List<Student> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(Student.class), studentNumber);
         return list.isEmpty() ? null : list.get(0);
     }
 
@@ -137,7 +144,16 @@ public class SchoolmaxDao extends JdbcDaoSupport {
         List<StudentAddress> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(StudentAddress.class), studentNumber);
         return list.isEmpty() ? null : list.get(0);
     }
-//    void findRecentStudentEnrollment(Long studentId){}
+
+    public EnrollmentInfo findRecentStudentEnrollment(Long studentId) {
+        String sql = ENROLLMENT_SQL.concat(" WHERE ENROLLMENT_ID = (SELECT MAX(ENROLLMENT_ID) FROM VW_SIE_STUDENT_ENROLLMENT WHERE STUDENT_ID = ? )");
+        return getJdbcTemplate().queryForObject(sql, new BeanPropertyRowMapper<>(EnrollmentInfo.class), studentId);
+    }
+
+    public List<Region> getAllRegions() {
+        return getJdbcTemplate().query(REGION_SQL, new BeanPropertyRowMapper<>(Region.class));
+    }
+
 //    void findSchoolsByRegions(Long regionId) {}
 //    void findSchoolsByRegionAndCity() {Long regionId, String cityCode}
 //    void findSchoolsByGradeLevelAndRegionAndCity() {String gradeLevel, Long regionId, String cityCode}

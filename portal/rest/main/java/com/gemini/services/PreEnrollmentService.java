@@ -1,9 +1,13 @@
 package com.gemini.services;
 
+import com.gemini.beans.forms.AddressBean;
+import com.gemini.beans.forms.PreEnrollmentAddressBean;
+import com.gemini.beans.forms.PreEnrollmentBean;
 import com.gemini.beans.requests.PreEnrollmentInitialRequest;
 import com.gemini.beans.types.AddressType;
+import com.gemini.database.dao.beans.EnrollmentInfo;
+import com.gemini.database.dao.beans.Student;
 import com.gemini.database.dao.beans.StudentAddress;
-import com.gemini.database.dao.beans.StudentBean;
 import com.gemini.database.jpa.entities.AddressEntity;
 import com.gemini.database.jpa.entities.PreEnrollmentRequestEntity;
 import com.gemini.database.jpa.entities.StudentEntity;
@@ -11,10 +15,9 @@ import com.gemini.database.jpa.respository.AddressRepository;
 import com.gemini.database.jpa.respository.PreEnrollmentRepository;
 import com.gemini.database.jpa.respository.StudentRepository;
 import com.gemini.utils.CopyUtils;
+import com.gemini.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.StringJoiner;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,35 +40,76 @@ public class PreEnrollmentService {
     @Autowired
     private AddressRepository addressRepository;
 
-    public boolean createPreEnrollment(PreEnrollmentInitialRequest request) {
+    public boolean validAddressForRequestId(Long id, AddressBean physical, AddressBean postal) {
+        boolean valid = false;
+        PreEnrollmentRequestEntity entity = preEnrollmentRepository.findOne(id);
+        if (entity != null && entity.getStudent() != null) {
+            AddressEntity physicalEntity = entity.getStudent().getPhysical();
+            AddressEntity postalEntity = entity.getStudent().getPostal();
+            if (ValidationUtils.valid(physical.getId(), physicalEntity.getId())) {
+                valid = physical.getId().equals(physicalEntity.getId());
+            }
+
+            if (ValidationUtils.valid(postal.getId(), postalEntity.getId())) {
+                valid &= postal.getId().equals(postalEntity.getId());
+            }
+
+        }
+        return valid;
+    }
+
+    public PreEnrollmentAddressBean getAddress(Long requestId) {
+        PreEnrollmentRequestEntity entity = preEnrollmentRepository.findOne(requestId);
+        PreEnrollmentAddressBean addressBean = new PreEnrollmentAddressBean();
+        if (entity != null && entity.getStudent() != null) {
+            addressBean.setPhysical(CopyUtils.convert(entity.getStudent().getPhysical(), AddressBean.class));
+            addressBean.setPostal(CopyUtils.convert(entity.getStudent().getPostal(), AddressBean.class));
+        }
+        return addressBean;
+    }
+
+    public PreEnrollmentBean createPreEnrollment(PreEnrollmentInitialRequest request) {
+        PreEnrollmentBean preEnrollmentBean = null;
         PreEnrollmentRequestEntity preEnrollmentEntity = new PreEnrollmentRequestEntity();
         preEnrollmentEntity.setSchoolYear(2019L);
         Long studentNumber = request.getStudentNumber();
-        StudentBean student = null;
+        Student student = null;
         StudentAddress address = null;
         if (studentNumber != null && studentNumber > 0L) {
             student = smaxService.retrieveStudentInfo(studentNumber);
             if (student != null) {
+                preEnrollmentBean = new PreEnrollmentBean();
                 address = smaxService.retrieveStudentAddress(studentNumber);
+                //let's find the most recent enrollment from SIS
+                EnrollmentInfo enrollmentInfo = smaxService.retrieveMostRecentEnrollment(student.getStudentId());
+                if (enrollmentInfo != null) {
+                    preEnrollmentEntity.setPreviousEnrollmentId(enrollmentInfo.getEnrollmentId());
+                    preEnrollmentEntity.setPreviousEnrollmentYear(enrollmentInfo.getSchoolYear());
+                    preEnrollmentEntity.setPreviousGradeLevel(enrollmentInfo.getGradeLevel());
+                    preEnrollmentBean = CopyUtils.convert(preEnrollmentEntity, PreEnrollmentBean.class);
+//                    preEnrollmentBean.setPreviousSchoolId();
+//                    preEnrollmentBean.setPreviousSchoolName();
+                }
+                AddressEntity postal = new AddressEntity();
+                AddressEntity physical = new AddressEntity();
+                if (address != null) {
+                    postal = copyAddressFrom(address, AddressType.POSTAL);
+                    physical = copyAddressFrom(address, AddressType.PHYSICAL);
+                    postal = save(postal);
+                    physical = save(physical);
+                }
+                StudentEntity studentEntity = save(student, postal, physical);
+                preEnrollmentEntity.setStudent(studentEntity);
+                preEnrollmentEntity = preEnrollmentRepository.save(preEnrollmentEntity);
             }
-            AddressEntity postal = new AddressEntity();
-            AddressEntity physical = new AddressEntity();
-            if (address != null) {
-                postal = copyAddressFrom(address, AddressType.POSTAL);
-                physical = copyAddressFrom(address, AddressType.PHYSICAL);
-                postal = save(postal);
-                physical = save(physical);
-            }
-            StudentEntity studentEntity = save(student, postal, physical);
-            preEnrollmentEntity.setStudent(studentEntity);
-            preEnrollmentEntity = preEnrollmentRepository.save(preEnrollmentEntity);
 
         } else {
             StudentEntity studentEntity = CopyUtils.convert(request, StudentEntity.class);
             preEnrollmentEntity.setStudent(studentEntity);
             preEnrollmentEntity = preEnrollmentRepository.save(preEnrollmentEntity);
+            preEnrollmentBean = CopyUtils.convert(preEnrollmentEntity, PreEnrollmentBean.class);
         }
-        return preEnrollmentEntity != null;
+        return preEnrollmentBean;
 
     }
 
@@ -73,12 +117,13 @@ public class PreEnrollmentService {
         return false;
     }
 
-    public boolean updateStudentAddress(AddressType type) {
-        return false;
+    public boolean updateStudentAddress(AddressBean address) {
+        AddressEntity entity = CopyUtils.convert(address, AddressEntity.class);
+        entity = save(entity);
+        return entity != null;
     }
 
-
-    private StudentEntity save(StudentBean bean, AddressEntity postal, AddressEntity physical) {
+    private StudentEntity save(Student bean, AddressEntity postal, AddressEntity physical) {
         StudentEntity entity = CopyUtils.convert(bean, StudentEntity.class);
         entity.setSisStudentId(bean.getStudentId());
         entity.setPostal(postal);

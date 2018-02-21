@@ -5,43 +5,46 @@ import React, {Component} from "react";
 import {Button} from "react-bootstrap";
 import CodeSelect from "../../components/CodeSelect";
 import TextInput from "../../components/TextInput";
+import {copyPhysicalToPostal, loadAddress, saveAddress} from "../../redux/actions";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 
-export default class Address extends Component {
+class Address extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            residential: {line1: '', line2: '', city: '', state: '', zipcode: ''},
-            postal: {line1: '', line2: '', city: '', state: '', zipcode: ''}
-        };
+        this.state = {};
         this.inputHandler = this.inputHandler.bind(this);
         this.copyAddress = this.copyAddress.bind(this);
     }
 
+    componentWillMount() {
+        this.props.loadAddress();
+    }
+
     inputHandler(e) {
-        let form = {...this.state};
+        let form = {...this.props};
         let element = e.target;
         let tokens = element.id.split(".");
         let context = tokens[0];
         let id = tokens[1];
-
         form[context][id] = element.value;
-        // if(element.id === `${type}.city`) {
-        //     let index = element.selectedIndex;
-        //     form.personal.relationTypeDesc = element[index].text;
-        // }
-
         this.setState({...this.state});
     }
 
     copyAddress(e) {
-        let residential = Object.assign({}, this.state.residential);
-        this.setState({...this.state, postal: residential});
+        this.props.copyPhysicalToPostal();
+    }
+
+    onPress(onResult, onError) {
+        let form = {physical: this.props.physical, postal: this.props.postal};
+        //check if there any change
+        this.props.saveAddress(form, onResult, onError);
     }
 
 
     render() {
-        let state = {...this.state};
+        let props = {...this.props};
         return (<form>
 
                 <div className="row">
@@ -58,7 +61,7 @@ export default class Address extends Component {
                             </div>
 
                         </div>
-                        {this.renderAddressForm("residential", state.residential)}
+                        {this.renderAddressForm("physical", props.physical)}
 
                     </div>
 
@@ -70,7 +73,7 @@ export default class Address extends Component {
                                 </div>
                             </div>
                         </div>
-                        {this.renderAddressForm("postal", state.postal)}
+                        {this.renderAddressForm("postal", props.postal)}
 
                     </div>
                 </div>
@@ -80,6 +83,7 @@ export default class Address extends Component {
     }
 
     renderAddressForm(type, address) {
+        address.city = !address.city ? "-1" : address.city;
         return (<div>
             <div className="row">
                 <div className="col-md-12">
@@ -95,11 +99,13 @@ export default class Address extends Component {
             </div>
             <div className="row">
                 <div className="col-md-4">
-                    <CodeSelect id={`${type}.city`} label="Ciudad" placeholder="Seleccione municipio" codeType="municipios"
+                    <CodeSelect id={`${type}.city`} label="Ciudad" placeholder="Seleccione municipio"
+                                codeType="municipios"
                                 value={address.city} onChange={this.inputHandler}/>
                 </div>
                 <div className="col-md-4">
-                    <CodeSelect id={`${type}.state`} label="Estado" placeholder="Seleccione Estado" codeType="states" value={"PR"}
+                    <CodeSelect id={`${type}.state`} label="Estado" placeholder="Seleccione Estado" codeType="states"
+                                value={"PR"}
                                 disabled={false} onChange={this.inputHandler}/>
                 </div>
 
@@ -111,3 +117,16 @@ export default class Address extends Component {
         </div>);
     }
 }
+
+function mapStateToProps(store) {
+    return {
+        physical: store.studentInfo.physicalAddress,
+        postal: store.studentInfo.postalAddress
+    };
+}
+
+function mapDispatchToActions(dispatch) {
+    return bindActionCreators({loadAddress, copyPhysicalToPostal, saveAddress}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(Address);

@@ -29,6 +29,14 @@ export default class Services {
         return this._post(`/enrollment/pre/save`, studentForm);
     }
 
+    getPreEnrollmentAddress(requestId){
+        return this._get(`/enrollment/pre/${requestId}/address`);
+    }
+
+    savePreEnrollmentAddress(addressForm){
+        return this._post(`/enrollment/pre/${addressForm.requestId}/address/save`, addressForm);
+    }
+
 
     _get(path) {
         return fetch(buildUrl(path), this._addHeader())

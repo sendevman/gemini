@@ -29,6 +29,18 @@ public class PreEnrollmentRequestEntity {
     @JoinColumn(name = "student_id")
     private StudentEntity student;
 
+    @Column
+    private Long previousEnrollmentId;
+
+    @Column
+    private Long previousEnrollmentYear;
+
+    @Column
+    private String previousGradeLevel = "00";
+
+    @Column(nullable = false)
+    private String gradeLevel = "00";
+
     @Column(nullable = false)
     private Long schoolYear;
 
@@ -79,6 +91,38 @@ public class PreEnrollmentRequestEntity {
 
     public void setStudent(StudentEntity student) {
         this.student = student;
+    }
+
+    public Long getPreviousEnrollmentId() {
+        return previousEnrollmentId;
+    }
+
+    public void setPreviousEnrollmentId(Long previousEnrollmentId) {
+        this.previousEnrollmentId = previousEnrollmentId;
+    }
+
+    public Long getPreviousEnrollmentYear() {
+        return previousEnrollmentYear;
+    }
+
+    public void setPreviousEnrollmentYear(Long previousEnrollmentYear) {
+        this.previousEnrollmentYear = previousEnrollmentYear;
+    }
+
+    public String getPreviousGradeLevel() {
+        return previousGradeLevel;
+    }
+
+    public void setPreviousGradeLevel(String previousGradeLevel) {
+        this.previousGradeLevel = previousGradeLevel;
+    }
+
+    public String getGradeLevel() {
+        return gradeLevel;
+    }
+
+    public void setGradeLevel(String gradeLevel) {
+        this.gradeLevel = gradeLevel;
     }
 
     public Long getSchoolYear() {

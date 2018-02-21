@@ -24,10 +24,16 @@ class Home extends Component {
         super(props);
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
+        this.onError = this.onError.bind(this);
+
     }
 
     componentWillMount() {
         this.props.load();
+    }
+
+    onError() {
+        alert("Ha ocurrido un error")
     }
 
     next() {
@@ -35,7 +41,7 @@ class Home extends Component {
         let pageRef = this.refs[idx].getWrappedInstance ? this.refs[idx].getWrappedInstance() : null;
         this.props.onNextAction((callback) => {
             if (pageRef && pageRef.onPress) {
-                pageRef.onPress(callback);
+                pageRef.onPress(callback, this.onError);
             }
             else {
                 callback();
@@ -78,7 +84,7 @@ class Home extends Component {
                 ref={`page${c++}`}/>),
             form("Informaci\u00f3n Personal", <PersonalInfo ref={`page${c++}`}/>),
             form("Direcci\u00f3n", <Address ref={`page${c++}`}/>),
-            form("", <Question question="Su estudiante permanece en la misma escuela" ref={`page${c++}`}/>),
+            form("", <Question question="Su estudiante permanecerá en la misma escuela" ref={`page${c++}`}/>),
             form("Matricula", <PreEnrollment ref={`page${c++}`}/>),
             form("Someter Solicitud", <SubmitRequest history={this.props.history} ref={`page${c++}`}/>)
         ];

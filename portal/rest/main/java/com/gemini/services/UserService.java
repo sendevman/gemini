@@ -1,6 +1,6 @@
 package com.gemini.services;
 
-import com.gemini.beans.UserBean;
+import com.gemini.beans.forms.UserBean;
 import com.gemini.beans.requests.UserActivationRequest;
 import com.gemini.database.jpa.entities.UserEntity;
 import com.gemini.database.jpa.respository.UserRepository;

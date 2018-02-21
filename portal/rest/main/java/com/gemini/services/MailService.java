@@ -1,6 +1,6 @@
 package com.gemini.services;
 
-import com.gemini.beans.UserBean;
+import com.gemini.beans.forms.UserBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
