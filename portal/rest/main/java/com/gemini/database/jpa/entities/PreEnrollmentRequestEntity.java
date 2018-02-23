@@ -25,7 +25,7 @@ public class PreEnrollmentRequestEntity {
     @Column(nullable = false)
     private RequestStatus requestStatus = RequestStatus.ACTIVE;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
     private StudentEntity student;
 

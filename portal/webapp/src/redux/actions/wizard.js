@@ -15,7 +15,7 @@ const formFlow = [
     {type: "PERSONAL_INFO", footerType: IN_PROGRESS},
     {type: "ADDRESS", footerType: IN_PROGRESS},
     {type: "ENROLLMENT_QUESTION", yes: 8, no: 7, footerType: QUESTION},
-    {type: "ENROLLMENT", footerType: IN_PROGRESS, waitForResult: true},
+    {type: "ENROLLMENT", footerType: IN_PROGRESS},
     {type: "SUBMIT", footerType: END}];
 
 
@@ -38,6 +38,10 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
         next = currentForm.yes;
     } else if (current === 5) {
 
+        let preEnrollment = getState().studentInfo.preEnrollment;
+        if (!preEnrollment.hasPreviousEnrollment) {
+            next = current + 2;
+        }
     }
 
     onPress((result) => {
@@ -47,12 +51,16 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
                 : currentForm.failure;
         }
 
-        dispatch({
-            type: types.ON_WIZARD_NEXT_END,
-            current: current < maxCurrent ? next : maxCurrent,
-            isFinalStep: maxCurrent === current,
-            footerType: formFlow[next].footerType
-        });
+        if (maxCurrent === current) {
+            dispatch({type: types.ON_WIZARD_COMPLETED});
+        } else {
+            dispatch({
+                type: types.ON_WIZARD_NEXT_END,
+                current: current < maxCurrent ? next : maxCurrent,
+                isFinalStep: maxCurrent === current,
+                footerType: formFlow[next].footerType
+            });
+        }
     })
 };
 

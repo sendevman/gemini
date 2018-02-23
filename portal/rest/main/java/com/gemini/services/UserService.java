@@ -6,9 +6,9 @@ import com.gemini.database.jpa.entities.UserEntity;
 import com.gemini.database.jpa.respository.UserRepository;
 import com.gemini.utils.CopyUtils;
 import com.gemini.utils.DateUtils;
+import com.gemini.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -39,7 +39,7 @@ public class UserService {
         return userBean;
     }
 
-    public boolean activationCodeExists(String activationCode){
+    public boolean activationCodeExists(String activationCode) {
         UserEntity entity = userRepository.findByActivationKeyAndActivationKeyExpireDateIsAfter(activationCode, DateUtils.getCurrentDate());
         return entity != null;
     }
@@ -66,7 +66,7 @@ public class UserService {
     }
 
     public String createUser(UserBean userBean) {
-        String activationKey = CopyUtils.generateActivationCode(userBean.getFatherLastName());
+        String activationKey = Utils.generateActivationCode(userBean.getFatherLastName());
         UserEntity entity = CopyUtils.convert(userBean, UserEntity.class);
         entity.setActivationKey(activationKey);
         copyLastNames(userBean, entity);
@@ -83,9 +83,8 @@ public class UserService {
     }
 
     private void copyLastNames(UserBean userBean, UserEntity entity) {
-        String fatherLastName = StringUtils.capitalize(userBean.getFatherLastName().trim());
-        String motherLastName = StringUtils.capitalize(userBean.getMotherLastName().trim());
-        entity.setLastName(String.format("%s %s", fatherLastName, motherLastName));
+        String lastName = Utils.toLastName(userBean.getFatherLastName(), userBean.getMotherLastName());
+        entity.setLastName(lastName);
     }
 
     private void copyLastNames(UserEntity entity, UserBean userBean) {

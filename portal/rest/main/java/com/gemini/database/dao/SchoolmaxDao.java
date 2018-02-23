@@ -100,21 +100,53 @@ public class SchoolmaxDao extends JdbcDaoSupport {
             "       B.FIELD_9        AS \"PHYSICAL_STATE\",\n" +
             "       B.FIELD_6        AS \"PHYSICAL_ZIPCODE\"\n" +
             "  FROM CE_FAMILY A\n" +
-            "  INNER JOIN SY_FLEX_DATA B ON A.FAMILY_ID = B.TYPE_ID\n" +
-            "  INNER JOIN CE_FAMILY_TO_MEMBER C ON A.FAMILY_ID =C.FAMILY_ID \n" +
-            "  INNER JOIN CE_FAMILY_MEMBER D ON D.STUDENT_ID = C.STUDENT_ID " +
-            " WHERE B.FLEX_OWNER_ID = 601\n" +
-            "   AND C.LIVES_WITH_IND = 1\n" +
+            "  LEFT JOIN SY_FLEX_DATA B ON A.FAMILY_ID = B.TYPE_ID AND B.FLEX_OWNER_ID = 601\n" +
+            "  LEFT JOIN CE_FAMILY_TO_MEMBER C ON A.FAMILY_ID =C.FAMILY_ID \n" +
+            "  LEFT JOIN CE_FAMILY_MEMBER D ON D.STUDENT_ID = C.STUDENT_ID " +
+            " WHERE C.LIVES_WITH_IND = 1\n" +
             "   AND C.PRIMARY_FAMILY_IND = 1\n";
 
-    private final String REGION_SQL = "SELECT\n" +
-            "DISTRICT_ZONE_ID AS REGION_ID\n" +
-            ",EXT_ZONE_NUMBER\n" +
-            ",NAME\n" +
-            ",DESCRIPTION\n" +
-            "FROM SY_DISTRICT_ZONE WHERE DISTRICT_NUMBER = 1000 AND IS_ACTIVE_IND = \n";
+    private final String REGION_SQL = "SELECT " +
+            "DISTRICT_ZONE_ID AS REGION_ID " +
+            ",EXT_ZONE_NUMBER " +
+            ",NAME " +
+            ",DESCRIPTION " +
+            "FROM SY_DISTRICT_ZONE WHERE DISTRICT_NUMBER = 1000 AND IS_ACTIVE_IND = 1 ";
 
     private final String ENROLLMENT_SQL = "SELECT * FROM VW_SIE_STUDENT_ENROLLMENT ";
+
+    private final String SCHOOL_SQL = "SELECT \n" +
+            "S.SCHOOL_ID\n" +
+            ", S.EXT_SCHOOL_NUMBER\n" +
+            ", S.CAMPUS_ID AS DISTRICT_ID\n" +
+            ", C.DESCRIPTION AS DISTRICT_NAME\n" +
+            ", C.DISTRICT_ZONE_ID AS REGION_ID \n" +
+            ", D.DESCRIPTION AS REGION_NAME\n" +
+            ", S.SCHOOL_NAME\n" +
+            ", ET.VALUE AS SCHOOL_TYPE_CD\n" +
+            ", ET.DESCRIPTION AS SCHOOL_TYPE\n" +
+            ", (CASE WHEN (FIELD_36 IS NOT NULL) THEN 1  ELSE 0 END) AS IS_VOCATIONAL\n" +
+            ", S.ADDRESS_LINE_1\n" +
+            ", S.ADDRESS_LINE_2\n" +
+            ", CC.VALUE AS CITY_CD\n" +
+            ", CC.DESCRIPTION AS CITY\n" +
+            ", S.COUNTRY\n" +
+            ", S.STATE\n" +
+            ", S.ZIP_CODE\n" +
+            ", S.EMAIL\n" +
+            ", (S.PHONE_AREA_CODE || S.PHONE_NUMBER) AS PHONE\n" +
+            "FROM SY_SCHOOL S\n" +
+            "LEFT JOIN SY_CAMPUS C ON S.CAMPUS_ID = C.CAMPUS_ID AND C.IS_ACTIVE_IND = 1\n" +
+            "LEFT JOIN SY_DISTRICT_ZONE D ON C.DISTRICT_ZONE_ID = D.DISTRICT_ZONE_ID AND D.IS_ACTIVE_IND = 1\n" +
+            "LEFT JOIN ENUM_SY_SCHOOL_TYPE ET ON S.SCHOOL_TYPE_CD = ET.VALUE\n" +
+            "LEFT JOIN ENUM_CE_COUNTY_CODE CC ON S.COUNTY_CD = CC.VALUE AND CC.IS_ACTIVE_IND = 1\n" +
+            "LEFT JOIN SY_FLEX_DATA FD ON S.SCHOOL_ID = FD.TYPE_ID AND FD.FLEX_OWNER_ID =604 ";
+
+    private final String SCHOOL_GRADE_LEVELS = "SELECT \n" +
+            "NAME, DESCRIPTION, VALUE, SCHOOL_ID, SCHOOL_YEAR, NEXT_YEAR_GRADE \n" +
+            "FROM ENUM_SY_SCHOOL_GRADE_LEVEL\n" +
+            "WHERE IS_ACTIVE_IND = 1";
+
 
     @PostConstruct
     private void init() {
@@ -147,18 +179,34 @@ public class SchoolmaxDao extends JdbcDaoSupport {
 
     public EnrollmentInfo findRecentStudentEnrollment(Long studentId) {
         String sql = ENROLLMENT_SQL.concat(" WHERE ENROLLMENT_ID = (SELECT MAX(ENROLLMENT_ID) FROM VW_SIE_STUDENT_ENROLLMENT WHERE STUDENT_ID = ? )");
-        return getJdbcTemplate().queryForObject(sql, new BeanPropertyRowMapper<>(EnrollmentInfo.class), studentId);
+        List<EnrollmentInfo> enrollments = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(EnrollmentInfo.class), studentId);
+        return enrollments.isEmpty() ? null : enrollments.get(0);
+    }
+
+    public List<School> findSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel) {
+        String sql = SCHOOL_SQL.concat(" WHERE S.IS_ACTIVE_IND = 1 " +
+                "AND C.DISTRICT_ZONE_ID = ? " +
+                "AND EXISTS(SELECT 1 FROM ENUM_SY_SCHOOL_GRADE_LEVEL SGL \n" +
+                "WHERE SGL.SCHOOL_ID = S.SCHOOL_ID AND SGL.IS_ACTIVE_IND = 1\n" +
+                "AND SGL.SCHOOL_YEAR = ? AND SGL.VALUE = ?) ORDER BY SCHOOL_NAME");
+        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(School.class), regionId, schoolYear, gradeLevel);
+    }
+
+    public School findSchoolById(Long schoolId) {
+        String sql = SCHOOL_SQL.concat(" WHERE SCHOOL_ID = ?");
+        return getJdbcTemplate().queryForObject(sql, new BeanPropertyRowMapper<>(School.class), schoolId);
     }
 
     public List<Region> getAllRegions() {
         return getJdbcTemplate().query(REGION_SQL, new BeanPropertyRowMapper<>(Region.class));
     }
 
-//    void findSchoolsByRegions(Long regionId) {}
-//    void findSchoolsByRegionAndCity() {Long regionId, String cityCode}
-//    void findSchoolsByGradeLevelAndRegionAndCity() {String gradeLevel, Long regionId, String cityCode}
+    public SchoolGradeLevel findGradeLevelInfo(Long schoolYear, Long schoolId, String gradeLevel) {
+        String sql = SCHOOL_GRADE_LEVELS.concat(" AND SCHOOL_YEAR = ? AND SCHOOL_ID = ? AND VALUE = ?");
+        List<SchoolGradeLevel> levels = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(SchoolGradeLevel.class), schoolYear, schoolId, gradeLevel);
+        return levels.isEmpty() ? null : levels.get(0);
+    }
 
 //    void findStudentDemographicsInfo() {}
-
 
 }

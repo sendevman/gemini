@@ -10,4 +10,6 @@ import org.springframework.data.repository.CrudRepository;
  * Time: 10:19 PM
  */
 public interface StudentRepository extends CrudRepository<StudentEntity, Long> {
+
+    StudentEntity findBySisStudentId(Long sisStudentId);
 }

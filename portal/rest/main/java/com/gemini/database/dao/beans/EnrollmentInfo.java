@@ -13,7 +13,7 @@ public class EnrollmentInfo {
     private Long schoolId;
     private Long schoolYear;
     private String gradeLevel;
-    private boolean supplementEduSvcInd;
+    private Integer supplementEduSvcInd;
     private Long studentId;
     private Long enrollmentId;
     private Long counserlorStaffId;
@@ -21,7 +21,7 @@ public class EnrollmentInfo {
     private String counserlorLastName;
     private String entryCd;
     private String entryCdDesc;
-    private boolean adaEligibleInd;
+    private Integer adaEligibleInd;
     private Date beginEnrollmentDate;
     private Date endEnrollmentDate;
     private String endStatusCd;
@@ -57,11 +57,11 @@ public class EnrollmentInfo {
         this.gradeLevel = gradeLevel;
     }
 
-    public boolean isSupplementEduSvcInd() {
+    public Integer getSupplementEduSvcInd() {
         return supplementEduSvcInd;
     }
 
-    public void setSupplementEduSvcInd(boolean supplementEduSvcInd) {
+    public void setSupplementEduSvcInd(Integer supplementEduSvcInd) {
         this.supplementEduSvcInd = supplementEduSvcInd;
     }
 
@@ -121,11 +121,11 @@ public class EnrollmentInfo {
         this.entryCdDesc = entryCdDesc;
     }
 
-    public boolean isAdaEligibleInd() {
+    public Integer getAdaEligibleInd() {
         return adaEligibleInd;
     }
 
-    public void setAdaEligibleInd(boolean adaEligibleInd) {
+    public void setAdaEligibleInd(Integer adaEligibleInd) {
         this.adaEligibleInd = adaEligibleInd;
     }
 

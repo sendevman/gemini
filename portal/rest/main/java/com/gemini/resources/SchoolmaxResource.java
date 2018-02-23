@@ -1,9 +1,11 @@
 package com.gemini.resources;
 
+import com.gemini.beans.forms.AddressBean;
 import com.gemini.beans.integration.ParentResponse;
+import com.gemini.beans.integration.RegionResponse;
+import com.gemini.beans.integration.SchoolResponse;
 import com.gemini.beans.integration.StudentResponse;
-import com.gemini.database.dao.beans.Parent;
-import com.gemini.database.dao.beans.Student;
+import com.gemini.database.dao.beans.*;
 import com.gemini.services.SchoolmaxService;
 import com.gemini.utils.CopyUtils;
 import com.gemini.utils.ValidationUtils;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,5 +68,34 @@ public class SchoolmaxResource {
 
     }
 
+    @RequestMapping(value = "/retrieve/regions")
+    public ResponseEntity<List<RegionResponse>> getAllRegions() {
+        List<Region> regions = smaxService.getAllRegions();
+        return ResponseEntity.ok(CopyUtils.convert(regions, RegionResponse.class));
+    }
+
+    @RequestMapping(value = "/retrieve/grade/levels")
+    public ResponseEntity<List<GradeLevel>> getGradeLevels() {
+        List<GradeLevel> levels = smaxService.getAllGradeLevels();
+        return ResponseEntity.ok(levels);
+    }
+
+    @RequestMapping(value = "/retrieve/school/{regionId}/grade/level/{gradeLevel}")
+    public ResponseEntity<List<SchoolResponse>> getSchoolByRegionAndGradeLevel(@PathVariable Long regionId, @PathVariable String gradeLevel) {
+        List<School> schools = smaxService.findSchoolByRegionAndGradeLevel(regionId, gradeLevel);
+        List<SchoolResponse> schoolReturned = new ArrayList<>();
+        for (School school : schools) {
+            SchoolResponse response = CopyUtils.convert(school, SchoolResponse.class);
+            //map address
+            AddressBean addressBean = response.getAddress();
+            addressBean.setLine1(school.getAddressLine_1());
+            addressBean.setLine2(school.getAddressLine_2());
+            addressBean.setCity(school.getCity());
+            addressBean.setZipcode(school.getZipCode());
+            schoolReturned.add(response);
+        }
+
+        return ResponseEntity.ok(schoolReturned);
+    }
 
 }

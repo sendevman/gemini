@@ -7,34 +7,50 @@ export default class Services {
     }
 
     //accounts
-    registerAccount(user){
+    registerAccount(user) {
         return this._post("/account/register", user);
     }
 
-    activateAccount(activationForm){
+    activateAccount(activationForm) {
         return this._post(`/account/activate`, activationForm);
     }
 
-    existsCode(code){
+    existsCode(code) {
         return this._getRaw(`/account/activate/${code}`);
     }
 
     //smax interface
-    searchStudent(criteria){
+    searchStudent(criteria) {
         return this._get(`/smax/interface/search/student/lastssn/${criteria.lastSSN}/student/number/${criteria.studentNumber}/dob/${criteria.dob}`);
     }
 
-    //pre-enrollment
-    savePreEnrollment(studentForm){
-        return this._post(`/enrollment/pre/save`, studentForm);
+    getRegions() {
+        return this._get(`/smax/interface/retrieve/regions`);
     }
 
-    getPreEnrollmentAddress(requestId){
+    getGradeLevels() {
+        return this._get(`/smax/interface/retrieve/grade/levels`);
+    }
+
+    getSchoolsByRegionAndGradeLevel(regionId, gradeLevel) {
+        return this._get(`/smax/interface/retrieve/school/${regionId}/grade/level/${gradeLevel}`);
+    }
+
+    //pre-enrollment
+    savePreEnrollment(form) {
+        return this._post(`/enrollment/pre/save`, form);
+    }
+
+    getPreEnrollmentAddress(requestId) {
         return this._get(`/enrollment/pre/${requestId}/address`);
     }
 
-    savePreEnrollmentAddress(addressForm){
+    savePreEnrollmentAddress(addressForm) {
         return this._post(`/enrollment/pre/${addressForm.requestId}/address/save`, addressForm);
+    }
+
+    submitPreEnrollment(form) {
+        return this._post(`/enrollment/pre/submit`, form);
     }
 
 
@@ -58,13 +74,15 @@ export default class Services {
     _post(path, body) {
         return fetch(buildUrl(path), {method: "POST", body: JSON.stringify(body), ...this._addHeader()})
             .then((response) => this._handleHttpCode(response))
-            .catch((e) => {});
+            .catch((e) => {
+            });
     }
 
     _put(path, body) {
         return fetch(buildUrl(path), {method: "PUT", body: JSON.stringify(body), ...this._addHeader()})
             .then((response) => this._handleHttpCode(response))
-            .catch((e) => {});
+            .catch((e) => {
+            });
     }
 
     _addHeader() {

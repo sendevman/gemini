@@ -1,5 +1,7 @@
 package com.gemini.database.jpa.entities;
 
+import com.gemini.beans.types.EntryType;
+import com.gemini.beans.types.Gender;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -19,6 +21,14 @@ public class StudentEntity {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EntryType entryType = EntryType.EXISTING_ENTRY;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Gender gender;
 
     @Column(nullable = false)
     private Long extStudentNumber = -1L;
@@ -59,6 +69,22 @@ public class StudentEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public EntryType getEntryType() {
+        return entryType;
+    }
+
+    public void setEntryType(EntryType entryType) {
+        this.entryType = entryType;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public Long getExtStudentNumber() {

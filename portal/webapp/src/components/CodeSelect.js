@@ -9,14 +9,37 @@ class CodeSelect extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {value: '-1'};
+        this.state = {value: "-1", selectedIndex: 0};
         this.onChange = this.onChange.bind(this);
     }
 
+    componentDidMount() {
+        this.populateValue(this.props.value);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.populateValue(nextProps.value)
+    }
+
+    populateValue(value) {
+        if (value) {
+            let selectedIndex = 0;
+            let options = this.refs.codeSelect.options;
+            for (let idx in options) {
+                if(options[idx].value === value){
+                    selectedIndex = idx;
+                    break;
+                }
+            }
+            this.setState({value: value, selectedIndex: selectedIndex})
+        }
+    }
+
     onChange(e) {
+        console.log("onChange***")
         e.persist();
         let value = e.target.value;
-        this.setState({value: value}, () => {
+        this.setState({value: value, selectedIndex: e.target.selectedIndex}, () => {
             if (this.props.onChange)
                 this.props.onChange(e)
         });
@@ -24,15 +47,8 @@ class CodeSelect extends Component {
     }
 
     valid() {
-        let valid = false;
-        for (let code of this.codes) {
-            if (this.props.value)
-                if (code.value === this.props.value) {
-                    valid = true;
-                    break;
-                }
-        }
-        return valid;
+        let selectedIndex = this.state.selectedIndex;
+        return selectedIndex > 0;
     }
 
     componentWillMount() {
@@ -107,7 +123,8 @@ class CodeSelect extends Component {
         return (
             <div className={formGroupCss}>
                 <label htmlFor={this.props.id}>{this.props.label}:</label>
-                <select className="form-control" {...elementProps} onChange={this.onChange} value={this.state.value}>
+                <select ref="codeSelect" className="form-control" {...elementProps} onChange={this.onChange}
+                        value={this.state.value}>
                     <option value="-1">{this.props.placeholder}</option>
                     {this.codes.map((code, i) => (
                         <option key={i} value={code.value}>{code.description}</option>

@@ -11,7 +11,7 @@ public class ResponseBase<T> {
     private String message;
     private boolean successfulOperation;
     private boolean errorOperation;
-    private T responseBean;
+    private T content;
 
     public ResponseBase() {
     }
@@ -48,6 +48,14 @@ public class ResponseBase<T> {
         this.errorOperation = errorOperation;
     }
 
+    public T getContent() {
+        return content;
+    }
+
+    public void setContent(T content) {
+        this.content = content;
+    }
+
     public static ResponseBase success(Long requestId) {
         ResponseBase base = new ResponseBase();
         base.successfulOperation = true;
@@ -58,7 +66,7 @@ public class ResponseBase<T> {
 
     public static <T> ResponseBase success(Long requestId, T responseBean) {
         ResponseBase base = success(requestId);
-        base.responseBean = responseBean;
+        base.content = responseBean;
         return base;
     }
 
