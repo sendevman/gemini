@@ -1,0 +1,114 @@
+package com.gemini.security;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: fran
+ * Date: 2/23/18
+ * Time: 3:14 PM
+ */
+@Configuration
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AuthenticationProvider authenticationProvider;
+
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/auth/**");
+//    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
+
+        http
+                .httpBasic()
+                .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
+                .and()
+                .authorizeRequests()
+                .antMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .csrf().csrfTokenRepository(csrfTokenRepository()).and()
+                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                })
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "X-XSRF-TOKEN");
+
+//        Session Management Config
+//        http.sessionManagement()
+//                .maximumSessions(10)
+//                .expiredSessionStrategy(sessionInformationExpiredEvent -> {
+//                    System.out.println(sessionInformationExpiredEvent.getSessionInformation().getPrincipal());
+//                })
+//                .sessionRegistry(sessionRegistry());
+
+//        Ip Restrictions Config
+    /*    http.authorizeRequests()
+                .antMatchers("/**")
+                .access("hasIpAddress('127.0.0.1/24')");*/
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider)
+                .authenticationEventPublisher(new AuthenticationEventImpl())
+                .eraseCredentials(true);
+    }
+
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    private CsrfTokenRepository csrfTokenRepository() {
+        HttpSessionCsrfTokenRepository csrfTokenRepository = new HttpSessionCsrfTokenRepository();
+        csrfTokenRepository.setHeaderName("X-XSRF-TOKEN");
+        return csrfTokenRepository;
+    }
+
+
+    @Bean
+    DaoAuthenticationProvider authenticationProvider(@Autowired PasswordEncoder passwordEncoder, @Autowired UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        return daoAuthenticationProvider;
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
+    }
+
+}

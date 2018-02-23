@@ -1,6 +1,6 @@
 package com.gemini.services;
 
-import com.gemini.beans.forms.UserBean;
+import com.gemini.beans.forms.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -27,7 +27,7 @@ public class MailService {
     private String publicUrl;
 
 
-    private SimpleMailMessage accountRegisterMail(UserBean user, String link) {
+    private SimpleMailMessage accountRegisterMail(User user, String link) {
         SimpleMailMessage registerMail = new SimpleMailMessage();
         registerMail.setFrom(fromEmail);
         registerMail.setTo(user.getEmail());
@@ -54,7 +54,7 @@ public class MailService {
         return mail;
     }
 
-    public boolean sendRegisterEmail(UserBean userBean, String activationCode) {
+    public boolean sendRegisterEmail(User userBean, String activationCode) {
         String link = String.format("%s/registro/activate/%s", publicUrl, activationCode);
         return send(accountRegisterMail(userBean, link));
     }

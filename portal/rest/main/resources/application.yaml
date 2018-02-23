@@ -36,8 +36,10 @@ spring:
     username: srs
     password: 12345678
     driver-class-name: com.mysql.jdbc.Driver
+
     hikari:
       maximum-pool-size: 30
+
   smaxDatasource:
     url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
     username: PRDE_TMAXIO1
@@ -45,7 +47,7 @@ spring:
     driver-class-name: oracle.jdbc.driver.OracleDriver
 security:
   basic:
-    enabled: false
+    enabled: true
 #    Since we are using GMAIL, we have to use the same email address because GMAIL doesn't allow to change the FROM property
 email:
   from: de.pentaho@gmail.com
