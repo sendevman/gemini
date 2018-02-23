@@ -4,6 +4,8 @@ import com.gemini.beans.integration.StudentResponse;
 import com.gemini.database.dao.beans.Student;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -29,51 +31,19 @@ public final class CopyUtils {
         return null;
     }
 
-    public static void main(String[] args) {
-//        int n = 100;
-//        while (n > 0) {
-//            System.out.println(generateActivationCode("rodriguez perez"));
-//            n--;
-//        }
-        Student bean = new Student();
-        bean.setFirstName("Francisco");
-        bean.setLastName("Palou Quezada");
-        StudentResponse response = CopyUtils.convert(bean, StudentResponse.class);
 
-        System.out.println(Stream.of("abc", null, "ghi", "jkl")
-                .filter(s -> s != null && !s.isEmpty())
-                .collect(joining(" ")));
-
-        System.out.println(response.getFirstName());
-        System.out.println(response.getFatherLastName());
-        System.out.println(response.getMotherLastName());
-
-    }
-
-    public static String generateActivationCode(String lastName) {
-        String output = lastName.substring(0, 2).toUpperCase();
-
-        byte[] array = new byte[24];
-        int randInt;
-
-        Random generator = new Random();
-
-        for (int ii = 0; ii < 24; ii++) {
-            randInt = generator.nextInt(62);  // 10 + 26 + 26 = 62  , gives range [0-61]
-            if (randInt <= 9) {
-                array[ii] = (byte) ((randInt + 48) & 0xFF);         //digits
-            } else {
-                if (randInt > 9 && randInt <= 35) {
-                    array[ii] = (byte) ((randInt + 55) & 0xFF); //uppercase letters
-                } else {
-                    array[ii] = (byte) ((randInt + 61) & 0xFF); //lowercase letters
-                }
+    public static <T, R> List<R> convert(List<T> object, Class<R> clazz) {
+        try {
+            List<R> list = new ArrayList<>();
+            for (T t : object) {
+                R dest = convert(t, clazz);
+                list.add(dest);
             }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        output = output.concat(new String(array));
-
-        return output;
+        return null;
     }
-
 
 }

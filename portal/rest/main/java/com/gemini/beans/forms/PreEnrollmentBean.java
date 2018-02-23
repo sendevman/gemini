@@ -14,6 +14,10 @@ public class PreEnrollmentBean{
     private RequestStatus requestStatus;
     private Long previousSchoolId;
     private String previousSchoolName;
+    private String previousGradeLevel;
+    private String nextGradeLevel;
+    private String nextGradeLevelDescription;
+    private AddressBean schoolAddress;
     private String gradeLevel;
     private Long schoolYear;
     private Long regionId = -1L;
@@ -22,6 +26,7 @@ public class PreEnrollmentBean{
     private Long schoolId = -1L;
     private Long extSchoolNumber = -1L;
     private String comments;
+    private boolean hasPreviousEnrollment;
 
     public Long getId() {
         return id;
@@ -53,6 +58,38 @@ public class PreEnrollmentBean{
 
     public void setPreviousSchoolName(String previousSchoolName) {
         this.previousSchoolName = previousSchoolName;
+    }
+
+    public String getPreviousGradeLevel() {
+        return previousGradeLevel;
+    }
+
+    public void setPreviousGradeLevel(String previousGradeLevel) {
+        this.previousGradeLevel = previousGradeLevel;
+    }
+
+    public String getNextGradeLevel() {
+        return nextGradeLevel;
+    }
+
+    public void setNextGradeLevel(String nextGradeLevel) {
+        this.nextGradeLevel = nextGradeLevel;
+    }
+
+    public String getNextGradeLevelDescription() {
+        return nextGradeLevelDescription;
+    }
+
+    public void setNextGradeLevelDescription(String nextGradeLevelDescription) {
+        this.nextGradeLevelDescription = nextGradeLevelDescription;
+    }
+
+    public AddressBean getSchoolAddress() {
+        return schoolAddress;
+    }
+
+    public void setSchoolAddress(AddressBean schoolAddress) {
+        this.schoolAddress = schoolAddress;
     }
 
     public String getGradeLevel() {
@@ -117,5 +154,13 @@ public class PreEnrollmentBean{
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public boolean isHasPreviousEnrollment() {
+        return hasPreviousEnrollment;
+    }
+
+    public void setHasPreviousEnrollment(boolean hasPreviousEnrollment) {
+        this.hasPreviousEnrollment = hasPreviousEnrollment;
     }
 }

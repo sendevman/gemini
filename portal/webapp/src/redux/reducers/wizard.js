@@ -8,7 +8,8 @@ const initialState = {
     nextLabel: null,
     percentage: 0,
     maxForms: 9,
-    flowNavigation: [0]
+    flowNavigation: [0],
+    wizardCompleted: false
 };
 
 const accountablePercentageForm = 4;
@@ -48,6 +49,8 @@ const wizard = (state = initialState, action) => {
                 previousLabel: btnType.previousButton,
                 nextLabel: btnType.nextButton
             };
+        case types.ON_WIZARD_COMPLETED:
+            return {...state, wizardCompleted: true};
         default:
             return state;
 

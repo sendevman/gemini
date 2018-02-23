@@ -1,14 +1,13 @@
 package com.gemini.services;
 
 import com.gemini.database.dao.SchoolmaxDao;
-import com.gemini.database.dao.beans.EnrollmentInfo;
-import com.gemini.database.dao.beans.Parent;
-import com.gemini.database.dao.beans.Student;
-import com.gemini.database.dao.beans.StudentAddress;
+import com.gemini.database.dao.beans.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,9 +17,28 @@ import java.util.Date;
  */
 @Service
 public class SchoolmaxService {
+
+    static Map<String, String> gradeLevels = new TreeMap<>();
+
+    static {
+        gradeLevels.put("PK", "Pre-Kinder");
+        gradeLevels.put("KG", "Kindergarten");
+        gradeLevels.put("01", "Primero");
+        gradeLevels.put("02", "Segundo");
+        gradeLevels.put("03", "Tercero");
+        gradeLevels.put("04", "Cuarto");
+        gradeLevels.put("05", "Quinto");
+        gradeLevels.put("06", "Sexto");
+        gradeLevels.put("07", "Septimo");
+        gradeLevels.put("08", "Octavo");
+        gradeLevels.put("09", "Noveno");
+        gradeLevels.put("10", "Decimo");
+        gradeLevels.put("11", "Undécimo");
+        gradeLevels.put("12", "Duodécimo");
+    }
+
     @Autowired
     private SchoolmaxDao smaxDao;
-
 
     public Parent retrieveHouseHeadInfo(String lastSsn, Date dob, String lastname) {
         return smaxDao.findHouseHead(lastSsn, dob, lastname);
@@ -42,6 +60,39 @@ public class SchoolmaxService {
         return smaxDao.findRecentStudentEnrollment(studentId);
     }
 
+    public School findSchoolById(Long schoolId) {
+        return smaxDao.findSchoolById(schoolId);
+    }
 
+    @Cacheable
+    public List<School> findSchoolByRegionAndGradeLevel(Long regionId, String gradeLevel) {
+        //todo: fran this should come from yaml or a config table
+        Long schoolYear = (PreEnrollmentService.PRE_ENROLLMENT_SCHOOL_YEAR - 1);
+        return smaxDao.findSchoolsByRegionAndGradeLevel(regionId, schoolYear, gradeLevel);
+    }
+
+    @Cacheable
+    public SchoolGradeLevel findSchoolLevel(Long schoolYear, Long schoolId, String gradeLevel) {
+        return smaxDao.findGradeLevelInfo(schoolYear, schoolId, gradeLevel);
+    }
+
+    @Cacheable
+    public List<Region> getAllRegions() {
+        return smaxDao.getAllRegions();
+    }
+
+    @Cacheable
+    public List<GradeLevel> getAllGradeLevels() {
+        return gradeLevels.entrySet()
+                .stream()
+                .sorted(Comparator.comparing(Map.Entry::getKey))
+                .map(gl -> new GradeLevel(gl.getKey(), gl.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    public GradeLevel getGradeLevelByCode(String code) {
+        String value = gradeLevels.get(code);
+        return value != null ? new GradeLevel(code, value) : null;
+    }
 
 }

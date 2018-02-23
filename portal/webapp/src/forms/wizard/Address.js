@@ -13,7 +13,6 @@ class Address extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
         this.inputHandler = this.inputHandler.bind(this);
         this.copyAddress = this.copyAddress.bind(this);
     }
@@ -29,7 +28,6 @@ class Address extends Component {
         let context = tokens[0];
         let id = tokens[1];
         form[context][id] = element.value;
-        this.setState({...this.state});
     }
 
     copyAddress(e) {
@@ -94,6 +92,7 @@ class Address extends Component {
             <div className="row">
                 <div className="col-md-12">
                     <TextInput type="addressLine" id={`${type}.line2`} label="Linea 2" placeholder="Linea 2"
+                               required={false}
                                value={address.line2} onChange={this.inputHandler}/>
                 </div>
             </div>
@@ -106,7 +105,7 @@ class Address extends Component {
                 <div className="col-md-4">
                     <CodeSelect id={`${type}.state`} label="Estado" placeholder="Seleccione Estado" codeType="states"
                                 value={"PR"}
-                                disabled={false} onChange={this.inputHandler}/>
+                                disabled={true} onChange={this.inputHandler}/>
                 </div>
 
                 <div className="col-md-4">

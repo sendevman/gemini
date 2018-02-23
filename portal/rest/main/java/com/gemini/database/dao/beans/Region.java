@@ -8,16 +8,16 @@ package com.gemini.database.dao.beans;
  */
 public class Region {
 
-    private String regionId;
+    private Long regionId;
     private String extZoneNumber;
     private String name;
     private String description;
 
-    public String getRegionId() {
+    public Long getRegionId() {
         return regionId;
     }
 
-    public void setRegionId(String regionId) {
+    public void setRegionId(Long regionId) {
         this.regionId = regionId;
     }
 

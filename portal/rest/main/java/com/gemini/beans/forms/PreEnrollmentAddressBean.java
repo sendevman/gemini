@@ -13,6 +13,12 @@ public class PreEnrollmentAddressBean {
     private AddressBean physical;
     private AddressBean postal;
 
+    public PreEnrollmentAddressBean() {
+    }
+
+    public PreEnrollmentAddressBean(Long preEnrollmentId) {
+        this.preEnrollmentId = preEnrollmentId;
+    }
 
     public Long getPreEnrollmentId() {
         return preEnrollmentId;

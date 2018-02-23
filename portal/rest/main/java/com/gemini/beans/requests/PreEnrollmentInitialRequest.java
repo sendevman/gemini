@@ -11,6 +11,7 @@ import java.util.Date;
  * Time: 10:08 PM
  */
 public class PreEnrollmentInitialRequest {
+    private Long requestId;
     private Long studentNumber;
     private String ssn;
     private String firstName;
@@ -19,6 +20,14 @@ public class PreEnrollmentInitialRequest {
     private String motherLastName;
     private Date dateOfBirth;
     private Gender gender;
+
+    public Long getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
+    }
 
     public Long getStudentNumber() {
         return studentNumber;

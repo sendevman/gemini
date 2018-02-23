@@ -32,6 +32,13 @@ class Home extends Component {
         this.props.load();
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.wizardCompleted){
+            this.props.history.push('/status')
+        }
+
+    }
+
     onError() {
         alert("Ha ocurrido un error")
     }
@@ -71,6 +78,10 @@ class Home extends Component {
     render() {
         let current = this.props.current;
         let student = this.props.student;
+        let preEnrollment = this.props.preEnrollment;
+        let enrollmentPredicate = preEnrollment && preEnrollment.hasPreviousEnrollment
+            ? `${preEnrollment.previousSchoolName} para el grado ${preEnrollment.nextGradeLevel}`
+            : "";
         let c = 0;
         this.wizardForms = [
             form("", <Question question="Tiene usted su hijo matriculado en Departamento de Educacion de PR"
@@ -84,9 +95,10 @@ class Home extends Component {
                 ref={`page${c++}`}/>),
             form("Informaci\u00f3n Personal", <PersonalInfo ref={`page${c++}`}/>),
             form("Direcci\u00f3n", <Address ref={`page${c++}`}/>),
-            form("", <Question question="Su estudiante permanecerá en la misma escuela" ref={`page${c++}`}/>),
+            form("", <Question question={`Su estudiante continuará en la escuela ${enrollmentPredicate}`}
+                               ref={`page${c++}`}/>),
             form("Matricula", <PreEnrollment ref={`page${c++}`}/>),
-            form("Someter Solicitud", <SubmitRequest history={this.props.history} ref={`page${c++}`}/>)
+            form("Someter Solicitud", <SubmitRequest ref={`page${c++}`}/>)
         ];
 
         return (<div>
@@ -138,8 +150,9 @@ function mapStateToProps(store) {
     return {
         current: store.wizard.current,
         wizard: store.wizard,
-        student: store.studentLookup.student
-
+        wizardCompleted: store.wizard.wizardCompleted,
+        student: store.studentLookup.student,
+        preEnrollment: store.studentInfo.preEnrollment
     };
 }
 

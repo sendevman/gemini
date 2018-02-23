@@ -2,8 +2,13 @@ import * as types from "../types";
 import services from "../setup";
 
 export const loadPersonalInfo = () => (dispatch, getState) => {
-    let student = getState().studentLookup.student;
-    dispatch({type: types.STUDENT_PERSONAL_INFO_LOAD, student: student})
+    let studentLookup = getState().studentLookup.student;
+    let studentPreEnrollment = getState().studentInfo.student;
+    let initialPreEnrollmentSaved = getState().studentInfo.initialPreEnrollmentSaved;
+    dispatch({
+        type: types.STUDENT_PERSONAL_INFO_LOAD,
+        student: initialPreEnrollmentSaved ? studentPreEnrollment : studentLookup
+    })
 };
 
 export const savePreEnrollment = (form, onResult, onError) => (dispatch) => {
@@ -61,4 +66,23 @@ export const saveAddress = (form, onResult, onError) => (dispatch, getState) => 
                 onError();
             }
         });
+};
+
+export const submitPreEnrollment = (form, onResult, onError) => (dispatch) => {
+    dispatch({type: types.PRE_ENROLLMENT_SUBMIT_START});
+    services()
+        .submitPreEnrollment(form)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.PRE_ENROLLMENT_SUBMIT_END, response: response});
+            try {
+                if (response.successfulOperation)
+                    onResult();
+                else
+                    onError();
+            } catch (e) {
+                onError();
+            }
+        });
+
 };

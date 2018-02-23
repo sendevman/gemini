@@ -2,6 +2,10 @@ package com.gemini.beans.forms;
 
 import com.gemini.beans.types.AddressType;
 
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.joining;
+
 /**
  * Created with IntelliJ IDEA.
  * User: fran
@@ -72,5 +76,11 @@ public class AddressBean {
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public String getAddressFormatted(){
+        return Stream.of(line1, line2, city, ",", country, zipcode)
+                .filter(s -> s != null && !s.isEmpty())
+                .collect(joining(" "));
     }
 }

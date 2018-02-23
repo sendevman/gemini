@@ -4,9 +4,7 @@
 import React, {Component} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-
-// import {withRouter} from 'react-router-dom'
-
+import {submitPreEnrollment} from "../../redux/actions";
 
 class SubmitRequest extends Component {
 
@@ -14,35 +12,45 @@ class SubmitRequest extends Component {
         super(props);
     }
 
-    onPress() {
-        this.props.history.push("/status")
-
+    onPress(onResult, onError) {
+        let requestId = this.props.requestId;
+        let form = this.props.preEnrollment;
+        let submitRequest = {requestId: requestId, schoolId: form.schoolId, nextGradeLevel: form.nextGradeLevel};
+        console.log(JSON.stringify(submitRequest));
+        this.props.submitPreEnrollment(submitRequest, onResult, onError);
     }
 
     render() {
+        let student = this.props.student;
+        let preEnrollment = this.props.preEnrollment;
         return (
             <div>
                 <div className="row">
                     <div className="col-md-12">
                         <blockquote>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                            <small>Someone famous in <cite title="Source Title">Source Title</cite></small>
+                            <p>Estudiante: {student && student.fullName}</p>
                         </blockquote>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-12">
                         <blockquote>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                            <small>Someone famous in <cite title="Source Title">Source Title</cite></small>
+                            <p>Sera pre-matriculado en la escuela: {preEnrollment.schoolName}</p>
+                        </blockquote>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-md-12">
+                        <blockquote>
+                            <p>Direccion de la escuela: {preEnrollment.schoolAddress}</p>
                         </blockquote>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-12">
                         <blockquote>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-                            <small>Someone famous in <cite title="Source Title">Source Title</cite></small>
+                            <p>Proximo Grado será: {preEnrollment.nextGradeLevelDescription}</p>
                         </blockquote>
                     </div>
                 </div>
@@ -51,11 +59,15 @@ class SubmitRequest extends Component {
 }
 
 function mapStateToProps(store) {
-    return {};
+    return {
+        requestId: store.studentInfo.requestId,
+        student: store.studentInfo.student,
+        preEnrollment: store.studentInfo.preEnrollment
+    };
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({}, dispatch)
+    return bindActionCreators({submitPreEnrollment}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(SubmitRequest);
