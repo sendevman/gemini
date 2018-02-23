@@ -9,7 +9,7 @@ package com.gemini.beans.forms;
  */
 public class PreEnrollmentAddressBean {
 
-    private Long preEnrollmentId;
+    private Long requestId;
     private AddressBean physical;
     private AddressBean postal;
 
@@ -17,15 +17,15 @@ public class PreEnrollmentAddressBean {
     }
 
     public PreEnrollmentAddressBean(Long preEnrollmentId) {
-        this.preEnrollmentId = preEnrollmentId;
+        this.requestId = preEnrollmentId;
     }
 
-    public Long getPreEnrollmentId() {
-        return preEnrollmentId;
+    public Long getRequestId() {
+        return requestId;
     }
 
-    public void setPreEnrollmentId(Long preEnrollmentId) {
-        this.preEnrollmentId = preEnrollmentId;
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
     }
 
     public AddressBean getPhysical() {

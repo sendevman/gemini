@@ -1,7 +1,7 @@
 package com.gemini.resources;
 
 import com.gemini.beans.responses.RegisterResponse;
-import com.gemini.beans.forms.UserBean;
+import com.gemini.beans.forms.User;
 import com.gemini.beans.requests.UserActivationRequest;
 import com.gemini.services.MailService;
 import com.gemini.services.UserService;
@@ -25,7 +25,7 @@ public class AccountResource {
     private UserService userService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<RegisterResponse> registerAccount(@RequestBody UserBean userBean) {
+    public ResponseEntity<RegisterResponse> registerAccount(@RequestBody User userBean) {
 
         //todo: form data validation
         if (userService.existsUser(userBean.getEmail())) {

@@ -1,7 +1,12 @@
 package com.gemini.beans.forms;
 
 import com.gemini.beans.types.RelationType;
+import org.springframework.security.core.CredentialsContainer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -10,7 +15,7 @@ import java.util.Date;
  * Date: 2/12/18
  * Time: 6:39 PM
  */
-public class UserBean {
+public class User implements UserDetails, CredentialsContainer {
 
     private Long id;
     private RelationType relationType;
@@ -22,6 +27,7 @@ public class UserBean {
     private String motherLastName;
     private Date dateOfBirth;
     private Date lastLogin;
+    private boolean enabled;
 
     public Long getId() {
         return id;
@@ -101,5 +107,44 @@ public class UserBean {
 
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public void eraseCredentials() {
+        this.password = null;
     }
 }

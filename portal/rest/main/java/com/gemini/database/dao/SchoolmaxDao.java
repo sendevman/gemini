@@ -207,6 +207,4 @@ public class SchoolmaxDao extends JdbcDaoSupport {
         return levels.isEmpty() ? null : levels.get(0);
     }
 
-//    void findStudentDemographicsInfo() {}
-
 }
