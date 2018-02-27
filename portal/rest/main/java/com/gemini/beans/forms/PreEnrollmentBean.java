@@ -2,31 +2,32 @@ package com.gemini.beans.forms;
 
 import com.gemini.beans.types.RequestStatus;
 
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * User: fran
  * Date: 2/21/18
  * Time: 11:58 AM
  */
-public class PreEnrollmentBean{
+public class PreEnrollmentBean {
 
     private Long id;
     private RequestStatus requestStatus;
-    private Long previousSchoolId;
-    private String previousSchoolName;
-    private String previousGradeLevel;
     private String nextGradeLevel;
     private String nextGradeLevelDescription;
     private AddressBean schoolAddress;
-    private String gradeLevel;
     private Long schoolYear;
     private Long regionId = -1L;
     private Long districtId = -1L;
     private String municipalityCode = "NONE";
     private Long schoolId = -1L;
+    private String schoolName;
     private Long extSchoolNumber = -1L;
     private String comments;
     private boolean hasPreviousEnrollment;
+    private Date submitDate;
+    private String studentFullName;
 
     public Long getId() {
         return id;
@@ -42,30 +43,6 @@ public class PreEnrollmentBean{
 
     public void setRequestStatus(RequestStatus requestStatus) {
         this.requestStatus = requestStatus;
-    }
-
-    public Long getPreviousSchoolId() {
-        return previousSchoolId;
-    }
-
-    public void setPreviousSchoolId(Long previousSchoolId) {
-        this.previousSchoolId = previousSchoolId;
-    }
-
-    public String getPreviousSchoolName() {
-        return previousSchoolName;
-    }
-
-    public void setPreviousSchoolName(String previousSchoolName) {
-        this.previousSchoolName = previousSchoolName;
-    }
-
-    public String getPreviousGradeLevel() {
-        return previousGradeLevel;
-    }
-
-    public void setPreviousGradeLevel(String previousGradeLevel) {
-        this.previousGradeLevel = previousGradeLevel;
     }
 
     public String getNextGradeLevel() {
@@ -90,14 +67,6 @@ public class PreEnrollmentBean{
 
     public void setSchoolAddress(AddressBean schoolAddress) {
         this.schoolAddress = schoolAddress;
-    }
-
-    public String getGradeLevel() {
-        return gradeLevel;
-    }
-
-    public void setGradeLevel(String gradeLevel) {
-        this.gradeLevel = gradeLevel;
     }
 
     public Long getSchoolYear() {
@@ -140,6 +109,14 @@ public class PreEnrollmentBean{
         this.schoolId = schoolId;
     }
 
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
     public Long getExtSchoolNumber() {
         return extSchoolNumber;
     }
@@ -162,5 +139,25 @@ public class PreEnrollmentBean{
 
     public void setHasPreviousEnrollment(boolean hasPreviousEnrollment) {
         this.hasPreviousEnrollment = hasPreviousEnrollment;
+    }
+
+    public Date getSubmitDate() {
+        return submitDate;
+    }
+
+    public void setSubmitDate(Date submitDate) {
+        this.submitDate = submitDate;
+    }
+
+    public String getStudentFullName() {
+        return studentFullName;
+    }
+
+    public void setStudentFullName(String studentFullName) {
+        this.studentFullName = studentFullName;
+    }
+
+    public String getRequestStatusText() {
+        return this.requestStatus != null ? this.requestStatus.getDescription() : RequestStatus.ACTIVE.getDescription();
     }
 }

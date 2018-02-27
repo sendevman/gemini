@@ -1,5 +1,7 @@
 package com.gemini.beans.integration;
 
+import com.gemini.utils.Utils;
+
 import java.util.Date;
 import java.util.Optional;
 import java.util.StringTokenizer;
@@ -115,9 +117,7 @@ public class StudentResponse {
     }
 
     public String getFullName() {
-        return Stream.of(firstName, middleName, fatherLastName, motherLastName)
-                .filter(s -> s != null && !s.isEmpty())
-                .collect(joining(" "));
+        return  Utils.toFullName(firstName, middleName, fatherLastName, motherLastName);
     }
 
 }

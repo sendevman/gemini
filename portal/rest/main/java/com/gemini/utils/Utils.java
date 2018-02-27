@@ -3,6 +3,10 @@ package com.gemini.utils;
 import org.springframework.util.StringUtils;
 
 import java.util.Random;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.joining;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,4 +46,11 @@ public final class Utils {
         motherLastName = StringUtils.capitalize(motherLastName.trim());
         return String.format("%s %s", fatherLastName, motherLastName);
     }
+
+    public static String toFullName(String... names) {
+        return Stream.of(names)
+                .filter(s -> s != null && !s.isEmpty())
+                .collect(joining(" "));
+    }
+
 }

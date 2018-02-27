@@ -3,10 +3,10 @@
  */
 
 import React, {Component} from "react";
-import RemoteCodeSelect from "../../components/RemoteCodeSelect";
+import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {getSchools, loadCodes} from "../../redux/actions";
+import {getSchools, loadCodes} from "../../../redux/actions";
 
 class PreEnrollment extends Component {
 
@@ -57,7 +57,7 @@ class PreEnrollment extends Component {
         form.schoolId = schoolObject.schoolId;
         if (form.schoolId !== "-1") {
             form.schoolName = schoolObject.schoolName;
-            form.schoolAddress = schoolObject.address.addressFormatted;
+            form.schoolAddress = schoolObject.address;
         }
         this.setState({selectedSchool: schoolObject});
     }
@@ -99,16 +99,6 @@ class PreEnrollment extends Component {
             </div>
 
             <div className="row">
-                <div className="col-md-2">
-                    <RemoteCodeSelect id="region"
-                                      label="Region"
-                                      placeholder="Seleccione Region"
-                                      onChange={this.regionChanged}
-                                      codes={regions}
-                                      target="regionId"
-                                      display="description"
-                                      value={form.regionId}/>
-                </div>
 
                 <div className="col-md-2">
                     <RemoteCodeSelect id="gradeLevel"
@@ -120,6 +110,18 @@ class PreEnrollment extends Component {
                                       display="displayName"
                                       value={form.nextGradeLevel}/>
                 </div>
+
+                <div className="col-md-2">
+                    <RemoteCodeSelect id="region"
+                                      label="Region"
+                                      placeholder="Seleccione Region"
+                                      onChange={this.regionChanged}
+                                      codes={regions}
+                                      target="regionId"
+                                      display="description"
+                                      value={form.regionId}/>
+                </div>
+
 
                 <div className="col-md-8">
                     <RemoteCodeSelect id="schools"

@@ -36,22 +36,21 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthenticationProvider authenticationProvider;
+    @Autowired
+    private AuthenticationEventImpl authenticationEvent;
 
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/auth/**");
-//    }
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/account/**");
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-
         http
                 .httpBasic()
                 .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().csrfTokenRepository(csrfTokenRepository()).and()
@@ -81,7 +80,7 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider)
-                .authenticationEventPublisher(new AuthenticationEventImpl())
+                .authenticationEventPublisher(authenticationEvent)
                 .eraseCredentials(true);
     }
 

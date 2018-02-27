@@ -4,7 +4,7 @@
 import React, {Component} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {submitPreEnrollment} from "../../redux/actions";
+import {submitPreEnrollment} from "../../../redux/actions";
 
 class SubmitRequest extends Component {
 
@@ -16,7 +16,6 @@ class SubmitRequest extends Component {
         let requestId = this.props.requestId;
         let form = this.props.preEnrollment;
         let submitRequest = {requestId: requestId, schoolId: form.schoolId, nextGradeLevel: form.nextGradeLevel};
-        console.log(JSON.stringify(submitRequest));
         this.props.submitPreEnrollment(submitRequest, onResult, onError);
     }
 
@@ -43,7 +42,7 @@ class SubmitRequest extends Component {
                 <div className="row">
                     <div className="col-md-12">
                         <blockquote>
-                            <p>Direccion de la escuela: {preEnrollment.schoolAddress}</p>
+                            <p>Direccion de la escuela: {preEnrollment.schoolAddress.addressFormatted}</p>
                         </blockquote>
                     </div>
                 </div>

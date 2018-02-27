@@ -1,9 +1,31 @@
+import fetch from "safe-fetch";
 import {buildUrl} from "../../Utils";
 
+fetch.cookieName = 'XSRF-TOKEN';
+fetch.headerName = 'X-XSRF-TOKEN';
+
+const DEFAULT_HEADERS = {
+    Accept: 'application/json',
+    "Content-Type": 'application/json'
+};
 export default class Services {
 
     constructor(store) {
         this.store = store;
+    }
+
+    //authentication
+    authenticate(credentials) {
+        return this._login("/auth", credentials);
+    }
+
+    logout() {
+        return this._securedPost("/logout", {});
+    }
+
+    //home
+    home() {
+        return this._get("/home");
     }
 
     //accounts
@@ -38,7 +60,7 @@ export default class Services {
 
     //pre-enrollment
     savePreEnrollment(form) {
-        return this._post(`/enrollment/pre/save`, form);
+        return this._securedPost(`/enrollment/pre/save`, form);
     }
 
     getPreEnrollmentAddress(requestId) {
@@ -46,13 +68,19 @@ export default class Services {
     }
 
     savePreEnrollmentAddress(addressForm) {
-        return this._post(`/enrollment/pre/${addressForm.requestId}/address/save`, addressForm);
+        return this._securedPost(`/enrollment/pre/${addressForm.requestId}/address/save`, addressForm);
     }
 
     submitPreEnrollment(form) {
-        return this._post(`/enrollment/pre/submit`, form);
+        return this._securedPost(`/enrollment/pre/submit`, form);
     }
 
+    _login(path, credentials) {
+        let authorization = `Basic ${btoa(credentials.username + ':' + credentials.password)}`;
+        return fetch(buildUrl(path), {...this._addHeader(authorization), credentials: "same-origin"})
+            .then((response) => this._handleHttpCode(response))
+
+    }
 
     _get(path) {
         return fetch(buildUrl(path), this._addHeader())
@@ -62,13 +90,32 @@ export default class Services {
             })
     }
 
-
     _getRaw(path) {
         return fetch(buildUrl(path), this._addHeader())
             .then((response) => this._handleHttpCode(response))
             .then((response) => response.text())
             .catch((e) => {
             })
+    }
+
+    _publicPost(path, body) {
+        return fetch(buildUrl(path), this._addHeader())
+            .then((response) => this._handleHttpCode(response))
+            .then((response) => response.text())
+            .catch((e) => {
+            })
+    }
+
+    _securedPost(path, body) {
+        return fetch(buildUrl(path), {
+            method: "POST",
+            ...this._addHeader(),
+            credentials: "same-origin",
+            body: JSON.stringify(body)
+        })
+            .then((response) => this._handleHttpCode(response))
+            .catch((e) => {
+            });
     }
 
     _post(path, body) {
@@ -85,35 +132,30 @@ export default class Services {
             });
     }
 
-    _addHeader() {
-        let user = this.store.getState().user;
-        console.log("adding header " + JSON.stringify(this.store.getState().user));
-        let token = user !== undefined && user.jwt;
-        return {
-            headers: token ? {"x-access-token": token} : {
-                Accept: 'application/json',
-                "Content-Type": 'application/json'
-            }
-        };
+    _addHeader(authorization) {
+        let headersObj = {headers: {...DEFAULT_HEADERS}};
+        console.log(JSON.stringify(headersObj));
+        if (authorization)
+            headersObj.headers.Authorization = authorization;
+        console.log(JSON.stringify(headersObj));
+        return headersObj;
     }
 
-    _handleHttpCode(response) {
+    _handleHttpCode(response, manageException = false) {
 
         let httpStatus = response.status;
         if ((httpStatus >= 200 && httpStatus < 300) || (httpStatus > 400 && httpStatus <= 403) || httpStatus === 423) {
             return response;
         } else {
-            console.log(`internal server error, error info: ${response.statusText}`);
-            let error = new Error(response.statusText);
-            error.response = response;
-            throw error;
-            /*
-             if (manageException) {
-             this.triggerError(error)
-             } else {
-             throw error;
-             }
-             */
+            console.log(`internal server error, error info: ${response && response.statusText}`);
+            let message = (response && response.statusText) || "unknown error"
+
+            if (manageException) {
+                console.log(message);
+                // this.triggerError(error)
+            } else {
+                throw new Error(message);
+            }
         }
     }
 

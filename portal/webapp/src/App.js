@@ -1,14 +1,16 @@
 import React, {Component} from "react";
 import {MenuItem, Nav, Navbar, NavDropdown} from "react-bootstrap";
-import {withRouter} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.min.css";
 import "./App.css";
 import Routes from "./Routes";
 import moment from "moment";
 import esLocale from "moment/locale/es";
 import {connect} from "react-redux";
+import {logout} from "./redux/actions";
 import * as types from "./redux/types";
 import ReduxBlockUi from 'react-block-ui/redux';
+import {bindActionCreators} from "redux";
 
 moment.updateLocale('es', esLocale);
 const baseContext = "srs";
@@ -18,11 +20,23 @@ class App extends Component {
         super(props);
         this.state = {showMenu: false};
         this.onRouteChanged = this.onRouteChanged.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
+        this.goToProfile = this.goToProfile.bind(this);
     }
 
     onRouteChanged(nextRoute) {
         this.setState({showMenu: nextRoute.pathname !== "/" && nextRoute.pathname !== "/registration"});
     };
+
+    handleLogout() {
+        this.props.logout(() => {
+            this.props.history.push(`/`);
+        });
+    }
+
+    goToProfile(){
+        this.props.history.push("/profile");
+    }
 
     componentDidMount() {
         //double check
@@ -51,15 +65,17 @@ class App extends Component {
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href={`/${baseContext}/home`}>Registro en Linea</a>
+                            <a href={`/${baseContext}/home`}>SRS Student Registration System</a>
                         </Navbar.Brand>
                     </Navbar.Header>
 
                     <Nav pullRight>
-                        <NavDropdown eventKey={3} title="Juan Del Pueblo" id="navbarResponsive">
-                            <MenuItem eventKey="profile" href={`/${baseContext}/profile`}>Perfil</MenuItem>
+                        <NavDropdown eventKey={3} title={this.props.fullName} id="navbarResponsive">
+                            <MenuItem eventKey="profile" onClick={this.goToProfile}>
+                                Perfil
+                            </MenuItem>
                             <MenuItem divider/>
-                            <MenuItem eventKey="logout" href={`/${baseContext}`}>
+                            <MenuItem eventKey="logout" onClick={this.handleLogout}>
                                 Salir
                             </MenuItem>
                         </NavDropdown>
@@ -74,4 +90,13 @@ class App extends Component {
 
 }
 
-export default withRouter(connect()(App));
+function mapStateToProps(store) {
+    return {fullName: store.login.user.fullName || "Sin Nombre"};
+}
+
+
+function mapDispatchToActions(dispatch) {
+    return bindActionCreators({logout}, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToActions)(App));

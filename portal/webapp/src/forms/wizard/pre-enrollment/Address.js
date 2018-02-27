@@ -3,9 +3,9 @@
  */
 import React, {Component} from "react";
 import {Button} from "react-bootstrap";
-import CodeSelect from "../../components/CodeSelect";
-import TextInput from "../../components/TextInput";
-import {copyPhysicalToPostal, loadAddress, saveAddress} from "../../redux/actions";
+import CodeSelect from "../../../components/CodeSelect";
+import TextInput from "../../../components/TextInput";
+import {copyPhysicalToPostal, loadAddress, saveAddress} from "../../../redux/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 

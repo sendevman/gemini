@@ -1,6 +1,7 @@
 package com.gemini.beans.forms;
 
 import com.gemini.beans.types.RelationType;
+import com.gemini.utils.Utils;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -146,5 +147,10 @@ public class User implements UserDetails, CredentialsContainer {
     @Override
     public void eraseCredentials() {
         this.password = null;
+    }
+
+
+    public String getFullName() {
+        return Utils.toFullName(firstName, middleName, fatherLastName, motherLastName);
     }
 }

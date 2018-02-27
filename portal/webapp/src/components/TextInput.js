@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import * as Utils from "../Utils";
+import PropTypes from "prop-types";
 
 let onlyLetter = /^[^0-9]*$/;
 let onlyNumber = /^[0-9]*$/;
@@ -21,10 +22,11 @@ let field = {
 };
 
 //TODO: fran check when lost focus weird behaviour
-export default class TextInput extends Component {
+class TextInput extends Component {
 
     static defaultProps = {
         required: true,
+        includeLabel: true
     };
 
     constructor(props) {
@@ -103,9 +105,9 @@ export default class TextInput extends Component {
             : this.state.value;
 
         this.setState({value: value, hasError: this.hasError(value)}, () => {
-            this.editing = false;
             if (this.props.onChange)
                 this.props.onChange(e);
+            this.editing = false;
         });
 
     }
@@ -117,9 +119,14 @@ export default class TextInput extends Component {
         let props = Object.assign({}, this.props);
         if (this.config.max || this.config.length)
             props = {...props, maxLength: this.config.max || this.config.length};
+
+        let label = this.props.includeLabel
+            ? `${this.props.label || this.props.placeholder}:`
+            : '';
+        delete  props.includeLabel;
         return (
             <div className={groupClass}>
-                <label htmlFor={this.props.id}>{this.props.label || this.props.placeholder}:</label>
+                {this.props.includeLabel ? (<label htmlFor={this.props.id}>{label}</label>) : (null)}
                 <input {...props}
                        type={isPassword ? "password" : "text"}
                        className="form-control"
@@ -131,3 +138,10 @@ export default class TextInput extends Component {
 
 
 }
+
+TextInput.propTypes = {
+    required: PropTypes.bool,
+    includeLabel: PropTypes.bool
+};
+
+export default TextInput;

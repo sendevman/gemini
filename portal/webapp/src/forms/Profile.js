@@ -2,8 +2,9 @@
  * Created by fran on 2/6/18.
  */
 import React, {Component} from "react";
+import {connect} from "react-redux";
 
-export default class Profile extends Component {
+class Profile extends Component {
 
     constructor(props) {
         super(props);
@@ -21,7 +22,7 @@ export default class Profile extends Component {
             <div className="row">
                 <div className="col-md-6">
                     <label>Nombre:</label>
-                    <p className="text">Juan del Pueblo</p>
+                    <p className="text">{this.props.fullName}</p>
                 </div>
                 <div className="col-md-6">
                     <label>Genero:</label>
@@ -48,7 +49,7 @@ export default class Profile extends Component {
                 <div className="col-md-6">
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
-                        <input type="text" className="form-control" id="email" placeholder="Email"/>
+                        <input type="text" className="form-control" id="email" placeholder="Email" value={this.props.email} disabled/>
                     </div>
                 </div>
                 <div className="col-md-6">
@@ -75,3 +76,13 @@ export default class Profile extends Component {
         </div>);
     }
 }
+
+function mapStateToProps(store) {
+    return {
+        fullName: store.login.user.fullName || "Sin Nombre",
+        email: store.login.user.email
+    };
+}
+
+export default connect(mapStateToProps)(Profile);
+

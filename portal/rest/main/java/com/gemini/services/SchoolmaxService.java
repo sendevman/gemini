@@ -1,8 +1,9 @@
 package com.gemini.services;
 
-import com.gemini.database.dao.SchoolmaxDao;
+import com.gemini.database.dao.SchoolMaxDaoInterface;
 import com.gemini.database.dao.beans.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,8 @@ public class SchoolmaxService {
     }
 
     @Autowired
-    private SchoolmaxDao smaxDao;
+    @Qualifier("mockSchoolMaxDao")
+    private SchoolMaxDaoInterface smaxDao;
 
     public Parent retrieveHouseHeadInfo(String lastSsn, Date dob, String lastname) {
         return smaxDao.findHouseHead(lastSsn, dob, lastname);

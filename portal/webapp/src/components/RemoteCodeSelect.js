@@ -13,8 +13,18 @@ class RemoteCodeSelect extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.value)
-            this.setState({value: nextProps.value})
+        if (nextProps.value) {
+            let options = this.refs.codeSelect.options;
+            let selectedIndex = 0;
+            for (let idx in options) {
+                if (options[idx].value === nextProps.value) {
+                    selectedIndex = idx;
+                    break;
+                }
+            }
+
+            this.setState({value: nextProps.value, selectedIndex: selectedIndex})
+        }
     }
 
     onChange(e) {
@@ -47,11 +57,12 @@ class RemoteCodeSelect extends Component {
         let displayKey = this.props.display;
         let targetKey = this.props.target;
 
-        delete elementProps.codeType;
+        delete elementProps.onObjectChange;
         return (
             <div className={formGroupCss}>
                 <label htmlFor={this.props.id}>{this.props.label || this.props.placeholder}:</label>
-                <select className="form-control" {...elementProps} onChange={this.onChange} value={this.state.value}>
+                <select ref="codeSelect" className="form-control" {...elementProps} onChange={this.onChange}
+                        value={this.state.value}>
                     <option value="-1">{this.props.placeholder}</option>
                     {codes && codes.map((code, i) => (
                         <option key={i} value={code[targetKey]}>{code[displayKey]}</option>

@@ -16,6 +16,8 @@ class Activation extends Component {
         };
         this.inputHandler = this.inputHandler.bind(this);
         this.activate = this.activate.bind(this);
+        this.validForm = this.validForm.bind(this);
+
     }
 
     componentWillMount() {
@@ -27,9 +29,7 @@ class Activation extends Component {
         let form = this.state.form;
         let element = e.target;
         form[element.id] = element.value;
-        this.setState({...this.state, form: form}, () => {
-            this.validForm();
-        });
+        this.validForm();
     }
 
     validForm() {
@@ -70,7 +70,7 @@ class Activation extends Component {
                             <TextInput id="password" type="password" label="Contraseña" placeholder="Contraseña"
                                        ref="password"
                                        onChange={this.inputHandler}
-                                       value={form.firstName}/>
+                                       value={form.password}/>
                         </div>
                     </div>
                     <div className="row">
@@ -79,7 +79,7 @@ class Activation extends Component {
                                        placeholder="Confirmar Contraseña"
                                        ref="confirmPassword"
                                        onChange={this.inputHandler}
-                                       value={form.firstName}/>
+                                       value={form.confirmPassword}/>
                         </div>
                     </div>
                     <div className="row">

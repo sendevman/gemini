@@ -3,6 +3,7 @@ package com.gemini.services;
 import com.gemini.beans.forms.AddressBean;
 import com.gemini.beans.forms.PreEnrollmentAddressBean;
 import com.gemini.beans.forms.PreEnrollmentBean;
+import com.gemini.beans.forms.User;
 import com.gemini.beans.requests.PreEnrollmentInitialRequest;
 import com.gemini.beans.requests.PreEnrollmentSubmitRequest;
 import com.gemini.beans.types.AddressType;
@@ -13,6 +14,8 @@ import com.gemini.database.dao.beans.*;
 import com.gemini.database.jpa.entities.AddressEntity;
 import com.gemini.database.jpa.entities.PreEnrollmentRequestEntity;
 import com.gemini.database.jpa.entities.StudentEntity;
+import com.gemini.database.jpa.entities.UserEntity;
+import com.gemini.database.jpa.jdbc.CommonDao;
 import com.gemini.database.jpa.respository.AddressRepository;
 import com.gemini.database.jpa.respository.PreEnrollmentRepository;
 import com.gemini.database.jpa.respository.StudentRepository;
@@ -21,6 +24,9 @@ import com.gemini.utils.Utils;
 import com.gemini.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,6 +49,8 @@ public class PreEnrollmentService {
     private StudentRepository studentRepository;
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private CommonDao commonDao;
 
     public boolean validAddressForRequestId(Long id, AddressBean physical, AddressBean postal) {
         boolean valid = false;
@@ -72,22 +80,25 @@ public class PreEnrollmentService {
         return addressBean;
     }
 
-    public boolean exists(PreEnrollmentInitialRequest request) {
+    public boolean exists(PreEnrollmentInitialRequest request, User loggedUser) {
         boolean exists = false;
         if (ValidationUtils.valid(request.getRequestId())) {
             exists = preEnrollmentRepository.exists(request.getRequestId());
         }
         if (!exists && ValidationUtils.valid(request.getStudentNumber())) {
-            exists = preEnrollmentRepository.existsByStudentId(request.getStudentNumber());
+            exists = preEnrollmentRepository.existsByStudentNumber(request.getStudentNumber());
         }
         return exists;
     }
 
-    public PreEnrollmentBean createPreEnrollment(PreEnrollmentInitialRequest request) {
+    public PreEnrollmentBean createPreEnrollment(PreEnrollmentInitialRequest request, User loggedUser) {
         PreEnrollmentBean preEnrollmentBean = null;
         PreEnrollmentRequestEntity entity = new PreEnrollmentRequestEntity();
-        entity.setSchoolYear(PRE_ENROLLMENT_SCHOOL_YEAR);
         Long studentNumber = request.getStudentNumber();
+        UserEntity parent = CopyUtils.convert(loggedUser, UserEntity.class);
+
+        entity.setParent(parent);
+        entity.setSchoolYear(PRE_ENROLLMENT_SCHOOL_YEAR);
         Student student = null;
         StudentAddress address = null;
         if (studentNumber != null && studentNumber > 0L) {
@@ -149,32 +160,58 @@ public class PreEnrollmentService {
         requestEntity.setDistrictId(school.getDistrictId());
         requestEntity.setMunicipalityCode(school.getCityCd());
         requestEntity.setRequestStatus(RequestStatus.PENDING_TO_REVIEW);
+        requestEntity.setSubmitDate(commonDao.getCurrentDate());
         requestEntity = preEnrollmentRepository.save(requestEntity);
         return requestEntity != null;
     }
 
-    public boolean updatePreEnrollment(PreEnrollmentInitialRequest request) {
-        boolean updated = true;
-        PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
-        StudentEntity entity = studentRepository.findOne(requestEntity.getStudent().getId());
+    public PreEnrollmentBean updatePreEnrollment(PreEnrollmentInitialRequest request) {
+        PreEnrollmentBean response = null;
+        PreEnrollmentRequestEntity requestEntity;
+        if (request.getRequestId() != null && request.getRequestId() > 0L)
+            requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
+        else
+            requestEntity = preEnrollmentRepository.findByStudentNumber(request.getStudentNumber());
+        StudentEntity studentEntity = studentRepository.findOne(requestEntity.getStudent().getId());
         //todo: check if personal data will be able to modified on found students
-        if (EntryType.NEW_ENTRY.equals(entity.getEntryType())) {
-            entity.setFirstName(request.getFirstName());
-            entity.setMiddleName(request.getMiddleName());
-            entity.setLastName(Utils.toLastName(request.getFatherLastName(), request.getMotherLastName()));
-            entity.setDateOfBirth(request.getDateOfBirth());
-            entity.setGender(request.getGender());
-            entity = studentRepository.save(entity);
-            updated = entity != null;
+        if (EntryType.NEW_ENTRY.equals(studentEntity.getEntryType())) {
+            studentEntity.setFirstName(request.getFirstName());
+            studentEntity.setMiddleName(request.getMiddleName());
+            studentEntity.setLastName(Utils.toLastName(request.getFatherLastName(), request.getMotherLastName()));
+            studentEntity.setDateOfBirth(request.getDateOfBirth());
+            studentEntity.setGender(request.getGender());
+            studentEntity = studentRepository.save(studentEntity);
+        }
+        if (requestEntity != null) {
+            response = CopyUtils.convert(requestEntity, PreEnrollmentBean.class);
+            School school = setNextEnrollmentSchoolInfo(requestEntity.getSchoolId(), response, requestEntity.getPreviousGradeLevel(), requestEntity.getPreviousEnrollmentYear());
+            response.setHasPreviousEnrollment(school != null);
         }
 
-        return updated;
+        return requestEntity != null && response != null ? response : null;
     }
 
     public boolean updateStudentAddress(AddressBean address) {
         AddressEntity entity = CopyUtils.convert(address, AddressEntity.class);
         entity = save(entity);
         return entity != null;
+    }
+
+    public List<PreEnrollmentBean> findPreEnrollmentByUser(User loggedUser) {
+        List<PreEnrollmentRequestEntity> entities = preEnrollmentRepository.findByParentId(loggedUser.getId());
+        if (entities != null) {
+            List<PreEnrollmentBean> list = new ArrayList<>();
+            for (PreEnrollmentRequestEntity entity : entities) {
+                PreEnrollmentBean enrollmentBean = CopyUtils.convert(entity, PreEnrollmentBean.class);
+                StudentEntity studentEntity = entity.getStudent();
+                String fullName = Utils.toFullName(studentEntity.getFirstName(), studentEntity.getMiddleName(), studentEntity.getLastName());
+                enrollmentBean.setStudentFullName(fullName);
+                list.add(enrollmentBean);
+            }
+            return list;
+
+        }
+        return null;
     }
 
     private StudentEntity save(Student bean, AddressEntity postal, AddressEntity physical) {
@@ -227,12 +264,13 @@ public class PreEnrollmentService {
         //validating if the schoolYear enrolled is the current school year
         if (school != null) {
             SchoolGradeLevel gradeLevelInfo = smaxService.findSchoolLevel(previousSchoolYear, schoolId, previousGradeLevel);
-            enrollmentBean.setPreviousSchoolId(schoolId);
-            enrollmentBean.setPreviousSchoolName(school.getSchoolName());
+            enrollmentBean.setSchoolId(schoolId);
+            enrollmentBean.setSchoolName(school.getSchoolName());
+            enrollmentBean.setSchoolAddress(CopyUtils.createAddressBean(school));
             if (gradeLevelInfo != null) {
                 GradeLevel gradeLevel = smaxService.getGradeLevelByCode(gradeLevelInfo.getNextYearGrade());
                 enrollmentBean.setNextGradeLevel(gradeLevel.getName());
-                enrollmentBean.setNextGradeLevelDescription(gradeLevel.getDescription());
+                enrollmentBean.setNextGradeLevelDescription(gradeLevel.getDisplayName());
             }
         }
         return school;

@@ -3,11 +3,11 @@
  */
 
 import React, {Component} from "react";
-import DateInput from "../../components/DateInput";
-import TextInput from "../../components/TextInput";
+import DateInput from "../../../components/DateInput";
+import TextInput from "../../../components/TextInput";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {searchStudent} from "../../redux/actions";
+import {searchStudent} from "../../../redux/actions";
 
 class StudentIdentification extends Component {
 
