@@ -1,9 +1,12 @@
 package com.gemini.services;
 
 import com.gemini.beans.forms.User;
+import com.gemini.beans.internal.FailureLogin;
 import com.gemini.beans.requests.UserActivationRequest;
-import com.gemini.beans.types.RelationType;
+import com.gemini.database.jpa.entities.FailureLoginLogEntity;
 import com.gemini.database.jpa.entities.UserEntity;
+import com.gemini.database.jpa.jdbc.CommonDao;
+import com.gemini.database.jpa.respository.FailureLoginLogRepository;
 import com.gemini.database.jpa.respository.UserRepository;
 import com.gemini.utils.CopyUtils;
 import com.gemini.utils.DateUtils;
@@ -33,6 +36,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private FailureLoginLogRepository failureLoginLogRepository;
+    @Autowired
+    private CommonDao commonDao;
+    @Autowired
     private PasswordEncoder passwordEncoder;
     private Long expireInHours = 48L;
 
@@ -48,16 +55,6 @@ public class UserService {
     }
 
     public User findUserByUsernameForAuth(String username) {
-//        UserEntity u = new UserEntity();
-//        u.setEmail("bla@g.com");
-//        u.setPassword(passwordEncoder.encode("123"));
-//        u.setFirstName("Bla");
-//        u.setLastName("Bla");
-//        u.setRelationType(RelationType.FATHER);
-//        u.setDateOfBirth(new Date());
-//        u.setEnabled(true);
-//        userRepository.save(u);
-//
         UserEntity entity = userRepository.findByEmailAndEnabledTrueAndActivationKeyIsNull(username);
         if (entity == null)
             return null;
@@ -80,7 +77,7 @@ public class UserService {
             entity.setPassword(pwd);
             entity.setEnabled(true);
             entity.setActivationKey(null);
-            entity.setActivationDate(new Date());
+            entity.setActivationDate(commonDao.getCurrentDate());
             entity = userRepository.save(entity);
             activate = entity != null;
         }
@@ -103,10 +100,21 @@ public class UserService {
         return entity != null ? activationKey : null;
     }
 
+    public void saveLastLogin(User user) {
+        UserEntity entity = userRepository.findOne(user.getId());
+        entity.setLastLogin(commonDao.getCurrentDate());
+        userRepository.save(entity);
+    }
+
+    public void saveFailureLogin(FailureLogin failureLogin) {
+        FailureLoginLogEntity loginLogEntity = CopyUtils.convert(failureLogin, FailureLoginLogEntity.class);
+        failureLoginLogRepository.save(loginLogEntity);
+    }
+
     public void saveSentActivationResult(String email, boolean result) {
         UserEntity entity = userRepository.findByEmail(email);
         Date expireActivation = toDate(LocalDateTime.now().plus(expireInHours, ChronoUnit.HOURS));
-        entity.setActivationCodeSent(result ? new Date() : null);
+        entity.setActivationCodeSent(result ? commonDao.getCurrentDate() : null);
         entity.setActivationKeyExpireDate(result ? expireActivation : null);
         userRepository.save(entity);
     }

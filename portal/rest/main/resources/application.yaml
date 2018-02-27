@@ -1,11 +1,19 @@
 server:
   context-path: /api
   port: 8081
+  session:
+    timeout: 600  # in seconds
+    cookie:
+      max-age: 600 # in seconds
+    
+management:
+  port: 8083
+  security:
+    enabled: false
 
 spring:
   main:
     web-environment: true
-
 
   mail:
     host: smtp.gmail.com
@@ -36,7 +44,6 @@ spring:
     username: srs
     password: 12345678
     driver-class-name: com.mysql.jdbc.Driver
-
     hikari:
       maximum-pool-size: 30
 
@@ -53,5 +60,6 @@ email:
   from: de.pentaho@gmail.com
 website:
   url: localhost:3000
+  context-path: /srs
 
 
