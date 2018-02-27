@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,7 +23,7 @@ public class UserEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column
     private RelationType relationType;
 
     @Column(nullable = false)
@@ -31,16 +32,16 @@ public class UserEntity {
     @Column
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private String firstName;
 
     @Column
     private String middleName;
 
-    @Column(nullable = false)
+    @Column
     private String lastName;
 
-    @Column(nullable = false)
+    @Column
     private Date dateOfBirth;
 
     @Column
@@ -66,6 +67,9 @@ public class UserEntity {
 
     @Column
     private boolean credentialsNonExpired = true;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PreEnrollmentRequestEntity> requests;
 
     //todo: fran change this on ORACLE
     @CreatedDate
@@ -201,6 +205,14 @@ public class UserEntity {
 
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {
         this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public List<PreEnrollmentRequestEntity> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(List<PreEnrollmentRequestEntity> requests) {
+        this.requests = requests;
     }
 
     public Date getCreationDate() {

@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: fran
@@ -14,6 +16,13 @@ import org.springframework.data.repository.query.Param;
 public interface PreEnrollmentRepository extends CrudRepository<PreEnrollmentRequestEntity, Long> {
 
     @Query(value = "select CASE WHEN COUNT(e) > 0 THEN true ELSE false END from PreEnrollmentRequestEntity e  " +
-            "inner join e.student s where s.sisStudentId = :studentNumber")
-    boolean existsByStudentId(@Param("studentNumber") Long studentNumber);
+            "inner join e.student s where s.extStudentNumber = :studentNumber")
+    boolean existsByStudentNumber(@Param("studentNumber") Long studentNumber);
+
+    @Query(value = "select e from PreEnrollmentRequestEntity e " +
+            " inner join e.student s where s.extStudentNumber = :studentNumber")
+    PreEnrollmentRequestEntity findByStudentNumber(@Param("studentNumber") Long studentNumber);
+
+    List<PreEnrollmentRequestEntity> findByParentId(@Param("parentId") Long parentId);
+
 }

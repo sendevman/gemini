@@ -25,6 +25,9 @@ public class PreEnrollmentRequestEntity {
     @Column(nullable = false)
     private RequestStatus requestStatus = RequestStatus.ACTIVE;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private UserEntity parent;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
     private StudentEntity student;
@@ -59,8 +62,11 @@ public class PreEnrollmentRequestEntity {
     @Column(nullable = false)
     private Long extSchoolNumber = -1L;
 
-    @Column()
+    @Column
     private String comments;
+
+    @Column
+    private Date submitDate;
 
     @CreatedDate
     @Column(nullable = false, updatable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
@@ -83,6 +89,14 @@ public class PreEnrollmentRequestEntity {
 
     public void setRequestStatus(RequestStatus requestStatus) {
         this.requestStatus = requestStatus;
+    }
+
+    public UserEntity getParent() {
+        return parent;
+    }
+
+    public void setParent(UserEntity parent) {
+        this.parent = parent;
     }
 
     public StudentEntity getStudent() {
@@ -179,6 +193,14 @@ public class PreEnrollmentRequestEntity {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public Date getSubmitDate() {
+        return submitDate;
+    }
+
+    public void setSubmitDate(Date submitDate) {
+        this.submitDate = submitDate;
     }
 
     public Date getCreationDate() {

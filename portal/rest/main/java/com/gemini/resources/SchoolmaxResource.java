@@ -86,12 +86,7 @@ public class SchoolmaxResource {
         List<SchoolResponse> schoolReturned = new ArrayList<>();
         for (School school : schools) {
             SchoolResponse response = CopyUtils.convert(school, SchoolResponse.class);
-            //map address
-            AddressBean addressBean = response.getAddress();
-            addressBean.setLine1(school.getAddressLine_1());
-            addressBean.setLine2(school.getAddressLine_2());
-            addressBean.setCity(school.getCity());
-            addressBean.setZipcode(school.getZipCode());
+            response.setAddress(CopyUtils.createAddressBean(school));
             schoolReturned.add(response);
         }
 

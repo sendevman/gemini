@@ -18,8 +18,8 @@ import java.util.List;
  * Date: 2/9/18
  * Time: 12:57 AM
  */
-@Repository
-public class SchoolmaxDao extends JdbcDaoSupport {
+@Repository("realSchoolMaxDao")
+public class SchoolMaxDaoImpl extends JdbcDaoSupport implements SchoolMaxDaoInterface {
     @Autowired
     @Qualifier(value = "smaxDatasource")
     DataSource smaxDatasource;
@@ -153,36 +153,42 @@ public class SchoolmaxDao extends JdbcDaoSupport {
         setDataSource(smaxDatasource);
     }
 
+    @Override
     public Parent findHouseHead(String lastSsn, Date dob, String lastname) {
         String sql = PARENT_SQL.concat(" AND SUBSTR(A.SSN, -4) = ? AND DATE_OF_BIRTH = ? and LAST_NAME like '" + lastname + "%'");
         List<Parent> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(Parent.class), lastSsn, dob);
         return list.isEmpty() ? null : list.get(0);
     }
 
+    @Override
     public Student findStudent(String lastSsn, Date dob, Long studentNumber) {
         String sql = STUDENT_SQL.concat(" AND SUBSTR(A.SSN, -4) = ? AND DATE_OF_BIRTH = ? and EXT_STUDENT_NUMBER = ?");
         List<Student> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(Student.class), lastSsn, dob, studentNumber);
         return list.isEmpty() ? null : list.get(0);
     }
 
+    @Override
     public Student findStudent(Long studentNumber) {
         String sql = STUDENT_SQL.concat(" AND EXT_STUDENT_NUMBER = ?");
         List<Student> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(Student.class), studentNumber);
         return list.isEmpty() ? null : list.get(0);
     }
 
+    @Override
     public StudentAddress findAddress(Long studentNumber) {
         String sql = STUDENT_ADDRESS_SQL.concat(" AND EXT_STUDENT_NUMBER = ? ");
         List<StudentAddress> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(StudentAddress.class), studentNumber);
         return list.isEmpty() ? null : list.get(0);
     }
 
+    @Override
     public EnrollmentInfo findRecentStudentEnrollment(Long studentId) {
         String sql = ENROLLMENT_SQL.concat(" WHERE ENROLLMENT_ID = (SELECT MAX(ENROLLMENT_ID) FROM VW_SIE_STUDENT_ENROLLMENT WHERE STUDENT_ID = ? )");
         List<EnrollmentInfo> enrollments = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(EnrollmentInfo.class), studentId);
         return enrollments.isEmpty() ? null : enrollments.get(0);
     }
 
+    @Override
     public List<School> findSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel) {
         String sql = SCHOOL_SQL.concat(" WHERE S.IS_ACTIVE_IND = 1 " +
                 "AND C.DISTRICT_ZONE_ID = ? " +
@@ -192,15 +198,18 @@ public class SchoolmaxDao extends JdbcDaoSupport {
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(School.class), regionId, schoolYear, gradeLevel);
     }
 
+    @Override
     public School findSchoolById(Long schoolId) {
         String sql = SCHOOL_SQL.concat(" WHERE SCHOOL_ID = ?");
         return getJdbcTemplate().queryForObject(sql, new BeanPropertyRowMapper<>(School.class), schoolId);
     }
 
+    @Override
     public List<Region> getAllRegions() {
         return getJdbcTemplate().query(REGION_SQL, new BeanPropertyRowMapper<>(Region.class));
     }
 
+    @Override
     public SchoolGradeLevel findGradeLevelInfo(Long schoolYear, Long schoolId, String gradeLevel) {
         String sql = SCHOOL_GRADE_LEVELS.concat(" AND SCHOOL_YEAR = ? AND SCHOOL_ID = ? AND VALUE = ?");
         List<SchoolGradeLevel> levels = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(SchoolGradeLevel.class), schoolYear, schoolId, gradeLevel);

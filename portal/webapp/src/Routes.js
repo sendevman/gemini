@@ -4,11 +4,11 @@
 import React, {Component} from "react";
 import Authentication from "./forms/Authentication";
 import Home from "./forms/Home";
+import Wizard from "./forms/wizard/Wizard";
 import NotFoundPage from "./NotFoundPage";
 import {Route, Switch, withRouter} from "react-router-dom";
 import Registration from "./forms/registration/Registration";
 import Activation from "./forms/registration/Activation";
-import StatusForm from "./forms/StatusForm";
 import Profile from "./forms/Profile";
 import Result from "./forms/registration/Result";
 
@@ -24,11 +24,13 @@ class Routes extends Component {
         return (
             <Switch>
                 <Route exact path="/" component={Authentication}/>
-                <Route path="/home" component={Home}/>
+                {/*public routes*/}
                 <Route path="/registration" component={Registration}/>
                 <Route path="/activate/result/:result(success|error)" component={Result}/>
                 <Route path="/activate/:activationCode" component={Activation}/>
-                <Route path="/status" component={StatusForm}/>
+                {/*privates routes*/}
+                <Route path="/home" component={Home}/>
+                <Route path="/wizard" component={Wizard}/>
                 <Route path="/profile" component={Profile}/>
 
                 {/*404 page*/}

@@ -2,12 +2,12 @@
  * Created by fran on 1/25/18.
  */
 import React, {Component} from "react";
-import CodeSelect from "../../components/CodeSelect";
-import DateInput from "../../components/DateInput";
-import TextInput from "../../components/TextInput";
+import CodeSelect from "../../../components/CodeSelect";
+import DateInput from "../../../components/DateInput";
+import TextInput from "../../../components/TextInput";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {loadPersonalInfo, savePreEnrollment} from "../../redux/actions";
+import {loadPersonalInfo, savePreEnrollment} from "../../../redux/actions";
 
 class PersonalInfo extends Component {
 

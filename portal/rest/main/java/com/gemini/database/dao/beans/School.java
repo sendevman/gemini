@@ -1,7 +1,5 @@
 package com.gemini.database.dao.beans;
 
-import org.springframework.util.StringUtils;
-
 /**
  * Created with IntelliJ IDEA.
  * User: fran
@@ -180,10 +178,6 @@ public class School {
 
   public void setPhone(String phone) {
     this.phone = phone;
-  }
-
-  public static void main(String[] args) {
-    System.out.println(StringUtils.capitalize("ABC DEF".toLowerCase()));
   }
 
 }

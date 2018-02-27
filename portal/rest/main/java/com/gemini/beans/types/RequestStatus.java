@@ -7,9 +7,19 @@ package com.gemini.beans.types;
  * Time: 2:39 PM
  */
 public enum RequestStatus {
-    ACTIVE,
-    PENDING_TO_REVIEW,
-    APPROVED,
-    DENIED,
-    REVIEWING
+    ACTIVE("Activo"),
+    PENDING_TO_REVIEW("Pendiente a Revisar"),
+    APPROVED("Aprobada"),
+    DENIED("Denegada"),
+    REVIEWING("En Revision");
+
+    String description;
+
+    RequestStatus(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

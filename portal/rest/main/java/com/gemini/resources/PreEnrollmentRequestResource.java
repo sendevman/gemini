@@ -2,6 +2,7 @@ package com.gemini.resources;
 
 import com.gemini.beans.forms.PreEnrollmentAddressBean;
 import com.gemini.beans.forms.PreEnrollmentBean;
+import com.gemini.beans.forms.User;
 import com.gemini.beans.requests.PreEnrollmentInitialRequest;
 import com.gemini.beans.requests.PreEnrollmentSubmitRequest;
 import com.gemini.beans.responses.ResponseBase;
@@ -10,7 +11,10 @@ import com.gemini.services.PreEnrollmentService;
 import com.gemini.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,11 +37,11 @@ public class PreEnrollmentRequestResource {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBase<PreEnrollmentBean>> savePreEnrollmentRequest(@RequestBody PreEnrollmentInitialRequest initialRequest) {
-        boolean exists = preEnrollmentService.exists(initialRequest);
+    public ResponseEntity<ResponseBase<PreEnrollmentBean>> savePreEnrollmentRequest(@RequestBody PreEnrollmentInitialRequest initialRequest, @AuthenticationPrincipal User loggedUser) {
+        boolean exists = preEnrollmentService.exists(initialRequest, loggedUser);
         ResponseEntity<ResponseBase<PreEnrollmentBean>> response;
         if (!exists) {
-            response = handleCreatePreEnrollment(initialRequest);
+            response = handleCreatePreEnrollment(initialRequest, loggedUser);
         } else {
             response = handleEditPreEnrollment(initialRequest);
         }
@@ -76,7 +80,7 @@ public class PreEnrollmentRequestResource {
         return ResponseEntity.badRequest().body(ResponseBase.error("Address are not attached to this request"));
     }
 
-    private ResponseEntity<ResponseBase<PreEnrollmentBean>> handleCreatePreEnrollment(PreEnrollmentInitialRequest initialRequest) {
+    private ResponseEntity<ResponseBase<PreEnrollmentBean>> handleCreatePreEnrollment(PreEnrollmentInitialRequest initialRequest, User loggedUser) {
         PreEnrollmentBean preEnrollmentBean;
         if (ValidationUtils.valid(initialRequest.getStudentNumber())
                 || ValidationUtils.valid(
@@ -85,7 +89,7 @@ public class PreEnrollmentRequestResource {
                 initialRequest.getMotherLastName(),
                 initialRequest.getDateOfBirth(),
                 initialRequest.getGender()))
-            preEnrollmentBean = preEnrollmentService.createPreEnrollment(initialRequest);
+            preEnrollmentBean = preEnrollmentService.createPreEnrollment(initialRequest, loggedUser);
         else
             return ResponseEntity.badRequest().body(ResponseBase.error("Missing fields to create pre-enrollment"));
 
@@ -98,10 +102,10 @@ public class PreEnrollmentRequestResource {
     }
 
     private ResponseEntity<ResponseBase<PreEnrollmentBean>> handleEditPreEnrollment(PreEnrollmentInitialRequest initialRequest) {
-        boolean saved = preEnrollmentService.updatePreEnrollment(initialRequest);
-        if(saved)
-            return ResponseEntity.ok(ResponseBase.success(initialRequest.getRequestId()));
-        return  ResponseEntity.ok(ResponseBase.error("Error updating pre-enrollment"));
+        PreEnrollmentBean preEnrollmentBean = preEnrollmentService.updatePreEnrollment(initialRequest);
+        if (preEnrollmentBean != null)
+            return ResponseEntity.ok(ResponseBase.success(preEnrollmentBean.getId(), preEnrollmentBean));
+        return ResponseEntity.ok(ResponseBase.error("Error updating pre-enrollment"));
     }
 
 

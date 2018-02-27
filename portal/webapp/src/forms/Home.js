@@ -1,164 +1,113 @@
 /**
- * Created by fran on 1/24/18.
+ * Created by fran on 2/2/18.
  */
 import React, {Component} from "react";
-import {Button, Col, ProgressBar, Row} from "react-bootstrap";
-//Tabs
-import StudentIdentification from "./wizard/StudentIdentification";
-import PersonalInfo from "./wizard/PersonalInfo";
-import Address from "./wizard/Address";
-import PreEnrollment from "./wizard/PreEnrollment";
-import SubmitRequest from "./wizard/SubmitRequest";
+import {Button, Glyphicon} from "react-bootstrap";
+import moment from "moment";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {load, onNextAction, onPreviousAction} from "../redux/actions";
-import Question from "./wizard/Question";
-
-function form(title, form) {
-    return {title: title, form: form};
-}
+import {loadHome} from "../redux/actions";
 
 class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.next = this.next.bind(this);
-        this.previous = this.previous.bind(this);
-        this.onError = this.onError.bind(this);
-
+        this.editPreEnroll = this.editPreEnroll.bind(this);
+        this.preEnroll = this.preEnroll.bind(this);
     }
 
     componentWillMount() {
-        this.props.load();
+        this.props.loadHome();
     }
 
-    componentWillReceiveProps(nextProps){
-        if(nextProps.wizardCompleted){
-            this.props.history.push('/status')
-        }
-
+    preEnroll() {
+        this.props.history.push("/wizard");
     }
 
-    onError() {
-        alert("Ha ocurrido un error")
+    editPreEnroll() {
+        alert("Next build")
     }
-
-    next() {
-        let idx = `page${this.props.current}`;
-        let pageRef = this.refs[idx].getWrappedInstance ? this.refs[idx].getWrappedInstance() : null;
-        this.props.onNextAction((callback) => {
-            if (pageRef && pageRef.onPress) {
-                pageRef.onPress(callback, this.onError);
-            }
-            else {
-                callback();
-            }
-        })
-
-    }
-
-    previous() {
-        this.props.onPreviousAction();
-    }
-
-    unusedForms() {
-        /* form("Datos Demograficos", <Demographic ref={`page${c++}`}/>),
-         form("Informaci\u00f3n Adicional", <AdditionalInfo ref={`page${c++}`}/>),
-         form("Contactos de Emergencia", <EmergencyContacts ref={`page${c++}`}/>),
-         form("Lenguajes", <LanguageInfo ref={`page${c++}`}/>),
-         form("Informacion Medica", <MedicalInfo ref={`page${c++}`}/>),
-         form("Informacion Medica Adicional", <MedicalInfoAdditional ref={`page${c++}`}/>),
-         form("Tutores Legales", <TutorInfo ref={`page${c++}`}/>),
-         form("Finanzas", <FinancialFamilyInfo ref={`page${c++}`}/>),
-         form("Transportaci\u00f3n", <TransportationInfo ref={`page${c++}`}/>)*/
-
-    }
-
 
     render() {
-        let current = this.props.current;
-        let student = this.props.student;
-        let preEnrollment = this.props.preEnrollment;
-        let enrollmentPredicate = preEnrollment && preEnrollment.hasPreviousEnrollment
-            ? `${preEnrollment.previousSchoolName} para el grado ${preEnrollment.nextGradeLevel}`
-            : "";
-        let c = 0;
-        this.wizardForms = [
-            form("", <Question question="Tiene usted su hijo matriculado en Departamento de Educacion de PR"
-                               ref={`page${c++}`}/>),
-            form("Identificaci\u00f3n de Estudiante", <StudentIdentification ref={`page${c++}`}/>),
-            form("", <Question
-                question="Estudiante no fue encontrado con la informacion provista, desea realizar nuevamente la busqueda"
-                ref={`page${c++}`}/>),
-            form("", <Question
-                question={`Hemos encontrado al estudiante ${student && student.fullName}, desea pre-matricularlo para año escolar 2019 (2018-2019)`}
-                ref={`page${c++}`}/>),
-            form("Informaci\u00f3n Personal", <PersonalInfo ref={`page${c++}`}/>),
-            form("Direcci\u00f3n", <Address ref={`page${c++}`}/>),
-            form("", <Question question={`Su estudiante continuará en la escuela ${enrollmentPredicate}`}
-                               ref={`page${c++}`}/>),
-            form("Matricula", <PreEnrollment ref={`page${c++}`}/>),
-            form("Someter Solicitud", <SubmitRequest ref={`page${c++}`}/>)
-        ];
-
-        return (<div>
+        return (
             <div className="container">
-                <Row>
-                    <Col xs={12}>
-                        <h3>{this.wizardForms[current].title}</h3>
-
-                    </Col>
-                </Row>
                 <div style={{marginTop: 20}}>
-                    {this.wizardForms[current].form}
+                    <div className="row">
+                        <div className="col-md-10">
+                            <h3 style={{textAlign: "right"}}>Desea pre-matricular un estudiante?</h3>
+                        </div>
+                        <div className="col-md-2" style={{marginTop: 20}}>
+                            <Button onClick={this.preEnroll} bsStyle="primary" block={true}>Pre-Matricular</Button>
+                        </div>
+                    </div>
+                    <div className="row" style={{marginTop: 20}}>
+                        <div className="col-md-12">
+                            {this.renderPreEnrollmentList()}
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div style={{marginTop: 70}}/>
-            {this.renderFooter()}
-        </div>);
+        );
     }
 
-
-    renderFooter() {
-        let props = {...this.props.wizard};
-        let showProgressBar = props.initForm
-            ? (<Col xs={4} style={{paddingTop: 10}}>
-                <ProgressBar now={props.percentage} label={`${props.percentage}%`}/>
-            </Col>)
-            : (<Col xs={4}/>);
-
-        return (<footer className="footer">
-            <div className="overlay"/>
-            <Row>
-                <Col xs={1}/>
-                {showProgressBar}
-                <Col xs={7}>
-                    <div style={{marginRight: 5, zIndex: 100}} className="pull-right">
-                        {props.previousLabel
-                            ? <Button onClick={this.previous} style={{marginRight: 5}}
-                                      bsStyle="primary">{props.previousLabel}</Button>
-                            : null}
-                        <Button onClick={this.next} bsStyle="primary">{props.nextLabel}</Button>
+    renderPreEnrollmentList() {
+        let preEnrollments = this.props.preEnrollments;
+        if (!preEnrollments || preEnrollments.length <= 0)
+            return (
+                <div className="panel panel-default">
+                    <div className="panel-body">
+                        No posee pre-matriculas aun
                     </div>
-                </Col>
-            </Row>
-        </footer>)
+                </div>
+            );
+
+        return preEnrollments.map((pre, index) => (
+            <div key={index} className="panel panel-primary" style={{height: 150}}>
+                <div className="panel-heading">
+                    Estudiante {pre.studentFullName}
+                    <div className="pull-right" style={{marginTop: -5}}>
+                        <Button bsSize="small" bsStyle="info" onClick={this.editPreEnroll}>
+                            <Glyphicon glyph="glyphicon glyphicon-pencil"/>
+                        </Button>
+                    </div>
+                </div>
+                <div className="panel-body">
+                    <div className="row">
+                        <div className="col-md-3">
+                            Estatus de Pre-Matricula:
+                        </div>
+                        <div className="col-md-3">
+                            <p className="text-danger">{pre.requestStatusText}</p>
+                        </div>
+                        <div className="col-md-6"/>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-3">
+                            Fecha de Solicitud:
+                        </div>
+                        <div className="col-md-3">
+                            {moment(pre.submitDate).format('LL')}
+                        </div>
+                        <div className="col-md-6"/>
+                    </div>
+                </div>
+
+            </div>));
     }
+
 }
 
 function mapStateToProps(store) {
     return {
-        current: store.wizard.current,
-        wizard: store.wizard,
-        wizardCompleted: store.wizard.wizardCompleted,
-        student: store.studentLookup.student,
-        preEnrollment: store.studentInfo.preEnrollment
+        preEnrollments: store.home.preEnrollments
     };
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({load, onNextAction, onPreviousAction}, dispatch)
+    return bindActionCreators({loadHome}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions)(Home);
+
+
 

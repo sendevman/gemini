@@ -1,15 +1,11 @@
 package com.gemini.utils;
 
-import com.gemini.beans.integration.StudentResponse;
-import com.gemini.database.dao.beans.Student;
+import com.gemini.beans.forms.AddressBean;
+import com.gemini.database.dao.beans.School;
 import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.joining;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,7 +27,6 @@ public final class CopyUtils {
         return null;
     }
 
-
     public static <T, R> List<R> convert(List<T> object, Class<R> clazz) {
         try {
             List<R> list = new ArrayList<>();
@@ -44,6 +39,15 @@ public final class CopyUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static AddressBean createAddressBean(School school) {
+        AddressBean addressBean = new AddressBean();
+        addressBean.setLine1(school.getAddressLine_1());
+        addressBean.setLine2(school.getAddressLine_2());
+        addressBean.setCity(school.getCity());
+        addressBean.setZipcode(school.getZipCode());
+        return addressBean;
     }
 
 }

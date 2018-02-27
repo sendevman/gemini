@@ -22,7 +22,7 @@ import java.io.IOException;
 @Configuration
 public class CsrfHeaderFilter extends OncePerRequestFilter {
 
-    @Value("${web.ui-context-path:/api}")
+    @Value("${website.context-path:/srs}")
     private String uiContextPath;
 
     @Override
@@ -33,7 +33,7 @@ public class CsrfHeaderFilter extends OncePerRequestFilter {
         if (csrf != null) {
             Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
             String token = csrf.getToken();
-            if (cookie==null || token!=null && !token.equals(cookie.getValue())) {
+            if (cookie == null || token != null && !token.equals(cookie.getValue())) {
                 cookie = new Cookie("XSRF-TOKEN", token);
                 cookie.setPath(uiContextPath);
                 response.addCookie(cookie);
