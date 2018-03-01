@@ -16,13 +16,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="codes" />
         <module name="enum-codes-generation" />
         <module name="portal" />
+        <module name="registro" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="codes" target="1.5" />
       <module name="enum-codes-generation" target="1.8" />
       <module name="portal" target="1.8" />
+      <module name="project-gemini" target="1.8" />
+      <module name="registro" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
