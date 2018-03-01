@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.gemini</groupId>
         <artifactId>project-gemini</artifactId>
-        <version>LATEST</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>codes</artifactId>

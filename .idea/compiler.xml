@@ -16,18 +16,32 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="admin-rest" />
         <module name="codes" />
         <module name="enum-codes-generation" />
-        <module name="portal" />
-        <module name="registro" />
+        <module name="portal-rest" />
+        <module name="rest" />
+      </profile>
+      <profile name="Annotation profile for Gemini :: ROOT" enabled="true">
+        <sourceOutputDir name="../target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="rest (1)" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="codes" target="1.5" />
+      <module name="admin" target="1.8" />
+      <module name="admin-portal" target="1.8" />
+      <module name="admin-rest" target="1.8" />
+      <module name="codes" target="1.8" />
       <module name="enum-codes-generation" target="1.8" />
       <module name="portal" target="1.8" />
+      <module name="portal-rest" target="1.8" />
       <module name="project-gemini" target="1.8" />
-      <module name="registro" target="1.5" />
+      <module name="registro" target="1.8" />
+      <module name="registro (1) (com.gemini)" target="1.8" />
+      <module name="rest" target="1.8" />
+      <module name="rest (1)" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
