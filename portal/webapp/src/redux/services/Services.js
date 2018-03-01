@@ -134,10 +134,8 @@ export default class Services {
 
     _addHeader(authorization) {
         let headersObj = {headers: {...DEFAULT_HEADERS}};
-        console.log(JSON.stringify(headersObj));
         if (authorization)
             headersObj.headers.Authorization = authorization;
-        console.log(JSON.stringify(headersObj));
         return headersObj;
     }
 

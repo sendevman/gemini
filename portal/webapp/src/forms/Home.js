@@ -6,7 +6,7 @@ import {Button, Glyphicon} from "react-bootstrap";
 import moment from "moment";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {loadHome} from "../redux/actions";
+import {loadHome, resetWizard} from "../redux/actions";
 
 class Home extends Component {
 
@@ -17,6 +17,7 @@ class Home extends Component {
     }
 
     componentWillMount() {
+        this.props.resetWizard();
         this.props.loadHome();
     }
 
@@ -86,7 +87,7 @@ class Home extends Component {
                             Fecha de Solicitud:
                         </div>
                         <div className="col-md-3">
-                            {moment(pre.submitDate).format('LL')}
+                            {(pre.submitDate && moment(pre.submitDate).format('LL')) || "Aun no ha sido sometida"}
                         </div>
                         <div className="col-md-6"/>
                     </div>
@@ -104,7 +105,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({loadHome}, dispatch)
+    return bindActionCreators({loadHome, resetWizard}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions)(Home);

@@ -37,3 +37,5 @@ _Student Registration System (SRS)_
 [Hibernate used in this project](http://docs.jboss.org/hibernate/orm/5.0/userguide/html_single/Hibernate_User_Guide.html)
 
 [Example](http://www.baeldung.com/registration-with-spring-mvc-and-spring-security)
+
+[Nginx deploy](https://stackoverflow.com/questions/16783657/nginx-reverse-proxy-setup-does-not-preserve-session-id-when-doing-cors-requests)

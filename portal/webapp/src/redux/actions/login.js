@@ -31,7 +31,6 @@ async function _login(form, dispatch, onSuccess, onError) {
                 dispatch({type: types.INVALID_CREDENTIALS});
                 break;
             case 200:
-                console.log("response = " + JSON.stringify(jsonResponse));
                 dispatch({type: types.AUTHENTICATED, response: jsonResponse});
                 onSuccess();
                 break;

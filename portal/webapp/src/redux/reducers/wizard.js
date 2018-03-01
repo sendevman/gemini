@@ -51,6 +51,8 @@ const wizard = (state = initialState, action) => {
             };
         case types.ON_WIZARD_COMPLETED:
             return {...state, wizardCompleted: true};
+        case types.ON_WIZARD_RESET:
+            return initialState;
         default:
             return state;
 

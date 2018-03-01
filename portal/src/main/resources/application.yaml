@@ -1,10 +1,10 @@
 server:
-  context-path: /api
+  context-path: /portal-api
   port: 8081
   session:
-    timeout: 600  # in seconds
+    timeout: 900  # in seconds
     cookie:
-      max-age: 600 # in seconds
+      max-age: 900 # in seconds
     
 management:
   port: 8083
@@ -48,9 +48,9 @@ spring:
       maximum-pool-size: 30
 
   smaxDatasource:
-    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
-    username: PRDE_TMAXIO1
-    password: PRDE_TMAXIO1
+    url: url
+    username: user
+    password: password
     driver-class-name: oracle.jdbc.driver.OracleDriver
 security:
   basic:
@@ -59,7 +59,8 @@ security:
 email:
   from: de.pentaho@gmail.com
 website:
-  url: localhost:3000
+  url: http://34.197.64.57
   context-path: /srs
-
+logging:
+  config: classpath:logback.xml
 

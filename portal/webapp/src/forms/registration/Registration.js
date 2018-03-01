@@ -50,7 +50,6 @@ class Registration extends Component {
         let fields = this.refs;
         let emailAreEquals = fields.email.value === fields.confirmEmail.value;
         for (let idx in fields) {
-            console.log(fields[idx]);
             allValid &= fields[idx].valid();
         }
 
