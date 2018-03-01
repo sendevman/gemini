@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.gemini</groupId>
-    <artifactId>registro</artifactId>
+    <artifactId>srs</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
-    <name>Registro en Linea - portal</name>
+    <name>SRS - portal</name>
     <description>Backend project for Registro en Linea public portal</description>
 
     <parent>
@@ -22,6 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <start-class>com.gemini.Application</start-class>
     </properties>
 
     <dependencies>
@@ -82,6 +83,7 @@
     </dependencies>
 
     <build>
+        <finalName>portal-api</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -25,7 +25,6 @@ class Authentication extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(JSON.stringify(nextProps));
         if (nextProps)
             this.setState({showAlert: nextProps.errorAtLogin || nextProps.invalidCredentials}, () => {
                 if (nextProps.errorAtLogin || nextProps.invalidCredentials)
@@ -44,8 +43,6 @@ class Authentication extends Component {
         let form = this.props.form;
         let element = e.target;
         form[element.id] = element.value;
-        console.log(`id[${element.id}] = ${element.value} - ${form[element.id]}`)
-
     }
 
 

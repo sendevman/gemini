@@ -1,6 +1,7 @@
 package com.gemini.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,9 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private AuthenticationProvider authenticationProvider;
     @Autowired
     private AuthenticationEventImpl authenticationEvent;
+    @Value("${website.context-path:/srs}")
+    private String uiContentPath;
+
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -54,7 +58,7 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .csrf().csrfTokenRepository(csrfTokenRepository()).and()
-                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
+                .addFilterAfter(new CsrfHeaderFilter(uiContentPath), CsrfFilter.class)
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessHandler((request, response, authentication) -> {
@@ -83,6 +87,7 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticationEventPublisher(authenticationEvent)
                 .eraseCredentials(true);
     }
+
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override

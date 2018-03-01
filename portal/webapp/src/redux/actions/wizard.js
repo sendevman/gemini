@@ -6,7 +6,6 @@ const IN_PROGRESS = {type: "NEXT_PREVIOUS", nextButton: "Proximo", previousButto
 const CONTINUE = {type: "START", nextButton: "Continuar"};
 const END = {type: "FINALIZE", nextButton: "Someter"};
 
-
 const formFlow = [
     {type: "DEPR_ENROLLED_QUESTION", yes: 1, no: 4, footerType: QUESTION},
     {type: "STUDENT_LOOKUP", footerType: IN_PROGRESS, success: 3, failure: 2, waitForResult: true},
@@ -17,7 +16,6 @@ const formFlow = [
     {type: "ENROLLMENT_QUESTION", yes: 8, no: 7, footerType: QUESTION},
     {type: "ENROLLMENT", footerType: IN_PROGRESS},
     {type: "SUBMIT", footerType: END}];
-
 
 export const load = () => (dispatch) => {
     dispatch({type: types.ON_WIZARD_LOAD_START});
@@ -64,7 +62,6 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
     })
 };
 
-
 export const onPreviousAction = () => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_PREVIOUS_START});
     let wizard = getState().wizard;
@@ -85,6 +82,10 @@ export const onPreviousAction = () => (dispatch, getState) => {
         current: next,
         footerType: formFlow[next].footerType
     });
+};
+
+export const resetWizard = () => (dispatch) => {
+    dispatch({type: types.ON_WIZARD_RESET});
 };
 
 function pop(array, n) {

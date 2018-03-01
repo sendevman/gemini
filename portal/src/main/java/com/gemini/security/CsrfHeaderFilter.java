@@ -12,6 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,11 +20,16 @@ import java.io.IOException;
  * Date: 2/23/18
  * Time: 3:16 PM
  */
-@Configuration
 public class CsrfHeaderFilter extends OncePerRequestFilter {
 
-    @Value("${website.context-path:/srs}")
+    private final Logger logger = Logger.getLogger(CsrfHeaderFilter.class.getName());
+
     private String uiContextPath;
+
+
+    public CsrfHeaderFilter(String uiContextPath) {
+        this.uiContextPath = uiContextPath;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -33,6 +39,8 @@ public class CsrfHeaderFilter extends OncePerRequestFilter {
         if (csrf != null) {
             Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
             String token = csrf.getToken();
+            logger.info(String.format("uiContextPath %s", uiContextPath));
+            logger.info(String.format("token %s", token));
             if (cookie == null || token != null && !token.equals(cookie.getValue())) {
                 cookie = new Cookie("XSRF-TOKEN", token);
                 cookie.setPath(uiContextPath);
