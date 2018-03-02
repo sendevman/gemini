@@ -65,18 +65,19 @@ public class UserService {
     }
 
     public boolean activationCodeExists(String activationCode) {
-        UserEntity entity = userRepository.findByActivationKeyAndActivationKeyExpireDateIsAfter(activationCode, DateUtils.getCurrentDate());
+        UserEntity entity = userRepository.findByActivationKeyAndActivationKeyExpireDateIsAfter(activationCode, commonDao.getCurrentDate());
         return entity != null;
     }
 
     public boolean activateUser(UserActivationRequest request) {
         boolean activate = false;
-        UserEntity entity = userRepository.findByActivationKeyAndActivationKeyExpireDateIsAfter(request.getActivationCode(), DateUtils.getCurrentDate());
+        UserEntity entity = userRepository.findByActivationKeyAndActivationKeyExpireDateIsAfter(request.getActivationCode(), commonDao.getCurrentDate());
         if (entity != null) {
             String pwd = passwordEncoder.encode(request.getPassword());
             entity.setPassword(pwd);
             entity.setEnabled(true);
             entity.setActivationKey(null);
+            entity.setActivationKeyExpireDate(null);
             entity.setActivationDate(commonDao.getCurrentDate());
             entity = userRepository.save(entity);
             activate = entity != null;

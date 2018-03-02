@@ -74,10 +74,16 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        
     </dependencies>
 
     <build>
-        <finalName>api-registro###${version}-${maven.build.timestamp}</finalName>
+        <finalName>portal-api###${version}-${maven.build.timestamp}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -4,7 +4,6 @@ import com.gemini.services.ReCaptchaValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -26,7 +25,6 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
-import javax.servlet.Filter;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -47,7 +45,6 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private String uiContentPath;
     @Value("${server.context-path}")
     private String baseContextPath;
-
 
     @Override
     public void configure(WebSecurity web) throws Exception {
