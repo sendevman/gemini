@@ -3,20 +3,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.gemini.codes</groupId>
+    <parent>
+        <groupId>com.gemini</groupId>
+        <artifactId>project-gemini</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
     <artifactId>codes</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Registro en Linea - JS Enum Code Generation </name>
+    <name>Registro en Linea :: JS Enum Code Generation </name>
     <description>Standalone program to create JS Enum codes</description>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.10.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,9 +30,13 @@
         </dependency>
 
         <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc6</artifactId>
-            <version>11.2.0.3</version>
         </dependency>
     </dependencies>
 
