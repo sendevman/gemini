@@ -92,7 +92,7 @@ public class UserService {
     }
 
     public String createUser(User userBean) {
-        String activationKey = Utils.generateActivationCode(userBean.getFatherLastName());
+        String activationKey = Utils.generateActivationCode();
         UserEntity entity = CopyUtils.convert(userBean, UserEntity.class);
         entity.setActivationKey(activationKey);
         copyLastNames(userBean, entity);

@@ -19,7 +19,6 @@ import java.util.Date;
 public class CommonDaoImpl extends JdbcDaoSupport implements CommonDao {
 
     @Autowired
-    @Qualifier(value = "registroDatasource")
     DataSource dataSource;
 
     @PostConstruct

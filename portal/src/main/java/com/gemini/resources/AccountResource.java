@@ -1,8 +1,8 @@
 package com.gemini.resources;
 
-import com.gemini.beans.responses.RegisterResponse;
 import com.gemini.beans.forms.User;
 import com.gemini.beans.requests.UserActivationRequest;
+import com.gemini.beans.responses.RegisterResponse;
 import com.gemini.services.MailService;
 import com.gemini.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

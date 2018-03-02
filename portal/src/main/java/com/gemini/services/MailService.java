@@ -23,7 +23,7 @@ public class MailService {
     private JavaMailSender mailSender;
     @Value("${email.from}")
     private String fromEmail;
-    @Value("${website.url}")
+    @Value("${website.url}${website.context-path}")
     private String publicUrl;
 
 
@@ -32,7 +32,7 @@ public class MailService {
         registerMail.setFrom(fromEmail);
         registerMail.setTo(user.getEmail());
         registerMail.setSubject("Registro en Linea - Activar Cuenta");
-        registerMail.setText(String.format("<html> <a href=\"http://%s\">Confirmar Email</a></html>", link));
+        registerMail.setText(String.format("<html> <a href=\"%s\">Confirmar Email</a></html>", link));
         return registerMail;
     }
 
@@ -55,7 +55,7 @@ public class MailService {
     }
 
     public boolean sendRegisterEmail(User userBean, String activationCode) {
-        String link = String.format("%s/registro/activate/%s", publicUrl, activationCode);
+        String link = String.format("%s/activate/%s", publicUrl, activationCode);
         return send(accountRegisterMail(userBean, link));
     }
 
