@@ -4,29 +4,39 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {activateAccount, existsCode} from "../../redux/actions";
 import {Button} from "react-bootstrap";
+import ReCAPTCHA from "react-google-recaptcha";
+import env from "../../env";
 
 class Activation extends Component {
 
     constructor(props) {
         super(props);
-        let code = this.props.match.params.activationCode;
         this.state = {
-            form: {activationCode: code, password: "", confirmPassword: ""},
-            valid: false
+            valid: false,
+            token: null
         };
         this.inputHandler = this.inputHandler.bind(this);
         this.activate = this.activate.bind(this);
         this.validForm = this.validForm.bind(this);
-
+        this.verifyCallback = this.verifyCallback.bind(this);
     }
 
     componentWillMount() {
-        this.props.existsCode(this.state.form.activationCode)
+        let code = this.props.match.params.activationCode;
+        this.props.existsCode(code)
     }
 
+    verifyCallback(response) {
+        let form = this.props.form;
+        form.token = response;
+        this.setState({...this.state, token: response}, () => {
+            this.validForm();
+        });
+
+    }
 
     inputHandler(e) {
-        let form = this.state.form;
+        let form = this.props.form;
         let element = e.target;
         form[element.id] = element.value;
         this.validForm();
@@ -40,13 +50,14 @@ class Activation extends Component {
             allValid &= fields[idx].valid();
         }
 
-        this.setState({...this.state, valid: allValid && emailAreEquals})
+        this.setState({...this.state, valid: allValid && emailAreEquals && this.state.token})
     }
 
 
     activate(e) {
+        let form = this.props.form;
         e.preventDefault();
-        this.props.activateAccount(this.state.form, () => {
+        this.props.activateAccount(form, () => {
             this.props.history.push("/activate/result/success")
         }, () => {
             this.props.history.push("/activate/result/error")
@@ -54,7 +65,7 @@ class Activation extends Component {
     }
 
     render() {
-        let form = this.state.form;
+        let form = this.props.form;
         if (!this.props.validCode)
             return (null);
         return (<div className="container">
@@ -84,6 +95,14 @@ class Activation extends Component {
                     </div>
                     <div className="row">
                         <div className="col-md-12">
+                            <ReCAPTCHA
+                                sitekey={env.reCAPTCHASiteKey}
+                                onChange={this.verifyCallback}
+                            />
+                        </div>
+                    </div>
+                    <div className="row" style={{marginTop: 20}}>
+                        <div className="col-md-12">
                             <Button type="submit" block bsStyle="primary"
                                     disabled={!this.state.valid}>Registrar</Button>
                         </div>
@@ -95,7 +114,7 @@ class Activation extends Component {
 }
 
 function mapStateToProps(store) {
-    return {validCode: store.registration.validCode};
+    return {validCode: store.registration.validCode, form: store.registration.activationForm};
 }
 
 function mapDispatchToActions(dispatch) {

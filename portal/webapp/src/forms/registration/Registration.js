@@ -4,38 +4,32 @@
 import React, {Component} from "react";
 import {Button} from "react-bootstrap";
 import TextInput from "../../components/TextInput";
-import DateInput from "../../components/DateInput";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {registerUser, validateForm} from "../../redux/actions";
-import CodeSelect from "../../components/CodeSelect";
+import ReCAPTCHA from "react-google-recaptcha";
+import env from "../../env";
+import "./Registration.css";
+
 
 class Registration extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            form: {
-                firstName: "",
-                middleName: "",
-                fatherLastName: "",
-                motherLastName: "",
-                dateOfBirth: null,
-                relationType: "",
-                email: "",
-                confirmEmail: ""
-            },
-            valid: false
+            valid: false,
+            token: null
         };
         this.register = this.register.bind(this);
         this.inputHandler = this.inputHandler.bind(this);
         this.onValidDate = this.onValidDate.bind(this);
         this.onInvalidDate = this.onInvalidDate.bind(this);
         this.validForm = this.validForm.bind(this);
+        this.verifyCallback = this.verifyCallback.bind(this);
     }
 
     register(e) {
-        let user = this.state.form;
+        let user = this.props.form;
         e.preventDefault();
         this.props.registerUser(user, () => {
             this.props.history.push("/activate/result/success")
@@ -45,6 +39,16 @@ class Registration extends Component {
     }
 
 
+    verifyCallback(response) {
+        console.log(response);
+        let form = this.props.form;
+        form.token = response;
+        this.setState({...this.state, token: response}, () => {
+            this.validForm();
+        });
+
+    }
+
     validForm() {
         let allValid = true;
         let fields = this.refs;
@@ -52,21 +56,21 @@ class Registration extends Component {
         for (let idx in fields) {
             allValid &= fields[idx].valid();
         }
-
-        this.setState({...this.state, valid: allValid && emailAreEquals})
+        this.setState({...this.state, valid: allValid && emailAreEquals && this.state.token})
     }
 
     inputHandler(e) {
-        let form = this.state.form;
+        let form = this.props.form;
         let element = e.target;
         form[element.id] = element.value;
-        this.setState({...this.state, form: form}, () => {
-            this.validForm();
-        });
+        this.validForm();
+        // this.setState({...this.state, form: form}, () => {
+        //     this.validForm();
+        // });
     }
 
     onValidDate(date) {
-        let form = this.state.form;
+        let form = this.props.form;
         form.dateOfBirth = date;
         this.setState({...this.state, form: form}, () => {
             this.validForm();
@@ -78,7 +82,7 @@ class Registration extends Component {
     }
 
     render() {
-        let form = this.state.form;
+        let form = this.props.form;
         return (
             <div className="container">
                 <div className="row">
@@ -88,40 +92,9 @@ class Registration extends Component {
                 </div>
                 <div className="row" style={{marginTop: 50}}>
                     <div className="col-md-12">
-                        <form onSubmit={this.register}>
+                        <form onSubmit={this.register} className="register-form">
                             <div className="row">
-                                <div className="col-md-3">
-                                    <TextInput id="firstName" type="name"
-                                               placeholder="Nombre"
-                                               ref="firstName"
-                                               onChange={this.inputHandler}
-                                               value={form.firstName}/>
-                                </div>
-                                <div className="col-md-3">
-                                    <TextInput id="middleName" type="name"
-                                               required={false}
-                                               placeholder="Segundo Nombre"
-                                               onChange={this.inputHandler}
-                                               value={form.middleName}/>
-                                </div>
-                                <div className="col-md-3">
-                                    <TextInput id="fatherLastName" type="lastname"
-                                               ref="fatherLastName"
-                                               placeholder="Apellido Paterno"
-                                               onChange={this.inputHandler}
-                                               value={form.fatherLastName}/>
-                                </div>
-                                <div className="col-md-3">
-                                    <TextInput id="motherLastName" type="lastname"
-                                               ref="motherLastName"
-                                               placeholder="Apellido Materno"
-                                               onChange={this.inputHandler}
-                                               value={form.motherLastName}/>
-                                </div>
-                            </div>
-
-                            <div className="row">
-                                <div className="col-md-3">
+                                <div className="col-md-12">
                                     <TextInput id="email"
                                                type="email"
                                                ref="email"
@@ -129,7 +102,9 @@ class Registration extends Component {
                                                onChange={this.inputHandler}
                                                value={form.email}/>
                                 </div>
-                                <div className="col-md-3">
+                            </div>
+                            <div className="row">
+                                <div className="col-md-12">
                                     <TextInput id="confirmEmail"
                                                type="email"
                                                ref="confirmEmail"
@@ -137,27 +112,18 @@ class Registration extends Component {
                                                onChange={this.inputHandler}
                                                value={form.confirmEmail}/>
                                 </div>
-                                <div className="col-md-3">
-                                    <DateInput showFormat={false}
-                                               label="Fecha de Nacimiento"
-                                               ref="dob"
-                                               onValidDate={this.onValidDate}
-                                               onInvalidDate={this.onInvalidDate}
-                                               value={form.dateOfBirth}/>
-                                </div>
-                                <div className="col-md-3">
-                                    <CodeSelect id="relationType"
-                                                label="Seleccione relacion"
-                                                ref="registrationRelations"
-                                                codeType="registrationRelations"
-                                                value={form.relationType}
-                                                onChange={this.inputHandler}/>
+                            </div>
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <ReCAPTCHA
+                                        sitekey={env.reCAPTCHASiteKey}
+                                        onChange={this.verifyCallback}
+                                    />
                                 </div>
                             </div>
 
-                            <div className="row">
-                                <div className="col-md-9"/>
-                                <div className="col-md-3">
+                            <div className="row" style={{marginTop: 20}}>
+                                <div className="col-md-12">
                                     <Button type="submit" block bsStyle="primary"
                                             disabled={!this.state.valid}>Registrar</Button>
                                 </div>
@@ -172,7 +138,7 @@ class Registration extends Component {
 
 
 function mapStateToProps(store) {
-    return {};
+    return {form: store.registration.form};
 }
 
 function mapDispatchToActions(dispatch) {
