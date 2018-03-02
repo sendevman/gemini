@@ -16,8 +16,8 @@ import static java.util.stream.Collectors.joining;
  */
 public final class Utils {
 
-    public static String generateActivationCode(String lastName) {
-        String output = lastName.substring(0, 2).toUpperCase();
+    public static String generateActivationCode() {
+        String output = "";
 
         byte[] array = new byte[24];
         int randInt;
@@ -42,8 +42,8 @@ public final class Utils {
     }
 
     public static String toLastName(String fatherLastName, String motherLastName) {
-        fatherLastName = StringUtils.capitalize(fatherLastName.trim());
-        motherLastName = StringUtils.capitalize(motherLastName.trim());
+        fatherLastName = fatherLastName != null ? StringUtils.capitalize(fatherLastName.trim()) : "";
+        motherLastName = motherLastName != null ? StringUtils.capitalize(motherLastName.trim()) : "";
         return String.format("%s %s", fatherLastName, motherLastName);
     }
 

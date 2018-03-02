@@ -6,10 +6,12 @@
   "dependencies": {
     "moment": "^2.20.1",
     "react": "^16.2.0",
+    "react-async-script": "^0.9.1",
     "react-block-ui": "^1.1.1",
     "react-bootstrap": "^0.32.0",
     "react-datepicker": "^1.0.4",
     "react-dom": "^16.2.0",
+    "react-google-recaptcha": "^0.9.9",
     "react-input-mask": "^1.1.2",
     "react-number-format": "^3.1.4",
     "react-redux": "^5.0.6",

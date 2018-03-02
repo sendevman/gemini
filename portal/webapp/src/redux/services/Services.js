@@ -29,12 +29,12 @@ export default class Services {
     }
 
     //accounts
-    registerAccount(user) {
-        return this._post("/account/register", user);
+    registerAccount(user, token) {
+        return this._publicPost("/account/register", user, token);
     }
 
-    activateAccount(activationForm) {
-        return this._post(`/account/activate`, activationForm);
+    activateAccount(activationForm, token) {
+        return this._publicPost(`/account/activate`, activationForm, token);
     }
 
     existsCode(code) {
@@ -98,13 +98,16 @@ export default class Services {
             })
     }
 
-    _publicPost(path, body) {
-        return fetch(buildUrl(path), this._addHeader())
+    _publicPost(path, body, token) {
+        return fetch(buildUrl(path), {
+            method: "POST",
+            body: JSON.stringify(body), ...this._addHeaderOnPublicPOST(token)
+        })
             .then((response) => this._handleHttpCode(response))
-            .then((response) => response.text())
             .catch((e) => {
-            })
+            });
     }
+
 
     _securedPost(path, body) {
         return fetch(buildUrl(path), {
@@ -130,6 +133,12 @@ export default class Services {
             .then((response) => this._handleHttpCode(response))
             .catch((e) => {
             });
+    }
+
+    _addHeaderOnPublicPOST(token) {
+        let headersObj = {headers: {...DEFAULT_HEADERS}};
+        headersObj.headers["recaptcha-token"] = token;
+        return headersObj;
     }
 
     _addHeader(authorization) {
