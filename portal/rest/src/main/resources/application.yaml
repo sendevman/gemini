@@ -14,7 +14,6 @@ management:
 spring:
   main:
     web-environment: true
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -23,9 +22,7 @@ spring:
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
-    test-connection: true
-
-
+    test-connection: false
   jpa:
     show-sql: true
     database: mysql
@@ -48,10 +45,13 @@ spring:
       maximum-pool-size: 30
 
   smaxDatasource:
+    type: com.zaxxer.hikari.HikariDataSource
     url: url
     username: user
     password: password
     driver-class-name: oracle.jdbc.driver.OracleDriver
+    hikari:
+      maximum-pool-size: 30
 security:
   basic:
     enabled: true
@@ -63,4 +63,8 @@ website:
   context-path: /srs
 logging:
   config: classpath:logback.xml
+
+google:
+  recaptcha:
+    secret: 6LfwnkkUAAAAAGFlz-H8iIGF7ZsNuvRcZxKi5xwE
 

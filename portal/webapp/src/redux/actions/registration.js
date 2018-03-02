@@ -2,7 +2,6 @@ import services from "../setup";
 import * as types from "../types";
 import * as Utils from "../../Utils";
 
-
 export const validateForm = (userForm, onValid: () => void) => (dispatch) => {
     let validForm = Utils.hasText(userForm.email)
         && Utils.hasText(userForm.firstName)
@@ -16,10 +15,11 @@ export const validateForm = (userForm, onValid: () => void) => (dispatch) => {
     }
 };
 
-export const registerUser = (userForm, success, error) => (dispatch) => {
+export const registerUser = (userForm, success, error) => (dispatch, getState) => {
+    let token = getState().registration.form.token;
     dispatch({type: types.REGISTER_START});
     services()
-        .registerAccount(userForm)
+        .registerAccount(userForm, token)
         .then((response) => response.json())
         .then((response) => {
             dispatch({type: types.REGISTER_END});
@@ -39,10 +39,11 @@ export const existsCode = (code) => (dispatch) => {
 };
 
 
-export const activateAccount = (activationForm, success, error) => (dispatch) => {
+export const activateAccount = (activationForm, success, error) => (dispatch, getState) => {
+    let token = getState().registration.activationForm.token;
     dispatch({type: types.ACTIVATION_USER_START});
     services()
-        .activateAccount(activationForm)
+        .activateAccount(activationForm, token)
         .then((response) => response.json())
         .then((response) => {
             dispatch({type: types.ACTIVATION_USER_END, result: response.successfullyRegistered});
