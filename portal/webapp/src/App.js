@@ -14,7 +14,6 @@ import {bindActionCreators} from "redux";
 import * as env from "./env";
 
 moment.updateLocale('es', esLocale);
-const baseContext = "srs";
 
 class App extends Component {
     constructor(props) {
@@ -66,7 +65,7 @@ class App extends Component {
                 <Navbar>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <a href={`/${baseContext}/home`}>SRS Student Registration System</a>
+                            <a href={`/${env.default.baseContext}/home`}>SRS Student Registration System</a>
                         </Navbar.Brand>
                     </Navbar.Header>
 

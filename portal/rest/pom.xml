@@ -11,7 +11,7 @@
 
     <artifactId>portal-rest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>portal :: rest</name>
     <description>Backend project for Registro en Linea public portal</description>
