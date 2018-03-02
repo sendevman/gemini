@@ -11,6 +11,7 @@ import {logout} from "./redux/actions";
 import * as types from "./redux/types";
 import ReduxBlockUi from 'react-block-ui/redux';
 import {bindActionCreators} from "redux";
+import * as env from "./env";
 
 moment.updateLocale('es', esLocale);
 const baseContext = "srs";
@@ -25,7 +26,7 @@ class App extends Component {
     }
 
     onRouteChanged(nextRoute) {
-        this.setState({showMenu: nextRoute.pathname !== "/" && nextRoute.pathname !== "/registration"});
+        this.setState({showMenu: !env.isPublicUrl(nextRoute.pathname)});
     };
 
     handleLogout() {
@@ -41,8 +42,8 @@ class App extends Component {
     componentDidMount() {
         //double check
         if (!this.state.showMenu) {
-            let tokens = window.location.pathname.split("/");
-            if (tokens.length > 2 && tokens[2] && tokens[2] !== "registration") {
+            let path = this.props.location.pathname;
+            if (!env.isPublicUrl(path)) {
                 this.setState({showMenu: true})
             }
         }

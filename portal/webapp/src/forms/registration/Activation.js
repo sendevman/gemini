@@ -56,6 +56,7 @@ class Activation extends Component {
 
     activate(e) {
         let form = this.props.form;
+        form.activationCode = this.props.match.params.activationCode;
         e.preventDefault();
         this.props.activateAccount(form, () => {
             this.props.history.push("/activate/result/success")
@@ -75,7 +76,7 @@ class Activation extends Component {
                         <h3>Culminar Registro</h3>
                     </div>
                 </div>
-                <form onSubmit={this.activate}>
+                <form onSubmit={this.activate} style={{marginTop: 50}}>
                     <div className="row">
                         <div className="col-md-12">
                             <TextInput id="password" type="password" label="Contraseña" placeholder="Contraseña"

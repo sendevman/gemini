@@ -59,7 +59,7 @@ security:
 email:
   from: de.pentaho@gmail.com
 website:
-  url: http://34.197.64.57
+  url: http://localhost:3000
   context-path: /srs
 logging:
   config: classpath:logback.xml
