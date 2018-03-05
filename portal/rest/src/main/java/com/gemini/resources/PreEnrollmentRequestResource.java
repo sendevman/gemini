@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 /**
  * Created with IntelliJ IDEA.
  * User: fran
@@ -50,9 +48,10 @@ public class PreEnrollmentRequestResource {
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBase> submitPreEnrollment(@RequestBody PreEnrollmentSubmitRequest submitRequest) {
+    public ResponseEntity<ResponseBase> submitPreEnrollment(@RequestBody PreEnrollmentSubmitRequest submitRequest, @AuthenticationPrincipal User loggedUser) {
         boolean saved = false;
         try {
+            mailService.sendPreEnrollmentSubmitEmail(loggedUser, submitRequest);
             saved = preEnrollmentService.submitPreEnrollment(submitRequest);
         } catch (Exception e) {
             e.printStackTrace();

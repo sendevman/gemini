@@ -202,16 +202,28 @@ public class PreEnrollmentService {
         if (entities != null) {
             List<PreEnrollmentBean> list = new ArrayList<>();
             for (PreEnrollmentRequestEntity entity : entities) {
-                PreEnrollmentBean enrollmentBean = CopyUtils.convert(entity, PreEnrollmentBean.class);
-                StudentEntity studentEntity = entity.getStudent();
-                String fullName = Utils.toFullName(studentEntity.getFirstName(), studentEntity.getMiddleName(), studentEntity.getLastName());
-                enrollmentBean.setStudentFullName(fullName);
-                list.add(enrollmentBean);
+                list.add(getPreEnrollmentBean(entity));
             }
             return list;
-
         }
         return null;
+    }
+
+    public PreEnrollmentBean findById(Long id) {
+        PreEnrollmentRequestEntity entity = preEnrollmentRepository.findOne(id);
+        if (entity != null) {
+            return getPreEnrollmentBean(entity);
+        }
+
+        return null;
+    }
+
+    private PreEnrollmentBean getPreEnrollmentBean(PreEnrollmentRequestEntity entity) {
+        PreEnrollmentBean enrollmentBean = CopyUtils.convert(entity, PreEnrollmentBean.class);
+        StudentEntity studentEntity = entity.getStudent();
+        String fullName = Utils.toFullName(studentEntity.getFirstName(), studentEntity.getMiddleName(), studentEntity.getLastName());
+        enrollmentBean.setStudentFullName(fullName);
+        return enrollmentBean;
     }
 
     private StudentEntity save(Student bean, AddressEntity postal, AddressEntity physical) {
