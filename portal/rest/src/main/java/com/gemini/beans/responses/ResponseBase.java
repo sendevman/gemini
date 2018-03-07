@@ -56,13 +56,16 @@ public class ResponseBase<T> {
         this.content = content;
     }
 
+    public static ResponseBase success() {
+        return success(null);
+    }
+
     public static ResponseBase success(Long requestId) {
         ResponseBase base = new ResponseBase();
         base.successfulOperation = true;
         base.requestId = requestId;
         return base;
     }
-
 
     public static <T> ResponseBase success(Long requestId, T responseBean) {
         ResponseBase base = success(requestId);

@@ -13,6 +13,8 @@ import Question from "./pre-enrollment/Question";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {load, onNextAction, onPreviousAction} from "../../redux/actions";
+import Instructions from "./Instructions";
+import ParentInfoRequest from "./pre-enrollment/ParentInfoRequest";
 
 function form(title, form) {
     return {title: title, form: form};
@@ -32,8 +34,8 @@ class Wizard extends Component {
         this.props.load();
     }
 
-    componentWillReceiveProps(nextProps){
-        if(nextProps.wizardCompleted){
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.wizardCompleted) {
             this.props.history.push('/home')
         }
 
@@ -84,6 +86,8 @@ class Wizard extends Component {
             : "";
         let c = 0;
         this.wizardForms = [
+            form("Su Informacion Personal", <ParentInfoRequest ref={`page${c++}`}/>),
+            form("Instrucciones", <Instructions ref={`page${c++}`}/>),
             form("", <Question question="Tiene usted su hijo matriculado en Departamento de Educacion de PR"
                                ref={`page${c++}`}/>),
             form("Identificaci\u00f3n de Estudiante", <StudentIdentification ref={`page${c++}`}/>),

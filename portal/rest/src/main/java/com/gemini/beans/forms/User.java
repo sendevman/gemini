@@ -29,6 +29,11 @@ public class User implements UserDetails, CredentialsContainer {
     private Date dateOfBirth;
     private Date lastLogin;
     private boolean enabled;
+    private boolean profileCompleted;
+    //    -1 means nothing, null means one or more requests submitted, a valid id means active pre-enrollment
+    private Long workingPreEnrollmentId = -1L;
+    private Integer totalPreEnrollments = 0;
+
 
     public Long getId() {
         return id;
@@ -142,6 +147,34 @@ public class User implements UserDetails, CredentialsContainer {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public boolean isProfileCompleted() {
+        return profileCompleted;
+    }
+
+    public void setProfileCompleted(boolean profileCompleted) {
+        this.profileCompleted = profileCompleted;
+    }
+
+    public Long getWorkingPreEnrollmentId() {
+        return workingPreEnrollmentId;
+    }
+
+    public void setWorkingPreEnrollmentId(Long workingPreEnrollmentId) {
+        this.workingPreEnrollmentId = workingPreEnrollmentId;
+    }
+
+    public Integer getTotalPreEnrollments() {
+        return totalPreEnrollments;
+    }
+
+    public void setTotalPreEnrollments(Integer totalPreEnrollments) {
+        this.totalPreEnrollments = totalPreEnrollments;
+    }
+
+    public boolean canGoHome() {
+        return profileCompleted && totalPreEnrollments > 1;
     }
 
     @Override

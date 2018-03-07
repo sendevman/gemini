@@ -1,6 +1,6 @@
 package com.gemini.resources;
 
-import com.gemini.beans.forms.User;
+import com.gemini.beans.requests.RegisterRequest;
 import com.gemini.beans.requests.UserActivationRequest;
 import com.gemini.beans.responses.RegisterResponse;
 import com.gemini.services.MailService;
@@ -25,17 +25,17 @@ public class AccountResource {
     private UserService userService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<RegisterResponse> registerAccount(@RequestBody User userBean) {
+    public ResponseEntity<RegisterResponse> registerAccount(@RequestBody RegisterRequest request) {
 
         //todo: form data validation
-        if (userService.existsUser(userBean.getEmail())) {
+        if (userService.existsUser(request.getEmail())) {
             return ResponseEntity.ok(RegisterResponse.error("User already exists"));
         }
 
         //todo: make a schedule process to resent activation emails
-        String activationCode = userService.createUser(userBean);
-        boolean mailSent = mailService.sendRegisterEmail(userBean, activationCode);
-        userService.saveSentActivationResult(userBean.getEmail(), mailSent);
+        String activationCode = userService.createUser(request);
+        boolean mailSent = mailService.sendRegisterEmail(request, activationCode);
+        userService.saveSentActivationResult(request.getEmail(), mailSent);
         return ResponseEntity.ok(RegisterResponse.success());
     }
 

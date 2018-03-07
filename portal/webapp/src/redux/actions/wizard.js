@@ -5,22 +5,39 @@ const QUESTION = {type: "YES_NO", nextButton: "Si", previousButton: "No"};
 const IN_PROGRESS = {type: "NEXT_PREVIOUS", nextButton: "Proximo", previousButton: "Retroceder"};
 const CONTINUE = {type: "START", nextButton: "Continuar"};
 const END = {type: "FINALIZE", nextButton: "Someter"};
+const BEFORE_PRE_ENROLLMENT_PAGE = 7;
 
 const formFlow = [
-    {type: "DEPR_ENROLLED_QUESTION", yes: 1, no: 4, footerType: QUESTION},
-    {type: "STUDENT_LOOKUP", footerType: IN_PROGRESS, success: 3, failure: 2, waitForResult: true},
-    {type: "NOT_FOUND_QUESTION", yes: 1, no: 4, footerType: QUESTION},
+    {type: "PARENT_PROFILE", footerType: CONTINUE},
+    {type: "INSTRUCTIONS", footerType: CONTINUE},
+    {type: "DEPR_ENROLLED_QUESTION", yes: 3, no: 6, footerType: QUESTION},
+    {type: "STUDENT_LOOKUP", footerType: IN_PROGRESS, success: 5, failure: 4, waitForResult: true},
+    {type: "NOT_FOUND_QUESTION", yes: 3, no: 6, footerType: QUESTION},
     {type: "FOUND_INFO", footerType: CONTINUE},
     {type: "PERSONAL_INFO", footerType: IN_PROGRESS},
     {type: "ADDRESS", footerType: IN_PROGRESS},
-    {type: "ENROLLMENT_QUESTION", yes: 8, no: 7, footerType: QUESTION},
+    {type: "ENROLLMENT_QUESTION", yes: 10, no: 9, footerType: QUESTION},
     {type: "ENROLLMENT", footerType: IN_PROGRESS},
     {type: "SUBMIT", footerType: END}];
 
-export const load = () => (dispatch) => {
+const editFormFlow = [
+    {type: "PERSONAL_INFO", footerType: IN_PROGRESS},
+    {type: "ADDRESS", footerType: IN_PROGRESS},
+    {type: "ENROLLMENT", footerType: IN_PROGRESS},
+    {type: "SUBMIT", footerType: END}
+];
+
+export const load = () => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_LOAD_START});
+    let user = getState().profile.user;
+    let profileCompleted = user.profileCompleted;
+    let startPage = profileCompleted ? 2 : 0;
+    let flow = user.workingPreEnrollmentId && user.workingPreEnrollmentId > 0
+        ? editFormFlow
+        : formFlow;
+    console.log(JSON.stringify(user));
     //check if user has pending pre-enrollment
-    dispatch({type: types.ON_WIZARD_LOAD_END, footerType: formFlow[0].footerType})
+    dispatch({type: types.ON_WIZARD_LOAD_END, current: startPage, footerType: flow[startPage].footerType})
 };
 
 export const onNextAction = (onPress) => (dispatch, getState) => {
@@ -34,7 +51,7 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
 
     if (currentForm.type.lastIndexOf("_QUESTION") > 0) {
         next = currentForm.yes;
-    } else if (current === 5) {
+    } else if (current === BEFORE_PRE_ENROLLMENT_PAGE) {
 
         let preEnrollment = getState().studentInfo.preEnrollment;
         if (!preEnrollment.hasPreviousEnrollment) {

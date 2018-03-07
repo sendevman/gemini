@@ -95,8 +95,8 @@ class Authentication extends Component {
         let creds = this.props.form;
         e.preventDefault();
 
-        this.props.login(creds, () => {
-                this.props.history.push("/home")
+        this.props.login(creds, (nextPath) => {
+                this.props.history.push(nextPath)
             },
             () => {
                 alert("Error autenticando");
@@ -107,9 +107,9 @@ class Authentication extends Component {
 
 function mapStateToProps(store) {
     return {
-        form: store.login.form,
-        invalidCredentials: store.login.invalidCredentials,
-        errorAtLogin: store.login.errorAtLogin
+        form: store.profile.authentication,
+        invalidCredentials: store.profile.invalidCredentials,
+        errorAtLogin: store.profile.errorAtLogin
     };
 }
 

@@ -25,7 +25,7 @@ public class FailureLoginLogEntity {
     @Column(nullable = false)
     private String sessionId;
 
-    @Column(nullable = false, updatable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
+    @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
     private Date actionDate;
 
     public Long getId() {

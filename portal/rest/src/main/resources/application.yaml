@@ -24,10 +24,9 @@ spring:
       mail.smtp.starttls.enable: true
     test-connection: false
   jpa:
-    show-sql: true
-    database: mysql
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
+    show-sql: true
     generate-ddl: true
 #    database-platform: default
 
@@ -37,10 +36,10 @@ spring:
   #    driver-class-name: oracle.jdbc.driver.OracleDriver
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/SRS
-    username: srs
-    password: 12345678
-    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
+    username: FPALOU
+    password: dev2@!8
+    driver-class-name: oracle.jdbc.driver.OracleDriver
     hikari:
       maximum-pool-size: 30
 

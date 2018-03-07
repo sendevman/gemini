@@ -28,6 +28,6 @@ public class CommonDaoImpl extends JdbcDaoSupport implements CommonDao {
 
     @Override
     public Date getCurrentDate() {
-        return getJdbcTemplate().queryForObject("select current_timestamp()", null, Date.class);
+        return getJdbcTemplate().queryForObject("select current_timestamp from dual", null, Date.class);
     }
 }

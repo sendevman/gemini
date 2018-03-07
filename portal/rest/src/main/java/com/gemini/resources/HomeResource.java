@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/home")
-public class HomeResources {
+public class HomeResource {
     @Autowired
     private PreEnrollmentService preEnrollmentService;
 

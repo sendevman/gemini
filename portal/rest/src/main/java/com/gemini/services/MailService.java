@@ -3,6 +3,7 @@ package com.gemini.services;
 import com.gemini.beans.forms.PreEnrollmentBean;
 import com.gemini.beans.forms.User;
 import com.gemini.beans.requests.PreEnrollmentSubmitRequest;
+import com.gemini.beans.requests.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -46,10 +47,10 @@ public class MailService {
         return templateEngine.process(templateName, ctx);
     }
 
-    private SimpleMailMessage accountRegisterMail(User user, String link) {
+    private SimpleMailMessage accountRegisterMail(RegisterRequest request, String link) {
         SimpleMailMessage registerMail = new SimpleMailMessage();
         registerMail.setFrom(fromEmail);
-        registerMail.setTo(user.getEmail());
+        registerMail.setTo(request.getEmail());
         registerMail.setSubject("Registro en Linea - Activar Cuenta");
         Map<String, String> params =
                 Collections.unmodifiableMap(Stream.of(
@@ -91,9 +92,9 @@ public class MailService {
         return mail;
     }
 
-    public boolean sendRegisterEmail(User userBean, String activationCode) {
+    public boolean sendRegisterEmail(RegisterRequest request, String activationCode) {
         String link = String.format("%s/activate/%s", publicUrl, activationCode);
-        return send(accountRegisterMail(userBean, link));
+        return send(accountRegisterMail(request, link));
     }
 
     public boolean sendPreEnrollmentSubmitEmail(User user, PreEnrollmentSubmitRequest request) {

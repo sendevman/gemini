@@ -7,7 +7,7 @@ const initialState = {
     previousLabel: null,
     nextLabel: null,
     percentage: 0,
-    maxForms: 9,
+    maxForms: 11,
     flowNavigation: [0],
     wizardCompleted: false
 };
@@ -24,7 +24,13 @@ const wizard = (state = initialState, action) => {
         case types.ON_WIZARD_LOAD_START:
             return state;
         case types.ON_WIZARD_LOAD_END:
-            return {...state, previousLabel: btnType.previousButton, nextLabel: btnType.nextButton};
+            return {
+                ...state,
+                flowNavigation: [action.current],
+                current: action.current,
+                previousLabel: btnType.previousButton,
+                nextLabel: btnType.nextButton
+            };
         case types.ON_WIZARD_NEXT_START:
             return state;
         case types.ON_WIZARD_NEXT_END:

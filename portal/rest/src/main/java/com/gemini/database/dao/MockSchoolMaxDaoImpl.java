@@ -108,7 +108,7 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
         school.setExtSchoolNumber(1L);
         school.setAddressLine_1("Calle Felicidad");
         school.setAddressLine_2("Urb Progreso");
-        school.setCityCd("");
+        school.setCityCd("SNJN");
         school.setCity("San Juan");
         school.setState("PR");
         school.setZipCode("00918");
