@@ -22,6 +22,7 @@ class Routes extends Component {
 
     render() {
         let authenticated = this.props.authenticated;
+        let loading = this.props.loading;
         return (
             <Switch>
                 <Route exact path="/" component={Authentication}/>
@@ -30,9 +31,9 @@ class Routes extends Component {
                 <Route path="/activate/result/:result(success|error)" component={Result}/>
                 <Route path="/activate/:activationCode" component={Activation}/>
                 {/*privates routes*/}
-                <PrivateRoute path="/home" component={Home} authenticated={authenticated}/>
-                <PrivateRoute path="/wizard" component={Wizard} authenticated={authenticated}/>
-                <PrivateRoute path="/profile" component={Profile} authenticated={authenticated}/>
+                <PrivateRoute path="/home" component={Home} authenticated={authenticated} loading={loading}/>
+                <PrivateRoute path="/wizard" component={Wizard} authenticated={authenticated} loading={loading}/>
+                <PrivateRoute path="/profile" component={Profile} authenticated={authenticated} loading={loading}/>
 
                 {/*404 page*/}
                 <Route component={NotFoundPage}/>
@@ -46,19 +47,11 @@ const PrivateRoute = ({component: Component, ...rest}) => (
     <Route
         {...rest}
         render={props =>
-            rest.authenticated ? (
-                <Component {...props} />
-            ) : (
-                <Redirect
-                    to={{
-                        pathname: "/",
-                        state: {from: props.location}
-                    }}
-                />
-            )
+            rest.authenticated || rest.loading
+                ? rest.authenticated && !rest.loading ? (<Component {...props} />) : (null)
+                : (<Redirect to={{pathname: "/", state: {from: props.location}}}/>)
         }
     />
 );
-
 
 export default withRouter(Routes);

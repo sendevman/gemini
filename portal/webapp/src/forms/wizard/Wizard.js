@@ -97,7 +97,7 @@ class Wizard extends Component {
             form("", <Question
                 question={`Hemos encontrado al estudiante ${student && student.fullName}, desea pre-matricularlo para año escolar 2019 (2018-2019)`}
                 ref={`page${c++}`}/>),
-            form("Informaci\u00f3n Personal", <PersonalInfo ref={`page${c++}`}/>),
+            form("Informaci\u00f3n Personal del Estudiante", <PersonalInfo ref={`page${c++}`}/>),
             form("Direcci\u00f3n", <Address ref={`page${c++}`}/>),
             form("", <Question question={`Su estudiante continuará en la escuela ${enrollmentPredicate}`}
                                ref={`page${c++}`}/>),

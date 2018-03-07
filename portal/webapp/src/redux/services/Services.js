@@ -24,6 +24,10 @@ export default class Services {
         return this._login("/auth", credentials);
     }
 
+    session() {
+        return this._getPromise("/auth");
+    }
+
     logout() {
         return this._securedPost("/logout", {});
     }
@@ -90,6 +94,11 @@ export default class Services {
         return fetch(buildUrl(path), {method: "POST", ...this._addHeader(authorization), credentials: "same-origin"})
             .then((response) => this._handleHttpCode(response))
 
+    }
+
+    _getPromise(path) {
+        return fetch(buildUrl(path), this._addHeader())
+            .then((response) => this._handleHttpCode(response));
     }
 
     _get(path) {

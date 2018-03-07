@@ -37,8 +37,17 @@ public class UserResource {
         boolean saved = userService.updateUser(request);
         if (!saved)
             return ResponseEntity.ok(ResponseBase.error("Error saving profile info"));
+        else
+            updatePrincipal(request, loggedUser);
 
-        return ResponseEntity.ok(ResponseBase.success());
+        return ResponseEntity.ok(ResponseBase.success(loggedUser));
+    }
+
+    private void updatePrincipal(ParentProfileInfoRequest request, User loggedUser) {
+        loggedUser.setFirstName(request.getFirstName());
+        loggedUser.setFatherLastName(request.getFatherLastName());
+        loggedUser.setMotherLastName(request.getMotherLastName());
+        loggedUser.setProfileCompleted(true);
     }
 
 

@@ -9,7 +9,8 @@ const initialState = {
     user: {},
     authenticated: false,
     invalidCredentials: false,
-    errorAtLogin: false
+    errorAtLogin: false,
+    loading: true
 
 };
 
@@ -19,6 +20,7 @@ const profile = (state = initialState, action) => {
             return state;
         case types.AUTHENTICATED:
             return {...state, authentication: {username: '', password: ''}, authenticated: true, user: action.response};
+        case types.PROFILE_UPDATE_START:
         case types.FETCH_USER_INFO_START:
         case types.FETCH_USER_INFO_END:
             return state;
@@ -28,6 +30,12 @@ const profile = (state = initialState, action) => {
             return {...state, invalidCredentials: true};
         case types.CLEAN_LOGIN:
             return initialState;
+        case types.SESSION_CHECK_START:
+            return {...state, loading: true};
+        case types.SESSION_CHECK_END:
+            return {...state, user: action.user, loading: false, authenticated: action.authenticated};
+        case types.PROFILE_UPDATE_END:
+            return {...state, user: action.user};
         default:
             return state;
     }

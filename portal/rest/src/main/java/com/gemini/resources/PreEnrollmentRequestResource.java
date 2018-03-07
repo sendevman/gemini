@@ -35,9 +35,9 @@ public class PreEnrollmentRequestResource {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBase<PreEnrollmentBean>> savePreEnrollmentRequest(@RequestBody PreEnrollmentInitialRequest initialRequest, @AuthenticationPrincipal User loggedUser) {
+    public ResponseEntity<ResponseBase> savePreEnrollmentRequest(@RequestBody PreEnrollmentInitialRequest initialRequest, @AuthenticationPrincipal User loggedUser) {
         boolean exists = preEnrollmentService.exists(initialRequest, loggedUser);
-        ResponseEntity<ResponseBase<PreEnrollmentBean>> response;
+        ResponseEntity<ResponseBase> response;
         if (!exists) {
             response = handleCreatePreEnrollment(initialRequest, loggedUser);
         } else {
@@ -79,7 +79,7 @@ public class PreEnrollmentRequestResource {
         return ResponseEntity.badRequest().body(ResponseBase.error("Address are not attached to this request"));
     }
 
-    private ResponseEntity<ResponseBase<PreEnrollmentBean>> handleCreatePreEnrollment(PreEnrollmentInitialRequest initialRequest, User loggedUser) {
+    private ResponseEntity<ResponseBase> handleCreatePreEnrollment(PreEnrollmentInitialRequest initialRequest, User loggedUser) {
         PreEnrollmentBean preEnrollmentBean;
         if (ValidationUtils.valid(initialRequest.getStudentNumber())
                 || ValidationUtils.valid(
@@ -92,15 +92,15 @@ public class PreEnrollmentRequestResource {
         else
             return ResponseEntity.badRequest().body(ResponseBase.error("Missing fields to create pre-enrollment"));
 
-        ResponseBase<PreEnrollmentBean> response;
+        ResponseBase response;
         if (preEnrollmentBean != null)
-            response = ResponseBase.<PreEnrollmentBean>success(preEnrollmentBean.getId(), preEnrollmentBean);
+            response = ResponseBase.success(preEnrollmentBean.getId(), preEnrollmentBean);
         else
             response = ResponseBase.error("Error saving pre-enrollment");
         return ResponseEntity.ok(response);
     }
 
-    private ResponseEntity<ResponseBase<PreEnrollmentBean>> handleEditPreEnrollment(PreEnrollmentInitialRequest initialRequest) {
+    private ResponseEntity<ResponseBase> handleEditPreEnrollment(PreEnrollmentInitialRequest initialRequest) {
         PreEnrollmentBean preEnrollmentBean = preEnrollmentService.updatePreEnrollment(initialRequest);
         if (preEnrollmentBean != null)
             return ResponseEntity.ok(ResponseBase.success(preEnrollmentBean.getId(), preEnrollmentBean));

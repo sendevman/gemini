@@ -7,7 +7,7 @@ import Routes from "./Routes";
 import moment from "moment";
 import esLocale from "moment/locale/es";
 import {connect} from "react-redux";
-import {logout} from "./redux/actions";
+import {logout, checkSession} from "./redux/actions";
 import * as types from "./redux/types";
 import ReduxBlockUi from 'react-block-ui/redux';
 import {bindActionCreators} from "redux";
@@ -24,8 +24,12 @@ class App extends Component {
         this.goToProfile = this.goToProfile.bind(this);
     }
 
+    componentWillMount(){
+        this.props.checkSession();
+    }
+
     onRouteChanged(nextRoute) {
-        this.setState({showMenu: !env.isPublicUrl(nextRoute.pathname)});
+        this.setState({showMenu: !env.isPublicUrl(nextRoute.pathname) && this.props.authenticated});
     };
 
     handleLogout() {
@@ -53,7 +57,7 @@ class App extends Component {
             <ReduxBlockUi tag="div" block={types.blockUIActions} unblock={types.unblockUIActions}>
                 <div>
                     {this.renderNavbar()}
-                    <Routes authenticated={this.props.authenticated} onRouteChanged={this.onRouteChanged}/>
+                    <Routes loading={this.props.loading} authenticated={this.props.authenticated} onRouteChanged={this.onRouteChanged}/>
                 </div>
             </ReduxBlockUi>
         );
@@ -86,20 +90,18 @@ class App extends Component {
 
         return (null);
     }
-
-
 }
 
 function mapStateToProps(store) {
     return {
         fullName: store.profile.user.fullName || "Sin Nombre",
-        authenticated: store.profile.authenticated
+        authenticated: store.profile.authenticated,
+        loading: store.profile.loading
     };
 }
 
-
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({logout}, dispatch)
+    return bindActionCreators({logout, checkSession}, dispatch)
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToActions)(App));

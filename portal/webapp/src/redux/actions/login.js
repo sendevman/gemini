@@ -11,6 +11,32 @@ export const login = (form, onSuccess, onError) => (dispatch) => {
     return _login(form, dispatch, onSuccess, onError);
 };
 
+export const logout = (onResult) => (dispatch) => {
+    dispatch({type: types.LOGOUT_START});
+    return _logout(onResult, dispatch);
+};
+
+export const checkSession = () => (dispatch) => {
+    dispatch({type: types.SESSION_CHECK_START});
+    return _session(dispatch);
+};
+
+async function _session(dispatch) {
+    let sessionResp = await services().session();
+
+    switch (sessionResp.status) {
+        case 200:
+            let user = await sessionResp.json();
+            dispatch({type: types.SESSION_CHECK_END, authenticated: true, user: user});
+            break;
+        case 401:
+        case 403:
+            dispatch({type: types.SESSION_CHECK_END, authenticated: false, user: {}});
+    }
+
+
+}
+
 async function _login(form, dispatch, onSuccess, onError) {
     let authResponse;
     let jsonResponse;
@@ -32,7 +58,6 @@ async function _login(form, dispatch, onSuccess, onError) {
                 break;
             case 200:
                 dispatch({type: types.AUTHENTICATED, response: jsonResponse});
-                await services().token();
                 let canGoHome = jsonResponse.canGoHome;
                 let nextPath = canGoHome ? "/home" : "/wizard";
                 onSuccess(nextPath);
@@ -44,19 +69,13 @@ async function _login(form, dispatch, onSuccess, onError) {
 
 }
 
-export const logout = (onResult) => (dispatch) => {
-    dispatch({type: types.LOGOUT_START});
-    return _logout(onResult, dispatch);
-};
-
 async function _logout(onResult, dispatch) {
-    let logoutResponse;
     try {
         await services().logout();
-        onResult();
-        dispatch({type: types.LOGOUT_END});
     } catch (e) {
-        onResult();
-        dispatch({type: types.LOGOUT_END});
+        console.log("error on logout")
     }
+
+    onResult();
+    dispatch({type: types.LOGOUT_END});
 }

@@ -60,6 +60,10 @@ public class ResponseBase<T> {
         return success(null);
     }
 
+    public static<T>  ResponseBase success(T responseBean) {
+        return success(null, responseBean);
+    }
+
     public static ResponseBase success(Long requestId) {
         ResponseBase base = new ResponseBase();
         base.successfulOperation = true;
