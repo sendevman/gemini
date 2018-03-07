@@ -1,10 +1,11 @@
 import * as types from "../types";
 
 const initialState = {
-    form: {
+    authentication: {
         username: '',
         password: '',
     },
+    form: {},
     user: {},
     authenticated: false,
     invalidCredentials: false,
@@ -12,12 +13,12 @@ const initialState = {
 
 };
 
-const login = (state = initialState, action) => {
+const profile = (state = initialState, action) => {
     switch (action.type) {
         case types.AUTHENTICATING_START:
             return state;
         case types.AUTHENTICATED:
-            return {...state, form: {username: '', password: ''}, authenticated: true, user: action.response};
+            return {...state, authentication: {username: '', password: ''}, authenticated: true, user: action.response};
         case types.FETCH_USER_INFO_START:
         case types.FETCH_USER_INFO_END:
             return state;
@@ -32,4 +33,4 @@ const login = (state = initialState, action) => {
     }
 };
 
-export default login;
+export default profile;

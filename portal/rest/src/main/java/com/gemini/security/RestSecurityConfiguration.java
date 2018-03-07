@@ -64,6 +64,7 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
                 .and()
                 .authorizeRequests()
+                .antMatchers("/token", "/account").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().csrfTokenRepository(csrfTokenRepository()).and()

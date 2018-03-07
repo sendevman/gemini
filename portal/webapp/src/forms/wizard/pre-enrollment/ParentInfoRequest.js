@@ -2,14 +2,37 @@ import React, {Component} from "react";
 import TextInput from "../../../components/TextInput";
 import CodeSelect from "../../../components/CodeSelect";
 import DateInput from "../../../components/DateInput";
+import {saveProfile} from "../../../redux/actions";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 
-export default class ParentInfoRequest extends Component {
+class ParentInfoRequest extends Component {
 
     constructor(props) {
         super(props);
+        this.inputHandler = this.inputHandler.bind(this);
+        this.onValidDate = this.onValidDate.bind(this);
+    }
+
+    inputHandler(e) {
+        let form = this.props.form;
+        let element = e.target;
+        form[element.id] = element.value;
+    }
+
+    onValidDate(date) {
+        let form = this.props.form;
+        form.dateOfBirth = date;
+    }
+
+
+    onPress(onResult, onError) {
+        let form = this.props.form;
+        this.props.saveProfile(form, onResult, onError);
     }
 
     render() {
+        let form = this.props.form;
         return (<form>
             <div className="row">
                 <div className="col-md-3">
@@ -42,26 +65,36 @@ export default class ParentInfoRequest extends Component {
                 </div>
             </div>
             <div className="row">
-                <div className="col-md-12">
-                    <div className="col-md-6">
-                        <DateInput showFormat={false}
-                                   label="Fecha de Nacimiento"
-                                   ref="dob"
-                                   onValidDate={this.onValidDate}
-                                   onInvalidDate={this.onInvalidDate}
-                                   value={form.dateOfBirth}/>
-                    </div>
-                    <div className="col-md-6">
-                        <CodeSelect id="relationType"
-                                    label="Seleccione relacion"
-                                    ref="registrationRelations"
-                                    codeType="registrationRelations"
-                                    value={form.relationType}
-                                    onChange={this.inputHandler}/>
-                    </div>
+                <div className="col-md-6">
+                    <DateInput showFormat={false}
+                               label="Fecha de Nacimiento"
+                               ref="dob"
+                               onValidDate={this.onValidDate}
+                               onInvalidDate={this.onInvalidDate}
+                               value={form.dateOfBirth}/>
+                </div>
+                <div className="col-md-6">
+                    <CodeSelect id="relationType"
+                                label="Seleccione relacion con el estudiante"
+                                ref="registrationRelations"
+                                codeType="registrationRelations"
+                                value={form.relationType}
+                                onChange={this.inputHandler}/>
                 </div>
             </div>
 
         </form>);
     }
 }
+
+function mapStateToProps(store) {
+    return {
+        form: store.profile.form
+    };
+}
+
+function mapDispatchToActions(dispatch) {
+    return bindActionCreators({saveProfile}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(ParentInfoRequest);

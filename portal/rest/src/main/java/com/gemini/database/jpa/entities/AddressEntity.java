@@ -40,7 +40,7 @@ public class AddressEntity {
     private String zipcode;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
+    @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
     private Date creationDate;
     @LastModifiedDate
     @Column()

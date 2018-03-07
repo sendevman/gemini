@@ -22,14 +22,10 @@ public class AuthenticationResource {
     @Autowired
     AuthenticationManager authenticationManager;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.POST)
     private User authenticate(@AuthenticationPrincipal User principal) {
         return principal;
     }
 
-    @RequestMapping(value = "/token", method = RequestMethod.GET)
-    private ResponseEntity token() {
-        return new ResponseEntity(HttpStatus.OK);
-    }
 
 }

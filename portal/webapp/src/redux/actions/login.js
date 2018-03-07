@@ -32,7 +32,10 @@ async function _login(form, dispatch, onSuccess, onError) {
                 break;
             case 200:
                 dispatch({type: types.AUTHENTICATED, response: jsonResponse});
-                onSuccess();
+                await services().token();
+                let canGoHome = jsonResponse.canGoHome;
+                let nextPath = canGoHome ? "/home" : "/wizard";
+                onSuccess(nextPath);
                 break;
             default:
                 dispatch({type: types.UNKNOWN_LOGIN_ERROR})
@@ -42,7 +45,7 @@ async function _login(form, dispatch, onSuccess, onError) {
 }
 
 export const logout = (onResult) => (dispatch) => {
-    dispatch({type: types.LOGOUT_START})
+    dispatch({type: types.LOGOUT_START});
     return _logout(onResult, dispatch);
 };
 

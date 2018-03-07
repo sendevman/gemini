@@ -79,8 +79,8 @@ class Profile extends Component {
 
 function mapStateToProps(store) {
     return {
-        fullName: store.login.user.fullName || "Sin Nombre",
-        email: store.login.user.email
+        fullName: store.profile.user.fullName || "Sin Nombre",
+        email: store.profile.user.email
     };
 }
 

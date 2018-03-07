@@ -68,13 +68,16 @@ public class UserEntity {
     @Column
     private boolean credentialsNonExpired = true;
 
+    @Column
+    private boolean profileCompleted = false;
+
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PreEnrollmentRequestEntity> requests;
 
-    //todo: fran change this on ORACLE
     @CreatedDate
-    @Column(nullable = false, updatable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
+    @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
     private Date creationDate;
+
     @LastModifiedDate
     @Column()
     private Date revisionDate;
@@ -205,6 +208,14 @@ public class UserEntity {
 
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {
         this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public boolean isProfileCompleted() {
+        return profileCompleted;
+    }
+
+    public void setProfileCompleted(boolean profileCompleted) {
+        this.profileCompleted = profileCompleted;
     }
 
     public List<PreEnrollmentRequestEntity> getRequests() {

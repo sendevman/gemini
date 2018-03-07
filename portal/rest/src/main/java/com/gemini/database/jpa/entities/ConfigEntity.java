@@ -19,16 +19,19 @@ public class ConfigEntity {
     private Long id;
 
     @Column(nullable = false)
-    private Long currentSchoolYear;
+    private Long currentSchoolYear = 2018L;
 
     @Column(nullable = false)
-    private Long preEnrollmentSchoolYear;
+    private Long preEnrollmentSchoolYear = 2019L;
 
     @Column
     private Date preEnrollmentStart;
 
     @Column
     private Date preEnrollmentEnd;
+
+    @Column(nullable = false)
+    private boolean canEditFoundStudent = false;
 
     public Long getId() {
         return id;
@@ -69,4 +72,13 @@ public class ConfigEntity {
     public void setPreEnrollmentEnd(Date preEnrollmentEnd) {
         this.preEnrollmentEnd = preEnrollmentEnd;
     }
+
+    public boolean isCanEditFoundStudent() {
+        return canEditFoundStudent;
+    }
+
+    public void setCanEditFoundStudent(boolean canEditFoundStudent) {
+        this.canEditFoundStudent = canEditFoundStudent;
+    }
 }
+

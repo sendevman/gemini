@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {MenuItem, Nav, Navbar, NavDropdown} from "react-bootstrap";
-import {Link, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.min.css";
 import "./App.css";
 import Routes from "./Routes";
@@ -34,7 +34,7 @@ class App extends Component {
         });
     }
 
-    goToProfile(){
+    goToProfile() {
         this.props.history.push("/profile");
     }
 
@@ -53,7 +53,7 @@ class App extends Component {
             <ReduxBlockUi tag="div" block={types.blockUIActions} unblock={types.unblockUIActions}>
                 <div>
                     {this.renderNavbar()}
-                    <Routes onRouteChanged={this.onRouteChanged}/>
+                    <Routes authenticated={this.props.authenticated} onRouteChanged={this.onRouteChanged}/>
                 </div>
             </ReduxBlockUi>
         );
@@ -91,7 +91,10 @@ class App extends Component {
 }
 
 function mapStateToProps(store) {
-    return {fullName: store.login.user.fullName || "Sin Nombre"};
+    return {
+        fullName: store.profile.user.fullName || "Sin Nombre",
+        authenticated: store.profile.authenticated
+    };
 }
 
 

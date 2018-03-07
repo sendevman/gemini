@@ -24,7 +24,7 @@ public class StudentEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private EntryType entryType = EntryType.EXISTING_ENTRY;
+    private EntryType entryType = EntryType.EXISTING;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -57,7 +57,7 @@ public class StudentEntity {
     private AddressEntity postal;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
+    @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
     private Date creationDate;
     @LastModifiedDate
     @Column()

@@ -135,7 +135,7 @@ public class PreEnrollmentService {
             physical = save(physical);
             studentEntity.setPhysical(physical);
             studentEntity.setPostal(postal);
-            studentEntity.setEntryType(EntryType.NEW_ENTRY);
+            studentEntity.setEntryType(EntryType.NEW);
             studentEntity.setLastName(Utils.toLastName(request.getFatherLastName(), request.getMotherLastName()));
             //saving student
             studentEntity = save(studentEntity);
@@ -174,7 +174,7 @@ public class PreEnrollmentService {
             requestEntity = preEnrollmentRepository.findByStudentNumber(request.getStudentNumber());
         StudentEntity studentEntity = studentRepository.findOne(requestEntity.getStudent().getId());
         //todo: check if personal data will be able to modified on found students
-        if (EntryType.NEW_ENTRY.equals(studentEntity.getEntryType())) {
+        if (EntryType.NEW.equals(studentEntity.getEntryType())) {
             studentEntity.setFirstName(request.getFirstName());
             studentEntity.setMiddleName(request.getMiddleName());
             studentEntity.setLastName(Utils.toLastName(request.getFatherLastName(), request.getMotherLastName()));

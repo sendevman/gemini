@@ -7,8 +7,8 @@ package com.gemini.beans.types;
  * Time: 9:16 PM
  */
 public enum EntryType {
-    NEW_ENTRY("Nuevo Ingreso"),
-    EXISTING_ENTRY("Existente");
+    NEW("Nuevo Ingreso"),
+    EXISTING("Existente");
 
     String description;
 

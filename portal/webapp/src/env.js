@@ -3,7 +3,7 @@ const local = 'http://localhost:3000/portal-api';
 
 let config = {
     baseContext: "srs",
-    restServer: dev,
+    restServer: local,
     loadingMinimumTime: 1000,
     reCAPTCHASiteKey: "6LfwnkkUAAAAABRldWNGMVuTb3ifCU_e9ZG6oI_J",
     publicPaths: ["/", "/registration", "/activate"]

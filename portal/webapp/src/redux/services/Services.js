@@ -15,12 +15,22 @@ export default class Services {
     }
 
     //authentication
-    authenticate(credentials) {
+    token() {
+        return this._getRaw("/token")
+    }
+
+    async authenticate(credentials) {
+        await this.token();
         return this._login("/auth", credentials);
     }
 
     logout() {
         return this._securedPost("/logout", {});
+    }
+
+    //user
+    saveProfile(form) {
+        return this._securedPost(`/user/save`, form);
     }
 
     //home
@@ -77,7 +87,7 @@ export default class Services {
 
     _login(path, credentials) {
         let authorization = `Basic ${btoa(credentials.username + ':' + credentials.password)}`;
-        return fetch(buildUrl(path), {...this._addHeader(authorization), credentials: "same-origin"})
+        return fetch(buildUrl(path), {method: "POST", ...this._addHeader(authorization), credentials: "same-origin"})
             .then((response) => this._handleHttpCode(response))
 
     }
@@ -109,6 +119,7 @@ export default class Services {
     }
 
 
+    //todo: POST Methods can be improve
     _securedPost(path, body) {
         return fetch(buildUrl(path), {
             method: "POST",
@@ -155,7 +166,7 @@ export default class Services {
             return response;
         } else {
             console.log(`internal server error, error info: ${response && response.statusText}`);
-            let message = (response && response.statusText) || "unknown error"
+            let message = (response && response.statusText) || "unknown error";
 
             if (manageException) {
                 console.log(message);
