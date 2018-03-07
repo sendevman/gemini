@@ -75,7 +75,7 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     response.setStatus(HttpServletResponse.SC_OK);
                 })
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID", "X-XSRF-TOKEN");
+                .deleteCookies("JSESSIONID", "XSRF-TOKEN");
 
 //        Session Management Config
 //        http.sessionManagement()

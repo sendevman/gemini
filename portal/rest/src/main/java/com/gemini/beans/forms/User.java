@@ -173,8 +173,8 @@ public class User implements UserDetails, CredentialsContainer {
         this.totalPreEnrollments = totalPreEnrollments;
     }
 
-    public boolean canGoHome() {
-        return profileCompleted && totalPreEnrollments > 1;
+    public boolean isCanGoHome() {
+        return profileCompleted && totalPreEnrollments > 0;
     }
 
     @Override

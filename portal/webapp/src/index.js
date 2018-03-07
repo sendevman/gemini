@@ -8,14 +8,17 @@ import registerServiceWorker from "./registerServiceWorker";
 import 'react-block-ui/style.css';
 import "./index.css";
 import App from "./App";
+import ErrorCatcher from "./ErrorCatcher";
 
 let store = setupStore();
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router basename="/srs">
-            <App/>
-        </Router>
+        <ErrorCatcher>
+            <Router basename="/srs">
+                <App/>
+            </Router>
+        </ErrorCatcher>
     </Provider>,
     document.getElementById('root'));
 
