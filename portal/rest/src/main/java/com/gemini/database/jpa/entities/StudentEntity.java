@@ -2,6 +2,7 @@ package com.gemini.database.jpa.entities;
 
 import com.gemini.beans.types.EntryType;
 import com.gemini.beans.types.Gender;
+import com.gemini.database.IdentityEntity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -16,7 +17,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "students")
-public class StudentEntity {
+public class StudentEntity implements IdentityEntity {
 
     @Id
     @GeneratedValue
@@ -79,10 +80,12 @@ public class StudentEntity {
         this.entryType = entryType;
     }
 
+    @Override
     public Gender getGender() {
         return gender;
     }
 
+    @Override
     public void setGender(Gender gender) {
         this.gender = gender;
     }
@@ -111,26 +114,32 @@ public class StudentEntity {
         this.dateOfBirth = dateOfBirth;
     }
 
+    @Override
     public String getFirstName() {
         return firstName;
     }
 
+    @Override
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    @Override
     public String getMiddleName() {
         return middleName;
     }
 
+    @Override
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
 
+    @Override
     public String getLastName() {
         return lastName;
     }
 
+    @Override
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }

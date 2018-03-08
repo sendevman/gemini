@@ -31,7 +31,9 @@ class Wizard extends Component {
     }
 
     componentWillMount() {
-        this.props.load();
+        let requestId = this.props.match.params.id;
+        console.log(this.props.match.params.id);
+        this.props.load(requestId);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -76,34 +78,64 @@ class Wizard extends Component {
 
     }
 
-
-    render() {
-        let current = this.props.current;
+    configForms() {
         let student = this.props.student;
         let preEnrollment = this.props.preEnrollment;
         let enrollmentPredicate = preEnrollment && preEnrollment.hasPreviousEnrollment
             ? `${preEnrollment.schoolName} para el grado ${preEnrollment.nextGradeLevelDescription}`
             : "";
-        let c = 0;
-        this.wizardForms = [
-            form("Su Informacion Personal", <ParentInfoRequest ref={`page${c++}`}/>),
-            form("Instrucciones", <Instructions ref={`page${c++}`}/>),
-            form("", <Question question="Tiene usted su hijo matriculado en Departamento de Educacion de PR"
-                               ref={`page${c++}`}/>),
-            form("Identificaci\u00f3n de Estudiante", <StudentIdentification ref={`page${c++}`}/>),
-            form("", <Question
-                question="Estudiante no fue encontrado con la informacion provista, desea realizar nuevamente la busqueda"
-                ref={`page${c++}`}/>),
-            form("", <Question
-                question={`Hemos encontrado al estudiante ${student && student.fullName}, desea pre-matricularlo para año escolar 2019 (2018-2019)`}
-                ref={`page${c++}`}/>),
-            form("Informaci\u00f3n Personal del Estudiante", <PersonalInfo ref={`page${c++}`}/>),
-            form("Direcci\u00f3n", <Address ref={`page${c++}`}/>),
-            form("", <Question question={`Su estudiante continuará en la escuela ${enrollmentPredicate}`}
-                               ref={`page${c++}`}/>),
-            form("Matricula", <PreEnrollment ref={`page${c++}`}/>),
-            form("Someter Solicitud", <SubmitRequest ref={`page${c++}`}/>)
+        let formsToDisplay = this.props.formsToDisplay;
+
+        let CATALOG = [
+            {title: "Su Informacion Personal", renderObj: ParentInfoRequest}
+            , {title: "Instrucciones", renderObj: Instructions}
+            , {
+                title: null,
+                question: "Tiene usted su hijo matriculado en Departamento de Educacion de PR",
+                renderObj: Question
+            }
+            , {title: "Identificaci\u00f3n de Estudiante", renderObj: StudentIdentification}
+            , {
+                title: null,
+                question: "Estudiante no fue encontrado con la informacion provista, desea realizar nuevamente la busqueda",
+                renderObj: Question
+            }
+            , {
+                title: null,
+                question: `Hemos encontrado al estudiante ${student && student.fullName}, desea pre-matricularlo para año escolar 2019 (2018-2019)`,
+                renderObj: Question
+            }
+            , {title: "Identificaci\u00f3n de Estudiante", renderObj: PersonalInfo}
+            , {title: "Direcci\u00f3n", renderObj: Address}
+            , {
+                title: null,
+                question: `Su estudiante continuará en la escuela ${enrollmentPredicate}`,
+                renderObj: Question
+            }
+            , {title: "Pre-Matricula", renderObj: PreEnrollment}
+            , {title: "Someter Solicitud", renderObj: SubmitRequest}
         ];
+
+        this.wizardForms = [];
+
+        let c = 0;
+        for (let formIndex of formsToDisplay) {
+            let pageConfig = CATALOG[formIndex];
+            let RenderObj = pageConfig.renderObj;
+            let props = {ref: `page${c++}`};
+            if (pageConfig.question)
+                props.question = pageConfig.question;
+            this.wizardForms.push(form(pageConfig.title, <RenderObj {...props}/>));
+        }
+
+    }
+
+
+    render() {
+        let current = this.props.current;
+        this.configForms();
+        if (!this.wizardForms || this.wizardForms.length === 0)
+            return (null);
 
         return (<div>
             <div className="container">
@@ -156,7 +188,8 @@ function mapStateToProps(store) {
         wizard: store.wizard,
         wizardCompleted: store.wizard.wizardCompleted,
         student: store.studentLookup.student,
-        preEnrollment: store.studentInfo.preEnrollment
+        preEnrollment: store.studentInfo.preEnrollment,
+        formsToDisplay: store.wizard.formsToDisplay
     };
 }
 

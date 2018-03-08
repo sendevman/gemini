@@ -5,55 +5,107 @@ const QUESTION = {type: "YES_NO", nextButton: "Si", previousButton: "No"};
 const IN_PROGRESS = {type: "NEXT_PREVIOUS", nextButton: "Proximo", previousButton: "Retroceder"};
 const CONTINUE = {type: "START", nextButton: "Continuar"};
 const END = {type: "FINALIZE", nextButton: "Someter"};
-const BEFORE_PRE_ENROLLMENT_PAGE = 7;
 
-const formFlow = [
-    {type: "PARENT_PROFILE", footerType: CONTINUE},
-    {type: "INSTRUCTIONS", footerType: CONTINUE},
-    {type: "DEPR_ENROLLED_QUESTION", yes: 3, no: 6, footerType: QUESTION},
-    {type: "STUDENT_LOOKUP", footerType: IN_PROGRESS, success: 5, failure: 4, waitForResult: true},
-    {type: "NOT_FOUND_QUESTION", yes: 3, no: 6, footerType: QUESTION},
-    {type: "FOUND_INFO", footerType: CONTINUE},
-    {type: "PERSONAL_INFO", footerType: IN_PROGRESS},
-    {type: "ADDRESS", footerType: IN_PROGRESS},
-    {type: "ENROLLMENT_QUESTION", yes: 10, no: 9, footerType: QUESTION},
-    {type: "ENROLLMENT", footerType: IN_PROGRESS},
-    {type: "SUBMIT", footerType: END}];
+let catalog = [
+    {type: "PARENT_PROFILE", footerType: CONTINUE}
+    , {type: "INSTRUCTIONS", footerType: CONTINUE}
+    , {type: "DEPR_ENROLLED_QUESTION", yes: "STUDENT_LOOKUP", no: "PERSONAL_INFO", footerType: QUESTION}
+    , {
+        type: "STUDENT_LOOKUP",
+        footerType: IN_PROGRESS,
+        success: "FOUND_INFO",
+        failure: "NOT_FOUND_QUESTION",
+        waitForResult: true
+    }
+    , {type: "NOT_FOUND_QUESTION", yes: "STUDENT_LOOKUP", no: "PERSONAL_INFO", footerType: QUESTION}
+    , {type: "FOUND_INFO", footerType: CONTINUE}
+    , {type: "PERSONAL_INFO", footerType: IN_PROGRESS}
+    , {type: "ADDRESS", footerType: IN_PROGRESS}
+    , {type: "ENROLLMENT_QUESTION", yes: "SUBMIT", no: "ENROLLMENT", footerType: QUESTION}
+    , {type: "ENROLLMENT", footerType: IN_PROGRESS}
+    , {type: "SUBMIT", footerType: END}];
+
+function getIndexFromCatalog(type) {
+    for (let idx in catalog) {
+        let page = catalog[idx];
+        if (page.type === type) {
+            return parseInt(idx);
+        }
+    }
+}
+
+function getIndexFromFlow(type) {
+    for (let idx in flow) {
+        let pageIdx = flow[idx];
+        let page = catalog[pageIdx];
+        if (page.type === type) {
+            return parseInt(idx);
+        }
+    }
+}
+
+function getForm(current) {
+    let index = flow[current];
+    return catalog[index];
+}
+
+function isType(current, type) {
+    let index = flow[current];
+    return catalog[index].type === type;
+}
+
+const normalFlow = catalog.map(((value, index) => index));
 
 const editFormFlow = [
-    {type: "PERSONAL_INFO", footerType: IN_PROGRESS},
-    {type: "ADDRESS", footerType: IN_PROGRESS},
-    {type: "ENROLLMENT", footerType: IN_PROGRESS},
-    {type: "SUBMIT", footerType: END}
+    getIndexFromCatalog("PERSONAL_INFO"),
+    getIndexFromCatalog("ADDRESS"),
+    getIndexFromCatalog("ENROLLMENT_QUESTION"),
+    getIndexFromCatalog("ENROLLMENT"),
+    getIndexFromCatalog("SUBMIT")
 ];
 
-export const load = () => (dispatch, getState) => {
+let flow;
+
+export const load = (requestId) => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_LOAD_START});
     let user = getState().profile.user;
     let profileCompleted = user.profileCompleted;
-    let startPage = profileCompleted ? 2 : 0;
-    let flow = user.workingPreEnrollmentId && user.workingPreEnrollmentId > 0
+    let startPage = profileCompleted ? 1 : 0;
+    let editing = (user.workingPreEnrollmentId && user.workingPreEnrollmentId > 0) || requestId;
+    flow = editing
         ? editFormFlow
-        : formFlow;
-    console.log(JSON.stringify(user));
+        : normalFlow;
+    if (editing) {
+        startPage = 0;
+        requestId =  requestId || user.workingPreEnrollmentId;
+    }
+
     //check if user has pending pre-enrollment
-    dispatch({type: types.ON_WIZARD_LOAD_END, current: startPage, footerType: flow[startPage].footerType})
+    dispatch({
+        type: types.ON_WIZARD_LOAD_END,
+        maxForms: flow.length,
+        current: startPage,
+        footerType: getForm(startPage).footerType,
+        editing: editing,
+        formsToDisplay: flow,
+        workingRequestId: requestId
+    })
 };
 
 export const onNextAction = (onPress) => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_NEXT_START});
     let wizard = getState().wizard;
+    let studentInfo = getState().studentInfo;
     let current = wizard.current;
     let maxForms = wizard.maxForms;
     let maxCurrent = (maxForms - 1);
-    let currentForm = formFlow[current];
+    let currentForm = getForm(current);
     let next = current + 1;
 
     if (currentForm.type.lastIndexOf("_QUESTION") > 0) {
-        next = currentForm.yes;
-    } else if (current === BEFORE_PRE_ENROLLMENT_PAGE) {
-
-        let preEnrollment = getState().studentInfo.preEnrollment;
+        next = getIndexFromFlow(currentForm.yes);
+    } else if (isType(current, "ADDRESS")) {
+        let preEnrollment = studentInfo.preEnrollment;
         if (!preEnrollment.hasPreviousEnrollment) {
             next = current + 2;
         }
@@ -61,11 +113,13 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
 
     onPress((result) => {
         if (currentForm.waitForResult && result) {
+
             next = result === types.ON_FOUND_CALLBACK
-                ? currentForm.success
-                : currentForm.failure;
+                ? getIndexFromFlow(currentForm.success)
+                : getIndexFromFlow(currentForm.failure);
         }
 
+        console.log(next);
         if (maxCurrent === current) {
             dispatch({type: types.ON_WIZARD_COMPLETED});
         } else {
@@ -73,7 +127,7 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
                 type: types.ON_WIZARD_NEXT_END,
                 current: current < maxCurrent ? next : maxCurrent,
                 isFinalStep: maxCurrent === current,
-                footerType: formFlow[next].footerType
+                footerType: getForm(next).footerType
             });
         }
     })
@@ -84,10 +138,10 @@ export const onPreviousAction = () => (dispatch, getState) => {
     let wizard = getState().wizard;
     let flowNavigation = wizard.flowNavigation;
     let current = wizard.current;
-    let currentForm = formFlow[current];
+    let currentForm = getForm(current);
     let next;
     if (currentForm.type.lastIndexOf("_QUESTION") > 0) {
-        next = currentForm.no;
+        next = getIndexFromFlow(currentForm.no);
     } else {
         next = flowNavigation.length > 0
             ? pop(flowNavigation, 2)
@@ -97,7 +151,7 @@ export const onPreviousAction = () => (dispatch, getState) => {
     dispatch({
         type: types.ON_WIZARD_PREVIOUS_END,
         current: next,
-        footerType: formFlow[next].footerType
+        footerType: getForm(next).footerType
     });
 };
 

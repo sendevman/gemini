@@ -9,7 +9,10 @@ const initialState = {
     percentage: 0,
     maxForms: 11,
     flowNavigation: [0],
-    wizardCompleted: false
+    wizardCompleted: false,
+    editing: false,
+    formsToDisplay: [],
+    workingRequestId: null
 };
 
 const accountablePercentageForm = 4;
@@ -29,7 +32,12 @@ const wizard = (state = initialState, action) => {
                 flowNavigation: [action.current],
                 current: action.current,
                 previousLabel: btnType.previousButton,
-                nextLabel: btnType.nextButton
+                nextLabel: btnType.nextButton,
+                maxForms:  action.maxForms,
+                editing: action.editing,
+                formsToDisplay: action.formsToDisplay,
+                workingRequestId: action.workingRequestId
+
             };
         case types.ON_WIZARD_NEXT_START:
             return state;

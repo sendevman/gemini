@@ -7,12 +7,12 @@ import moment from "moment";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {loadHome, resetWizard} from "../redux/actions";
+import * as Utils from "../Utils";
 
 class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.editPreEnroll = this.editPreEnroll.bind(this);
         this.preEnroll = this.preEnroll.bind(this);
     }
 
@@ -25,9 +25,9 @@ class Home extends Component {
         this.props.history.push("/wizard");
     }
 
-    editPreEnroll() {
-        alert("Next build")
-    }
+    editPreEnroll = id => e => {
+        this.props.history.push(`/wizard/${id}`);
+    };
 
     render() {
         return (
@@ -65,9 +65,9 @@ class Home extends Component {
         return preEnrollments.map((pre, index) => (
             <div key={index} className="panel panel-primary" style={{height: 150}}>
                 <div className="panel-heading">
-                    Estudiante {pre.studentFullName}
+                    Estudiante {pre.student.fullName} -> {Utils.format(pre.student.dateOfBirth, "ll")}
                     <div className="pull-right" style={{marginTop: -5}}>
-                        <Button bsSize="small" bsStyle="info" onClick={this.editPreEnroll}>
+                        <Button bsSize="small" bsStyle="info" onClick={this.editPreEnroll(pre.id)}>
                             <Glyphicon glyph="glyphicon glyphicon-pencil"/>
                         </Button>
                     </div>

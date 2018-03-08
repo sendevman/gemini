@@ -1,19 +1,19 @@
-package com.gemini.beans.integration;
+package com.gemini.beans.forms;
 
 import com.gemini.beans.IdentityForm;
 import com.gemini.beans.types.Gender;
 import com.gemini.utils.Utils;
 
 import java.util.Date;
-import java.util.StringTokenizer;
 
 /**
  * Created with IntelliJ IDEA.
  * User: fran
- * Date: 2/9/18
- * Time: 12:27 AM
+ * Date: 3/8/18
+ * Time: 8:15 AM
  */
-public class StudentResponse implements IdentityForm {
+public class PreEnrollmentStudentInfoBean implements IdentityForm {
+
     private Long studentNumber;
     private String firstName;
     private String middleName;
@@ -21,10 +21,6 @@ public class StudentResponse implements IdentityForm {
     private String motherLastName;
     private Date dateOfBirth;
     private Gender gender;
-    //todo: refactoring alert fran check these fields they are not needed
-    private boolean isEnrolled;
-    private int currentGradeLevel;
-    private boolean found;
 
     public Long getStudentNumber() {
         return studentNumber;
@@ -34,42 +30,52 @@ public class StudentResponse implements IdentityForm {
         this.studentNumber = studentNumber;
     }
 
+    @Override
     public String getFirstName() {
         return firstName;
     }
 
+    @Override
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    @Override
     public String getMiddleName() {
         return middleName;
     }
 
+    @Override
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
 
+    @Override
     public String getFatherLastName() {
         return fatherLastName;
     }
 
+    @Override
     public void setFatherLastName(String fatherLastName) {
         this.fatherLastName = fatherLastName;
     }
 
+    @Override
     public String getMotherLastName() {
         return motherLastName;
     }
 
+    @Override
     public void setMotherLastName(String motherLastName) {
         this.motherLastName = motherLastName;
     }
 
+    @Override
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
+    @Override
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
@@ -84,38 +90,7 @@ public class StudentResponse implements IdentityForm {
         this.gender = gender;
     }
 
-    public boolean isEnrolled() {
-        return isEnrolled;
-    }
-
-    public void setEnrolled(boolean enrolled) {
-        isEnrolled = enrolled;
-    }
-
-    public int getCurrentGradeLevel() {
-        return currentGradeLevel;
-    }
-
-    public void setCurrentGradeLevel(int currentGradeLevel) {
-        this.currentGradeLevel = currentGradeLevel;
-    }
-
-    public boolean isFound() {
-        return found;
-    }
-
-    public void setFound(boolean found) {
-        this.found = found;
-    }
-
-    public void setLastName(String lastName) {
-        StringTokenizer tokenizer = new StringTokenizer(lastName.trim(), " ");
-        this.fatherLastName = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
-        this.motherLastName = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
-    }
-
-    public String getFullName() {
+    public String getFullName(){
         return Utils.toFullName(firstName, middleName, fatherLastName, motherLastName);
     }
-
 }

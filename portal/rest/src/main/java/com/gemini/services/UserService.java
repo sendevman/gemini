@@ -58,7 +58,7 @@ public class UserService {
     public User findUserByUsername(String username) {
         UserEntity entity = userRepository.findByEmail(username);
         User userBean = CopyUtils.convert(entity, User.class);
-        copyLastNames(entity, userBean);
+        Utils.copyLastNames(entity, userBean);
         return userBean;
     }
 
@@ -67,7 +67,7 @@ public class UserService {
         if (entity == null)
             return null;
         User userBean = CopyUtils.convert(entity, User.class);
-        copyLastNames(entity, userBean);
+        Utils.copyLastNames(entity, userBean);
         List<PreEnrollmentRequestEntity> preEnrollments = preEnrollmentRepository.findByParentId(entity.getId());
         userBean.setTotalPreEnrollments(preEnrollments.size());
         userBean.setWorkingPreEnrollmentId(null);
@@ -144,13 +144,5 @@ public class UserService {
         userRepository.save(entity);
     }
 
-    private void copyLastNames(UserEntity entity, User userBean) {
-        String token = StringUtils.hasText(entity.getLastName()) ? entity.getLastName().trim() : "";
-        StringTokenizer tokenizer = new StringTokenizer(token, " ");
-        String fatherLastName = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
-        String motherLastName = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
-        userBean.setFatherLastName(fatherLastName);
-        userBean.setMotherLastName(motherLastName);
-    }
 
 }

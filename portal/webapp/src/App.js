@@ -7,7 +7,7 @@ import Routes from "./Routes";
 import moment from "moment";
 import esLocale from "moment/locale/es";
 import {connect} from "react-redux";
-import {logout, checkSession} from "./redux/actions";
+import {checkSession, logout} from "./redux/actions";
 import * as types from "./redux/types";
 import ReduxBlockUi from 'react-block-ui/redux';
 import {bindActionCreators} from "redux";
@@ -24,7 +24,7 @@ class App extends Component {
         this.goToProfile = this.goToProfile.bind(this);
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.props.checkSession();
     }
 
@@ -57,7 +57,8 @@ class App extends Component {
             <ReduxBlockUi tag="div" block={types.blockUIActions} unblock={types.unblockUIActions}>
                 <div>
                     {this.renderNavbar()}
-                    <Routes loading={this.props.loading} authenticated={this.props.authenticated} onRouteChanged={this.onRouteChanged}/>
+                    <Routes loading={this.props.loading} authenticated={this.props.authenticated}
+                            onRouteChanged={this.onRouteChanged}/>
                 </div>
             </ReduxBlockUi>
         );

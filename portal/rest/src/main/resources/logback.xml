@@ -8,4 +8,5 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <logger name="com.gemini" level="DEBUG"/>
     <logger name="org.springframework.ws.client.MessageTracing" level="TRACE"/>
+    <logger name="org.hibernate" level="INFO"/>
 </configuration>

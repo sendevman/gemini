@@ -20,12 +20,21 @@ const initialState = {
 
 const studentInfo = (state = initialState, action) => {
     switch (action.type) {
-        case types.STUDENT_PERSONAL_INFO_LOAD:
+        case types.STUDENT_PERSONAL_INFO_LOAD_START:
+            return state;
+        case types.STUDENT_PERSONAL_INFO_LOAD_END:
             return {...state, student: action.student || {}};
         case types.STUDENT_CREATE_PRE_ENROLLMENT_START:
             return state;
         case types.STUDENT_CREATE_PRE_ENROLLMENT_END:
-            return {...state, preEnrollment: action.response.content, requestId: action.response.requestId, initialPreEnrollmentSaved: true};
+            let resp = action.response.content;
+            return {
+                ...state,
+                student: resp.student,
+                preEnrollment: resp,
+                requestId: action.response.requestId,
+                initialPreEnrollmentSaved: true
+            };
         case types.STUDENT_LOAD_ADDRESS_START:
             return state;
         case types.STUDENT_LOAD_ADDRESS_END:
