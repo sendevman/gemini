@@ -1,14 +1,10 @@
 package com.gemini.services;
 
-import com.gemini.beans.forms.AddressBean;
-import com.gemini.beans.forms.PreEnrollmentAddressBean;
-import com.gemini.beans.forms.PreEnrollmentBean;
-import com.gemini.beans.forms.User;
+import com.gemini.beans.forms.*;
 import com.gemini.beans.requests.PreEnrollmentInitialRequest;
 import com.gemini.beans.requests.PreEnrollmentSubmitRequest;
 import com.gemini.beans.types.AddressType;
 import com.gemini.beans.types.EntryType;
-import com.gemini.beans.types.Gender;
 import com.gemini.beans.types.RequestStatus;
 import com.gemini.database.dao.beans.*;
 import com.gemini.database.jpa.entities.AddressEntity;
@@ -144,8 +140,10 @@ public class PreEnrollmentService {
             preEnrollmentBean = CopyUtils.convert(entity, PreEnrollmentBean.class);
         }
 
-        if (preEnrollmentBean != null && entity != null)
+        if (preEnrollmentBean != null && entity != null) {
             preEnrollmentBean.setId(entity.getId());
+            preEnrollmentBean.setStudent(getPreEnrollmentStudentInfoBean(entity));
+        }
         return preEnrollmentBean;
 
     }
@@ -186,6 +184,7 @@ public class PreEnrollmentService {
             response = CopyUtils.convert(requestEntity, PreEnrollmentBean.class);
             School school = setNextEnrollmentSchoolInfo(requestEntity.getSchoolId(), response, requestEntity.getPreviousGradeLevel(), requestEntity.getPreviousEnrollmentYear());
             response.setHasPreviousEnrollment(school != null);
+            response.setStudent(getPreEnrollmentStudentInfoBean(requestEntity));
         }
 
         return requestEntity != null && response != null ? response : null;
@@ -218,17 +217,31 @@ public class PreEnrollmentService {
         return null;
     }
 
+    public PreEnrollmentStudentInfoBean findPreEnrollmentById(Long id) {
+        PreEnrollmentRequestEntity entity = preEnrollmentRepository.findByIdAndRequestStatusIs(id, RequestStatus.ACTIVE);
+        if (entity == null)
+            return null;
+        return getPreEnrollmentStudentInfoBean(entity);
+    }
+
+    //    Private Methods
+    private PreEnrollmentStudentInfoBean getPreEnrollmentStudentInfoBean(PreEnrollmentRequestEntity entity) {
+        StudentEntity studentEntity = entity.getStudent();
+        PreEnrollmentStudentInfoBean studentInfo = CopyUtils.convert(studentEntity, PreEnrollmentStudentInfoBean.class);
+        Utils.copyLastNames(studentEntity, studentInfo);
+        studentInfo.setStudentNumber(studentEntity.getExtStudentNumber());
+        return studentInfo;
+    }
+
     private PreEnrollmentBean getPreEnrollmentBean(PreEnrollmentRequestEntity entity) {
         PreEnrollmentBean enrollmentBean = CopyUtils.convert(entity, PreEnrollmentBean.class);
-        StudentEntity studentEntity = entity.getStudent();
-        String fullName = Utils.toFullName(studentEntity.getFirstName(), studentEntity.getMiddleName(), studentEntity.getLastName());
-        enrollmentBean.setStudentFullName(fullName);
+        enrollmentBean.setStudent(getPreEnrollmentStudentInfoBean(entity));
         return enrollmentBean;
     }
 
     private StudentEntity save(Student bean, AddressEntity postal, AddressEntity physical) {
         StudentEntity entity = CopyUtils.convert(bean, StudentEntity.class);
-        entity.setGender(Gender.valueOf(bean.getGender()));
+        entity.setGender(bean.getGender());
         entity.setSisStudentId(bean.getStudentId());
         entity.setPostal(postal);
         entity.setPhysical(physical);

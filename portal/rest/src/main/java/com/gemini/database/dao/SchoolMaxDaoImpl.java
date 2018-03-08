@@ -52,7 +52,7 @@ public class SchoolMaxDaoImpl extends JdbcDaoSupport implements SchoolMaxDaoInte
             "A.FIRST_NAME, \n" +
             "A.MIDDLE_NAME, \n" +
             "A.LAST_NAME, \n" +
-            "A.GENDER, \n" +
+            "A.GENDER AS GENDER_VALUE, \n" +
             "A.DATE_OF_BIRTH, \n" +
             "A.SSN,\n" +
             "A.INACTIVE_IND, \n" +

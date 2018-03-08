@@ -2,6 +2,7 @@ package com.gemini.resources;
 
 import com.gemini.beans.forms.PreEnrollmentAddressBean;
 import com.gemini.beans.forms.PreEnrollmentBean;
+import com.gemini.beans.forms.PreEnrollmentStudentInfoBean;
 import com.gemini.beans.forms.User;
 import com.gemini.beans.requests.PreEnrollmentInitialRequest;
 import com.gemini.beans.requests.PreEnrollmentSubmitRequest;
@@ -31,7 +32,11 @@ public class PreEnrollmentRequestResource {
 
     @RequestMapping(value = "/{requestId}")
     public ResponseEntity<ResponseBase> retrieve(@PathVariable Long requestId) {
-        return ResponseEntity.ok(ResponseBase.success(requestId));
+        PreEnrollmentStudentInfoBean studentInfo = null;
+        //todo: validate user has access to this enrollment
+        if (ValidationUtils.valid(requestId))
+            studentInfo = preEnrollmentService.findPreEnrollmentById(requestId);
+        return ResponseEntity.ok(ResponseBase.success(requestId, studentInfo));
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -53,6 +58,7 @@ public class PreEnrollmentRequestResource {
         try {
             mailService.sendPreEnrollmentSubmitEmail(loggedUser, submitRequest);
             saved = preEnrollmentService.submitPreEnrollment(submitRequest);
+            loggedUser.setWorkingPreEnrollmentId(null);
         } catch (Exception e) {
             e.printStackTrace();
         }

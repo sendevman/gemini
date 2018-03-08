@@ -9,13 +9,14 @@ import 'react-block-ui/style.css';
 import "./index.css";
 import App from "./App";
 import ErrorCatcher from "./ErrorCatcher";
+import * as env from "./env";
 
 let store = setupStore();
 
 ReactDOM.render(
     <Provider store={store}>
         <ErrorCatcher>
-            <Router basename="/srs">
+            <Router basename={`/${env.default.baseContext}`}>
                 <App/>
             </Router>
         </ErrorCatcher>

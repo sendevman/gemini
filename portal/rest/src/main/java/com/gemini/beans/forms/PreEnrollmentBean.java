@@ -27,7 +27,7 @@ public class PreEnrollmentBean {
     private String comments;
     private boolean hasPreviousEnrollment;
     private Date submitDate;
-    private String studentFullName;
+    private PreEnrollmentStudentInfoBean student;
 
     public Long getId() {
         return id;
@@ -149,12 +149,12 @@ public class PreEnrollmentBean {
         this.submitDate = submitDate;
     }
 
-    public String getStudentFullName() {
-        return studentFullName;
+    public PreEnrollmentStudentInfoBean getStudent() {
+        return student;
     }
 
-    public void setStudentFullName(String studentFullName) {
-        this.studentFullName = studentFullName;
+    public void setStudent(PreEnrollmentStudentInfoBean student) {
+        this.student = student;
     }
 
     public String getRequestStatusText() {

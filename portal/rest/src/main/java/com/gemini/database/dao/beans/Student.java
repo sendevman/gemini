@@ -1,5 +1,7 @@
 package com.gemini.database.dao.beans;
 
+import com.gemini.beans.types.Gender;
+
 import java.util.Date;
 
 /**
@@ -14,7 +16,7 @@ public class Student {
     private String firstName;
     private String middleName;
     private String lastName;
-    private String gender;
+    private String genderValue;
     private Date dateOfBirth;
     private String ssn;
     private Integer inactiveInd;
@@ -71,12 +73,16 @@ public class Student {
         this.lastName = lastName;
     }
 
-    public String getGender() {
-        return gender;
+    public String getGenderValue() {
+        return genderValue;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setGenderValue(String genderValue) {
+        this.genderValue = genderValue;
+    }
+
+    public Gender getGender() {
+        return Gender.valueOf(genderValue);
     }
 
     public Date getDateOfBirth() {

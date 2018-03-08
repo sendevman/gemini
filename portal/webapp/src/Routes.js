@@ -32,7 +32,7 @@ class Routes extends Component {
                 <Route path="/activate/:activationCode" component={Activation}/>
                 {/*privates routes*/}
                 <PrivateRoute path="/home" component={Home} authenticated={authenticated} loading={loading}/>
-                <PrivateRoute path="/wizard" component={Wizard} authenticated={authenticated} loading={loading}/>
+                <PrivateRoute path="/wizard/:id?" component={Wizard} authenticated={authenticated} loading={loading}/>
                 <PrivateRoute path="/profile" component={Profile} authenticated={authenticated} loading={loading}/>
 
                 {/*404 page*/}

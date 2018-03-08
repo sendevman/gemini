@@ -116,3 +116,17 @@ html {
     float: none;
 }
 
+.error-page {
+    display: block;
+    max-width: 600px;
+    margin: 10% auto;
+}
+
+.error-logo {
+    /*animation: App-logo-spin infinite 20s alternate;*/
+    height: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+

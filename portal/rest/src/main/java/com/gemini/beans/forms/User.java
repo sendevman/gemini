@@ -1,5 +1,7 @@
 package com.gemini.beans.forms;
 
+import com.gemini.beans.IdentityForm;
+import com.gemini.beans.types.Gender;
 import com.gemini.beans.types.RelationType;
 import com.gemini.utils.Utils;
 import org.springframework.security.core.CredentialsContainer;
@@ -16,7 +18,7 @@ import java.util.Date;
  * Date: 2/12/18
  * Time: 6:39 PM
  */
-public class User implements UserDetails, CredentialsContainer {
+public class User implements UserDetails, CredentialsContainer, IdentityForm {
 
     private Long id;
     private RelationType relationType;
@@ -27,6 +29,7 @@ public class User implements UserDetails, CredentialsContainer {
     private String fatherLastName;
     private String motherLastName;
     private Date dateOfBirth;
+    private Gender gender;
     private Date lastLogin;
     private boolean enabled;
     private boolean profileCompleted;
@@ -107,6 +110,16 @@ public class User implements UserDetails, CredentialsContainer {
         this.dateOfBirth = dateOfBirth;
     }
 
+    @Override
+    public Gender getGender() {
+        return gender;
+    }
+
+    @Override
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     public Date getLastLogin() {
         return lastLogin;
     }
@@ -174,7 +187,7 @@ public class User implements UserDetails, CredentialsContainer {
     }
 
     public boolean isCanGoHome() {
-        return profileCompleted && totalPreEnrollments > 0;
+        return profileCompleted && totalPreEnrollments > 0 && !(workingPreEnrollmentId != null && workingPreEnrollmentId > 0L);
     }
 
     @Override

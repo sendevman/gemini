@@ -18,7 +18,9 @@ class PersonalInfo extends Component {
     }
 
     componentWillMount() {
-        this.props.loadPersonalInfo();
+        this.props.loadPersonalInfo(()=>{}, ()=>{
+            alert("Ocurrio un error buscando la solicitud");
+        });
     }
 
     inputHandler(e) {

@@ -25,7 +25,7 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
         student = new Student();
         student.setFirstName("Estudioso");
         student.setLastName("Sie Smax");
-        student.setGender("M");
+        student.setGenderValue("M");
         student.setDateOfBirth(new Date());
     }
 

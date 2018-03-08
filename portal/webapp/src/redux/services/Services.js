@@ -73,6 +73,10 @@ export default class Services {
     }
 
     //pre-enrollment
+    getActivePreEnrollment(requestId){
+        return this._get(`/enrollment/pre/${requestId}`);
+    }
+
     savePreEnrollment(form) {
         return this._securedPost(`/enrollment/pre/save`, form);
     }

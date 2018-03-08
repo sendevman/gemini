@@ -1,5 +1,6 @@
 package com.gemini.database.jpa.respository;
 
+import com.gemini.beans.types.RequestStatus;
 import com.gemini.database.jpa.entities.PreEnrollmentRequestEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -22,6 +23,8 @@ public interface PreEnrollmentRepository extends CrudRepository<PreEnrollmentReq
     @Query(value = "select e from PreEnrollmentRequestEntity e " +
             " inner join e.student s where s.extStudentNumber = :studentNumber")
     PreEnrollmentRequestEntity findByStudentNumber(@Param("studentNumber") Long studentNumber);
+
+    PreEnrollmentRequestEntity findByIdAndRequestStatusIs(Long id, RequestStatus requestStatus);
 
     List<PreEnrollmentRequestEntity> findByParentId(@Param("parentId") Long parentId);
 

@@ -1,6 +1,8 @@
 package com.gemini.database.jpa.entities;
 
+import com.gemini.beans.types.Gender;
 import com.gemini.beans.types.RelationType;
+import com.gemini.database.IdentityEntity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -16,7 +18,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity implements IdentityEntity{
 
     @Id
     @GeneratedValue
@@ -31,6 +33,9 @@ public class UserEntity {
 
     @Column
     private String password;
+
+    @Column
+    private Gender gender;
 
     @Column
     private String firstName;
@@ -112,6 +117,16 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public Gender getGender() {
+        return gender;
+    }
+
+    @Override
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public String getFirstName() {

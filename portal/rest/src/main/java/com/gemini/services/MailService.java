@@ -68,7 +68,7 @@ public class MailService {
         preEnrollmentMail.setSubject("Pre-Matricula Recibida");
         Map<String, String> params =
                 Collections.unmodifiableMap(Stream.of(
-                        new SimpleEntry<>("studentName", preEnrollmentBean.getStudentFullName())
+                        new SimpleEntry<>("studentName", preEnrollmentBean.getStudent().getFullName())
                 ).collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)));
         preEnrollmentMail.setText(composeBody(params, "emails/pre-enrollment-submit"));
         return preEnrollmentMail;

@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import failLogo from "./style/img/fail.png";
 
 export default class ErrorCatcher extends Component {
 
@@ -16,7 +17,12 @@ export default class ErrorCatcher extends Component {
     render() {
         if (this.state.hasError) {
             // You can render any custom fallback UI
-            return <h1>Something went wrong.</h1>;
+            return <div className="error-page">
+                <div className="center-block" style={{width: 500}}>
+                    <img className="error-logo" src={failLogo}/>
+                    <h1>Plop!!! Ha ocurrido un error.</h1>
+                </div>
+            </div>;
         }
         return this.props.children;
     }

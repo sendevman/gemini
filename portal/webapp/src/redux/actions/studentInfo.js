@@ -1,18 +1,42 @@
 import * as types from "../types";
 import services from "../setup";
 
-export const loadPersonalInfo = () => (dispatch, getState) => {
+export const loadPersonalInfo = (onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.STUDENT_PERSONAL_INFO_LOAD_START});
+
     let studentLookup = getState().studentLookup.student;
-    let studentPreEnrollment = getState().studentInfo.student;
-    let initialPreEnrollmentSaved = getState().studentInfo.initialPreEnrollmentSaved;
-    dispatch({
-        type: types.STUDENT_PERSONAL_INFO_LOAD,
-        student: initialPreEnrollmentSaved ? studentPreEnrollment : studentLookup
-    })
+    let studentInfo = getState().studentInfo;
+    let requestId = studentInfo.requestId = getState().wizard.workingRequestId;
+    let editingRequest = studentInfo.requestId || false;
+
+    if (editingRequest)
+        services()
+            .getActivePreEnrollment(requestId)
+            .then((response) => {
+                dispatch({type: types.STUDENT_PERSONAL_INFO_LOAD_END, student: response.content});
+                try {
+                    if (response.successfulOperation)
+                        onResult();
+                    else
+                        onError();
+                } catch (e) {
+                    onError();
+                }
+            });
+    else
+        dispatch({
+            type: types.STUDENT_PERSONAL_INFO_LOAD_END,
+            student: studentLookup
+        })
+
+
 };
 
-export const savePreEnrollment = (form, onResult, onError) => (dispatch) => {
+export const savePreEnrollment = (form, onResult, onError) => (dispatch, getState) => {
     dispatch({type: types.STUDENT_CREATE_PRE_ENROLLMENT_START});
+    let studentInfo = getState().studentInfo;
+    form.requestId = studentInfo.requestId;
+    form.studentNumber =  studentInfo.student.studentNumber;
     services()
         .savePreEnrollment(form)
         .then((response) => response.json())

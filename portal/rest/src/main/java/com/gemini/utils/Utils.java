@@ -1,8 +1,11 @@
 package com.gemini.utils;
 
+import com.gemini.beans.IdentityForm;
+import com.gemini.database.IdentityEntity;
 import org.springframework.util.StringUtils;
 
-import java.util.Random;
+import java.util.StringTokenizer;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.joining;
@@ -17,28 +20,7 @@ import static java.util.stream.Collectors.joining;
 public final class Utils {
 
     public static String generateActivationCode() {
-        String output = "";
-
-        byte[] array = new byte[24];
-        int randInt;
-
-        Random generator = new Random();
-
-        for (int ii = 0; ii < 24; ii++) {
-            randInt = generator.nextInt(62);  // 10 + 26 + 26 = 62  , gives range [0-61]
-            if (randInt <= 9) {
-                array[ii] = (byte) ((randInt + 48) & 0xFF);         //digits
-            } else {
-                if (randInt > 9 && randInt <= 35) {
-                    array[ii] = (byte) ((randInt + 55) & 0xFF); //uppercase letters
-                } else {
-                    array[ii] = (byte) ((randInt + 61) & 0xFF); //lowercase letters
-                }
-            }
-        }
-        output = output.concat(new String(array));
-
-        return output;
+        return UUID.randomUUID().toString();
     }
 
     public static String toLastName(String fatherLastName, String motherLastName) {
@@ -51,6 +33,15 @@ public final class Utils {
         return Stream.of(names)
                 .filter(s -> s != null && !s.isEmpty())
                 .collect(joining(" "));
+    }
+
+    public static void copyLastNames(IdentityEntity entity, IdentityForm form) {
+        String token = StringUtils.hasText(entity.getLastName()) ? entity.getLastName().trim() : "";
+        StringTokenizer tokenizer = new StringTokenizer(token, " ");
+        String fatherLastName = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
+        String motherLastName = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
+        form.setFatherLastName(fatherLastName);
+        form.setMotherLastName(motherLastName);
     }
 
 }
