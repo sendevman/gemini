@@ -1,12 +1,13 @@
 package com.gemini.database.dao;
 
 import com.gemini.database.dao.beans.*;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -80,22 +81,29 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
     @Override
     public List<School> findSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel) {
         List<String> schoolName = Arrays.asList("Mejor Aprovechamiento", "Lealtad", "Honestidad", "Persistente", "Resiliente");
-        return schoolName.stream().map(s -> {
-            School school = new School();
-            Integer schoolId = schoolName.indexOf(s) + 1;
-            school.setSchoolId(schoolId.longValue());
-            school.setExtSchoolNumber(schoolId.longValue());
-            school.setRegionId(1L);
-            school.setDistrictId(1L);
-            school.setAddressLine_1(String.format("Calle Felicidad #%s", schoolId));
-            school.setAddressLine_2("Urb Progreso");
-            school.setCityCd("");
-            school.setCity("San Juan");
-            school.setState("PR");
-            school.setZipCode("00918");
-            school.setSchoolName(s);
-            return school;
-        }).collect(Collectors.toList());
+
+        Function<String, School> stringToSchool =
+                new Function<String, School>() {
+                    public School apply(String schoolName) {
+                        School school = new School();
+                        Integer schoolId = schoolName.indexOf(schoolName) + 1;
+                        school.setSchoolId(schoolId.longValue());
+                        school.setExtSchoolNumber(schoolId.longValue());
+                        school.setRegionId(1L);
+                        school.setDistrictId(1L);
+                        school.setAddressLine_1(String.format("Calle Felicidad #%s", schoolId));
+                        school.setAddressLine_2("Urb Progreso");
+                        school.setCityCd("");
+                        school.setCity("San Juan");
+                        school.setState("PR");
+                        school.setZipCode("00918");
+                        school.setSchoolName(schoolName);
+                        return school;
+                    }
+                };
+
+        return Lists.transform(schoolName, stringToSchool);
+
     }
 
     @Override
@@ -117,15 +125,19 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
 
     @Override
     public List<Region> getAllRegions() {
-        List<String> regionNames = Arrays.asList("Arecibo", "Bayamon", "Caguas", "Humacao", "Mayaguez", "Ponce");
-        return regionNames.stream().map(r -> {
-            Region region = new Region();
-            Integer regionId = regionNames.indexOf(r) + 1;
-            region.setRegionId(regionId.longValue());
-            region.setName(r);
-            region.setDescription(r);
-            return region;
-        }).collect(Collectors.toList());
+        final List<String> regionNames = Arrays.asList("Arecibo", "Bayamon", "Caguas", "Humacao", "Mayaguez", "Ponce");
+        Function<String, Region> strToRegion = new Function<String, Region>() {
+            @Override
+            public Region apply(String regionName) {
+                Region region = new Region();
+                Integer regionId = regionNames.indexOf(regionName) + 1;
+                region.setRegionId(regionId.longValue());
+                region.setName(regionName);
+                region.setDescription(regionName);
+                return region;
+            }
+        };
+        return Lists.transform(regionNames, strToRegion);
     }
 
     @Override

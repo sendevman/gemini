@@ -30,14 +30,14 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="admin" target="1.8" />
+      <module name="admin" target="1.7" />
       <module name="admin-portal" target="1.8" />
-      <module name="admin-rest" target="1.8" />
-      <module name="codes" target="1.8" />
+      <module name="admin-rest" target="1.7" />
+      <module name="codes" target="1.7" />
       <module name="enum-codes-generation" target="1.8" />
-      <module name="portal" target="1.8" />
-      <module name="portal-rest" target="1.8" />
-      <module name="project-gemini" target="1.8" />
+      <module name="portal" target="1.7" />
+      <module name="portal-rest" target="1.7" />
+      <module name="project-gemini" target="1.7" />
       <module name="registro" target="1.8" />
       <module name="registro (1) (com.gemini)" target="1.8" />
       <module name="rest" target="1.8" />

@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -67,6 +68,9 @@ public class PreEnrollmentRequestEntity {
 
     @Column
     private Date submitDate;
+
+    @OneToMany(mappedBy = "preEnrollment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PreEnrollmentVocacionalSchool> vocacionalSchools;
 
     @CreatedDate
     @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
@@ -201,6 +205,14 @@ public class PreEnrollmentRequestEntity {
 
     public void setSubmitDate(Date submitDate) {
         this.submitDate = submitDate;
+    }
+
+    public List<PreEnrollmentVocacionalSchool> getVocacionalSchools() {
+        return vocacionalSchools;
+    }
+
+    public void setVocacionalSchools(List<PreEnrollmentVocacionalSchool> vocacionalSchools) {
+        this.vocacionalSchools = vocacionalSchools;
     }
 
     public Date getCreationDate() {

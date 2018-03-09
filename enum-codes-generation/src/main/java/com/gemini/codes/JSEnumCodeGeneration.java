@@ -36,7 +36,7 @@ public class JSEnumCodeGeneration implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println(new File(".").getAbsoluteFile());
-        if(args == null || args.length == 0 )
+        if (args == null || args.length == 0)
             throw new RuntimeException("Process cannot run if there is not a directory output specify");
         String location = args[0];
 //        FileSystemUtils.deleteRecursively(new File(location + "/"));
@@ -67,23 +67,22 @@ public class JSEnumCodeGeneration implements CommandLineRunner {
 
     private void constructCodeJS(String baseLocation, String jsCodeName, String enumTable) {
         List<String> codes = codeService.getCodesForTable(enumTable);
-        codes
-                .stream()
-                .forEach(code -> {
 
-                    Path path = Paths.get(String.format("%s/%s.js", baseLocation, jsCodeName));
-                    try {
-                        int index = codes.indexOf(code);
-                        int lastIndex = codes.size() - 1;
-                        String line = index == 0
-                                ? String.format("module.exports =  [", jsCodeName).concat(code)
-                                : code;
-                        line = line.concat(index < lastIndex ? "," : "];").concat("\n");
-                        Files.write(path, line.getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
-                    } catch (Exception e) {
-                        logger.error("error writing file " + e);
-                    }
+        for (String code : codes) {
+            Path path = Paths.get(String.format("%s/%s.js", baseLocation, jsCodeName));
+            try {
+                int index = codes.indexOf(code);
+                int lastIndex = codes.size() - 1;
+                String line = index == 0
+                        ? String.format("module.exports =  [", jsCodeName).concat(code)
+                        : code;
+                line = line.concat(index < lastIndex ? "," : "];").concat("\n");
+                Files.write(path, line.getBytes(), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+            } catch (Exception e) {
+                logger.error("error writing file " + e);
+            }
+        }
 
-                });
+
     }
 }

@@ -4,6 +4,8 @@ import com.gemini.beans.forms.PreEnrollmentBean;
 import com.gemini.beans.forms.User;
 import com.gemini.beans.requests.PreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.RegisterRequest;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -14,11 +16,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Collections;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,7 +41,10 @@ public class MailService {
 
     private String composeBody(Map<String, String> params, String templateName) {
         Context ctx = new Context();
-        params.forEach((key, value) -> ctx.setVariable(key, value));
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            ctx.setVariable(entry.getKey(), entry.getValue());
+        }
+        Iterables.cycle(params.entrySet()).iterator().hasNext();
         return templateEngine.process(templateName, ctx);
     }
 
@@ -52,10 +53,7 @@ public class MailService {
         registerMail.setFrom(fromEmail);
         registerMail.setTo(request.getEmail());
         registerMail.setSubject("Registro en Linea - Activar Cuenta");
-        Map<String, String> params =
-                Collections.unmodifiableMap(Stream.of(
-                        new SimpleEntry<>("link", link)
-                ).collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)));
+        Map<String, String> params = ImmutableMap.of("link", link);
         registerMail.setText(composeBody(params, "emails/registration"));
         return registerMail;
     }
@@ -66,10 +64,7 @@ public class MailService {
         preEnrollmentMail.setFrom(fromEmail);
         preEnrollmentMail.setTo(user.getEmail());
         preEnrollmentMail.setSubject("Pre-Matricula Recibida");
-        Map<String, String> params =
-                Collections.unmodifiableMap(Stream.of(
-                        new SimpleEntry<>("studentName", preEnrollmentBean.getStudent().getFullName())
-                ).collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue)));
+        Map<String, String> params = ImmutableMap.of("studentName", preEnrollmentBean.getStudent().getFullName());
         preEnrollmentMail.setText(composeBody(params, "emails/pre-enrollment-submit"));
         return preEnrollmentMail;
     }

@@ -1,10 +1,7 @@
 package com.gemini.beans.forms;
 
 import com.gemini.beans.types.AddressType;
-
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.joining;
+import com.google.common.base.Joiner;
 
 /**
  * Created with IntelliJ IDEA.
@@ -78,9 +75,9 @@ public class AddressBean {
         this.zipcode = zipcode;
     }
 
-    public String getAddressFormatted(){
-        return Stream.of(line1, line2, city, ",", country, zipcode)
-                .filter(s -> s != null && !s.isEmpty())
-                .collect(joining(" "));
+    public String getAddressFormatted() {
+        return Joiner.on(" ")
+                .skipNulls()
+                .join(line1, line2, city, country, ",", zipcode);
     }
 }

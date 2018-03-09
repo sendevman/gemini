@@ -1,5 +1,6 @@
 package com.gemini;
 
+import com.zaxxer.hikari.HikariDataSource;
 import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.conn.util.PublicSuffixMatcherLoader;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -62,7 +63,9 @@ public class Application extends SpringBootServletInitializer {
     @Primary
     @ConfigurationProperties("spring.datasource")
     public DataSourceProperties mainDatasourceProperties() {
-        return new DataSourceProperties();
+        DataSourceProperties properties = new DataSourceProperties();
+        properties.setType(HikariDataSource.class);
+        return properties;
     }
 
     @Bean
@@ -75,7 +78,9 @@ public class Application extends SpringBootServletInitializer {
     @Bean
     @ConfigurationProperties("spring.smaxDatasource")
     public DataSourceProperties smaxDatasourceProperties() {
-        return new DataSourceProperties();
+        DataSourceProperties properties = new DataSourceProperties();
+        properties.setType(HikariDataSource.class);
+        return properties;
     }
 
     @Bean(name = "smaxDatasource")

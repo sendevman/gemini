@@ -2,13 +2,18 @@ package com.gemini.services;
 
 import com.gemini.database.dao.SchoolMaxDaoInterface;
 import com.gemini.database.dao.beans.*;
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -85,11 +90,13 @@ public class SchoolmaxService {
 
     @Cacheable
     public List<GradeLevel> getAllGradeLevels() {
-        return gradeLevels.entrySet()
-                .stream()
-                .sorted(Comparator.comparing(Map.Entry::getKey))
-                .map(gl -> new GradeLevel(gl.getKey(), gl.getValue()))
-                .collect(Collectors.toList());
+        Function<Map.Entry<String, String>, GradeLevel> mapToGradeLevel = new Function<Map.Entry<String, String>, GradeLevel>() {
+            @Override
+            public GradeLevel apply(Map.Entry<String, String> entry) {
+                return new GradeLevel(entry.getKey(), entry.getValue());
+            }
+        };
+        return Lists.newArrayList(Iterables.transform(gradeLevels.entrySet(), mapToGradeLevel));
     }
 
     public GradeLevel getGradeLevelByCode(String code) {

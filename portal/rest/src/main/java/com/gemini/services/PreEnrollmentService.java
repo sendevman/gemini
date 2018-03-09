@@ -301,4 +301,8 @@ public class PreEnrollmentService {
         return school;
     }
 
+    private void setVocacionalPreEnrollments(){
+        // do magic here
+    }
+
 }

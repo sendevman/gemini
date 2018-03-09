@@ -37,11 +37,11 @@ spring:
   #    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
   #    driver-class-name: oracle.jdbc.driver.OracleDriver
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
 #    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
 #    username: FPALOU
 #    password: dev2@!8
 #    driver-class-name: oracle.jdbc.driver.OracleDriver
+#    type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/SRS
     username: srs
     password: 12345678
@@ -50,7 +50,6 @@ spring:
       maximum-pool-size: 30
 
   smaxDatasource:
-    type: com.zaxxer.hikari.HikariDataSource
     url: url
     username: user
     password: password

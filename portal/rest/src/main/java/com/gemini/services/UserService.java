@@ -14,21 +14,17 @@ import com.gemini.database.jpa.respository.FailureLoginLogRepository;
 import com.gemini.database.jpa.respository.PreEnrollmentRepository;
 import com.gemini.database.jpa.respository.UserRepository;
 import com.gemini.utils.CopyUtils;
+import com.gemini.utils.DateUtils;
 import com.gemini.utils.Utils;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
-
-import static com.gemini.utils.DateUtils.toDate;
 
 /**
  * Created with IntelliJ IDEA.
@@ -49,7 +45,7 @@ public class UserService {
     private CommonDao commonDao;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    private Long expireInHours = 48L;
+    private int expireInHours = 48;
 
     public boolean existsUser(String username) {
         return userRepository.findByEmail(username) != null;
@@ -138,7 +134,7 @@ public class UserService {
 
     public void saveSentActivationResult(String email, boolean result) {
         UserEntity entity = userRepository.findByEmail(email);
-        Date expireActivation = toDate(LocalDateTime.now().plus(expireInHours, ChronoUnit.HOURS));
+        Date expireActivation = DateUtils.toDate(LocalDateTime.now().plusHours(expireInHours));
         entity.setActivationCodeSent(result ? commonDao.getCurrentDate() : null);
         entity.setActivationKeyExpireDate(result ? expireActivation : null);
         userRepository.save(entity);
