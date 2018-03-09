@@ -1,8 +1,8 @@
 package com.gemini.utils;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+
 import java.util.Date;
 
 /**
@@ -14,21 +14,29 @@ import java.util.Date;
 public final class DateUtils {
 
     public static LocalDate toLocalDate(Date input) {
-        return input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return LocalDate.fromDateFields(input);
     }
 
     public static Date toDate(LocalDate input) {
-        return Date.from(input.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return input.toDate();
     }
 
 
     public static Date toDate(LocalDateTime input) {
-        return Date.from(input.atZone(ZoneId.systemDefault()).toInstant());
+        return input.toDate();
     }
 
     public static  Date getCurrentDate() {
         return new Date();
     }
 
+    public static void main(String[] args) {
+        LocalDate now = LocalDate.now();
+        System.out.println(now.toDate());
+
+        LocalDateTime dateTime = LocalDateTime.now();
+        System.out.println(dateTime.toDate());
+        
+    }
 
 }

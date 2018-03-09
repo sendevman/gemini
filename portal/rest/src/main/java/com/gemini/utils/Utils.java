@@ -2,13 +2,11 @@ package com.gemini.utils;
 
 import com.gemini.beans.IdentityForm;
 import com.gemini.database.IdentityEntity;
+import com.google.common.base.Joiner;
 import org.springframework.util.StringUtils;
 
 import java.util.StringTokenizer;
 import java.util.UUID;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.joining;
 
 
 /**
@@ -30,9 +28,9 @@ public final class Utils {
     }
 
     public static String toFullName(String... names) {
-        return Stream.of(names)
-                .filter(s -> s != null && !s.isEmpty())
-                .collect(joining(" "));
+        return Joiner.on(" ")
+                .skipNulls()
+                .join(names);
     }
 
     public static void copyLastNames(IdentityEntity entity, IdentityForm form) {
