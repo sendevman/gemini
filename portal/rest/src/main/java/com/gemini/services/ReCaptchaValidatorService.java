@@ -27,8 +27,13 @@ public class ReCaptchaValidatorService {
     @Value("${google.recaptcha.secret}")
     private String secret;
 
+    @Value("${google.recaptcha.active:true}")
+    private boolean active;
+
 
     public boolean verifyReCaptcha(String recaptchaToken) {
+        if (!active) return true;
+
         final MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("secret", secret);
         body.add("response", recaptchaToken);

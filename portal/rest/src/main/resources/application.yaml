@@ -1,27 +1,26 @@
 server:
-  context-path: /portal-api
+  context-path: /schoolmax_tmax2-api
   port: 8081
   session:
     timeout: 900  # in seconds
     cookie:
       max-age: 900 # in seconds
     
-management:
-  port: 8083
-  security:
-    enabled: false
+#management:
+#  port: 8083
+#  security:
+#    enabled: false
 
 spring:
   main:
     web-environment: true
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: de.pentaho@gmail.com
-    password: d3r3ply2@!4
-    properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
+    host: auohs-smtp.oracle.com
+    username:
+    password:
+#    properties:
+#      mail.smtp.auth: true
+#      mail.smtp.starttls.enable: true
     test-connection: false
   jpa:
     hibernate:
@@ -30,29 +29,29 @@ spring:
     generate-ddl: true
     properties:
       hibernate.type: trace
-#    database-platform: default
 
   # TMAX103
   #  datasource:
   #    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
   #    driver-class-name: oracle.jdbc.driver.OracleDriver
   datasource:
-#    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
-#    username: FPALOU
-#    password: dev2@!8
-#    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
+    username: FPALOU
+    password: dev2@!8
+    driver-class-name: oracle.jdbc.driver.OracleDriver
 #    type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/SRS
-    username: srs
-    password: 12345678
-    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/SRS
+#    username: srs
+#    password: 12345678
+#    driver-class-name: com.mysql.jdbc.Driver
     hikari:
       maximum-pool-size: 30
+    platform: oracle
 
   smaxDatasource:
-    url: url
-    username: user
-    password: password
+    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
+    username: PRDE_TMAXIO1
+    password: PRDE_TMAXIO1
     driver-class-name: oracle.jdbc.driver.OracleDriver
     hikari:
       maximum-pool-size: 30
@@ -63,14 +62,15 @@ security:
     enabled: true
 #    Since we are using GMAIL, we have to use the same email address because GMAIL doesn't allow to change the FROM property
 email:
-  from: de.pentaho@gmail.com
+  from: DE-SIE@de.pr.gov
 website:
-  url: http://localhost:3000
-  context-path: /srs
+  url: https://prdesietest.dde.pr
+  context-path: /schoolmax_tmax2-api
 logging:
   config: classpath:logback.xml
 
 google:
   recaptcha:
-    secret: 6LfwnkkUAAAAAGFlz-H8iIGF7ZsNuvRcZxKi5xwE
+    secret: 6Lffy0sUAAAAAJ5r6JXLUMuns1KnrQkWwzPFnDpZ
+    active: false
 

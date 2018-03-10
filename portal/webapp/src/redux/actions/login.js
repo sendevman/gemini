@@ -22,9 +22,17 @@ export const checkSession = () => (dispatch) => {
 };
 
 async function _session(dispatch) {
-    let sessionResp = await services().session();
+    let sessionResp;
 
-    switch (sessionResp.status) {
+    try {
+        sessionResp = await services().session();
+    } catch (e) {
+        console.log("error loading");
+        dispatch({type: types.SESSION_CHECK_END, authenticated: false, user: {}});
+
+    }
+
+    switch (sessionResp && sessionResp.status) {
         case 200:
             let user = await sessionResp.json();
             dispatch({type: types.SESSION_CHECK_END, authenticated: true, user: user});

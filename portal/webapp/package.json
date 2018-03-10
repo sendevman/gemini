@@ -2,7 +2,7 @@
   "name": "project-gemini",
   "version": "0.0.1",
   "private": true,
-  "homepage": "http://34.197.64.57/srs/",
+  "homepage": ".",
   "dependencies": {
     "moment": "^2.20.1",
     "react": "^16.2.0",

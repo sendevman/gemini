@@ -44,7 +44,7 @@ public class SchoolmaxService {
     }
 
     @Autowired
-    @Qualifier("mockSchoolMaxDao")
+    @Qualifier("realSchoolMaxDao")
     private SchoolMaxDaoInterface smaxDao;
 
     public Parent retrieveHouseHeadInfo(String lastSsn, Date dob, String lastname) {
