@@ -98,7 +98,7 @@
     </dependencies>
 
     <build>
-        <finalName>portal-api###${version}-${maven.build.timestamp}</finalName>
+        <finalName>schoolmax_tmax2-api###${version}-${maven.build.timestamp}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

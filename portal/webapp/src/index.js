@@ -8,18 +8,18 @@ import registerServiceWorker from "./registerServiceWorker";
 import 'react-block-ui/style.css';
 import "./index.css";
 import App from "./App";
-import ErrorCatcher from "./ErrorCatcher";
 import * as env from "./env";
+import ErrorCatcher from "./ErrorCatcher";
 
 let store = setupStore();
 
 ReactDOM.render(
     <Provider store={store}>
-        <ErrorCatcher>
-            <Router basename={`/${env.default.baseContext}`}>
+        <Router basename={`/${env.default.baseContext}`}>
+            <ErrorCatcher>
                 <App/>
-            </Router>
-        </ErrorCatcher>
+            </ErrorCatcher>
+        </Router>
     </Provider>,
     document.getElementById('root'));
 

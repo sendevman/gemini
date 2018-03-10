@@ -34,12 +34,12 @@ import javax.sql.DataSource;
 public class Application extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class).properties("spring.config.location:/home/ubuntu/srs/portal/");
+        return application.sources(Application.class).properties("spring.config.location:/tmax1o/ias/srs/portal/");
     }
 
     public static void main(String[] args) {
         final String[] a = new String[args.length + 1];
-        a[0] = "--spring.config.location=/home/ubuntu/srs/portal/";
+        a[0] = "--spring.config.location=/tmax1o/ias/srs/portal/";
         System.arraycopy(args, 0, a, 1, args.length);
         SpringApplication.run(Application.class, a);
     }
@@ -51,7 +51,11 @@ public class Application extends SpringBootServletInitializer {
                 .custom()
                 .setSSLHostnameVerifier(new DefaultHostnameVerifier(PublicSuffixMatcherLoader.getDefault()))
                 .build();
-        return new RestTemplate(new HttpComponentsClientHttpRequestFactory(httpClient));
+
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+        requestFactory.setConnectTimeout(1000 * 60 * 2);
+        requestFactory.setReadTimeout(1000 * 60 * 2);
+        return new RestTemplate(requestFactory);
     }
 
     @Bean
