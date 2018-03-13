@@ -6,7 +6,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {submitPreEnrollment} from "../../../redux/actions";
 
-class SubmitRequest extends Component {
+class VocationalReviewSubmit extends Component {
 
     constructor(props) {
         super(props);
@@ -61,7 +61,7 @@ function mapStateToProps(store) {
     return {
         requestId: store.preEnrollment.requestId,
         student: store.studentInfo.student,
-        preEnrollment: store.preEnrollment.preEnrollment
+        preEnrollment: store.studentInfo.preEnrollment
     };
 }
 
@@ -69,5 +69,5 @@ function mapDispatchToActions(dispatch) {
     return bindActionCreators({submitPreEnrollment}, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(SubmitRequest);
+export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(VocationalReviewSubmit);
 

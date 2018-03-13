@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,14 +31,14 @@ public class AuthenticationEventImpl implements AuthenticationEventPublisher {
 
     @Override
     public void publishAuthenticationFailure(AuthenticationException exception, Authentication authentication) {
-        //todo: save failure tries
         WebAuthenticationDetails details;
         String username;
         if (authentication.getPrincipal() instanceof String && authentication.getDetails() instanceof WebAuthenticationDetails) {
             username = (String) authentication.getPrincipal();
             details = (WebAuthenticationDetails) authentication.getDetails();
             FailureLogin failureLogin = new FailureLogin(username, details.getRemoteAddress(), details.getSessionId());
-            userService.saveFailureLogin(failureLogin);
+            if (StringUtils.hasText(username))
+                userService.saveFailureLogin(failureLogin);
         }
     }
 }

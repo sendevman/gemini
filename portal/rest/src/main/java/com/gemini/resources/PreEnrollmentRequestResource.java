@@ -6,6 +6,7 @@ import com.gemini.beans.forms.PreEnrollmentStudentInfoBean;
 import com.gemini.beans.forms.User;
 import com.gemini.beans.requests.PreEnrollmentInitialRequest;
 import com.gemini.beans.requests.PreEnrollmentSubmitRequest;
+import com.gemini.beans.requests.VocationalPreEnrollmentSubmitRequest;
 import com.gemini.beans.responses.ResponseBase;
 import com.gemini.services.MailService;
 import com.gemini.services.PreEnrollmentService;
@@ -64,7 +65,20 @@ public class PreEnrollmentRequestResource {
         }
         if (saved)
             return ResponseEntity.ok(ResponseBase.success(submitRequest.getRequestId()));
-        return ResponseEntity.ok(ResponseBase.error("Error submiting pre-enrolmment"));
+        return ResponseEntity.ok(ResponseBase.error("Error submitting pre-enrolmment"));
+    }
+
+    @RequestMapping(value = "/vocacional/partial/save", method = RequestMethod.POST)
+    public ResponseEntity<ResponseBase> partialVocationalSubmit(@RequestBody VocationalPreEnrollmentSubmitRequest request) {
+        boolean saved = preEnrollmentService.partialVocationalPreEnrollmentSave(request);
+        if(saved)
+            return ResponseEntity.ok(ResponseBase.success(request.getRequestId()));
+        return ResponseEntity.ok(ResponseBase.error("Error submitting vocational pre-enrolmment"));
+    }
+
+    @RequestMapping(value = "/vocacional/submit", method = RequestMethod.POST)
+    public ResponseEntity<ResponseBase> vocationalSubmit(@RequestBody VocationalPreEnrollmentSubmitRequest request) {
+        return null;
     }
 
     @RequestMapping(value = "/{requestId}/address")

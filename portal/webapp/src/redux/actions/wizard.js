@@ -70,7 +70,7 @@ export const load = (requestId) => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_LOAD_START});
     let user = getState().profile.user;
     let profileCompleted = user.profileCompleted;
-    let startPage = profileCompleted ? 1 : 0;
+    let startPage = 0;//profileCompleted ? 1 : 0;
     let editing = (user.workingPreEnrollmentId && user.workingPreEnrollmentId > 0) || requestId;
     flow = editing
         ? editFormFlow
@@ -95,7 +95,7 @@ export const load = (requestId) => (dispatch, getState) => {
 export const onNextAction = (onPress) => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_NEXT_START});
     let wizard = getState().wizard;
-    let studentInfo = getState().studentInfo;
+    let preEnrollment = getState().preEnrollment;
     let current = wizard.current;
     let maxForms = wizard.maxForms;
     let maxCurrent = (maxForms - 1);
@@ -105,7 +105,7 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
     if (currentForm.type.lastIndexOf("_QUESTION") > 0) {
         next = getIndexFromFlow(currentForm.yes);
     } else if (isType(current, "ADDRESS")) {
-        let preEnrollment = studentInfo.preEnrollment;
+        let preEnrollment = preEnrollment.info;
         if (!preEnrollment.hasPreviousEnrollment) {
             next = current + 2;
         }

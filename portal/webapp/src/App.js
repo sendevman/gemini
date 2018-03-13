@@ -47,6 +47,7 @@ class App extends Component {
         if (!this.state.showMenu) {
             let path = this.props.location.pathname;
             if (!env.isPublicUrl(path)) {
+                console.log(`here = ${env.isPublicUrl(path)}`);
                 this.setState({showMenu: true})
             }
         }

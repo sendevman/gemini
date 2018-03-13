@@ -34,12 +34,12 @@ import javax.sql.DataSource;
 public class Application extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class).properties("spring.config.location:/tmax1o/ias/srs/portal/");
+        return application.sources(Application.class).properties("spring.config.location:/pmax1o/ias/srs/portal/");
     }
 
     public static void main(String[] args) {
         final String[] a = new String[args.length + 1];
-        a[0] = "--spring.config.location=/tmax1o/ias/srs/portal/";
+        a[0] = "--spring.config.location=/pmax1o/ias/srs/portal/";
         System.arraycopy(args, 0, a, 1, args.length);
         SpringApplication.run(Application.class, a);
     }

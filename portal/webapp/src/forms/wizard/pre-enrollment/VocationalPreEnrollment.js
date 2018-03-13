@@ -6,9 +6,9 @@ import React, {Component} from "react";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {getSchools, loadCodes} from "../../../redux/actions";
+import {getVocationalSchools, loadVocationalCodes} from "../../../redux/actions";
 
-class PreEnrollment extends Component {
+class VocationalPreEnrollment extends Component {
 
     constructor(props) {
         super(props);
@@ -19,7 +19,7 @@ class PreEnrollment extends Component {
     }
 
     componentWillMount() {
-        this.props.loadCodes();
+        this.props.loadVocationalCodes();
     }
 
     onPress(onResult) {
@@ -27,38 +27,40 @@ class PreEnrollment extends Component {
     }
 
     cleanSchoolCode() {
-        let form = this.props.preEnrollment;
+        let form = this.props.currentVocationalEnrollment;
         form.schoolId = -1;
         this.setState({selectedSchool: null});
     }
 
     regionChanged(e) {
         this.cleanSchoolCode();
-        let form = this.props.preEnrollment;
+        let form = this.props.currentVocationalEnrollment;
         let element = e.target;
         form.regionId = element.value;
-        if (form.nextGradeLevel !== "-1") {
-            this.props.getSchools(form.regionId, form.nextGradeLevel);
+        if (form.nextGradeLevel !== "-1" && form.nextGradeLevel) {
+            this.props.getVocationalSchools(form.regionId, form.nextGradeLevel);
         }
     }
 
     gradeLevelChanged(gradeLevelObject) {
         this.cleanSchoolCode();
-        let form = this.props.preEnrollment;
+        let form = this.props.currentVocationalEnrollment;
         form.nextGradeLevel = gradeLevelObject.name;
-        if (form.regionId !== "-1") {
+        console.log(form.regionId);
+        if (form.regionId !== "-1" && form.regionId) {
             form.nextGradeLevelDescription = gradeLevelObject.displayName;
-            this.props.getSchools(form.regionId, form.nextGradeLevel);
+            this.props.getVocationalSchools(form.regionId, form.nextGradeLevel);
         }
     }
 
     schoolChanged(schoolObject) {
-        let form = this.props.preEnrollment;
+        let form = this.props.currentVocationalEnrollment;
         form.schoolId = schoolObject.schoolId;
-        if (form.schoolId !== "-1") {
+        if (form.schoolId !== "-1" && form.schoolId) {
             form.schoolName = schoolObject.schoolName;
             form.schoolAddress = schoolObject.address;
         }
+        form.school = schoolObject;
         this.setState({selectedSchool: schoolObject});
     }
 
@@ -67,8 +69,10 @@ class PreEnrollment extends Component {
         let regions = this.props.regions;
         let gradeLevels = this.props.gradeLevels;
         let schools = this.props.schools;
+
         let selectedSchool = this.state.selectedSchool;
-        let form = this.props.preEnrollment;
+        let form = this.props.currentVocationalEnrollment;
+
         let schoolName = !selectedSchool || selectedSchool.schoolId === -1
             ? "No ha selecionado escuela aun"
             : selectedSchool.displayName;
@@ -78,23 +82,26 @@ class PreEnrollment extends Component {
             : selectedSchool.address.addressFormatted;
 
         return (<form>
+
             <div className="row" style={{margin: 2, marginBottom: 15}}>
                 <div className="col-md-4">
                     <div className="row">
-                        <p>Estudiante: </p>
-                    </div>
-                    <div className="row">
-                        <h5>{student && student.fullName}</h5>
+                        <div className="col-md-4">
+                            <p>Estudiante: </p>
+                        </div>
+                        <div className="col-md-8">
+                            <h5>{student && student.fullName}</h5>
+                        </div>
                     </div>
                 </div>
                 <div className="col-md-8">
                     <div className="row">
-                        <p>Escuela: <span className="text-primary">{schoolName}</span></p>
-                    </div>
-                    <div className="row">
-                        <p>Direcci&oacute;n: <span className="text-primary">{schoolAddress}</span></p>
-                    </div>
+                        <div className="col-md-12">
+                            <p>Direcci&oacute;n Escuela: <span className="text-primary">{schoolAddress}</span></p>
+                        </div>
 
+                    </div>
+                    <div className="row"/>
                 </div>
             </div>
 
@@ -143,15 +150,17 @@ class PreEnrollment extends Component {
 function mapStateToProps(store) {
     return {
         student: store.studentInfo.student,
+        //this is manage by redux logic
         regions: store.config.regions,
         gradeLevels: store.config.gradeLevels,
         schools: store.config.schools,
-        preEnrollment: store.preEnrollment.info
+        preEnrollment: store.preEnrollment.info,
+        currentVocationalEnrollment: store.preEnrollment.currentVocationalEnrollment
     };
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({loadCodes, getSchools}, dispatch)
+    return bindActionCreators({loadVocationalCodes, getVocationalSchools}, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(PreEnrollment);
+export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(VocationalPreEnrollment);

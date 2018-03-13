@@ -12,21 +12,28 @@ import java.util.List;
  * Time: 9:08 AM
  */
 public interface SchoolMaxDaoInterface {
-  Parent findHouseHead(String lastSsn, Date dob, String lastname);
+    Parent findHouseHead(String lastSsn, Date dob, String lastname);
 
-  Student findStudent(String lastSsn, Date dob, Long studentNumber);
+    Student findStudent(String lastSsn, Date dob, Long studentNumber);
 
-  Student findStudent(Long studentNumber);
+    Student findStudent(Long studentNumber);
 
-  StudentAddress findAddress(Long studentNumber);
+    StudentAddress findAddress(Long studentNumber);
 
-  EnrollmentInfo findRecentStudentEnrollment(Long studentId);
+    EnrollmentInfo findRecentStudentEnrollment(Long studentId);
 
-  List<School> findSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel);
+    List<School> findSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel);
 
-  School findSchoolById(Long schoolId);
+    List<School> findVocationalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel);
 
-  List<Region> getAllRegions();
+    School findSchoolById(Long schoolId);
 
-  SchoolGradeLevel findGradeLevelInfo(Long schoolYear, Long schoolId, String gradeLevel);
+    List<Region> getAllRegions();
+
+    List<Region> getVocationalRegions();
+
+    SchoolGradeLevel findGradeLevelInfo(Long schoolYear, Long schoolId, String gradeLevel);
+
+    List<VocationalProgram> getVocationalPrograms(Long schoolId, Long schoolYear);
+
 }

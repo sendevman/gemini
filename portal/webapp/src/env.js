@@ -1,15 +1,19 @@
 const dev = 'http://34.197.64.57/srs/portal-api';
-const local = 'http://localhost:3000/portal-api';
+const local = 'http://localhost:3000/srs-api';
 const tmaxio = 'https://prdesietest.dde.pr/schoolmax_tmax2-api';
+const pmax1o = 'https://prdesieprod.dde.pr/registro-api';
 
 const tmax1o_sitekey = "6Lffy0sUAAAAAEr5HqHBCLsf013N8K3XSpOLmeQ5";
 const dev_sitekey = "6LfwnkkUAAAAABRldWNGMVuTb3ifCU_e9ZG6oI_J";
+//todo: fran do logic here to determine these props dynamically
+const BASE_CONTEXT = "srs";
+const REST_URL = local;
 
 let config = {
-    baseContext: "schoolmax_tmax2",
-    restServer: tmaxio,
+    baseContext: BASE_CONTEXT,
+    restServer: REST_URL,
     loadingMinimumTime: 1000,
-    reCAPTCHASiteKey: tmax1o_sitekey,
+    reCAPTCHASiteKey: REST_URL,
     publicPaths: ["/", "/registration", "/activate"]
 };
 

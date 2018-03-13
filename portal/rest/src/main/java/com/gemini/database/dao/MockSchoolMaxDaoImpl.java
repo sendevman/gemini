@@ -148,4 +148,19 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
         schoolGradeLevel.setNextYearGrade(nextGradeLevel);
         return schoolGradeLevel;
     }
+
+    @Override
+    public List<School> findVocationalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel) {
+        return null;
+    }
+
+    @Override
+    public List<Region> getVocationalRegions() {
+        return null;
+    }
+
+    @Override
+    public List<VocationalProgram> getVocationalPrograms(Long schoolId, Long schoolYear) {
+        return null;
+    }
 }

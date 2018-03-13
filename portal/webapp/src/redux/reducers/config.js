@@ -3,7 +3,8 @@ import * as types from "../types";
 const initialState = {
     regions: [],
     gradeLevels: [],
-    schools: []
+    schools: [],
+    vocationalPrograms: []
 };
 const config = (state = initialState, action) => {
 
@@ -14,6 +15,8 @@ const config = (state = initialState, action) => {
             return {...state, gradeLevels: action.response};
         case types.SCHOOL_LOAD_END:
             return {...state, schools: action.response};
+        case types.VOCATIONAL_PROGRAMS_END:
+            return {...state, vocationalPrograms: action.response};
         default:
             return state;
     }
