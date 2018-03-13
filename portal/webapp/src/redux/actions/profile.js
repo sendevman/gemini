@@ -11,3 +11,7 @@ export const saveProfile = (form, success, error) => (dispatch) => {
             response.successfulOperation ? success() : error()
         })
 };
+
+export const validateProfile = (form, onSuccessValidation, onErrorValidation) => (dispatch) =>{
+
+};

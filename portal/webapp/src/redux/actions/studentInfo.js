@@ -1,6 +1,7 @@
 import * as types from "../types";
 import services from "../setup";
 
+//todo fran: please review this preEnrollment needs to load before, in the wizard config start
 export const loadPersonalInfo = (onResult, onError) => (dispatch, getState) => {
     dispatch({type: types.STUDENT_PERSONAL_INFO_LOAD_START});
 

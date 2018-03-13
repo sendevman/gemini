@@ -65,4 +65,9 @@ google:
   recaptcha:
     secret: 6Lffy0sUAAAAAJ5r6JXLUMuns1KnrQkWwzPFnDpZ
     active: false
+oracle:
+  proxy:
+    host:
+    port: 80
+
 

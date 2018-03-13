@@ -22,8 +22,8 @@ const studentInfo = (state = initialState, action) => {
             };
         case types.STUDENT_CPY_PHY_TO_POS_ADDRESS:
             return {...state, postalAddress: action.postal};
-        case types.STUDENT_UDPATED:
-            return {...state, student: action.student}
+        case types.STUDENT_UPDATED:
+            return {...state, student: action.student};
         default:
             return state;
     }

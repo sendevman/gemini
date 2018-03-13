@@ -1,6 +1,7 @@
 package com.gemini.beans.forms;
 
 import com.gemini.beans.types.RequestStatus;
+import com.gemini.beans.types.Type;
 
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 public class PreEnrollmentBean {
 
     private Long id;
+    private Type type;
     private RequestStatus requestStatus;
     private String nextGradeLevel;
     private String nextGradeLevelDescription;
@@ -35,6 +37,14 @@ public class PreEnrollmentBean {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public RequestStatus getRequestStatus() {

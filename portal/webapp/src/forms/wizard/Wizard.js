@@ -14,10 +14,10 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {load, onNextAction, onPreviousAction} from "../../redux/actions";
 import Instructions from "./Instructions";
-import ParentInfoRequest from "./pre-enrollment/ParentInfoRequest";
-import Info from "./pre-enrollment/Info";
-import VocationalPreEnrollment from "./pre-enrollment/VocationalPreEnrollment";
+import UserInfoRequest from "./pre-enrollment/UserInfoRequest";
 import VocationalProgramsSelection from "./pre-enrollment/VocationalProgramsSelection";
+import VocationalPreEnrollment from "./pre-enrollment/VocationalPreEnrollment";
+import Info from "./pre-enrollment/Info";
 import VocationalReviewSubmit from "./pre-enrollment/VocationalReviewSubmit";
 
 function form(title, form) {
@@ -89,21 +89,12 @@ class Wizard extends Component {
             ? `${preEnrollment.schoolName} para el grado ${preEnrollment.nextGradeLevelDescription}`
             : "";
         let formsToDisplay = this.props.formsToDisplay;
-        let vocationalPreEnrollment = {};
+        let vocationalSchool = this.props.currentVocationalEnrollment.school;
 
         let CATALOG = [
-            {title: "Seleccione su Escuela Vocacional", renderObj: VocationalPreEnrollment}
-            , {
-                title: null,
-                info: `Gracias, ahora por favor seleccione los programas a los cuales desea aplicar en la escuela ${vocationalPreEnrollment.schoolName}.`,
-                renderObj: Info
-            }
-            , {title: "Seleccione los Programas Vocacionales", renderObj: VocationalProgramsSelection}
-            , {title: "Revise su pre-matricula ", renderObj: VocationalReviewSubmit}
-
-
-            , {title: "Su Informacion Personal", renderObj: ParentInfoRequest}
+            {title: "Su Informacion Personal", renderObj: UserInfoRequest}
             , {title: "Instrucciones", renderObj: Instructions}
+            , {title: null, question: "Es su hijo un estudiante de escuela vocacional", renderObj: Question}
             , {
                 title: null,
                 question: "Tiene usted su hijo matriculado en Departamento de Educacion de PR",
@@ -129,6 +120,17 @@ class Wizard extends Component {
             }
             , {title: "Pre-Matricula", renderObj: PreEnrollment}
             , {title: "Someter Solicitud", renderObj: SubmitRequest}
+
+            //vocational forms
+            , {title: "Seleccione su Escuela Vocacional", renderObj: VocationalPreEnrollment}
+            , {
+                title: null,
+                info: `Gracias, ahora por favor seleccione los programas a los cuales desea aplicar en la escuela ${vocationalSchool && vocationalSchool.schoolName}.`,
+                renderObj: Info
+            }
+            , {title: "Seleccione los Programas Vocacionales", renderObj: VocationalProgramsSelection}
+            , {title: "Revise su pre-matricula Vocacional", renderObj: VocationalReviewSubmit}
+
         ];
 
         this.wizardForms = [];
@@ -206,6 +208,7 @@ function mapStateToProps(store) {
         wizardCompleted: store.wizard.wizardCompleted,
         student: store.studentLookup.student,
         preEnrollment: store.preEnrollment.info,
+        currentVocationalEnrollment: store.preEnrollment.currentVocationalEnrollment,
         formsToDisplay: store.wizard.formsToDisplay
     };
 }

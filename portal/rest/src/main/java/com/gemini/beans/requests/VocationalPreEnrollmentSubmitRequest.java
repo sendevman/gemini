@@ -1,4 +1,6 @@
 package com.gemini.beans.requests;
+import com.gemini.beans.forms.VocationalProgramSelection;
+
 import java.util.List;
 
 /**
@@ -10,8 +12,8 @@ import java.util.List;
 public class VocationalPreEnrollmentSubmitRequest {
     private Long requestId;
     private String nextGradeLevel;
-    private Long schoolId;
     private List<VocationalProgramSelection> programs;
+    private List<VocationalProgramSelection> programsToDelete;
 
     public Long getRequestId() {
         return requestId;
@@ -29,19 +31,19 @@ public class VocationalPreEnrollmentSubmitRequest {
         this.nextGradeLevel = nextGradeLevel;
     }
 
-    public Long getSchoolId() {
-        return schoolId;
-    }
-
-    public void setSchoolId(Long schoolId) {
-        this.schoolId = schoolId;
-    }
-
     public List<VocationalProgramSelection> getPrograms() {
         return programs;
     }
 
     public void setPrograms(List<VocationalProgramSelection> programs) {
         this.programs = programs;
+    }
+
+    public List<VocationalProgramSelection> getProgramsToDelete() {
+        return programsToDelete;
+    }
+
+    public void setProgramsToDelete(List<VocationalProgramSelection> programsToDelete) {
+        this.programsToDelete = programsToDelete;
     }
 }

@@ -1,11 +1,14 @@
 package com.gemini;
 
+import com.gemini.utils.ValidationUtils;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.http.HttpHost;
 import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.conn.util.PublicSuffixMatcherLoader;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -46,10 +49,12 @@ public class Application extends SpringBootServletInitializer {
 
     @Bean
     @Qualifier("httpsRestTemplate")
-    public RestTemplate httpsRestTemplate() {
+    public RestTemplate httpsRestTemplate(@Value("${oracle.proxy.host}") String proxyHost, @Value("${oracle.proxy.port}") Integer proxyPort) {
+        HttpHost proxy = ValidationUtils.valid(proxyHost, proxyPort) ? new HttpHost(proxyHost, proxyPort) : null;
         CloseableHttpClient httpClient = HttpClients
                 .custom()
                 .setSSLHostnameVerifier(new DefaultHostnameVerifier(PublicSuffixMatcherLoader.getDefault()))
+                .setProxy(proxy)
                 .build();
 
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);

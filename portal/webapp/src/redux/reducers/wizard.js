@@ -33,7 +33,7 @@ const wizard = (state = initialState, action) => {
                 current: action.current,
                 previousLabel: btnType.previousButton,
                 nextLabel: btnType.nextButton,
-                maxForms:  action.maxForms,
+                maxForms: action.formsToDisplay.length,
                 editing: action.editing,
                 formsToDisplay: action.formsToDisplay,
                 workingRequestId: action.workingRequestId
@@ -67,6 +67,8 @@ const wizard = (state = initialState, action) => {
             return {...state, wizardCompleted: true};
         case types.ON_WIZARD_RESET:
             return initialState;
+        case types.ON_WIZARD_FORMS_CHANGE:
+            return {...state, formsToDisplay: action.forms, maxForms: action.forms.length};
         default:
             return state;
 

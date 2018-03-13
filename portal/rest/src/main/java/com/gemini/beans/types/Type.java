@@ -8,5 +8,5 @@ package com.gemini.beans.types;
  */
 public enum Type {
     REGULAR,
-    VOCACIONAL
+    VOCATIONAL
 }

@@ -4,7 +4,7 @@ import com.gemini.beans.integration.ParentResponse;
 import com.gemini.beans.integration.RegionResponse;
 import com.gemini.beans.integration.SchoolResponse;
 import com.gemini.beans.integration.StudentResponse;
-import com.gemini.beans.requests.VocationalProgramSelection;
+import com.gemini.beans.forms.VocationalProgramSelection;
 import com.gemini.database.dao.beans.*;
 import com.gemini.services.SchoolmaxService;
 import com.gemini.utils.CopyUtils;

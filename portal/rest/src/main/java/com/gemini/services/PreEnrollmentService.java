@@ -4,7 +4,6 @@ import com.gemini.beans.forms.*;
 import com.gemini.beans.requests.PreEnrollmentInitialRequest;
 import com.gemini.beans.requests.PreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.VocationalPreEnrollmentSubmitRequest;
-import com.gemini.beans.requests.VocationalProgramSelection;
 import com.gemini.beans.types.AddressType;
 import com.gemini.beans.types.EntryType;
 import com.gemini.beans.types.RequestStatus;
@@ -17,15 +16,11 @@ import com.gemini.utils.CopyUtils;
 import com.gemini.utils.Utils;
 import com.gemini.utils.ValidationUtils;
 import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.google.common.collect.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -95,6 +90,7 @@ public class PreEnrollmentService {
         Long studentNumber = request.getStudentNumber();
         UserEntity parent = CopyUtils.convert(loggedUser, UserEntity.class);
 
+        entity.setType(request.getType());
         entity.setParent(parent);
         entity.setSchoolYear(commonService.getPreEnrollmentYear());
         Student student = null;
@@ -159,33 +155,12 @@ public class PreEnrollmentService {
         return requestEntity != null;
     }
 
+    public boolean vocationalPreEnrollmentSubmit(VocationalPreEnrollmentSubmitRequest request) {
+        return vocationalPreEnrollmentSave(request, true);
+    }
+
     public boolean partialVocationalPreEnrollmentSave(VocationalPreEnrollmentSubmitRequest request) {
-        final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
-        setSchoolInfo(requestEntity, request.getSchoolId(), request.getNextGradeLevel());
-
-        List<PreEnrollmentVocationalSchool> vocationalSchoolsDB = requestEntity.getVocationalSchools();
-        List<VocationalProgramSelection> selectionsInDBList = CopyUtils.convert(vocationalSchoolsDB, VocationalProgramSelection.class);
-        Set<VocationalProgramSelection> selectionsInDB = new HashSet<>(selectionsInDBList);
-        Set<VocationalProgramSelection> selectionsToSave = Sets.union(selectionsInDB, new HashSet<>(request.getPrograms()));
-        List<VocationalProgramSelection> list = Lists.newArrayList(selectionsToSave);
-
-        Function<VocationalProgramSelection, PreEnrollmentVocationalSchool> toPreEnrollmentVocSchool = new Function<VocationalProgramSelection, PreEnrollmentVocationalSchool>() {
-            public PreEnrollmentVocationalSchool apply(VocationalProgramSelection program) {
-                PreEnrollmentVocationalSchool vocationalSchool = CopyUtils.convert(program, PreEnrollmentVocationalSchool.class);
-                School school = smaxService.findSchoolById(program.getSchoolId());
-                vocationalSchool.setSchoolId(school.getSchoolId());
-                vocationalSchool.setRegionId(school.getRegionId());
-                vocationalSchool.setDistrictId(school.getDistrictId());
-                vocationalSchool.setMunicipalityCode(school.getCityCd());
-                vocationalSchool.setPreEnrollment(requestEntity);
-                return vocationalSchool;
-            }
-        };
-        requestEntity.setVocationalSchools(Lists.transform(list, toPreEnrollmentVocSchool));
-
-
-        return preEnrollmentRepository.save(requestEntity) != null;
-
+        return vocationalPreEnrollmentSave(request, false);
     }
 
     public PreEnrollmentBean updatePreEnrollment(PreEnrollmentInitialRequest request) {
@@ -247,6 +222,51 @@ public class PreEnrollmentService {
         if (entity == null)
             return null;
         return getPreEnrollmentStudentInfoBean(entity);
+    }
+
+    public VocationalPreEnrollmentBean findVocationalPreEnrollmentById(Long id) {
+        PreEnrollmentRequestEntity entity = preEnrollmentRepository.findByIdAndRequestStatusIs(id, RequestStatus.ACTIVE);
+        if (entity == null)
+            return null;
+        PreEnrollmentBean preEnrollment = getPreEnrollmentBean(entity);
+        VocationalPreEnrollmentBean vocationalPreEnrollment = CopyUtils.convert(preEnrollment, VocationalPreEnrollmentBean.class);
+        Function<PreEnrollmentVocationalSchoolEntity, Long> toSchoolId = new Function<PreEnrollmentVocationalSchoolEntity, Long>() {
+            @Override
+            public Long apply(PreEnrollmentVocationalSchoolEntity schoolEntity) {
+                return schoolEntity.getSchoolId();
+            }
+        };
+
+        final Function<PreEnrollmentVocationalSchoolEntity, VocationalProgramSelection> toProgramSelection = new Function<PreEnrollmentVocationalSchoolEntity, VocationalProgramSelection>() {
+            @Override
+            public VocationalProgramSelection apply(PreEnrollmentVocationalSchoolEntity schoolEntity) {
+                VocationalProgramSelection selection = new VocationalProgramSelection();
+                selection.setSchoolId(schoolEntity.getSchoolId());
+                selection.setProgramCode(schoolEntity.getProgramCode());
+                selection.setProgramDescription(schoolEntity.getProgramDescription());
+                return selection;
+            }
+        };
+         Multimap<Long, PreEnrollmentVocationalSchoolEntity> schoolIdToProgramsMulti = Multimaps.index(entity.getVocationalSchools(), toSchoolId);
+        final Map<Long, Collection<PreEnrollmentVocationalSchoolEntity>> schoolIdToPrograms = schoolIdToProgramsMulti.asMap();
+        Function<PreEnrollmentVocationalSchoolEntity, VocationalSchoolEnrollment> toVocationalProgram = new Function<PreEnrollmentVocationalSchoolEntity, VocationalSchoolEnrollment>() {
+            @Override
+            public VocationalSchoolEnrollment apply(PreEnrollmentVocationalSchoolEntity entity) {
+                VocationalSchoolEnrollment enrollment = new VocationalSchoolEnrollment();
+                School school = getSchool(entity.getSchoolId());
+                enrollment.setSchoolId(entity.getSchoolId());
+                enrollment.setSchoolName(school.getSchoolName());
+                enrollment.setSchoolAddress(CopyUtils.createAddressBean(school));
+                List<VocationalProgramSelection> programs = Lists.transform(Lists.newArrayList(schoolIdToPrograms.get(entity.getSchoolId())), toProgramSelection);
+                enrollment.setPrograms(programs);
+                return enrollment;
+            }
+        };
+
+
+        vocationalPreEnrollment.setEnrollments(Lists.transform(entity.getVocationalSchools(), toVocationalProgram));
+        return vocationalPreEnrollment;
+
     }
 
     //    Private Methods
@@ -312,7 +332,7 @@ public class PreEnrollmentService {
 //        }
         School school = smaxService.findSchoolById(schoolId);
         //validating if the schoolYear enrolled is the current school year
-        if (school != null) {
+        if (school != null && ValidationUtils.valid(previousSchoolYear, previousGradeLevel)) {
             SchoolGradeLevel gradeLevelInfo = smaxService.findSchoolLevel(previousSchoolYear, schoolId, previousGradeLevel);
             enrollmentBean.setSchoolId(schoolId);
             enrollmentBean.setSchoolName(school.getSchoolName());
@@ -326,6 +346,10 @@ public class PreEnrollmentService {
         return school;
     }
 
+    private School getSchool(Long schoolId) {
+        return smaxService.findSchoolById(schoolId);
+    }
+
     private void setSchoolInfo(PreEnrollmentRequestEntity requestEntity, Long schoolId, String nextGradeLevel) {
         School school = smaxService.findSchoolById(schoolId);
         requestEntity.setGradeLevel(nextGradeLevel);
@@ -334,6 +358,48 @@ public class PreEnrollmentService {
         requestEntity.setRegionId(school.getRegionId());
         requestEntity.setDistrictId(school.getDistrictId());
         requestEntity.setMunicipalityCode(school.getCityCd());
+    }
+
+    private boolean vocationalPreEnrollmentSave(VocationalPreEnrollmentSubmitRequest request, boolean submitted) {
+        final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
+
+        List<PreEnrollmentVocationalSchoolEntity> vocationalSchoolsDB = requestEntity.getVocationalSchools();
+        List<VocationalProgramSelection> selectionsInDBList = CopyUtils.convert(vocationalSchoolsDB, VocationalProgramSelection.class);
+        Set<VocationalProgramSelection> selectionsInDB = new HashSet<>(selectionsInDBList);
+
+        if(request.getProgramsToDelete() != null && !request.getProgramsToDelete().isEmpty()){
+            selectionsInDB = Sets.difference(selectionsInDB, Sets.newHashSet(request.getProgramsToDelete()));
+        }
+        Set<VocationalProgramSelection> selectionsToSave = Sets.union(selectionsInDB, new HashSet<>(request.getPrograms()));
+        List<VocationalProgramSelection> list = Lists.newArrayList(selectionsToSave);
+
+//        check this
+        Function<VocationalProgramSelection, PreEnrollmentVocationalSchoolEntity> toPreEnrollmentVocSchool = new Function<VocationalProgramSelection, PreEnrollmentVocationalSchoolEntity>() {
+            public PreEnrollmentVocationalSchoolEntity apply(VocationalProgramSelection program) {
+                PreEnrollmentVocationalSchoolEntity vocationalSchool = CopyUtils.convert(program, PreEnrollmentVocationalSchoolEntity.class);
+                School school = smaxService.findSchoolById(program.getSchoolId());
+                vocationalSchool.setSchoolId(school.getSchoolId());
+                vocationalSchool.setRegionId(school.getRegionId());
+                vocationalSchool.setDistrictId(school.getDistrictId());
+                vocationalSchool.setMunicipalityCode(school.getCityCd());
+                vocationalSchool.setPreEnrollment(requestEntity);
+                return vocationalSchool;
+            }
+        };
+
+        requestEntity.getVocationalSchools().clear();
+        requestEntity.getVocationalSchools().addAll(Lists.transform(list, toPreEnrollmentVocSchool));
+        if (submitted) {
+            if (list.size() == 1) {
+                Long schoolId = list.get(0).getSchoolId();
+                setSchoolInfo(requestEntity, schoolId, request.getNextGradeLevel());
+            }
+            requestEntity.setRequestStatus(RequestStatus.PENDING_TO_REVIEW);
+            requestEntity.setSubmitDate(commonService.getCurrentDate());
+        }
+
+        return preEnrollmentRepository.save(requestEntity) != null;
+
     }
 
 

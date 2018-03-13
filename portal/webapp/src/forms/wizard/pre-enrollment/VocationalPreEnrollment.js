@@ -6,7 +6,7 @@ import React, {Component} from "react";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {getVocationalSchools, loadVocationalCodes} from "../../../redux/actions";
+import {getVocationalSchools, loadVocationalCodes, partialSaveVocationalPreEnrollment} from "../../../redux/actions";
 
 class VocationalPreEnrollment extends Component {
 
@@ -22,8 +22,9 @@ class VocationalPreEnrollment extends Component {
         this.props.loadVocationalCodes();
     }
 
-    onPress(onResult) {
-        onResult();
+    onPress(onResult, onError) {
+        let form = this.props.currentVocationalEnrollment;
+        this.props.partialSaveVocationalPreEnrollment(form, onResult, onError);
     }
 
     cleanSchoolCode() {
@@ -160,7 +161,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({loadVocationalCodes, getVocationalSchools}, dispatch)
+    return bindActionCreators({loadVocationalCodes, getVocationalSchools, partialSaveVocationalPreEnrollment}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(VocationalPreEnrollment);

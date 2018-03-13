@@ -1,5 +1,9 @@
 package com.gemini.beans.responses;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: fran
@@ -12,6 +16,7 @@ public class ResponseBase<T> {
     private boolean successfulOperation;
     private boolean errorOperation;
     private T content;
+    private List<String> validationMessages = new ArrayList<>();
 
     public ResponseBase() {
     }
@@ -56,11 +61,19 @@ public class ResponseBase<T> {
         this.content = content;
     }
 
+    public List<String> getValidationMessages() {
+        return validationMessages;
+    }
+
+    public void setValidationMessages(List<String> validationMessages) {
+        this.validationMessages = validationMessages;
+    }
+
     public static ResponseBase success() {
         return success(null);
     }
 
-    public static<T>  ResponseBase success(T responseBean) {
+    public static <T> ResponseBase success(T responseBean) {
         return success(null, responseBean);
     }
 
@@ -77,11 +90,16 @@ public class ResponseBase<T> {
         return base;
     }
 
-    public static ResponseBase error(String message) {
+    public static ResponseBase error(String message, List<String> validationMessages) {
         ResponseBase base = new ResponseBase();
         base.errorOperation = true;
         base.message = message;
+        base.validationMessages = validationMessages;
         return base;
+    }
+
+    public static ResponseBase error(String message) {
+        return error(message, Collections.<String>emptyList());
     }
 
 

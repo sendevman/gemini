@@ -2,6 +2,7 @@ import * as types from "../types";
 
 const initialState = {
     requestId: null,
+    type: "REGULAR",
     info: {
         regionId: null,
         schoolId: null,
@@ -10,7 +11,7 @@ const initialState = {
         nextGradeLevel: null,
         nextGradeLevelDescription: null
     },
-    vocationalEnrollments: [],
+    //this for the form being editing
     currentVocationalEnrollment: {
         id: null,
         nextGradeLevel: null,
@@ -24,9 +25,12 @@ const initialState = {
 
 const preEnrollment = (state = initialState, action) => {
     switch (action.type) {
+
         case types.STUDENT_CREATE_PRE_ENROLLMENT_START:
+        case types.VOCATIONAL_PRE_ENROLLMENT_RETRIEVE_START:
             return state;
         case types.STUDENT_CREATE_PRE_ENROLLMENT_END:
+        case types.VOCATIONAL_PRE_ENROLLMENT_RETRIEVE_END:
             let resp = action.response.content;
             return {
                 ...state,

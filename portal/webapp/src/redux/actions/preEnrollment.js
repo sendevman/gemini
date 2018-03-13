@@ -7,12 +7,13 @@ export const savePreEnrollment = (form, onResult, onError) => (dispatch, getStat
     let preEnrollment = getState().preEnrollment;
     form.requestId = preEnrollment.requestId;
     form.studentNumber = studentInfo.student.studentNumber;
+    form.type = preEnrollment.type;
     services()
         .savePreEnrollment(form)
         .then((response) => response.json())
         .then((response) => {
+            dispatch({type: types.STUDENT_UPDATED, student: response.content.student});
             dispatch({type: types.STUDENT_CREATE_PRE_ENROLLMENT_END, response: response});
-            dispatch({type: types.STUDENT_UDPATED, student: response.student});
 
             try {
                 if (response.successfulOperation)
@@ -44,10 +45,69 @@ export const submitPreEnrollment = (form, onResult, onError) => (dispatch) => {
 
 };
 
-export const partialVocationalPreEnrollment = (form, onResult, onError) => (dispatch) => {
+export const partialSaveVocationalPreEnrollment = (form, onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.PARTIAL_VOC_PRE_ENROLLMENT_SAVE_START});
+    let preEnrollment = getState().preEnrollment;
+    form.requestId = preEnrollment.requestId;
 
+    services()
+        .partialSaveVocationalPreEnrollment(form)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.PARTIAL_VOC_PRE_ENROLLMENT_SAVE_END, response: response});
+
+            try {
+                if (response.successfulOperation)
+                    onResult();
+                else
+                    onError();
+            } catch (e) {
+                onError();
+            }
+        });
 };
 
-export const submitVocationalPreEnrollment = (form, onResult, onError) => (dispatch) => {
+export const submitVocationalPreEnrollment = (form, onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.VOCATIONAL_PRE_ENROLLMENT_SUBMIT_START});
+    let preEnrollment = getState().preEnrollment;
+    form.requestId = preEnrollment.requestId;
+
+    services()
+        .submitVocationalPreEnrollment(form)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.VOCATIONAL_PRE_ENROLLMENT_SUBMIT_END, response: response});
+
+            try {
+                if (response.successfulOperation)
+                    onResult();
+                else
+                    onError();
+            } catch (e) {
+                onError();
+            }
+        });
+};
+
+export const retrieveVocationalPreEnrollment = (onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.VOCATIONAL_PRE_ENROLLMENT_RETRIEVE_START});
+    let preEnrollment = getState().preEnrollment;
+    let requestId = preEnrollment.requestId;
+
+    // services()
+    services()
+        .getActiveVocationalPreEnrollment(requestId)
+        .then((response) => {
+            dispatch({type: types.VOCATIONAL_PRE_ENROLLMENT_RETRIEVE_END, response: response});
+            try {
+                if (response.successfulOperation)
+                    onResult();
+                else
+                    onError();
+            } catch (e) {
+                onError();
+            }
+        });
+
 
 };

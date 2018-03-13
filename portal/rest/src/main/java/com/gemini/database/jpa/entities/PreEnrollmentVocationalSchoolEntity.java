@@ -9,7 +9,7 @@ import javax.persistence.*;
  * Time: 6:58 AM
  */
 @Entity(name = "pre_enrollment_voc_schools")
-public class PreEnrollmentVocationalSchool {
+public class PreEnrollmentVocationalSchoolEntity {
     @Id
     @GeneratedValue
     private Long id;
