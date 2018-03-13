@@ -24,7 +24,7 @@ public class SchoolMaxDaoImpl extends JdbcDaoSupport implements SchoolMaxDaoInte
     @Qualifier(value = "smaxDatasource")
     DataSource smaxDatasource;
 
-    private final String PARENT_SQL = "SELECT * FROM VW_PARENT " ;
+    private final String PARENT_SQL = "SELECT * FROM VW_PARENT ";
     private final String STUDENT_SQL = "select * from VW_STUDENT ";
     private final String STUDENT_ADDRESS_SQL = "SELECT * FROM VW_STUDENT_ADDRESS ";
     private final String REGION_SQL = "SELECT * FROM VW_REGIONS ";
@@ -48,7 +48,7 @@ public class SchoolMaxDaoImpl extends JdbcDaoSupport implements SchoolMaxDaoInte
 
     @Override
     public Student findStudent(String lastSsn, Date dob, Long studentNumber) {
-        String sql = STUDENT_SQL.concat(" AND SUBSTR(SSN, -4) = ? AND DATE_OF_BIRTH = ? and EXT_STUDENT_NUMBER = ? ORDER BY EXT_STUDENT_NUMBER DESC ");
+        String sql = STUDENT_SQL.concat(" WHERE SUBSTR(SSN, -4) = ? AND DATE_OF_BIRTH = ? and EXT_STUDENT_NUMBER = ? ORDER BY EXT_STUDENT_NUMBER DESC ");
         List<Student> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(Student.class), lastSsn, dob, studentNumber);
         return list.isEmpty() ? null : list.get(0);
     }
@@ -95,7 +95,8 @@ public class SchoolMaxDaoImpl extends JdbcDaoSupport implements SchoolMaxDaoInte
     @Override
     public School findSchoolById(Long schoolId) {
         String sql = SCHOOL_SQL.concat(" WHERE SCHOOL_ID = ?");
-        return getJdbcTemplate().queryForObject(sql, new BeanPropertyRowMapper<>(School.class), schoolId);
+        List<School> schools = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(School.class), schoolId);
+        return schools.isEmpty() ? null : schools.get(0);
     }
 
     @Override

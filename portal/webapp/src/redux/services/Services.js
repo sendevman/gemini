@@ -37,6 +37,10 @@ export default class Services {
         return this._securedPost(`/user/save`, form);
     }
 
+    validateProfile(form){
+        return this._securedPost(`/user/validate`, form);
+    }
+
     //home
     home() {
         return this._get("/home");
@@ -80,13 +84,17 @@ export default class Services {
         return this._get(`/smax/interface/retrieve/vocational/school/${regionId}/grade/level/${gradeLevel}`);
     }
 
-    getVocationalProgramsBySchool(schoolId){
+    getVocationalProgramsBySchool(schoolId) {
         return this._get(`/smax/interface/retrieve/vocational/programs/school/${schoolId}`);
     }
 
     //pre-enrollment
-    getActivePreEnrollment(requestId){
+    getActivePreEnrollment(requestId) {
         return this._get(`/enrollment/pre/${requestId}`);
+    }
+
+    getActiveVocationalPreEnrollment(requestId) {
+        return this._get(`/enrollment/pre/vocational/${requestId}`);
     }
 
     savePreEnrollment(form) {
@@ -97,12 +105,20 @@ export default class Services {
         return this._get(`/enrollment/pre/${requestId}/address`);
     }
 
+    partialSaveVocationalPreEnrollment(form) {
+        return this._securedPost(`/enrollment/pre/vocational/partial/save`, form)
+    }
+
     savePreEnrollmentAddress(addressForm) {
         return this._securedPost(`/enrollment/pre/${addressForm.requestId}/address/save`, addressForm);
     }
 
     submitPreEnrollment(form) {
         return this._securedPost(`/enrollment/pre/submit`, form);
+    }
+
+    submitVocationalPreEnrollment(form) {
+        return this._securedPost(`/enrollment/pre/vocational/submit`, form);
     }
 
     _login(path, credentials) {

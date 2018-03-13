@@ -1,6 +1,7 @@
 package com.gemini.beans.requests;
 
 import com.gemini.beans.types.Gender;
+import com.gemini.beans.types.Type;
 
 import java.util.Date;
 
@@ -12,6 +13,7 @@ import java.util.Date;
  */
 public class PreEnrollmentInitialRequest {
     private Long requestId;
+    private Type type;
     private Long studentNumber;
     private String ssn;
     private String firstName;
@@ -27,6 +29,14 @@ public class PreEnrollmentInitialRequest {
 
     public void setRequestId(Long requestId) {
         this.requestId = requestId;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public Long getStudentNumber() {

@@ -1,7 +1,9 @@
 package com.gemini.utils;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.joda.time.Years;
 
 import java.util.Date;
 
@@ -21,13 +23,16 @@ public final class DateUtils {
         return input.toDate();
     }
 
-
     public static Date toDate(LocalDateTime input) {
         return input.toDate();
     }
 
-    public static  Date getCurrentDate() {
+    public static Date getCurrentDate() {
         return new Date();
+    }
+
+    public static int toYears(Date input){
+        return Years.yearsBetween(new DateTime(input), DateTime.now()).getYears();
     }
 
     public static void main(String[] args) {

@@ -75,7 +75,7 @@ public class PreEnrollmentRequestEntity {
     private Date submitDate;
 
     @OneToMany(mappedBy = "preEnrollment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PreEnrollmentVocationalSchool> vocationalSchools;
+    private List<PreEnrollmentVocationalSchoolEntity> vocationalSchools;
 
     @CreatedDate
     @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
@@ -220,11 +220,11 @@ public class PreEnrollmentRequestEntity {
         this.submitDate = submitDate;
     }
 
-    public List<PreEnrollmentVocationalSchool> getVocationalSchools() {
+    public List<PreEnrollmentVocationalSchoolEntity> getVocationalSchools() {
         return vocationalSchools;
     }
 
-    public void setVocationalSchools(List<PreEnrollmentVocationalSchool> vocationalSchools) {
+    public void setVocationalSchools(List<PreEnrollmentVocationalSchoolEntity> vocationalSchools) {
         this.vocationalSchools = vocationalSchools;
     }
 

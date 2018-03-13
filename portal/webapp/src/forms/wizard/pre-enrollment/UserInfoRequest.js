@@ -6,12 +6,13 @@ import {saveProfile} from "../../../redux/actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 
-class ParentInfoRequest extends Component {
+class UserInfoRequest extends Component {
 
     constructor(props) {
         super(props);
         this.inputHandler = this.inputHandler.bind(this);
         this.onValidDate = this.onValidDate.bind(this);
+        this.onError = this.onError.bind(this);
     }
 
     inputHandler(e) {
@@ -26,9 +27,13 @@ class ParentInfoRequest extends Component {
     }
 
 
-    onPress(onResult, onError) {
+    onPress(onResult) {
         let form = this.props.form;
-        this.props.saveProfile(form, onResult, onError);
+        this.props.saveProfile(form, onResult, this.onError);
+    }
+
+    onError(validationMessage) {
+        alert(JSON.stringify(validationMessage));
     }
 
     render() {
@@ -97,4 +102,4 @@ function mapDispatchToActions(dispatch) {
     return bindActionCreators({saveProfile}, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(ParentInfoRequest);
+export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(UserInfoRequest);

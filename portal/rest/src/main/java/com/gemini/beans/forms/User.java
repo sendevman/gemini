@@ -190,6 +190,10 @@ public class User implements UserDetails, CredentialsContainer, IdentityForm {
         return profileCompleted && totalPreEnrollments > 0 && !(workingPreEnrollmentId != null && workingPreEnrollmentId > 0L);
     }
 
+    public boolean isUserVocationalStudent(){
+        return RelationType.SAME_STUDENT.equals(this.relationType);
+    }
+
     @Override
     public void eraseCredentials() {
         this.password = null;

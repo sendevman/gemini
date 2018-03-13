@@ -3,7 +3,9 @@ package com.gemini.resources;
 import com.gemini.beans.forms.User;
 import com.gemini.beans.requests.ParentProfileInfoRequest;
 import com.gemini.beans.responses.ResponseBase;
+import com.gemini.services.CommonService;
 import com.gemini.services.UserService;
+import com.gemini.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,11 +30,18 @@ public class UserResource {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private CommonService commonService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ResponseEntity<ResponseBase> save(@RequestBody @Valid ParentProfileInfoRequest request, @AuthenticationPrincipal User loggedUser, BindingResult result) {
         if (result.hasErrors())
             return ResponseEntity.ok(ResponseBase.error("Missing require fields"));
+
+        int userAge = DateUtils.toYears(request.getDateOfBirth());
+        if (userAge < commonService.getMinUserAgeToSubmitRequest()) {
+            return ResponseEntity.ok(ResponseBase.error("Error unable to save profile", Arrays.asList("user.min.age.validation")));
+        }
 
         request.setId(loggedUser.getId());
         boolean saved = userService.updateUser(request);

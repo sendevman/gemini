@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
-import {Button} from "react-bootstrap";
-import {getVocationalPrograms} from "../../../redux/actions";
+import {Button, Glyphicon} from "react-bootstrap";
+import {getVocationalPrograms, partialSaveVocationalPreEnrollment} from "../../../redux/actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 
@@ -15,8 +15,14 @@ class VocationalProgramsSelection extends Component {
     }
 
     componentWillMount() {
-        let schoolId = this.props.currentVocationalEnrollment.schoolId;
-        this.props.getVocationalPrograms(schoolId)
+        this.schoolId = this.props.currentVocationalEnrollment.schoolId;
+        this.props.getVocationalPrograms(this.schoolId)
+    }
+
+
+    onPress(onResult, onError) {
+        let form = this.props.currentVocationalEnrollment;
+        this.props.partialSaveVocationalPreEnrollment(form, onResult, onError);
     }
 
     onProgramChange(programObject) {
@@ -26,12 +32,18 @@ class VocationalProgramsSelection extends Component {
     onAdd() {
         let form = this.props.currentVocationalEnrollment;
         let program = this.state.selectedProgram;
+        program.schoolId = this.schoolId;
         form.programs.push(program);
         this.forceUpdate();
     }
 
+    onDelete = (index) => (e) => {
+        let form = this.props.currentVocationalEnrollment;
+        form.programs.splice(index, 1);
+        this.forceUpdate();
+    };
+
     render() {
-        let student = this.props.student;
         let school = this.props.currentVocationalEnrollment.school;
         let programs = this.props.programs;
 
@@ -94,15 +106,20 @@ class VocationalProgramsSelection extends Component {
             <tr>
                 <th>#</th>
                 <th>Programa</th>
+                <th>Remover</th>
             </tr>
             </thead>
             <tbody>
-            {/*for-loop*/}
             {programs && programs.length > 0
                 ? programs.map((prog, index) => (
-                    <tr>
-                        <td>{index +1}</td>
+                    <tr key={index}>
+                        <td>{index + 1}</td>
                         <td>{prog.programDescription}</td>
+                        <td>
+                            <Button bsSize="xsmall" bsStyle="danger" onClick={this.onDelete(index)}>
+                                <Glyphicon glyph="glyphicon glyphicon-trash"/>
+                            </Button>
+                        </td>
                     </tr>
                 ))
                 : <div><label>No posee ningun programa aun</label></div>}
@@ -113,7 +130,6 @@ class VocationalProgramsSelection extends Component {
 
 function mapStateToProps(store) {
     return {
-        student: store.studentInfo.student,
         preEnrollment: store.preEnrollment.info,
         currentVocationalEnrollment: store.preEnrollment.currentVocationalEnrollment,
         programs: store.config.vocationalPrograms
@@ -121,7 +137,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({getVocationalPrograms}, dispatch)
+    return bindActionCreators({getVocationalPrograms, partialSaveVocationalPreEnrollment}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(VocationalProgramsSelection);

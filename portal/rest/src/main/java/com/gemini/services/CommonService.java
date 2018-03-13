@@ -30,4 +30,8 @@ public class CommonService {
     public Long getCurrentSchoolYear(){
         return this.getPreEnrollmentYear() - 1L;
     }
+
+    public int getMinUserAgeToSubmitRequest(){
+        return 18;
+    }
 }

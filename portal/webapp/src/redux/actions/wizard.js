@@ -7,8 +7,9 @@ const CONTINUE = {type: "START", nextButton: "Continuar"};
 const END = {type: "FINALIZE", nextButton: "Someter"};
 
 let catalog = [
-    {type: "PARENT_PROFILE", footerType: CONTINUE}
+    {type: "USER_PROFILE", footerType: CONTINUE}
     , {type: "INSTRUCTIONS", footerType: CONTINUE}
+    , {type: "IS_VOCATIONAL_STUDENT_QUESTION", footerType: QUESTION, yes: "STUDENT_LOOKUP", no: "STUDENT_LOOKUP"}
     , {type: "DEPR_ENROLLED_QUESTION", yes: "STUDENT_LOOKUP", no: "PERSONAL_INFO", footerType: QUESTION}
     , {
         type: "STUDENT_LOOKUP",
@@ -23,7 +24,14 @@ let catalog = [
     , {type: "ADDRESS", footerType: IN_PROGRESS}
     , {type: "ENROLLMENT_QUESTION", yes: "SUBMIT", no: "ENROLLMENT", footerType: QUESTION}
     , {type: "ENROLLMENT", footerType: IN_PROGRESS}
-    , {type: "SUBMIT", footerType: END}];
+    , {type: "SUBMIT", footerType: END}
+
+    , {type: "VOCATIONAL_SCHOOL_SELECTION", footerType: CONTINUE}
+    , {type: "VOCATIONAL_SCHOOL_INFO", footerType: CONTINUE}
+    , {type: "VOCATIONAL_PROGRAMS", footerType: CONTINUE}
+    , {type: "VOCATIONAL_SUBMIT_REVIEW", footerType: END}
+
+];
 
 function getIndexFromCatalog(type) {
     for (let idx in catalog) {
@@ -54,14 +62,62 @@ function isType(current, type) {
     return catalog[index].type === type;
 }
 
-const normalFlow = catalog.map(((value, index) => index));
+const normalFlow = [
+    getIndexFromCatalog("USER_PROFILE"),
+    getIndexFromCatalog("INSTRUCTIONS"),
+    getIndexFromCatalog("IS_VOCATIONAL_STUDENT_QUESTION"),
+    getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
+    getIndexFromCatalog("STUDENT_LOOKUP"),
+    getIndexFromCatalog("NOT_FOUND_QUESTION"),
+    getIndexFromCatalog("FOUND_INFO"),
+    getIndexFromCatalog("PERSONAL_INFO"),
+    getIndexFromCatalog("ADDRESS"),
+    getIndexFromCatalog("ENROLLMENT_QUESTION"),
+    getIndexFromCatalog("ENROLLMENT"),
+    getIndexFromCatalog("SUBMIT")];
 
-const editFormFlow = [
+const studentRequesterVocationalFlow = [
+    getIndexFromCatalog("USER_PROFILE"),
+    getIndexFromCatalog("INSTRUCTIONS"),
+    //verify this
+    getIndexFromCatalog("PERSONAL_INFO"),
+    getIndexFromCatalog("ADDRESS"),
+
+    getIndexFromCatalog("VOCATIONAL_SCHOOL_SELECTION"),
+    getIndexFromCatalog("VOCATIONAL_SCHOOL_INFO"),
+    getIndexFromCatalog("VOCATIONAL_PROGRAMS"),
+    getIndexFromCatalog("VOCATIONAL_SUBMIT_REVIEW")
+];
+const parentVocationalFlow = [
+    getIndexFromCatalog("USER_PROFILE"),
+    getIndexFromCatalog("INSTRUCTIONS"),
+    getIndexFromCatalog("IS_VOCATIONAL_STUDENT_QUESTION"),
+    getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
+    getIndexFromCatalog("STUDENT_LOOKUP"),
+    getIndexFromCatalog("NOT_FOUND_QUESTION"),
+    getIndexFromCatalog("FOUND_INFO"),
+    getIndexFromCatalog("PERSONAL_INFO"),
+    getIndexFromCatalog("ADDRESS"),
+    getIndexFromCatalog("VOCATIONAL_SCHOOL_SELECTION"),
+    getIndexFromCatalog("VOCATIONAL_SCHOOL_INFO"),
+    getIndexFromCatalog("VOCATIONAL_PROGRAMS"),
+    getIndexFromCatalog("VOCATIONAL_SUBMIT_REVIEW")
+];
+const editNormalFlow = [
     getIndexFromCatalog("PERSONAL_INFO"),
     getIndexFromCatalog("ADDRESS"),
     getIndexFromCatalog("ENROLLMENT_QUESTION"),
     getIndexFromCatalog("ENROLLMENT"),
     getIndexFromCatalog("SUBMIT")
+];
+const editVocationalFlow = [
+    getIndexFromCatalog("PERSONAL_INFO"),
+    getIndexFromCatalog("ADDRESS"),
+
+    getIndexFromCatalog("VOCATIONAL_SCHOOL_SELECTION"),
+    getIndexFromCatalog("VOCATIONAL_SCHOOL_INFO"),
+    getIndexFromCatalog("VOCATIONAL_PROGRAMS"),
+    getIndexFromCatalog("VOCATIONAL_SUBMIT_REVIEW")
 ];
 
 let flow;
@@ -70,20 +126,20 @@ export const load = (requestId) => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_LOAD_START});
     let user = getState().profile.user;
     let profileCompleted = user.profileCompleted;
-    let startPage = 0;//profileCompleted ? 1 : 0;
+    let startPage = profileCompleted ? 1 : 0;
     let editing = (user.workingPreEnrollmentId && user.workingPreEnrollmentId > 0) || requestId;
+
     flow = editing
-        ? editFormFlow
-        : normalFlow;
+        ? user.userVocationalStudent ? editVocationalFlow : editNormalFlow
+        : normalFlow;  //always start
     if (editing) {
         startPage = 0;
-        requestId =  requestId || user.workingPreEnrollmentId;
+        requestId = requestId || user.workingPreEnrollmentId;
     }
 
     //check if user has pending pre-enrollment
     dispatch({
         type: types.ON_WIZARD_LOAD_END,
-        maxForms: flow.length,
         current: startPage,
         footerType: getForm(startPage).footerType,
         editing: editing,
@@ -92,21 +148,41 @@ export const load = (requestId) => (dispatch, getState) => {
     })
 };
 
+function changeForms(dispatch, preEnrollment, formToChange) {
+    flow = formToChange;
+    preEnrollment.type = "VOCATIONAL";
+    dispatch({type: types.ON_WIZARD_FORMS_CHANGE, forms: formToChange});
+}
+
 export const onNextAction = (onPress) => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_NEXT_START});
     let wizard = getState().wizard;
     let preEnrollment = getState().preEnrollment;
+    let user = getState().profile.user;
+
     let current = wizard.current;
     let maxForms = wizard.maxForms;
     let maxCurrent = (maxForms - 1);
+
+    //todo: fran improve this
+    if (isType(current, "IS_VOCATIONAL_STUDENT_QUESTION")) {
+        changeForms(dispatch, preEnrollment, parentVocationalFlow);
+    } else if (isType(current, "INSTRUCTIONS") && !wizard.editing && user.userVocationalStudent) {
+        changeForms(dispatch, preEnrollment, studentRequesterVocationalFlow);
+    } else if (isType(current, "PERSONAL_INFO")) {
+        if (wizard.editing && !user.userVocationalStudent) {
+            changeForms(dispatch, preEnrollment, editVocationalFlow);
+        }
+    }
+
     let currentForm = getForm(current);
     let next = current + 1;
 
     if (currentForm.type.lastIndexOf("_QUESTION") > 0) {
         next = getIndexFromFlow(currentForm.yes);
-    } else if (isType(current, "ADDRESS")) {
-        let preEnrollment = preEnrollment.info;
-        if (!preEnrollment.hasPreviousEnrollment) {
+    } else if (isType(current, "ADDRESS") && preEnrollment.type === "REGULAR") {
+        let preEnrollmentInfo = preEnrollment.info;
+        if (!preEnrollmentInfo.hasPreviousEnrollment) {
             next = current + 2;
         }
     }
@@ -135,9 +211,16 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
 
 export const onPreviousAction = () => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_PREVIOUS_START});
+    let preEnrollment = getState().preEnrollment;
     let wizard = getState().wizard;
     let flowNavigation = wizard.flowNavigation;
     let current = wizard.current;
+
+    if (isType(current, "IS_VOCATIONAL_STUDENT_QUESTION")) {
+        preEnrollment.type = "REGULAR";
+        changeForms(dispatch, normalFlow);
+    }
+
     let currentForm = getForm(current);
     let next;
     if (currentForm.type.lastIndexOf("_QUESTION") > 0) {
