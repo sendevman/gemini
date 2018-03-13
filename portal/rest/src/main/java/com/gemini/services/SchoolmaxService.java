@@ -41,11 +41,19 @@ public class SchoolmaxService {
         gradeLevels.put("10", "Decimo");
         gradeLevels.put("11", "Undécimo");
         gradeLevels.put("12", "Duodécimo");
+
+//        ask for these grade levels
+        gradeLevels.put("EE", "EE-Elemental");
+        gradeLevels.put("EI", "EE-Intermedia");
+        gradeLevels.put("ES", "EE-Superior");
+
     }
 
     @Autowired
     @Qualifier("realSchoolMaxDao")
     private SchoolMaxDaoInterface smaxDao;
+    @Autowired
+    private CommonService commonService;
 
     public Parent retrieveHouseHeadInfo(String lastSsn, Date dob, String lastname) {
         return smaxDao.findHouseHead(lastSsn, dob, lastname);
@@ -73,9 +81,13 @@ public class SchoolmaxService {
 
     @Cacheable
     public List<School> findSchoolByRegionAndGradeLevel(Long regionId, String gradeLevel) {
-        //todo: fran this should come from yaml or a config table
-        Long schoolYear = (PreEnrollmentService.PRE_ENROLLMENT_SCHOOL_YEAR - 1);
+        Long schoolYear = commonService.getCurrentSchoolYear();
         return smaxDao.findSchoolsByRegionAndGradeLevel(regionId, schoolYear, gradeLevel);
+    }
+
+    public List<School> findVocationalSchoolsByRegionAndGradeLevel(Long regionId, String gradeLevel) {
+        Long schoolYear = commonService.getCurrentSchoolYear();
+        return smaxDao.findVocationalSchoolsByRegionAndGradeLevel(regionId, schoolYear, gradeLevel);
     }
 
     @Cacheable
@@ -86,6 +98,11 @@ public class SchoolmaxService {
     @Cacheable
     public List<Region> getAllRegions() {
         return smaxDao.getAllRegions();
+    }
+
+    @Cacheable
+    public List<Region> geVocationalRegions() {
+        return smaxDao.getVocationalRegions();
     }
 
     @Cacheable
@@ -102,6 +119,11 @@ public class SchoolmaxService {
     public GradeLevel getGradeLevelByCode(String code) {
         String value = gradeLevels.get(code);
         return value != null ? new GradeLevel(code, value) : null;
+    }
+
+    public List<VocationalProgram> getVocationalPrograms(Long schoolId) {
+        Long schoolYear = commonService.getCurrentSchoolYear();
+        return smaxDao.getVocationalPrograms(schoolId, schoolYear);
     }
 
 }

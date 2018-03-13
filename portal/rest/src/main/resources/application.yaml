@@ -1,5 +1,5 @@
 server:
-  context-path: /schoolmax_tmax2-api
+  context-path: /srs-api
   port: 8081
   session:
     timeout: 900  # in seconds
@@ -30,28 +30,20 @@ spring:
     properties:
       hibernate.type: trace
 
-  # TMAX103
-  #  datasource:
-  #    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
-  #    driver-class-name: oracle.jdbc.driver.OracleDriver
   datasource:
-    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
-    username: FPALOU
-    password: dev2@!8
-    driver-class-name: oracle.jdbc.driver.OracleDriver
-#    type: com.zaxxer.hikari.HikariDataSource
-#    url: jdbc:mysql://localhost:3306/SRS
-#    username: srs
-#    password: 12345678
-#    driver-class-name: com.mysql.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/SRS
+    username: srs
+    password: 12345678
+    driver-class-name: com.mysql.jdbc.Driver
     hikari:
       maximum-pool-size: 30
-    platform: oracle
+    platform: mysql
 
   smaxDatasource:
     url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
-    username: PRDE_TMAXIO1
-    password: PRDE_TMAXIO1
+    username: FPALOU
+    password: dev2@!8
     driver-class-name: oracle.jdbc.driver.OracleDriver
     hikari:
       maximum-pool-size: 30
@@ -64,8 +56,8 @@ security:
 email:
   from: DE-SIE@de.pr.gov
 website:
-  url: https://prdesietest.dde.pr
-  context-path: /schoolmax_tmax2-api
+  url: https://localhost:3000
+  context-path: /srs
 logging:
   config: classpath:logback.xml
 

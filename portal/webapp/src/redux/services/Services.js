@@ -64,12 +64,24 @@ export default class Services {
         return this._get(`/smax/interface/retrieve/regions`);
     }
 
+    getVocationalRegions() {
+        return this._get(`/smax/interface/retrieve/vocational/regions`);
+    }
+
     getGradeLevels() {
         return this._get(`/smax/interface/retrieve/grade/levels`);
     }
 
     getSchoolsByRegionAndGradeLevel(regionId, gradeLevel) {
         return this._get(`/smax/interface/retrieve/school/${regionId}/grade/level/${gradeLevel}`);
+    }
+
+    getVocationalSchoolsByRegionAndGradeLevel(regionId, gradeLevel) {
+        return this._get(`/smax/interface/retrieve/vocational/school/${regionId}/grade/level/${gradeLevel}`);
+    }
+
+    getVocationalProgramsBySchool(schoolId){
+        return this._get(`/smax/interface/retrieve/vocational/programs/school/${schoolId}`);
     }
 
     //pre-enrollment

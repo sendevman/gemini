@@ -1,6 +1,7 @@
 package com.gemini.database.jpa.entities;
 
 import com.gemini.beans.types.RequestStatus;
+import com.gemini.beans.types.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -25,6 +26,10 @@ public class PreEnrollmentRequestEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RequestStatus requestStatus = RequestStatus.ACTIVE;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Type type = Type.REGULAR;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity parent;
@@ -70,7 +75,7 @@ public class PreEnrollmentRequestEntity {
     private Date submitDate;
 
     @OneToMany(mappedBy = "preEnrollment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PreEnrollmentVocacionalSchool> vocacionalSchools;
+    private List<PreEnrollmentVocationalSchool> vocationalSchools;
 
     @CreatedDate
     @Column(nullable = false, updatable = false, insertable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
@@ -93,6 +98,14 @@ public class PreEnrollmentRequestEntity {
 
     public void setRequestStatus(RequestStatus requestStatus) {
         this.requestStatus = requestStatus;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public UserEntity getParent() {
@@ -207,12 +220,12 @@ public class PreEnrollmentRequestEntity {
         this.submitDate = submitDate;
     }
 
-    public List<PreEnrollmentVocacionalSchool> getVocacionalSchools() {
-        return vocacionalSchools;
+    public List<PreEnrollmentVocationalSchool> getVocationalSchools() {
+        return vocationalSchools;
     }
 
-    public void setVocacionalSchools(List<PreEnrollmentVocacionalSchool> vocacionalSchools) {
-        this.vocacionalSchools = vocacionalSchools;
+    public void setVocationalSchools(List<PreEnrollmentVocationalSchool> vocationalSchools) {
+        this.vocationalSchools = vocationalSchools;
     }
 
     public Date getCreationDate() {

@@ -78,6 +78,6 @@ public class AddressBean {
     public String getAddressFormatted() {
         return Joiner.on(" ")
                 .skipNulls()
-                .join(line1, line2, city, country, ",", zipcode);
+                .join(line1, line2, city, country.concat(","), zipcode);
     }
 }

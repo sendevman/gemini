@@ -15,6 +15,10 @@ import {connect} from "react-redux";
 import {load, onNextAction, onPreviousAction} from "../../redux/actions";
 import Instructions from "./Instructions";
 import ParentInfoRequest from "./pre-enrollment/ParentInfoRequest";
+import Info from "./pre-enrollment/Info";
+import VocationalPreEnrollment from "./pre-enrollment/VocationalPreEnrollment";
+import VocationalProgramsSelection from "./pre-enrollment/VocationalProgramsSelection";
+import VocationalReviewSubmit from "./pre-enrollment/VocationalReviewSubmit";
 
 function form(title, form) {
     return {title: title, form: form};
@@ -85,9 +89,20 @@ class Wizard extends Component {
             ? `${preEnrollment.schoolName} para el grado ${preEnrollment.nextGradeLevelDescription}`
             : "";
         let formsToDisplay = this.props.formsToDisplay;
+        let vocationalPreEnrollment = {};
 
         let CATALOG = [
-            {title: "Su Informacion Personal", renderObj: ParentInfoRequest}
+            {title: "Seleccione su Escuela Vocacional", renderObj: VocationalPreEnrollment}
+            , {
+                title: null,
+                info: `Gracias, ahora por favor seleccione los programas a los cuales desea aplicar en la escuela ${vocationalPreEnrollment.schoolName}.`,
+                renderObj: Info
+            }
+            , {title: "Seleccione los Programas Vocacionales", renderObj: VocationalProgramsSelection}
+            , {title: "Revise su pre-matricula ", renderObj: VocationalReviewSubmit}
+
+
+            , {title: "Su Informacion Personal", renderObj: ParentInfoRequest}
             , {title: "Instrucciones", renderObj: Instructions}
             , {
                 title: null,
@@ -125,6 +140,8 @@ class Wizard extends Component {
             let props = {ref: `page${c++}`};
             if (pageConfig.question)
                 props.question = pageConfig.question;
+            else if (pageConfig.info)
+                props.info = pageConfig.info;
             this.wizardForms.push(form(pageConfig.title, <RenderObj {...props}/>));
         }
 
@@ -188,7 +205,7 @@ function mapStateToProps(store) {
         wizard: store.wizard,
         wizardCompleted: store.wizard.wizardCompleted,
         student: store.studentLookup.student,
-        preEnrollment: store.studentInfo.preEnrollment,
+        preEnrollment: store.preEnrollment.info,
         formsToDisplay: store.wizard.formsToDisplay
     };
 }

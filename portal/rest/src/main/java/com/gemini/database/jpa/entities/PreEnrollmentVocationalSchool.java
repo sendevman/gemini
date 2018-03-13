@@ -9,7 +9,7 @@ import javax.persistence.*;
  * Time: 6:58 AM
  */
 @Entity(name = "pre_enrollment_voc_schools")
-public class PreEnrollmentVocacionalSchool {
+public class PreEnrollmentVocationalSchool {
     @Id
     @GeneratedValue
     private Long id;
@@ -25,6 +25,9 @@ public class PreEnrollmentVocacionalSchool {
 
     @Column(nullable = false)
     private String municipalityCode = "NONE";
+
+    @Column(nullable = false)
+    private String programCode;
 
     @Column(nullable = false)
     private String programDescription;
@@ -70,6 +73,14 @@ public class PreEnrollmentVocacionalSchool {
 
     public void setMunicipalityCode(String municipalityCode) {
         this.municipalityCode = municipalityCode;
+    }
+
+    public String getProgramCode() {
+        return programCode;
+    }
+
+    public void setProgramCode(String programCode) {
+        this.programCode = programCode;
     }
 
     public String getProgramDescription() {

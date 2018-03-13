@@ -42,7 +42,7 @@ public class UserService {
     @Autowired
     private FailureLoginLogRepository failureLoginLogRepository;
     @Autowired
-    private CommonDao commonDao;
+    private CommonService commonService;
     @Autowired
     private PasswordEncoder passwordEncoder;
     private int expireInHours = 48;
@@ -79,20 +79,20 @@ public class UserService {
     }
 
     public boolean activationCodeExists(String activationCode) {
-        UserEntity entity = userRepository.findByActivationKeyAndActivationKeyExpireDateIsAfter(activationCode, commonDao.getCurrentDate());
+        UserEntity entity = userRepository.findByActivationKeyAndActivationKeyExpireDateIsAfter(activationCode, commonService.getCurrentDate());
         return entity != null;
     }
 
     public boolean activateUser(UserActivationRequest request) {
         boolean activate = false;
-        UserEntity entity = userRepository.findByActivationKeyAndActivationKeyExpireDateIsAfter(request.getActivationCode(), commonDao.getCurrentDate());
+        UserEntity entity = userRepository.findByActivationKeyAndActivationKeyExpireDateIsAfter(request.getActivationCode(), commonService.getCurrentDate());
         if (entity != null) {
             String pwd = passwordEncoder.encode(request.getPassword());
             entity.setPassword(pwd);
             entity.setEnabled(true);
             entity.setActivationKey(null);
             entity.setActivationKeyExpireDate(null);
-            entity.setActivationDate(commonDao.getCurrentDate());
+            entity.setActivationDate(commonService.getCurrentDate());
             entity = userRepository.save(entity);
             activate = entity != null;
         }
@@ -123,7 +123,7 @@ public class UserService {
 
     public void saveLastLogin(User user) {
         UserEntity entity = userRepository.findOne(user.getId());
-        entity.setLastLogin(commonDao.getCurrentDate());
+        entity.setLastLogin(commonService.getCurrentDate());
         userRepository.save(entity);
     }
 
@@ -135,7 +135,7 @@ public class UserService {
     public void saveSentActivationResult(String email, boolean result) {
         UserEntity entity = userRepository.findByEmail(email);
         Date expireActivation = DateUtils.toDate(LocalDateTime.now().plusHours(expireInHours));
-        entity.setActivationCodeSent(result ? commonDao.getCurrentDate() : null);
+        entity.setActivationCodeSent(result ? commonService.getCurrentDate() : null);
         entity.setActivationKeyExpireDate(result ? expireActivation : null);
         userRepository.save(entity);
     }

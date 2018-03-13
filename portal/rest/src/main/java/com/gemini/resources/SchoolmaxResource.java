@@ -1,14 +1,16 @@
 package com.gemini.resources;
 
-import com.gemini.beans.forms.AddressBean;
 import com.gemini.beans.integration.ParentResponse;
 import com.gemini.beans.integration.RegionResponse;
 import com.gemini.beans.integration.SchoolResponse;
 import com.gemini.beans.integration.StudentResponse;
+import com.gemini.beans.requests.VocationalProgramSelection;
 import com.gemini.database.dao.beans.*;
 import com.gemini.services.SchoolmaxService;
 import com.gemini.utils.CopyUtils;
 import com.gemini.utils.ValidationUtils;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +76,13 @@ public class SchoolmaxResource {
         return ResponseEntity.ok(CopyUtils.convert(regions, RegionResponse.class));
     }
 
+
+    @RequestMapping(value = "/retrieve/vocational/regions")
+    public ResponseEntity<List<RegionResponse>> getVocationalRegions() {
+        List<Region> regions = smaxService.getAllRegions();
+        return ResponseEntity.ok(CopyUtils.convert(regions, RegionResponse.class));
+    }
+
     @RequestMapping(value = "/retrieve/grade/levels")
     public ResponseEntity<List<GradeLevel>> getGradeLevels() {
         List<GradeLevel> levels = smaxService.getAllGradeLevels();
@@ -92,5 +101,35 @@ public class SchoolmaxResource {
 
         return ResponseEntity.ok(schoolReturned);
     }
+
+    @RequestMapping(value = "/retrieve/vocational/school/{regionId}/grade/level/{gradeLevel}")
+    public ResponseEntity<List<SchoolResponse>> getVocationalSchoolByRegionAndGradeLevel(@PathVariable Long regionId, @PathVariable String gradeLevel) {
+        List<School> schools = smaxService.findVocationalSchoolsByRegionAndGradeLevel(regionId, gradeLevel);
+        List<SchoolResponse> schoolReturned = new ArrayList<>();
+        for (School school : schools) {
+            SchoolResponse response = CopyUtils.convert(school, SchoolResponse.class);
+            response.setAddress(CopyUtils.createAddressBean(school));
+            schoolReturned.add(response);
+        }
+
+        return ResponseEntity.ok(schoolReturned);
+    }
+
+    @RequestMapping(value = "/retrieve/vocational/programs/school/{schoolId}")
+    public ResponseEntity<List<VocationalProgramSelection>> getVocationalSchoolByRegionAndGradeLevel(@PathVariable Long schoolId) {
+        List<VocationalProgram> programs = smaxService.getVocationalPrograms(schoolId);
+        Function<VocationalProgram, VocationalProgramSelection> toSelection = new Function<VocationalProgram, VocationalProgramSelection>() {
+            @Override
+            public VocationalProgramSelection apply(VocationalProgram program) {
+                VocationalProgramSelection selection = new VocationalProgramSelection();
+                selection.setProgramCode(program.getCode());
+                selection.setProgramDescription(program.getDescription());
+                return selection;
+            }
+        };
+
+        return ResponseEntity.ok(Lists.transform(programs, toSelection));
+    }
+
 
 }

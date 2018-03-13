@@ -13,7 +13,7 @@ class RemoteCodeSelect extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.value) {
+        if (nextProps.value && !this.changing) {
             let options = this.refs.codeSelect.options;
             let selectedIndex = 0;
             for (let idx in options) {
@@ -29,6 +29,7 @@ class RemoteCodeSelect extends Component {
 
     onChange(e) {
         e.persist();
+        this.changing = true;
         let codes = this.props.codes;
         let element = e.target;
         let value = element.value;
@@ -39,7 +40,7 @@ class RemoteCodeSelect extends Component {
                 this.props.onObjectChange(element.selectedIndex === 0 ? object : codes[element.selectedIndex - 1]);
             }
             else if (this.props.onChange)
-                this.props.onChange(e)
+                this.props.onChange(e);
 
         });
 
