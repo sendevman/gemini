@@ -2,7 +2,7 @@
   "name": "project-gemini",
   "version": "0.0.1",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://prdesietest.dde.pr/schoolmax_tmax2/",
   "dependencies": {
     "moment": "^2.20.1",
     "react": "^16.2.0",

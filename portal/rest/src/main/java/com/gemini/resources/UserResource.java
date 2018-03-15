@@ -7,6 +7,7 @@ import com.gemini.services.CommonService;
 import com.gemini.services.UserService;
 import com.gemini.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -32,6 +33,8 @@ public class UserResource {
     private UserService userService;
     @Autowired
     private CommonService commonService;
+    @Autowired
+    private Environment env;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ResponseEntity<ResponseBase> save(@RequestBody @Valid ParentProfileInfoRequest request, @AuthenticationPrincipal User loggedUser, BindingResult result) {
@@ -40,7 +43,7 @@ public class UserResource {
 
         int userAge = DateUtils.toYears(request.getDateOfBirth());
         if (userAge < commonService.getMinUserAgeToSubmitRequest()) {
-            return ResponseEntity.ok(ResponseBase.error("Error unable to save profile", Arrays.asList("user.min.age.validation")));
+            return ResponseEntity.ok(ResponseBase.error("Error unable to save profile", Arrays.asList(env.getProperty("messages.user.min.age.validation"))));
         }
 
         request.setId(loggedUser.getId());

@@ -55,14 +55,14 @@ public class SchoolMaxDaoImpl extends JdbcDaoSupport implements SchoolMaxDaoInte
 
     @Override
     public Student findStudent(Long studentNumber) {
-        String sql = STUDENT_SQL.concat(" AND EXT_STUDENT_NUMBER = ?");
+        String sql = STUDENT_SQL.concat(" WHERE EXT_STUDENT_NUMBER = ?");
         List<Student> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(Student.class), studentNumber);
         return list.isEmpty() ? null : list.get(0);
     }
 
     @Override
     public StudentAddress findAddress(Long studentNumber) {
-        String sql = STUDENT_ADDRESS_SQL.concat(" AND EXT_STUDENT_NUMBER = ? ");
+        String sql = STUDENT_ADDRESS_SQL.concat(" WHERE EXT_STUDENT_NUMBER = ? ");
         List<StudentAddress> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(StudentAddress.class), studentNumber);
         return list.isEmpty() ? null : list.get(0);
     }
@@ -76,7 +76,7 @@ public class SchoolMaxDaoImpl extends JdbcDaoSupport implements SchoolMaxDaoInte
 
     @Override
     public List<School> findSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel) {
-        String sql = SCHOOL_SQL.concat(" REGION_ID = ? " +
+        String sql = SCHOOL_SQL.concat("WHERE REGION_ID = ? " +
                 "AND EXISTS(SELECT 1 FROM VW_SCHOOLS_GRADE_LEVELS SGL " +
                 "WHERE SGL.SCHOOL_ID = S.SCHOOL_ID " +
                 "AND SGL.SCHOOL_YEAR = ? AND SGL.VALUE = ?) ORDER BY SCHOOL_NAME");
@@ -106,13 +106,13 @@ public class SchoolMaxDaoImpl extends JdbcDaoSupport implements SchoolMaxDaoInte
 
     @Override
     public List<Region> getVocationalRegions() {
-        String sql = REGION_SQL.concat(" AND REGION_ID IN (select distinct REGION_ID from VW_VOCATIONAL_SCHOOLS) ");
+        String sql = REGION_SQL.concat(" WHERE REGION_ID IN (select distinct REGION_ID from VW_VOCATIONAL_SCHOOLS) ");
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(Region.class));
     }
 
     @Override
     public SchoolGradeLevel findGradeLevelInfo(Long schoolYear, Long schoolId, String gradeLevel) {
-        String sql = SCHOOL_GRADE_LEVELS.concat(" AND SCHOOL_YEAR = ? AND SCHOOL_ID = ? AND VALUE = ?");
+        String sql = SCHOOL_GRADE_LEVELS.concat(" WHERE SCHOOL_YEAR = ? AND SCHOOL_ID = ? AND VALUE = ?");
         List<SchoolGradeLevel> levels = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(SchoolGradeLevel.class), schoolYear, schoolId, gradeLevel);
         return levels.isEmpty() ? null : levels.get(0);
     }

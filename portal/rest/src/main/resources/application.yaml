@@ -70,4 +70,9 @@ oracle:
     host:
     port: 80
 
+#move this to a different properties file
+messages:
+  user:
+    min.age.validation: "Usuario debe tener 18 años o mas"
+
 

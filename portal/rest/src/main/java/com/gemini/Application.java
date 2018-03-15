@@ -35,14 +35,21 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 @ServletComponentScan
 public class Application extends SpringBootServletInitializer {
+    /*
+            TMAX1O -> /tmax1o/ias/srs/portal/
+            PMAX1O -> /pmax1o/ias/srs/portal/
+     */
+    static final String PROPS_DIR = "/tmax1o/ias/srs/portal/";
+
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class).properties("spring.config.location:/pmax1o/ias/srs/portal/");
+        return application.sources(Application.class).properties("spring.config.location:".concat(PROPS_DIR));
     }
 
     public static void main(String[] args) {
         final String[] a = new String[args.length + 1];
-        a[0] = "--spring.config.location=/pmax1o/ias/srs/portal/";
+
+        a[0] = "--spring.config.location=".concat(PROPS_DIR);
         System.arraycopy(args, 0, a, 1, args.length);
         SpringApplication.run(Application.class, a);
     }
