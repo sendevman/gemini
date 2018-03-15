@@ -89,7 +89,7 @@ class Wizard extends Component {
             ? `${preEnrollment.schoolName} para el grado ${preEnrollment.nextGradeLevelDescription}`
             : "";
         let formsToDisplay = this.props.formsToDisplay;
-        let vocationalSchool = this.props.currentVocationalEnrollment.school;
+        let vocationalSchool = this.props.currentVocationalEnrollment;
 
         let CATALOG = [
             {title: "Su Informacion Personal", renderObj: UserInfoRequest}
@@ -111,7 +111,7 @@ class Wizard extends Component {
                 question: `Hemos encontrado al estudiante ${student && student.fullName}, desea pre-matricularlo para año escolar 2019 (2018-2019)`,
                 renderObj: Question
             }
-            , {title: "Identificaci\u00f3n de Estudiante", renderObj: PersonalInfo}
+            , {title: "Informaci\u00f3n del Estudiante", renderObj: PersonalInfo}
             , {title: "Direcci\u00f3n", renderObj: Address}
             , {
                 title: null,

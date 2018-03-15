@@ -61,7 +61,7 @@ function mapStateToProps(store) {
     return {
         requestId: store.preEnrollment.requestId,
         student: store.studentInfo.student,
-        preEnrollment: store.preEnrollment.preEnrollment
+        preEnrollment: store.preEnrollment.info
     };
 }
 

@@ -113,7 +113,7 @@ public class MailService {
             helper.setFrom(message.getFrom());
             helper.setTo(message.getTo());
             helper.setText(message.getText(), true);
-            mailSender.send(helper.getMimeMessage());
+//            mailSender.send(helper.getMimeMessage());
             sent = true;
         } catch (MessagingException e) {
             e.printStackTrace();

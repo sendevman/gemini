@@ -15,7 +15,9 @@ class VocationalProgramsSelection extends Component {
     }
 
     componentWillMount() {
-        this.schoolId = this.props.currentVocationalEnrollment.schoolId;
+        let form = this.props.currentVocationalEnrollment;
+        form.programsToDelete = [];
+        this.schoolId = form.schoolId;
         this.props.getVocationalPrograms(this.schoolId)
     }
 
@@ -39,12 +41,13 @@ class VocationalProgramsSelection extends Component {
 
     onDelete = (index) => (e) => {
         let form = this.props.currentVocationalEnrollment;
+        form.programsToDelete.push(form.programs[index]);
         form.programs.splice(index, 1);
         this.forceUpdate();
     };
 
     render() {
-        let school = this.props.currentVocationalEnrollment.school;
+        let enrollment = this.props.currentVocationalEnrollment;
         let programs = this.props.programs;
 
         return (<div>
@@ -55,7 +58,7 @@ class VocationalProgramsSelection extends Component {
                             <p>Escuela: </p>
                         </div>
                         <div className="col-md-8">
-                            <h5>{school && school.schoolName}</h5>
+                            <h5>{enrollment && enrollment.schoolName}</h5>
                         </div>
                     </div>
                 </div>
@@ -67,7 +70,7 @@ class VocationalProgramsSelection extends Component {
                             <p>Direccion Escuela: </p>
                         </div>
                         <div className="col-md-8">
-                            <h5>{school && school.address.addressFormatted}</h5>
+                            <h5>{enrollment && enrollment.schoolAddress.addressFormatted}</h5>
                         </div>
                     </div>
                 </div>

@@ -47,7 +47,6 @@ class VocationalPreEnrollment extends Component {
         this.cleanSchoolCode();
         let form = this.props.currentVocationalEnrollment;
         form.nextGradeLevel = gradeLevelObject.name;
-        console.log(form.regionId);
         if (form.regionId !== "-1" && form.regionId) {
             form.nextGradeLevelDescription = gradeLevelObject.displayName;
             this.props.getVocationalSchools(form.regionId, form.nextGradeLevel);
@@ -62,6 +61,9 @@ class VocationalPreEnrollment extends Component {
             form.schoolAddress = schoolObject.address;
         }
         form.school = schoolObject;
+        // form.schoolName = schoolObject.schoolName;
+        // form.schoolAddress = schoolObject.address;
+
         this.setState({selectedSchool: schoolObject});
     }
 

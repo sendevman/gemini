@@ -1,5 +1,6 @@
 import * as types from "../types";
 import services from "../setup";
+import {changeCurrentVocationalEnrollment} from "./preEnrollment";
 
 export const loadCodes = () => (dispatch) => {
     Promise.all([getRegions(dispatch), getGradeLevels(dispatch)]).then(() => {

@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "users")
-public class UserEntity implements IdentityEntity{
+public class UserEntity implements IdentityEntity {
 
     @Id
     @GeneratedValue
@@ -76,7 +76,7 @@ public class UserEntity implements IdentityEntity{
     @Column
     private boolean profileCompleted = false;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PreEnrollmentRequestEntity> requests;
 
     @CreatedDate
@@ -119,12 +119,10 @@ public class UserEntity implements IdentityEntity{
         this.password = password;
     }
 
-    @Override
     public Gender getGender() {
         return gender;
     }
 
-    @Override
     public void setGender(Gender gender) {
         this.gender = gender;
     }

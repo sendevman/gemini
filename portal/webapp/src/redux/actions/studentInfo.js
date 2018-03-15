@@ -14,6 +14,8 @@ export const loadPersonalInfo = (onResult, onError) => (dispatch, getState) => {
         services()
             .getActivePreEnrollment(requestId)
             .then((response) => {
+                //todo: change this!!!
+                preEnrollment.type =  response.content.type;
                 dispatch({type: types.STUDENT_PERSONAL_INFO_LOAD_END, student: response.content});
                 try {
                     if (response.successfulOperation)

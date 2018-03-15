@@ -32,7 +32,7 @@ public class PreEnrollmentRequestEntity {
     private Type type = Type.REGULAR;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity parent;
+    private UserEntity user;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
@@ -108,12 +108,12 @@ public class PreEnrollmentRequestEntity {
         this.type = type;
     }
 
-    public UserEntity getParent() {
-        return parent;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setParent(UserEntity parent) {
-        this.parent = parent;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
     public StudentEntity getStudent() {
