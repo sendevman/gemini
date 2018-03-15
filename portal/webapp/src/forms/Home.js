@@ -67,9 +67,13 @@ class Home extends Component {
                 <div className="panel-heading">
                     Estudiante {pre.student.fullName} -> {Utils.format(pre.student.dateOfBirth, "ll")}
                     <div className="pull-right" style={{marginTop: -5}}>
-                        <Button bsSize="small" bsStyle="info" onClick={this.editPreEnroll(pre.id)}>
-                            <Glyphicon glyph="glyphicon glyphicon-pencil"/>
-                        </Button>
+                        {pre.requestStatus === "ACTIVE"
+                            ?
+                            (<Button bsSize="small" bsStyle="info" onClick={this.editPreEnroll(pre.id)}>
+                                <Glyphicon glyph="glyphicon glyphicon-pencil"/>
+                            </Button>)
+                            : (null)
+                        }
                     </div>
                 </div>
                 <div className="panel-body">
@@ -86,10 +90,19 @@ class Home extends Component {
                         <div className="col-md-3">
                             Fecha de Solicitud:
                         </div>
+                        <div className="col-md-9">
+                            {(pre.submitDate && moment(pre.submitDate).format('LL, h:mm:ss a')) || "Aun no ha sido sometida"}
+                        </div>
+                    </div>
+                    <div className="row">
                         <div className="col-md-3">
-                            {(pre.submitDate && moment(pre.submitDate).format('LL')) || "Aun no ha sido sometida"}
+                            Matricula:
+                        </div>
+                        <div className="col-md-3">
+                            {pre.type === "VOCATIONAL" ? "Vocacional" : "Regular"}
                         </div>
                         <div className="col-md-6"/>
+
                     </div>
                 </div>
 

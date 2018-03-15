@@ -51,6 +51,13 @@ const wizard = (state = initialState, action) => {
                 previousLabel: btnType.previousButton,
                 nextLabel: btnType.nextButton
             };
+        case types.ON_WIZARD_GO_TO:
+            return {
+                ...state,
+                current: action.current,
+                previousLabel: btnType.previousButton,
+                nextLabel: btnType.nextButton
+            };
         case types.ON_WIZARD_PREVIOUS_START:
             return state;
         case types.ON_WIZARD_PREVIOUS_END:
@@ -66,7 +73,20 @@ const wizard = (state = initialState, action) => {
         case types.ON_WIZARD_COMPLETED:
             return {...state, wizardCompleted: true};
         case types.ON_WIZARD_RESET:
-            return initialState;
+            return {
+                current: 0,
+                initForm: false,
+                isFinalStep: false,
+                previousLabel: null,
+                nextLabel: null,
+                percentage: 0,
+                maxForms: 11,
+                flowNavigation: [0],
+                wizardCompleted: false,
+                editing: false,
+                formsToDisplay: [],
+                workingRequestId: null
+            };
         case types.ON_WIZARD_FORMS_CHANGE:
             return {...state, formsToDisplay: action.forms, maxForms: action.forms.length};
         default:

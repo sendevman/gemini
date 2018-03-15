@@ -16,7 +16,8 @@ const initialState = {
         id: null,
         nextGradeLevel: null,
         schoolId: null,
-        programs: []
+        programs: [],
+        programsToDelete: []
     },
     foundPreviousEnrollment: false,
     initialPreEnrollmentSaved: false,
@@ -42,6 +43,16 @@ const preEnrollment = (state = initialState, action) => {
             return state;
         case types.PRE_ENROLLMENT_SUBMIT_END:
             return {...state, completePreEnrollment: action.response.successfulOperation};
+        case types.CHANGE_VOCATIONAL_PRE_ENROLLMENT:
+            return {
+                ...state, currentVocationalEnrollment: action.enrollment || {
+                    id: null,
+                    nextGradeLevel: null,
+                    schoolId: null,
+                    programs: [],
+                    programsToDelete: []
+                }
+            };
         default:
             return state;
     }

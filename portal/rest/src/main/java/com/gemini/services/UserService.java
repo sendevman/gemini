@@ -64,7 +64,7 @@ public class UserService {
             return null;
         User userBean = CopyUtils.convert(entity, User.class);
         Utils.copyLastNames(entity, userBean);
-        List<PreEnrollmentRequestEntity> preEnrollments = preEnrollmentRepository.findByParentId(entity.getId());
+        List<PreEnrollmentRequestEntity> preEnrollments = preEnrollmentRepository.findByUserIdOrderBySubmitDateDesc(entity.getId());
         userBean.setTotalPreEnrollments(preEnrollments.size());
         userBean.setWorkingPreEnrollmentId(null);
         if (preEnrollments.isEmpty())

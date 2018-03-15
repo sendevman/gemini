@@ -50,7 +50,7 @@ public class SchoolmaxService {
     }
 
     @Autowired
-    @Qualifier("realSchoolMaxDao")
+    @Qualifier("mockSchoolMaxDao")
     private SchoolMaxDaoInterface smaxDao;
     @Autowired
     private CommonService commonService;

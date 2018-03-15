@@ -111,3 +111,7 @@ export const retrieveVocationalPreEnrollment = (onResult, onError) => (dispatch,
 
 
 };
+
+export const changeCurrentVocationalEnrollment = (currentEnrollment) => (dispatch)=>{
+    dispatch({type: types.CHANGE_VOCATIONAL_PRE_ENROLLMENT, enrollment: currentEnrollment})
+};

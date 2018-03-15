@@ -2,12 +2,17 @@ package com.gemini.database.dao;
 
 import com.gemini.database.dao.beans.*;
 import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -80,13 +85,13 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
 
     @Override
     public List<School> findSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel) {
-        List<String> schoolName = Arrays.asList("Mejor Aprovechamiento", "Lealtad", "Honestidad", "Persistente", "Resiliente");
+        final List<String> schoolNames = Arrays.asList("Mejor Aprovechamiento", "Lealtad", "Honestidad", "Persistente", "Resiliente");
 
         Function<String, School> stringToSchool =
                 new Function<String, School>() {
                     public School apply(String schoolName) {
                         School school = new School();
-                        Integer schoolId = schoolName.indexOf(schoolName) + 1;
+                        Integer schoolId = schoolNames.indexOf(schoolName) + 1;
                         school.setSchoolId(schoolId.longValue());
                         school.setExtSchoolNumber(schoolId.longValue());
                         school.setRegionId(1L);
@@ -102,25 +107,20 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
                     }
                 };
 
-        return Lists.transform(schoolName, stringToSchool);
+        return Lists.transform(schoolNames, stringToSchool);
 
     }
 
     @Override
-    public School findSchoolById(Long schoolId) {
-        School school = new School();
-        school.setSchoolName("Mejor Aprovechamiento");
-        school.setSchoolId(1L);
-        school.setRegionId(1L);
-        school.setDistrictId(1L);
-        school.setExtSchoolNumber(1L);
-        school.setAddressLine_1("Calle Felicidad");
-        school.setAddressLine_2("Urb Progreso");
-        school.setCityCd("SNJN");
-        school.setCity("San Juan");
-        school.setState("PR");
-        school.setZipCode("00918");
-        return school;
+    public School findSchoolById(final Long schoolId) {
+        return FluentIterable
+                .from(findSchoolsByRegionAndGradeLevel(null, null, null))
+                .firstMatch(new Predicate<School>() {
+                    @Override
+                    public boolean apply(School school) {
+                        return school.getSchoolId().equals(schoolId);
+                    }
+                }).orNull();
     }
 
     @Override
@@ -151,16 +151,31 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
 
     @Override
     public List<School> findVocationalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel) {
-        return null;
+        return findSchoolsByRegionAndGradeLevel(regionId, schoolYear, gradeLevel);
     }
 
     @Override
     public List<Region> getVocationalRegions() {
-        return null;
+        return getAllRegions();
     }
 
     @Override
     public List<VocationalProgram> getVocationalPrograms(Long schoolId, Long schoolYear) {
-        return null;
+        final Map<String, String> samplePrograms = ImmutableMap.of(
+                "AARN", "Agricultura, Alimentos y Recursos Naturales",
+                "GEAD", "Gerencia y Administración",
+                "VNPR", "Ventas Profesionales",
+                "FINA", "Finanzas");
+
+        Function<String, VocationalProgram> toPrograms = new Function<String, VocationalProgram>() {
+            @Override
+            public VocationalProgram apply(String prog) {
+                VocationalProgram program = new VocationalProgram();
+                program.setCode(prog.substring(0, 4));
+                program.setDescription(samplePrograms.get(prog));
+                return program;
+            }
+        };
+        return Lists.transform(Lists.newArrayList(samplePrograms.keySet()), toPrograms);
     }
 }

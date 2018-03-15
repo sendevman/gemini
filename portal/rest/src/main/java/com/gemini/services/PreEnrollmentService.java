@@ -16,11 +16,16 @@ import com.gemini.utils.CopyUtils;
 import com.gemini.utils.Utils;
 import com.gemini.utils.ValidationUtils;
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -91,7 +96,7 @@ public class PreEnrollmentService {
         UserEntity parent = CopyUtils.convert(loggedUser, UserEntity.class);
 
         entity.setType(request.getType());
-        entity.setParent(parent);
+        entity.setUser(parent);
         entity.setSchoolYear(commonService.getPreEnrollmentYear());
         Student student = null;
         StudentAddress address = null;
@@ -197,7 +202,7 @@ public class PreEnrollmentService {
     }
 
     public List<PreEnrollmentBean> findPreEnrollmentByUser(User loggedUser) {
-        List<PreEnrollmentRequestEntity> entities = preEnrollmentRepository.findByParentId(loggedUser.getId());
+        List<PreEnrollmentRequestEntity> entities = preEnrollmentRepository.findByUserIdOrderBySubmitDateDesc(loggedUser.getId());
         if (entities != null) {
             List<PreEnrollmentBean> list = new ArrayList<>();
             for (PreEnrollmentRequestEntity entity : entities) {
@@ -247,24 +252,23 @@ public class PreEnrollmentService {
                 return selection;
             }
         };
-         Multimap<Long, PreEnrollmentVocationalSchoolEntity> schoolIdToProgramsMulti = Multimaps.index(entity.getVocationalSchools(), toSchoolId);
-        final Map<Long, Collection<PreEnrollmentVocationalSchoolEntity>> schoolIdToPrograms = schoolIdToProgramsMulti.asMap();
-        Function<PreEnrollmentVocationalSchoolEntity, VocationalSchoolEnrollment> toVocationalProgram = new Function<PreEnrollmentVocationalSchoolEntity, VocationalSchoolEnrollment>() {
+        final Multimap<Long, PreEnrollmentVocationalSchoolEntity> schoolProgramMap = Multimaps.index(entity.getVocationalSchools(), toSchoolId);
+        Function<Long, VocationalSchoolEnrollment> toVocationalProgram = new Function<Long, VocationalSchoolEnrollment>() {
             @Override
-            public VocationalSchoolEnrollment apply(PreEnrollmentVocationalSchoolEntity entity) {
+            public VocationalSchoolEnrollment apply(Long schoolId) {
                 VocationalSchoolEnrollment enrollment = new VocationalSchoolEnrollment();
-                School school = getSchool(entity.getSchoolId());
-                enrollment.setSchoolId(entity.getSchoolId());
+                School school = getSchool(schoolId);
+                enrollment.setSchoolId(schoolId);
                 enrollment.setSchoolName(school.getSchoolName());
                 enrollment.setSchoolAddress(CopyUtils.createAddressBean(school));
-                List<VocationalProgramSelection> programs = Lists.transform(Lists.newArrayList(schoolIdToPrograms.get(entity.getSchoolId())), toProgramSelection);
+                List<VocationalProgramSelection> programs = Lists.transform(Lists.newArrayList(schoolProgramMap.get(schoolId)), toProgramSelection);
                 enrollment.setPrograms(programs);
                 return enrollment;
             }
         };
 
-
-        vocationalPreEnrollment.setEnrollments(Lists.transform(entity.getVocationalSchools(), toVocationalProgram));
+        List<Long> schoolIds = Lists.newArrayList(schoolProgramMap.keySet());
+        vocationalPreEnrollment.setEnrollments(Lists.transform(schoolIds, toVocationalProgram));
         return vocationalPreEnrollment;
 
     }
@@ -275,12 +279,15 @@ public class PreEnrollmentService {
         PreEnrollmentStudentInfoBean studentInfo = CopyUtils.convert(studentEntity, PreEnrollmentStudentInfoBean.class);
         Utils.copyLastNames(studentEntity, studentInfo);
         studentInfo.setStudentNumber(studentEntity.getExtStudentNumber());
+        //todo: fran change this!!!
+        studentInfo.setType(entity.getType());
         return studentInfo;
     }
 
     private PreEnrollmentBean getPreEnrollmentBean(PreEnrollmentRequestEntity entity) {
         PreEnrollmentBean enrollmentBean = CopyUtils.convert(entity, PreEnrollmentBean.class);
         enrollmentBean.setStudent(getPreEnrollmentStudentInfoBean(entity));
+        setGradeLevelInfo(entity.getGradeLevel(), enrollmentBean);
         return enrollmentBean;
     }
 
@@ -352,7 +359,8 @@ public class PreEnrollmentService {
 
     private void setSchoolInfo(PreEnrollmentRequestEntity requestEntity, Long schoolId, String nextGradeLevel) {
         School school = smaxService.findSchoolById(schoolId);
-        requestEntity.setGradeLevel(nextGradeLevel);
+        if (nextGradeLevel != null)
+            requestEntity.setGradeLevel(nextGradeLevel);
         requestEntity.setExtSchoolNumber(school.getExtSchoolNumber());
         requestEntity.setSchoolId(school.getSchoolId());
         requestEntity.setRegionId(school.getRegionId());
@@ -360,20 +368,60 @@ public class PreEnrollmentService {
         requestEntity.setMunicipalityCode(school.getCityCd());
     }
 
-    private boolean vocationalPreEnrollmentSave(VocationalPreEnrollmentSubmitRequest request, boolean submitted) {
+    private void setGradeLevelInfo(String nextLevel, PreEnrollmentBean enrollmentBean) {
+        if (StringUtils.hasText(nextLevel)) {
+            GradeLevel gradeLevel = smaxService.getGradeLevelByCode(nextLevel);
+            if (gradeLevel != null) {
+                enrollmentBean.setNextGradeLevel(gradeLevel.getName());
+                enrollmentBean.setNextGradeLevelDescription(gradeLevel.getDisplayName());
+            }
+        }
+    }
+
+    private boolean vocationalPreEnrollmentSave(final VocationalPreEnrollmentSubmitRequest request, boolean submitted) {
         final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
 
-        List<PreEnrollmentVocationalSchoolEntity> vocationalSchoolsDB = requestEntity.getVocationalSchools();
+        final List<PreEnrollmentVocationalSchoolEntity> vocationalSchoolsDB = requestEntity.getVocationalSchools();
         List<VocationalProgramSelection> selectionsInDBList = CopyUtils.convert(vocationalSchoolsDB, VocationalProgramSelection.class);
         Set<VocationalProgramSelection> selectionsInDB = new HashSet<>(selectionsInDBList);
 
-        if(request.getProgramsToDelete() != null && !request.getProgramsToDelete().isEmpty()){
-            selectionsInDB = Sets.difference(selectionsInDB, Sets.newHashSet(request.getProgramsToDelete()));
+        if (ValidationUtils.valid(request.getSchoolIdToDelete())) {
+            List<VocationalProgramSelection> schoolIdProgramsToDelete = FluentIterable
+                    .from(vocationalSchoolsDB)
+                    .filter(new Predicate<PreEnrollmentVocationalSchoolEntity>() {
+                        @Override
+                        public boolean apply(PreEnrollmentVocationalSchoolEntity vocSchoolEntity) {
+                            return vocSchoolEntity.getSchoolId().equals(request.getSchoolIdToDelete());
+                        }
+                    })
+                    .transform(new Function<PreEnrollmentVocationalSchoolEntity, VocationalProgramSelection>() {
+                        @Override
+                        public VocationalProgramSelection apply(PreEnrollmentVocationalSchoolEntity vocSchoolEntity) {
+                            return CopyUtils.convert(vocSchoolEntity, VocationalProgramSelection.class);
+                        }
+                    }).toList();
+            request.setProgramsToDelete(schoolIdProgramsToDelete);
         }
-        Set<VocationalProgramSelection> selectionsToSave = Sets.union(selectionsInDB, new HashSet<>(request.getPrograms()));
+
+
+        Set<VocationalProgramSelection> selectionsToSave = Sets.newHashSet();
+        boolean deleting = request.getProgramsToDelete() != null && !request.getProgramsToDelete().isEmpty();
+        boolean adding = request.getPrograms() != null && !request.getPrograms().isEmpty();
+        //deleting
+        if (deleting) {
+            selectionsToSave = Sets.difference(selectionsInDB, Sets.newHashSet(request.getProgramsToDelete()));
+            selectionsInDB = selectionsToSave;
+        }
+        //adding
+        if (adding)
+            selectionsToSave = Sets.union(selectionsInDB, new HashSet<>(request.getPrograms()));
+
+        if (!(adding || deleting)) {
+            selectionsToSave = selectionsInDB;
+        }
+
         List<VocationalProgramSelection> list = Lists.newArrayList(selectionsToSave);
 
-//        check this
         Function<VocationalProgramSelection, PreEnrollmentVocationalSchoolEntity> toPreEnrollmentVocSchool = new Function<VocationalProgramSelection, PreEnrollmentVocationalSchoolEntity>() {
             public PreEnrollmentVocationalSchoolEntity apply(VocationalProgramSelection program) {
                 PreEnrollmentVocationalSchoolEntity vocationalSchool = CopyUtils.convert(program, PreEnrollmentVocationalSchoolEntity.class);
@@ -387,8 +435,9 @@ public class PreEnrollmentService {
             }
         };
 
-        requestEntity.getVocationalSchools().clear();
-        requestEntity.getVocationalSchools().addAll(Lists.transform(list, toPreEnrollmentVocSchool));
+        if (request.getNextGradeLevel() != null)
+            requestEntity.setGradeLevel(request.getNextGradeLevel());
+
         if (submitted) {
             if (list.size() == 1) {
                 Long schoolId = list.get(0).getSchoolId();
@@ -396,6 +445,9 @@ public class PreEnrollmentService {
             }
             requestEntity.setRequestStatus(RequestStatus.PENDING_TO_REVIEW);
             requestEntity.setSubmitDate(commonService.getCurrentDate());
+        } else {
+            requestEntity.getVocationalSchools().clear();
+            requestEntity.getVocationalSchools().addAll(Lists.transform(list, toPreEnrollmentVocSchool));
         }
 
         return preEnrollmentRepository.save(requestEntity) != null;
