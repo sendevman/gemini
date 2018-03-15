@@ -6,14 +6,16 @@ const pmax1o = 'https://prdesieprod.dde.pr/registro-api';
 const tmax1o_sitekey = "6Lffy0sUAAAAAEr5HqHBCLsf013N8K3XSpOLmeQ5";
 const dev_sitekey = "6LfwnkkUAAAAABRldWNGMVuTb3ifCU_e9ZG6oI_J";
 //todo: fran do logic here to determine these props dynamically
-const BASE_CONTEXT = "srs";
-const REST_URL = local;
+const BASE_CONTEXT = "schoolmax_tmax2";
+const REST_URL = tmaxio;
+const SITE_KEY = tmax1o_sitekey;
+
 
 let config = {
     baseContext: BASE_CONTEXT,
     restServer: REST_URL,
     loadingMinimumTime: 1000,
-    reCAPTCHASiteKey: REST_URL,
+    reCAPTCHASiteKey: SITE_KEY,
     publicPaths: ["/", "/registration", "/activate"]
 };
 

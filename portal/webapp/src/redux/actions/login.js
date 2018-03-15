@@ -65,6 +65,7 @@ async function _login(form, dispatch, onSuccess, onError) {
                 dispatch({type: types.INVALID_CREDENTIALS});
                 break;
             case 200:
+                await services().token();
                 dispatch({type: types.AUTHENTICATED, response: jsonResponse});
                 let canGoHome = jsonResponse.canGoHome;
                 let nextPath = canGoHome ? "/home" : "/wizard";
