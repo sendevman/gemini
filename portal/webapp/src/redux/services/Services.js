@@ -37,7 +37,7 @@ export default class Services {
         return this._securedPost(`/user/save`, form);
     }
 
-    validateProfile(form){
+    validateProfile(form) {
         return this._securedPost(`/user/validate`, form);
     }
 
@@ -57,6 +57,22 @@ export default class Services {
 
     existsCode(code) {
         return this._getRaw(`/account/activate/${code}`);
+    }
+
+    forgotPassword(form) {
+        return this._publicPost(`/account/forgot/password`, form, null);
+    }
+
+    existsKey(key) {
+        return this._getRaw(`/account/reset/password/${key}`);
+    }
+
+    resetPassword(form, token) {
+        return this._publicPost(`/account/reset/password/`, form, token);
+    }
+
+    cancelResetPassword(key){
+        return this._get(`/account/cancel/reset/password/${key}`);
     }
 
     //smax interface

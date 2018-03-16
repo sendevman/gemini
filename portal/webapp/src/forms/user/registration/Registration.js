@@ -3,12 +3,12 @@
  */
 import React, {Component} from "react";
 import {Button} from "react-bootstrap";
-import TextInput from "../../components/TextInput";
+import TextInput from "../../../components/TextInput";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {registerUser, validateForm} from "../../redux/actions";
+import {registerUser, validateForm} from "../../../redux/actions";
 import ReCAPTCHA from "react-google-recaptcha";
-import env from "../../env";
+import env from "../../../env";
 import "./Registration.css";
 
 

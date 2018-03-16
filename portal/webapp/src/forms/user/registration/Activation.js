@@ -1,11 +1,11 @@
 import React, {Component} from "react";
-import TextInput from "../../components/TextInput";
+import TextInput from "../../../components/TextInput";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {activateAccount, existsCode} from "../../redux/actions";
+import {activateAccount, existsCode} from "../../../redux/actions";
 import {Button} from "react-bootstrap";
 import ReCAPTCHA from "react-google-recaptcha";
-import env from "../../env";
+import env from "../../../env";
 
 class Activation extends Component {
 

@@ -33,3 +33,13 @@
     margin-top: 20px;
 }
 
+.forgot-password {
+    max-width: 400px;
+    margin: auto;
+}
+
+.forgot-password-result {
+    max-width: 400px;
+    margin: 20% auto;
+}
+

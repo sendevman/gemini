@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Button} from "react-bootstrap";
 
-export default class Result extends Component {
+export default class RegistrationResult extends Component {
 
     constructor(props) {
         super(props);

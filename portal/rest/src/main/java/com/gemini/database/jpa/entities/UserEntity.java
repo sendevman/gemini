@@ -74,6 +74,12 @@ public class UserEntity implements IdentityEntity {
     private boolean credentialsNonExpired = true;
 
     @Column
+    private String credentialLostKey;
+
+    @Column
+    private Date credentialLostKeyExpireDate;
+
+    @Column
     private boolean profileCompleted = false;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -221,6 +227,22 @@ public class UserEntity implements IdentityEntity {
 
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {
         this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public String getCredentialLostKey() {
+        return credentialLostKey;
+    }
+
+    public void setCredentialLostKey(String credentialLostKey) {
+        this.credentialLostKey = credentialLostKey;
+    }
+
+    public Date getCredentialLostKeyExpireDate() {
+        return credentialLostKeyExpireDate;
+    }
+
+    public void setCredentialLostKeyExpireDate(Date credentialLostKeyExpireDate) {
+        this.credentialLostKeyExpireDate = credentialLostKeyExpireDate;
     }
 
     public boolean isProfileCompleted() {

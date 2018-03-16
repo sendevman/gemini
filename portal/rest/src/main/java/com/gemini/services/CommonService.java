@@ -18,6 +18,8 @@ public class CommonService {
     @Autowired
     private CommonDao commonDao;
     private ConfigRepository configRepository;
+    private int activationKeyInHours = 48;
+    private int credentialKeyExpireInMinutes = 15;
 
     public Date getCurrentDate() {
         return commonDao.getCurrentDate();
@@ -33,5 +35,13 @@ public class CommonService {
 
     public int getMinUserAgeToSubmitRequest(){
         return 18;
+    }
+
+    public int getActivationKeyInHours(){
+        return activationKeyInHours;
+    }
+
+    public int getCredentialKeyExpireInMinutes(){
+        return credentialKeyExpireInMinutes;
     }
 }

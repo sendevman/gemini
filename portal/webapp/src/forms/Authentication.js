@@ -8,7 +8,7 @@ import logo from "./logo.svg";
 import {Link} from "react-router-dom";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {cleanLogin, login} from "../redux/actions";
+import {cleanLogin, login, toggleCleanTimeout} from "../redux/actions";
 import TextInput from "../components/TextInput";
 
 class Authentication extends Component {
@@ -27,10 +27,13 @@ class Authentication extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps)
             this.setState({showAlert: nextProps.errorAtLogin || nextProps.invalidCredentials}, () => {
-                if (nextProps.errorAtLogin || nextProps.invalidCredentials)
-                    setTimeout(() => {
+                if (nextProps.errorAtLogin || nextProps.invalidCredentials) {
+                    let timeoutId = setTimeout(() => {
                         this.props.cleanLogin()
                     }, 10000);
+                    this.props.toggleCleanTimeout(timeoutId)
+                }
+
             });
     }
 
@@ -63,7 +66,7 @@ class Authentication extends Component {
                 {showAlert}
                 <img src={logo} className="App-logo" alt="logo"/>
                 <h1 className="title"><Label bsStyle="primary">Registro en Linea</Label></h1>
-                <TextInput id="username" includeLabel={false} placeholder="Usuario" required={false}
+                <TextInput id="username" includeLabel={false} placeholder="Email" required={false}
                            onChange={this.handleInputChange} value={username}/>
                 <TextInput id="password" includeLabel={false} type="password" placeholder="Contraseña" required={false}
                            onChange={this.handleInputChange} value={password}/>
@@ -71,7 +74,7 @@ class Authentication extends Component {
                 <div style={{marginTop: -10, marginBottom: 10}}>
                     <div className="row">
                         <div className="col-md-6">
-                            <Link to="/">Olvido credenciales?</Link>
+                            <Link to="/forgot/password/help">Olvido credenciales?</Link>
                         </div>
                         <div className="col-md-6">
                             <div className="pull-right">
@@ -114,7 +117,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({login, cleanLogin}, dispatch)
+    return bindActionCreators({login, cleanLogin, toggleCleanTimeout}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions)(Authentication);

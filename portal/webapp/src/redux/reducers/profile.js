@@ -10,7 +10,8 @@ const initialState = {
     authenticated: false,
     invalidCredentials: false,
     errorAtLogin: false,
-    loading: true
+    loading: true,
+    cleanTimeoutId: null
 
 };
 

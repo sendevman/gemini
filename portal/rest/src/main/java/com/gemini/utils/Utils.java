@@ -17,7 +17,7 @@ import java.util.UUID;
  */
 public final class Utils {
 
-    public static String generateActivationCode() {
+    public static String generateKey() {
         return UUID.randomUUID().toString();
     }
 

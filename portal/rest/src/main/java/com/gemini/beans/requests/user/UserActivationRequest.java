@@ -1,4 +1,4 @@
-package com.gemini.beans.requests;
+package com.gemini.beans.requests.user;
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,6 +7,7 @@ package com.gemini.beans.requests;
  * Time: 8:27 PM
  */
 public class UserActivationRequest {
+    
     private String activationCode;
     private String password;
     private String confirmPassword;

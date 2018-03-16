@@ -1,12 +1,35 @@
+import * as types from "../types";
 import {combineReducers} from "redux";
+import registration from "./registration";
+import loginHelp from "./loginHelp";
 import profile from "./profile"
 import home from "./home";
 import wizard from "./wizard";
-import registration from "./registration";
 import studentLookup from "./studentLookup";
 import studentInfo from "./studentInfo";
-import config from "./config";
 import preEnrollment from "./preEnrollment";
+import config from "./config";
 
-export default combineReducers({profile, home, wizard, registration, studentLookup, studentInfo, config, preEnrollment})
+const appReducer = combineReducers({
+    registration,
+    loginHelp,
+    profile,
+    home,
+    wizard,
+    studentLookup,
+    studentInfo,
+    preEnrollment,
+    config
+});
+
+
+const rootReducer = (state, action) => {
+    if (action.type === types.LOGOUT_END) {
+        state = undefined
+    }
+
+    return appReducer(state, action)
+};
+
+export default rootReducer;
 
