@@ -2,6 +2,7 @@ import services from "../setup";
 import * as types from "../types";
 import * as Utils from "../../Utils";
 
+//todo: fran check this on the validation form process
 export const validateForm = (userForm, onValid: () => void) => (dispatch) => {
     let validForm = Utils.hasText(userForm.email)
         && Utils.hasText(userForm.firstName)
@@ -37,7 +38,6 @@ export const existsCode = (code) => (dispatch) => {
         });
 
 };
-
 
 export const activateAccount = (activationForm, success, error) => (dispatch, getState) => {
     let token = getState().registration.activationForm.token;

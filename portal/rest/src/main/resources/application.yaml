@@ -15,16 +15,17 @@ spring:
   main:
     web-environment: true
   mail:
-    host: auohs-smtp.oracle.com
-    username:
-    password:
-#    properties:
-#      mail.smtp.auth: true
-#      mail.smtp.starttls.enable: true
+    host: smtp.gmail.com
+    port: 587
+    username: de.pentaho@gmail.com
+    password: d3r3ply2@!4
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
     test-connection: false
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     show-sql: true
     generate-ddl: true
     properties:
@@ -56,7 +57,7 @@ security:
 email:
   from: DE-SIE@de.pr.gov
 website:
-  url: https://localhost:3000
+  url: http://localhost:3000
   context-path: /srs
 logging:
   config: classpath:logback.xml
@@ -72,7 +73,16 @@ oracle:
 
 #move this to a different properties file
 messages:
+  general:
+    unknown.error: "Error Desconocido"
+    missing.required.fields: "Faltan campos requeridos"
   user:
+    already.exists: "Usuario existente"
     min.age.validation: "Usuario debe tener 18 años o mas"
+    reset.password.invalid: "No se pudo completar el reinicio de su contraseña"
+    password.mismatch: "Contraseñas no coinciden"
+    error.saving.profile: "Error al grabar datos del usuario"
+    invalid.forgot.password.request: "Solicitud de cambio de contraseña invalida"
+    cancel.reset.password.invalid: "Solicitud de cancelar reinicio de contraseña invalida"
 
 

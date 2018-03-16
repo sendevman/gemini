@@ -7,10 +7,15 @@ import Home from "./forms/Home";
 import Wizard from "./forms/wizard/Wizard";
 import NotFoundPage from "./NotFoundPage";
 import {Redirect, Route, Switch, withRouter} from "react-router-dom";
-import Registration from "./forms/registration/Registration";
-import Activation from "./forms/registration/Activation";
+import Registration from "./forms/user/registration/Registration";
+import Activation from "./forms/user/registration/Activation";
 import Profile from "./forms/Profile";
-import Result from "./forms/registration/Result";
+import RegistrationResult from "./forms/user/registration/RegistrationResult";
+import ForgotPassword from "./forms/user/forgot/ForgotPassword";
+import ForgotPasswordResult from "./forms/user/forgot/ForgotPasswordResult";
+import ResetPassword from "./forms/user/forgot/ResetPassword";
+import ResetPasswordResult from "./forms/user/forgot/ResetPasswordResult";
+import CancelResetPasswordRequest from "./forms/user/forgot/CancelResetPasswordRequest";
 
 class Routes extends Component {
 
@@ -28,8 +33,17 @@ class Routes extends Component {
                 <Route exact path="/" component={Authentication}/>
                 {/*public routes*/}
                 <Route path="/registration" component={Registration}/>
-                <Route path="/activate/result/:result(success|error)" component={Result}/>
+                <Route path="/forgot/password/help" component={ForgotPassword}/>
+                <Route path="/forgot/password/result/:result(success|error)" component={ForgotPasswordResult}/>
+
+                <Route path="/reset/password/result/:result(success|error|invalid)" component={ResetPasswordResult}/>
+                <Route path="/reset/password/:credentialLostKey" component={ResetPassword}/>
+
+                <Route path="/activate/result/:result(success|error)" component={RegistrationResult}/>
                 <Route path="/activate/:activationCode" component={Activation}/>
+
+                <Route path="/cancel/reset/password/:key" component={CancelResetPasswordRequest}/>
+
                 {/*privates routes*/}
                 <PrivateRoute path="/home" component={Home} authenticated={authenticated} loading={loading}/>
                 <PrivateRoute path="/wizard/:id?" component={Wizard} authenticated={authenticated} loading={loading}/>

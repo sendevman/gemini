@@ -8,7 +8,7 @@ import moment from "moment";
 import esLocale from "moment/locale/es";
 import {connect} from "react-redux";
 import {checkSession, logout} from "./redux/actions";
-import * as types from "./redux/types";
+import {blockUIActions, unblockUIActions} from "./redux/setup";
 import ReduxBlockUi from 'react-block-ui/redux';
 import {bindActionCreators} from "redux";
 import * as env from "./env";
@@ -25,7 +25,8 @@ class App extends Component {
     }
 
     componentWillMount() {
-        this.props.checkSession();
+        if (!env.isUserActionUrl(this.props.location.pathname))
+            this.props.checkSession();
     }
 
     onRouteChanged(nextRoute) {
@@ -47,7 +48,6 @@ class App extends Component {
         if (!this.state.showMenu) {
             let path = this.props.location.pathname;
             if (!env.isPublicUrl(path)) {
-                console.log(`here = ${env.isPublicUrl(path)}`);
                 this.setState({showMenu: true})
             }
         }
@@ -55,7 +55,7 @@ class App extends Component {
 
     render() {
         return (
-            <ReduxBlockUi tag="div" block={types.blockUIActions} unblock={types.unblockUIActions}>
+            <ReduxBlockUi tag="div" block={blockUIActions()} unblock={unblockUIActions()}>
                 <div>
                     {this.renderNavbar()}
                     <Routes loading={this.props.loading} authenticated={this.props.authenticated}

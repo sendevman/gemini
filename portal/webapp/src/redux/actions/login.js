@@ -5,10 +5,19 @@ export const cleanLogin = () => (dispatch) => {
     dispatch({type: types.CLEAN_LOGIN});
 };
 
-export const login = (form, onSuccess, onError) => (dispatch) => {
+export const toggleCleanTimeout = (timeoutId) => (dispatch, getState) => {
+    //first we check if we has active timeoutId to cancel
+    let currentTimeoutId = getState().cleanTimeoutId;
+    if (currentTimeoutId) {
+        clearTimeout(currentTimeoutId);
+    }
+    dispatch({type: types.TOGGLE_LOGIN_CLEAN_TIMEOUT, cleanTimeoutId: timeoutId});
+};
+
+export const login = (form, onSuccess, onError) => (dispatch, getState) => {
     dispatch({type: types.AUTHENTICATING_START});
     //do nothing with this promise on front-end side
-    return _login(form, dispatch, onSuccess, onError);
+    return _login(form, dispatch, getState, onSuccess, onError);
 };
 
 export const logout = (onResult) => (dispatch) => {
@@ -45,7 +54,7 @@ async function _session(dispatch) {
 
 }
 
-async function _login(form, dispatch, onSuccess, onError) {
+async function _login(form, dispatch, getState, onSuccess, onError) {
     let authResponse;
     let jsonResponse;
 
@@ -66,6 +75,7 @@ async function _login(form, dispatch, onSuccess, onError) {
                 break;
             case 200:
                 await services().token();
+                toggleCleanTimeout()(dispatch, getState);
                 dispatch({type: types.AUTHENTICATED, response: jsonResponse});
                 let canGoHome = jsonResponse.canGoHome;
                 let nextPath = canGoHome ? "/home" : "/wizard";
@@ -88,3 +98,64 @@ async function _logout(onResult, dispatch) {
     onResult();
     dispatch({type: types.LOGOUT_END});
 }
+
+export const forgotPassword = (form, onSuccess, onError) => (dispatch) => {
+    dispatch({type: types.FORGOT_PASSWORD_REQUEST_START});
+    services().forgotPassword(form)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({
+                type: types.FORGOT_PASSWORD_REQUEST_END,
+                result: response.successfulOperation,
+                email: form.email
+            });
+            try {
+                if (response.successfulOperation)
+                    onSuccess();
+                else
+                    onError();
+            } catch (e) {
+                onError();
+            }
+        })
+};
+
+export const existsKey = (key, onError) => (dispatch) => {
+    dispatch({type: types.VALIDATE_CRED_LOST_KEY_START});
+    services()
+        .existsKey(key)
+        .then((response) => {
+            dispatch({type: types.VALIDATE_CRED_LOST_KEY_END, result: response === "true"});
+            if (response === "false")
+                onError();
+        })
+
+};
+
+export const resetPassword = (form, onSuccess, onError) => (dispatch, getState) => {
+    let token = getState().loginHelp.recaptchaToken;
+    dispatch({type: types.RESET_PASSWORD_START});
+    services().resetPassword(form, token)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.RESET_PASSWORD_END, result: response.successfulOperation});
+            try {
+                if (response.successfulOperation)
+                    onSuccess();
+                else
+                    onError();
+            } catch (e) {
+                onError();
+            }
+        })
+};
+
+export const cancelResetPassword = (key) => (dispatch) => {
+    dispatch({type: types.VALIDATE_CRED_LOST_KEY_START});
+    services()
+        .cancelResetPassword(key)
+        .then((response) => {
+            dispatch({type: types.VALIDATE_CRED_LOST_KEY_END, result: response.successfulOperation});
+        })
+};
+

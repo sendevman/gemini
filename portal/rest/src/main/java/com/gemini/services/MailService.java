@@ -2,8 +2,9 @@ package com.gemini.services;
 
 import com.gemini.beans.forms.PreEnrollmentBean;
 import com.gemini.beans.forms.User;
+import com.gemini.beans.internal.UserAction;
 import com.gemini.beans.requests.PreEnrollmentSubmitRequest;
-import com.gemini.beans.requests.RegisterRequest;
+import com.gemini.beans.requests.user.RegisterRequest;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,16 @@ public class MailService {
     private SpringTemplateEngine templateEngine;
     @Autowired
     private PreEnrollmentService preEnrollmentService;
+    @Autowired
+    private CommonService commonService;
     @Value("${email.from}")
     private String fromEmail;
     @Value("${website.url}${website.context-path}")
     private String publicUrl;
 
+    private String toUrl(UserAction link, String param) {
+        return String.format("%s".concat(link.getPath()), publicUrl, param);
+    }
 
     private String composeBody(Map<String, String> params, String templateName) {
         Context ctx = new Context();
@@ -69,42 +75,34 @@ public class MailService {
         return preEnrollmentMail;
     }
 
-    private SimpleMailMessage forgetPasswordMail(String to) {
+    private SimpleMailMessage forgetPasswordMail(String to, String resetLink, String cancelResetLink) {
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom(fromEmail);
         mail.setTo(to);
         mail.setSubject("Registro en Linea - Olvido Contraseña");
-//        registerMail.setText();
-        return mail;
-    }
+        Map<String, String> params = ImmutableMap.of(
+                "resetLink", resetLink
+                , "cancelResetLink", cancelResetLink
+                , "credentialKeyExpireInMinutes", String.valueOf(commonService.getCredentialKeyExpireInMinutes())
+        );
 
-    private SimpleMailMessage forgetUserMail(String to) {
-        SimpleMailMessage mail = new SimpleMailMessage();
-        mail.setFrom(fromEmail);
-        mail.setTo(to);
-        mail.setSubject("Registro en Linea - Olvido Usuario");
-//        registerMail.setText();
+        mail.setText(composeBody(params, "emails/forgot-password"));
         return mail;
     }
 
     public boolean sendRegisterEmail(RegisterRequest request, String activationCode) {
-        String link = String.format("%s/activate/%s", publicUrl, activationCode);
-        return send(accountRegisterMail(request, link));
+        return send(accountRegisterMail(request, toUrl(UserAction.ACCOUNT_ACTIVATION, activationCode)));
     }
 
     public boolean sendPreEnrollmentSubmitEmail(User user, PreEnrollmentSubmitRequest request) {
         return send(preEnrollmentSubmit(user, request));
     }
 
-    public void sendUserForgotEmail(String email) {
-        send(forgetUserMail(email));
+    public boolean sendPasswordForgotEmail(String email, String key) {
+        return send(forgetPasswordMail(email, toUrl(UserAction.RESET_PASSWORD, key), toUrl(UserAction.CANCEL_RESET_PASSWORD, key)));
     }
 
-    public void sendPassowrdForgotEmail(String email) {
-        send(forgetPasswordMail(email));
-    }
-
-    public boolean send(SimpleMailMessage message) {
+    private boolean send(SimpleMailMessage message) {
         boolean sent = false;
         try {
             final MimeMessageHelper helper =
@@ -121,6 +119,21 @@ public class MailService {
         return sent;
 
     }
+
+
+    /*
+        public void sendUserForgotEmail(String email) {
+            send(forgetUserMail(email));
+        }
+
+        private SimpleMailMessage forgetUserMail(String to) {
+            SimpleMailMessage mail = new SimpleMailMessage();
+            mail.setFrom(fromEmail);
+            mail.setTo(to);
+            mail.setSubject("Registro en Linea - Olvido Usuario");
+            return mail;
+        }
+    */
 
 
 }
