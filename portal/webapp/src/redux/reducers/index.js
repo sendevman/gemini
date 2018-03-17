@@ -24,8 +24,13 @@ const appReducer = combineReducers({
 
 
 const rootReducer = (state, action) => {
-    if (action.type === types.LOGOUT_END) {
-        state = undefined
+    switch (action.type) {
+        case types.LOGOUT_END:
+        case types.RESET_PASSWORD_END:
+        case types.FORGOT_PASSWORD_REQUEST_END:
+            console.log('cleaning');
+            state = undefined;
+            break;
     }
 
     return appReducer(state, action)

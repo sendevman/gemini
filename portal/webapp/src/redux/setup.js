@@ -24,12 +24,15 @@ export default function services() {
     return instance;
 }
 
+
 export function blockUIActions() {
     return evalTypes("_START");
 }
 
 export function unblockUIActions() {
-    return evalTypes("_END");
+    let list = evalTypes("_END");
+    list.push(types.ON_WIZARD_COMPLETED);
+    return list;
 }
 
 function evalTypes(searchToken) {

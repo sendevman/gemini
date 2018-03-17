@@ -1,4 +1,6 @@
 import * as types from "../types";
+import Immutable from "immutable";
+import * as Utils from "../../Utils";
 
 const initialState = {
     current: 0,
@@ -21,7 +23,7 @@ function calculatePercentage(current) {
     return Math.floor(((current - 1) / accountablePercentageForm) * 100);
 }
 
-const wizard = (state = initialState, action) => {
+const wizard = (state = Utils.freezeObject(initialState), action) => {
     let btnType = action.footerType;
     switch (action.type) {
         case types.ON_WIZARD_LOAD_START:
@@ -73,20 +75,7 @@ const wizard = (state = initialState, action) => {
         case types.ON_WIZARD_COMPLETED:
             return {...state, wizardCompleted: true};
         case types.ON_WIZARD_RESET:
-            return {
-                current: 0,
-                initForm: false,
-                isFinalStep: false,
-                previousLabel: null,
-                nextLabel: null,
-                percentage: 0,
-                maxForms: 11,
-                flowNavigation: [0],
-                wizardCompleted: false,
-                editing: false,
-                formsToDisplay: [],
-                workingRequestId: null
-            };
+            return initialState;
         case types.ON_WIZARD_FORMS_CHANGE:
             return {...state, formsToDisplay: action.forms, maxForms: action.forms.length};
         default:

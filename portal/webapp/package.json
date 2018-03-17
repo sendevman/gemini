@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://prdesietest.dde.pr/schoolmax_tmax2/",
   "dependencies": {
+    "immutable": "^3.8.2",
     "moment": "^2.20.1",
     "react": "^16.2.0",
     "react-async-script": "^0.9.1",
@@ -30,7 +31,8 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-flow": "^6.23.0"
+    "babel-preset-flow": "^6.23.0",
+    "redux-immutable-state-invariant": "^2.1.0"
   },
   "proxy": "http://localhost:8081/"
 }

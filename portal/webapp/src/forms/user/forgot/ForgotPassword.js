@@ -82,7 +82,7 @@ class ForgotPassword extends Component {
 }
 
 function mapStateToProps(store) {
-    return {form: store.loginHelp};
+    return {form: Object.assign({}, store.loginHelp)};
 }
 
 function mapDispatchToActions(dispatch) {

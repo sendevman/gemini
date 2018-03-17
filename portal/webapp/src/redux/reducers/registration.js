@@ -1,4 +1,5 @@
 import * as types from "../types"
+import * as Utils from "../../Utils";
 
 const initialState = {
     form: {},
@@ -9,7 +10,7 @@ const initialState = {
     activationCompleted: false
 };
 
-const registration = (state = initialState, action) => {
+const registration = (state = Utils.freezeObject(initialState), action) => {
     switch (action.type) {
         case types.VALIDATE_REGISTER_FORM:
             return {...state, formValidated: action.valid, loading: false};

@@ -3,6 +3,7 @@
  */
 import React, {Component} from "react";
 import {Button, Col, ProgressBar, Row} from "react-bootstrap";
+import Immutable from "immutable";
 //forms
 import StudentIdentification from "./pre-enrollment/StudentIdentification";
 import PersonalInfo from "./pre-enrollment/PersonalInfo";
@@ -175,7 +176,7 @@ class Wizard extends Component {
 
 
     renderFooter() {
-        let props = {...this.props.wizard};
+        let props = this.props.wizard.toJS();
         let showProgressBar = props.initForm
             ? (<Col xs={4} style={{paddingTop: 10}}>
                 <ProgressBar now={props.percentage} label={`${props.percentage}%`}/>
@@ -204,12 +205,12 @@ class Wizard extends Component {
 function mapStateToProps(store) {
     return {
         current: store.wizard.current,
-        wizard: store.wizard,
         wizardCompleted: store.wizard.wizardCompleted,
         student: store.studentLookup.student,
+        formsToDisplay: store.wizard.formsToDisplay,
+        wizard: Immutable.fromJS(store.wizard),
         preEnrollment: store.preEnrollment.info,
         currentVocationalEnrollment: store.preEnrollment.currentVocationalEnrollment,
-        formsToDisplay: store.wizard.formsToDisplay
     };
 }
 

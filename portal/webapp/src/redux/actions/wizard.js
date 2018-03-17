@@ -228,7 +228,6 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
                 : getIndexFromFlow(currentForm.failure);
         }
 
-        console.log(next);
         if (maxCurrent === current) {
             dispatch({type: types.ON_WIZARD_COMPLETED});
         } else {

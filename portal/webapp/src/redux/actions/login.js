@@ -1,21 +1,30 @@
 import services from "../setup";
 import * as types from "../types";
 
-export const cleanLogin = () => (dispatch) => {
-    dispatch({type: types.CLEAN_LOGIN});
+export const cleanLogin = () => (dispatch, getState) => {
+    if (!getState().profile.cleanTimeoutId) {
+        let timeoutId = setTimeout(() => {
+            dispatch({type: types.CLEAN_LOGIN, username: getState().profile.authentication.username});
+        }, 10000);
+        console.log(`cleanLogin activate ${timeoutId}`);
+        toggleCleanTimeout(timeoutId)(dispatch, getState);
+    }
 };
 
 export const toggleCleanTimeout = (timeoutId) => (dispatch, getState) => {
     //first we check if we has active timeoutId to cancel
-    let currentTimeoutId = getState().cleanTimeoutId;
+    let currentTimeoutId = getState().profile.cleanTimeoutId;
+    console.log(`id = ${currentTimeoutId}`);
     if (currentTimeoutId) {
+        console.log(`cleanLogin desactive ${currentTimeoutId}`);
         clearTimeout(currentTimeoutId);
     }
     dispatch({type: types.TOGGLE_LOGIN_CLEAN_TIMEOUT, cleanTimeoutId: timeoutId});
 };
 
 export const login = (form, onSuccess, onError) => (dispatch, getState) => {
-    dispatch({type: types.AUTHENTICATING_START});
+    console.log(`before start = ${JSON.stringify(form)}`);
+    dispatch({type: types.AUTHENTICATING_START, username: form.username});
     //do nothing with this promise on front-end side
     return _login(form, dispatch, getState, onSuccess, onError);
 };
@@ -38,7 +47,6 @@ async function _session(dispatch) {
     } catch (e) {
         console.log("error loading");
         dispatch({type: types.SESSION_CHECK_END, authenticated: false, user: {}});
-
     }
 
     switch (sessionResp && sessionResp.status) {
@@ -61,11 +69,11 @@ async function _login(form, dispatch, getState, onSuccess, onError) {
     try {
         authResponse = await services().authenticate(form);
         jsonResponse = await authResponse.json();
-        dispatch({type: types.AUTHENTICATING_END});
     } catch (e) {
-        dispatch({type: types.AUTHENTICATING_END});
         dispatch({type: types.UNKNOWN_LOGIN_ERROR})
     }
+
+    dispatch({type: types.AUTHENTICATING_END});
 
     if (authResponse && authResponse.status)
         switch (authResponse.status) {
@@ -74,9 +82,9 @@ async function _login(form, dispatch, getState, onSuccess, onError) {
                 dispatch({type: types.INVALID_CREDENTIALS});
                 break;
             case 200:
-                await services().token();
                 toggleCleanTimeout()(dispatch, getState);
                 dispatch({type: types.AUTHENTICATED, response: jsonResponse});
+                await services().token();
                 let canGoHome = jsonResponse.canGoHome;
                 let nextPath = canGoHome ? "/home" : "/wizard";
                 onSuccess(nextPath);
@@ -159,3 +167,6 @@ export const cancelResetPassword = (key) => (dispatch) => {
         })
 };
 
+export const clean = () => (dispatch) => {
+    dispatch({type: types.CLEAN_FORM});
+};
