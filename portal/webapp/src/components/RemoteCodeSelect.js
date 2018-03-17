@@ -8,32 +8,37 @@ class RemoteCodeSelect extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {value: -1, selectedIndex: 0};
+        this.state = {value: -1, selectedIndex: 0, editing: false};
         this.onChange = this.onChange.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.value && !this.changing) {
-            let options = this.refs.codeSelect.options;
-            let selectedIndex = 0;
-            for (let idx in options) {
-                if (options[idx].value === nextProps.value) {
-                    selectedIndex = idx;
-                    break;
+        if (!this.state.editing) {
+            if (nextProps.value && nextProps.value !== this.state.value) {
+                let options = this.refs.codeSelect.options;
+                let selectedIndex = 0;
+                for (let idx in options) {
+                    if (options[idx].value === nextProps.value[this.props.target]) {
+                        selectedIndex = options[idx].index;
+                        break;
+                    }
                 }
-            }
 
-            this.setState({value: nextProps.value, selectedIndex: selectedIndex})
+                this.setState({value: nextProps.value, selectedIndex: selectedIndex})
+            } else if (!nextProps.value) {
+                this.setState({value: "-1", selectedIndex: 0})
+            }
+        } else {
+            this.setState({...this.state, editing: false})
         }
     }
 
     onChange(e) {
         e.persist();
-        this.changing = true;
         let codes = this.props.codes;
         let element = e.target;
         let value = element.value;
-        this.setState({value: value, selectedIndex: element.selectedIndex}, () => {
+        this.setState({value: value, selectedIndex: element.selectedIndex, editing: true}, () => {
             if (this.props.onObjectChange) {
                 let object = {};
                 object[this.props.target] = -1;
@@ -41,7 +46,6 @@ class RemoteCodeSelect extends Component {
             }
             else if (this.props.onChange)
                 this.props.onChange(e);
-
         });
 
     }
