@@ -8,6 +8,7 @@ import TextInput from "../../../components/TextInput";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {searchStudent} from "../../../redux/actions";
+import Immutable from "immutable";
 
 class StudentIdentification extends Component {
 
@@ -34,7 +35,7 @@ class StudentIdentification extends Component {
     }
 
     render() {
-        let form = this.props.form;
+        let form = this.props.form.toJS();
         return (<div className="row">
             <div className="col-md-4">
                 <TextInput id="lastSSN"
@@ -62,7 +63,7 @@ class StudentIdentification extends Component {
 }
 
 function mapStateToProps(store) {
-    return {form: store.studentLookup.form};
+    return {form: Immutable.fromJS(store.studentLookup.form)};
 }
 
 function mapDispatchToActions(dispatch) {

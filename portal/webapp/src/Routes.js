@@ -62,7 +62,7 @@ const PrivateRoute = ({component: Component, ...rest}) => (
         {...rest}
         render={props =>
             rest.authenticated || rest.loading
-                ? rest.authenticated && !rest.loading ? (<Component {...props} />) : (null)
+                ? rest.authenticated && !rest.loading ? (<Component {...props} />) : (<div>Esto no deberia suceder recargue la pagina</div>)
                 : (<Redirect to={{pathname: "/", state: {from: props.location}}}/>)
         }
     />

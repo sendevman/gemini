@@ -1,4 +1,5 @@
 import * as types from "../types";
+import * as Utils from "../../Utils";
 
 const initialState = {
     student: {},
@@ -6,7 +7,7 @@ const initialState = {
     postalAddress: {line1: '', line2: '', city: '', country: '', zipcode: ''}
 };
 
-const studentInfo = (state = initialState, action) => {
+const studentInfo = (state = Utils.freezeObject(initialState), action) => {
     switch (action.type) {
         case types.STUDENT_PERSONAL_INFO_LOAD_START:
             return state;

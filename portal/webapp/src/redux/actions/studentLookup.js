@@ -2,17 +2,15 @@ import services from "../setup";
 import * as types from "../types";
 import * as Utils from "../../Utils";
 
-
 export const searchStudent = (criteria, onResult, onError) => (dispatch) => {
-    dispatch({type: types.STUDENT_SEARCH_START});
     criteria.dob = Utils.format(criteria.dob, "YYYYMMDD");
+    dispatch({type: types.STUDENT_SEARCH_START, form: criteria});
     services()
         .searchStudent(criteria)
         .then((response) => {
             dispatch({type: types.STUDENT_SEARCH_END});
             try {
                 if (response.found) {
-                    console.log(JSON.stringify(response));
                     dispatch({type: types.STUDENT_FOUND, result: response});
                     onResult(types.ON_FOUND_CALLBACK);
                 } else {
@@ -24,8 +22,4 @@ export const searchStudent = (criteria, onResult, onError) => (dispatch) => {
             }
 
         });
-};
-
-export const studentLookupChange = (form) => (dispatch) => {
-    dispatch({type: types.STUDENT_LOOKUP_FORM_CHANGE, form: form});
 };

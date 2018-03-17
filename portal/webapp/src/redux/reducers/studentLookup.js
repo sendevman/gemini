@@ -1,4 +1,5 @@
 import * as types from "../types";
+import * as Utils from "../../Utils";
 
 const initialState = {
     form: {},
@@ -6,13 +7,12 @@ const initialState = {
     found: false
 };
 
-const studentLookup = (state = initialState, action) => {
+const studentLookup = (state = Utils.freezeObject(initialState), action) => {
     switch (action.type) {
         case types.STUDENT_SEARCH_START:
+            return {...state, form: action.form};
         case types.STUDENT_SEARCH_END:
             return state;
-        case types.STUDENT_LOOKUP_FORM_CHANGE:
-            return {...state, form: action.form};
         case types.STUDENT_FOUND:
             return {...state, student: action.result, found: true};
         case types.STUDENT_NOT_FOUND:

@@ -1,4 +1,5 @@
 import * as types from "../types";
+import * as Utils from "../../Utils";
 
 const initialState = {
     requestId: null,
@@ -24,7 +25,7 @@ const initialState = {
     completePreEnrollment: false
 };
 
-const preEnrollment = (state = initialState, action) => {
+const preEnrollment = (state = Utils.freezeObject(initialState), action) => {
     switch (action.type) {
 
         case types.STUDENT_CREATE_PRE_ENROLLMENT_START:
@@ -53,6 +54,8 @@ const preEnrollment = (state = initialState, action) => {
                     programsToDelete: []
                 }
             };
+        case types.HOME_LOAD_END:
+            return initialState;
         default:
             return state;
     }

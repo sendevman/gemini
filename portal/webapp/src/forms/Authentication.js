@@ -4,11 +4,12 @@
 import React, {Component} from "react";
 import {Alert, Button, Label} from "react-bootstrap";
 import "./Authentication.css";
+import Immutable from "immutable";
 import logo from "./logo.svg";
 import {Link} from "react-router-dom";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {cleanLogin, login, toggleCleanTimeout} from "../redux/actions";
+import {clean, cleanLogin, login, toggleCleanTimeout} from "../redux/actions";
 import TextInput from "../components/TextInput";
 
 class Authentication extends Component {
@@ -24,19 +25,20 @@ class Authentication extends Component {
 
     }
 
+    componentWillMount() {
+        this.props.clean();
+    }
+
     componentWillReceiveProps(nextProps) {
+        console.log(`nextProps = ${JSON.stringify(nextProps)}`);
         if (nextProps)
             this.setState({showAlert: nextProps.errorAtLogin || nextProps.invalidCredentials}, () => {
                 if (nextProps.errorAtLogin || nextProps.invalidCredentials) {
-                    let timeoutId = setTimeout(() => {
-                        this.props.cleanLogin()
-                    }, 10000);
-                    this.props.toggleCleanTimeout(timeoutId)
+                    this.props.cleanLogin();
                 }
 
             });
     }
-
 
     handleDismiss() {
         this.props.cleanLogin()
@@ -48,11 +50,12 @@ class Authentication extends Component {
         form[element.id] = element.value;
     }
 
-
     render() {
-        let username = this.props.form.username;
-        let password = this.props.form.password;
+        let form = this.props.form;
+        let username = form.username;
+        let password = form.password;
         let invalidCredentials = this.props.invalidCredentials;
+
         let showAlert = this.state.showAlert
             ? (<Alert bsStyle="danger" onDismiss={this.handleDismiss} className="auth-alert">
                 <h4>Error!</h4>
@@ -95,7 +98,7 @@ class Authentication extends Component {
     }
 
     login(e) {
-        let creds = this.props.form;
+        let creds = Immutable.fromJS(this.props.form).toJS();
         e.preventDefault();
 
         this.props.login(creds, (nextPath) => {
@@ -112,12 +115,13 @@ function mapStateToProps(store) {
     return {
         form: store.profile.authentication,
         invalidCredentials: store.profile.invalidCredentials,
-        errorAtLogin: store.profile.errorAtLogin
+        errorAtLogin: store.profile.errorAtLogin,
+        clean: store.profile.clean
     };
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({login, cleanLogin, toggleCleanTimeout}, dispatch)
+    return bindActionCreators({clean, login, cleanLogin, toggleCleanTimeout}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions)(Authentication);

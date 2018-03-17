@@ -1,4 +1,5 @@
 import * as types from "../types";
+import * as Utils from "../../Utils";
 
 const initialState = {
     email: "",
@@ -10,7 +11,7 @@ const initialState = {
 
 };
 
-const loginHelp = (state = initialState, action) => {
+const loginHelp = (state =  Utils.freezeObject(initialState), action) => {
 
     switch (action.type) {
         case types.FORGOT_PASSWORD_REQUEST_END:
@@ -23,6 +24,8 @@ const loginHelp = (state = initialState, action) => {
         case types.VALIDATE_CRED_LOST_KEY_START:
         case types.RESET_PASSWORD_START:
             return {...state, loading: true};
+        case types.CLEAN_FORM:
+            return initialState;
         default:
             return state;
     }

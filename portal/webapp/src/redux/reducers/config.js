@@ -1,4 +1,5 @@
 import * as types from "../types";
+import * as Utils from "../../Utils";
 
 const initialState = {
     regions: [],
@@ -6,7 +7,7 @@ const initialState = {
     schools: [],
     vocationalPrograms: []
 };
-const config = (state = initialState, action) => {
+const config = (state = Utils.freezeObject(initialState), action) => {
 
     switch (action.type) {
         case types.REGION_LOAD_END:
