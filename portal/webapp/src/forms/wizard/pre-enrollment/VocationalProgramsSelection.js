@@ -4,14 +4,22 @@ import {Button, Glyphicon} from "react-bootstrap";
 import {getVocationalPrograms, partialSaveVocationalPreEnrollment} from "../../../redux/actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import Immutable from "immutable";
 
 class VocationalProgramsSelection extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {selectedProgram: null};
+        this.state = {selectedProgram: null, formPrograms: null};
         this.onProgramChange = this.onProgramChange.bind(this);
         this.onAdd = this.onAdd.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.programs) {
+            
+            this.setState({...this.state, formPrograms: Immutable.fromJS(nextProps.programs).toJS()})
+        }
     }
 
     componentWillMount() {
@@ -36,19 +44,29 @@ class VocationalProgramsSelection extends Component {
         let program = this.state.selectedProgram;
         program.schoolId = this.schoolId;
         form.programs.push(program);
-        this.forceUpdate();
+
+        let Map = Immutable.fromJS(this.state.formPrograms);
+        let index = this.state.formPrograms.indexOf(program);
+        let result = Map.delete(index);
+        this.setState({...this.state, selectedProgram: null, formPrograms: result.toJS()})
     }
 
     onDelete = (index) => (e) => {
         let form = this.props.currentVocationalEnrollment;
-        form.programsToDelete.push(form.programs[index]);
+        let programDeleted = form.programs[index];
+        form.programsToDelete.push(programDeleted);
         form.programs.splice(index, 1);
-        this.forceUpdate();
+
+        let list = Immutable.List(this.state.formPrograms);
+        list = list.push(programDeleted);
+        list = list.sort((a, b) => a.programDescription.localeCompare(b.programDescription));
+        this.setState({...this.state, selectedProgram: null, formPrograms: list.toJS()})
+
     };
 
     render() {
         let enrollment = this.props.currentVocationalEnrollment;
-        let programs = this.props.programs;
+        let programs = this.state.formPrograms;
 
         return (<div>
             <div className="row">
@@ -84,12 +102,14 @@ class VocationalProgramsSelection extends Component {
                                       onObjectChange={this.onProgramChange}
                                       target="programCode"
                                       display="programDescription"
+                                      value={this.state.selectedProgram}
                     />
                 </div>
                 <div className="col-md-4">
                     <div className="form-group">
                         <label>&nbsp;</label>
-                        <Button className="form-control" bsStyle="primary" onClick={this.onAdd}>A&ntilde;adir</Button>
+                        <Button className="form-control" bsStyle="primary" onClick={this.onAdd}
+                                disabled={!programs || programs.length === 0}>A&ntilde;adir</Button>
                     </div>
                 </div>
             </div>
