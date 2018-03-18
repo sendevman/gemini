@@ -3,7 +3,7 @@ import * as types from "../types";
 //Responses
 const START = {type: "START", nextButton: "Comenzar"};
 const QUESTION = {type: "YES_NO", nextButton: "Si", previousButton: "No"};
-const NOT_FOUND_QUESTION = {type: "YES_NO", nextButton: "Buscar Nuevamente", previousButton: "Crear Record"};
+const NOT_FOUND_QUESTION = {type: "YES_NO", nextButton: "Buscar Nuevamente", previousButton: "Crear Registro"};
 const SEARCH = {type: "SEARCH", nextButton: "Buscar"};
 const IN_PROGRESS = {type: "NEXT_PREVIOUS", nextButton: "Continuar", previousButton: "Retroceder"};
 const CONTINUE = {type: "START", nextButton: "Continuar"};
@@ -13,7 +13,12 @@ const FINALIZE_OR_CHANGE = {type: "FINALIZE_OR_CHANGE", nextButton: "Someter", p
 let catalog = [
     {type: "USER_PROFILE", footerType: CONTINUE}
     , {type: "INSTRUCTIONS", footerType: CONTINUE}
-    , {type: "IS_VOCATIONAL_STUDENT_QUESTION", footerType: QUESTION, yes: "DEPR_ENROLLED_QUESTION", no: "DEPR_ENROLLED_QUESTION"}
+    , {
+        type: "IS_VOCATIONAL_STUDENT_QUESTION",
+        footerType: QUESTION,
+        yes: "DEPR_ENROLLED_QUESTION",
+        no: "DEPR_ENROLLED_QUESTION"
+    }
     , {type: "DEPR_ENROLLED_QUESTION", yes: "STUDENT_LOOKUP", no: "PERSONAL_INFO", footerType: QUESTION}
     , {
         type: "STUDENT_LOOKUP",
@@ -25,12 +30,31 @@ let catalog = [
     , {type: "NOT_FOUND_QUESTION", yes: "STUDENT_LOOKUP", no: "PERSONAL_INFO", footerType: NOT_FOUND_QUESTION}
     , {type: "FOUND_INFO", footerType: CONTINUE}
     , {type: "PERSONAL_INFO", footerType: IN_PROGRESS, editFooterType: CONTINUE}
-    , {type: "ADDRESS", footerType: IN_PROGRESS, reviewHop: "VOCATIONAL_SUBMIT_REVIEW"}
+    , {
+        type: "ADDRESS",
+        footerType: IN_PROGRESS,
+        onNotFoundPreEnrollment: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION",
+        onFoundPreEnrollment: "PRE_ENROLLMENT_FOUND_SUBMIT",
+        reviewHop: "VOCATIONAL_SUBMIT_REVIEW"
+    }
 
-    , {type: "ENROLLMENT_QUESTION", yes: "SUBMIT", no: "ENROLLMENT", footerType: QUESTION}
-    , {type: "ENROLLMENT", footerType: IN_PROGRESS}
+    , {type: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION", footerType: IN_PROGRESS}
+    , {
+        type: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT",
+        footerType: FINALIZE_OR_CHANGE,
+        yes: "PRE_ENROLLMENT_COMPLETED",
+        no: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"
+    }
+    , {
+        type: "PRE_ENROLLMENT_FOUND_SUBMIT",
+        footerType: FINALIZE_OR_CHANGE,
+        yes: "PRE_ENROLLMENT_COMPLETED",
+        no: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"
+    }
 
-    , {type: "SUBMIT", footerType: FINALIZE_OR_CHANGE}
+    , {type: "PRE_ENROLLMENT_COMPLETED", footerType: CONTINUE}
+    , {type: "PRE_ENROLLMENT_CONFIRMED", footerType: QUESTION, completed: true, yes: "INSTRUCTIONS", no: "HOME"}
+
 
     , {type: "VOCATIONAL_SCHOOL_SELECTION", footerType: CONTINUE}
     , {type: "VOCATIONAL_SCHOOL_INFO", footerType: CONTINUE}
@@ -41,6 +65,11 @@ let catalog = [
         addingSchoolHop: "VOCATIONAL_SCHOOL_SELECTION",
         editSchoolHop: "VOCATIONAL_PROGRAMS"
     }
+
+    // , {renderObj: PreEnrollmentAlternateSchoolsSelection}
+    // , {renderObj: PreEnrollmentAlternateSchoolsSubmit}
+    // , {renderObj: PreEnrollmentRecordFoundSubmit}
+
 ];
 
 function getIndexFromCatalog(type) {
@@ -85,7 +114,7 @@ function exists(type) {
 let flow;
 const normalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
-    getIndexFromCatalog("INSTRUCTIONS"),
+    getIndexFromCatalog("STUDENT_LOOKUP"),
     getIndexFromCatalog("IS_VOCATIONAL_STUDENT_QUESTION"),
     getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
     getIndexFromCatalog("STUDENT_LOOKUP"),
@@ -93,9 +122,11 @@ const normalFlow = [
     getIndexFromCatalog("FOUND_INFO"),
     getIndexFromCatalog("PERSONAL_INFO"),
     getIndexFromCatalog("ADDRESS"),
-    getIndexFromCatalog("ENROLLMENT_QUESTION"),
-    getIndexFromCatalog("ENROLLMENT"),
-    getIndexFromCatalog("SUBMIT")];
+    getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
+    getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
+    getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
+    getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
+    getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")];
 const studentRequesterVocationalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
     getIndexFromCatalog("INSTRUCTIONS"),
@@ -126,9 +157,11 @@ const parentVocationalFlow = [
 const editNormalFlow = [
     getIndexFromCatalog("PERSONAL_INFO"),
     getIndexFromCatalog("ADDRESS"),
-    getIndexFromCatalog("ENROLLMENT_QUESTION"),
-    getIndexFromCatalog("ENROLLMENT"),
-    getIndexFromCatalog("SUBMIT")
+    getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
+    getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
+    getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
+    getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
+    getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")
 ];
 const editVocationalFlow = [
     getIndexFromCatalog("PERSONAL_INFO"),
@@ -223,10 +256,14 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
     } else if (isType(current, "ADDRESS") && preEnrollment.type === "REGULAR") {
         let preEnrollmentInfo = preEnrollment.info;
         if (!preEnrollmentInfo.hasPreviousEnrollment) {
-            next = current + 2;
+            next = getIndexFromFlow(currentForm.onNotFoundPreEnrollment);
+        }else{
+            next = getIndexFromFlow(currentForm.onFoundPreEnrollment);
         }
     } else if (isType(current, "ADDRESS") && preEnrollment.type === "VOCATIONAL" && wizard.editing && currentForm.reviewHop) {
         next = getIndexFromFlow(currentForm.reviewHop);
+    } else if (isType(current, "PRE_ENROLLMENT_CONFIRMED")) {
+        resetWizard()(dispatch);
     }
 
     onPress((result) => {

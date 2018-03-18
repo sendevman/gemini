@@ -73,26 +73,33 @@ class StudentIdentification extends Component {
                     <div className="description mb40"><h2 className="f90sbg">OK.</h2>
                         <div className="violet-line"></div>
                     </div>
-                    <p className="f30slg">Let’s try to find the child in the system. Please provide us with the <span
-                        className="f30slb">information below.</span></p>
-                    <div id="search-childs" className="mt50">
-                        <DateInput id="dob"
-                                   value={form.dob}
-                                   onValidDate={this.onValidDate}
-                                   label="Fecha nacimiento"/>
+                    <p className="f30slg">Vamos a buscar su niño/a en el sistema. Por favor facilitenos <span
+                        className="f30slb">la siguiente informaci&oacute;n.</span></p>
+                    <div id="search-childs" className="body">
+                        <div className="row">
+                            <div className="col-md-4">
+                                <DateInput id="dob"
+                                           value={form.dob}
+                                           onValidDate={this.onValidDate}
+                                           label="Fecha nacimiento"/>
+                            </div>
+                            <div className="col-md-4">
 
-                        <TextInput id="lastSSN"
-                                   type="lastSSN"
-                                   value={form.lastSSN}
-                                   onChange={this.inputHandler}
-                                   placeholder="Ultimo 4 digitos seguro social"/>
+                                <TextInput id="lastSSN"
+                                           type="lastSSN"
+                                           value={form.lastSSN}
+                                           onChange={this.inputHandler}
+                                           label="Ultimo 4 digitos SSN"/>
+                            </div>
 
-                        <TextInput id="studentNumber"
-                                   type="studentNumber"
-                                   value={form.studentNumber}
-                                   onChange={this.inputHandler}
-                                   placeholder="Numero de Estudiante SIE"/>
-
+                            <div className="col-md-4">
+                                <TextInput id="studentNumber"
+                                           type="studentNumber"
+                                           value={form.studentNumber}
+                                           onChange={this.inputHandler}
+                                           label="Numero de Estudiante SIE"/>
+                            </div>
+                        </div>
                     </div>
 
                     {this.props.footer}

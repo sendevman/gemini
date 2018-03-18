@@ -22,23 +22,25 @@ export default class StudentNotFound extends Component {
                         <img className="search-guy" src={searchGuy} alt=""/>
                         <img className="pot" src={pot} alt=""/>
                         <div className="row">
-                            <div className="col-md-12 text-center"><p>No hemos podido localizar el estudiante con la
-                                informacion provista.</p><span>Do you wish to search again or will you like to create a new student record?</span>
+                            <div className="col-md-12 text-center">
+                                <p>¡Oh! ¡Oh! La búsqueda no fue exitosa. Si crees que ingresaste algún dato equivocado,
+                                    presiona el botón de ‘buscar nuevamente’. Por otro lado, si ingresaste los datos
+                                    correctos, presiona el botón de ‘crear registro’.</p>
                             </div>
-                            <div className="col-md-12 text-center" style={{minHeight: 120}}>
-
-                            </div>
+                            <div className="col-md-12 text-center" style={{minHeight: 120}}/>
                         </div>
                     </div>
                 </div>
 
 
                 {this.props.footer}
-            </div>,
+            </div>
+            ,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 <div className="illustration">
                     <img src={leisureIllustration} alt=""/>
                 </div>
-            </div>];
+            </div>
+        ];
     }
 }

@@ -6,8 +6,6 @@ import React, {Component} from "react";
 import StudentIdentification from "./pre-enrollment/StudentIdentification";
 import PersonalInfo from "./pre-enrollment/PersonalInfo";
 import Address from "./pre-enrollment/Address";
-import PreEnrollment from "./pre-enrollment/PreEnrollment";
-import SubmitRequest from "./pre-enrollment/SubmitRequest";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {load, onNextAction, onPreviousAction} from "../../redux/actions";
@@ -21,7 +19,12 @@ import IsVocationalQuestion from "./pre-enrollment/IsVocationalQuestion";
 import StudentFound from "./pre-enrollment/StudentFound";
 import StudentNotFound from "./pre-enrollment/StudentNotFound";
 import IsStudentCurrentlyEnrolled from "./pre-enrollment/IsStudentCurrentlyEnrolled";
-import PreEnrollmentRecordFound from "./pre-enrollment/PreEnrollmentRecordFound";
+import PreEnrollmentAlternateSchoolsSelection from "./pre-enrollment/PreEnrollmentAlternateSchoolsSelection";
+import PreEnrollmentRecordFoundSubmit from "./pre-enrollment/PreEnrollmentRecordFoundSubmit";
+import PreEnrollmentAlternateSchoolsSubmit from "./pre-enrollment/PreEnrollmentAlternateSchoolsSubmit";
+import CompletedPreEnrollment from "./pre-enrollment/CompletedPreEnrollment";
+import ConfirmedPreEnrollment from "./pre-enrollment/ConfirmedPreEnrollment";
+
 
 function form(title, form) {
     return {title: title, form: form};
@@ -95,7 +98,7 @@ class Wizard extends Component {
         let vocationalSchool = this.props.currentVocationalEnrollment;
 
         let CATALOG = [
-            {title: "Su Informacion Personal", renderObj: UserInfoRequest}
+            {renderObj: UserInfoRequest}
             , {renderObj: Instructions}
             , {renderObj: IsVocationalQuestion}
             , {renderObj: IsStudentCurrentlyEnrolled}
@@ -103,10 +106,12 @@ class Wizard extends Component {
             , {renderObj: StudentNotFound}
             , {renderObj: StudentFound}
             , {renderObj: PersonalInfo}
-            , {title: "Direcci\u00f3n", renderObj: Address}
-            , {renderObj: PreEnrollmentRecordFound}
-            , {title: "Pre-Matricula", renderObj: PreEnrollment}
-            , {title: "Someter Solicitud", renderObj: SubmitRequest}
+            , {renderObj: Address}
+            , {renderObj: PreEnrollmentAlternateSchoolsSelection}
+            , {renderObj: PreEnrollmentAlternateSchoolsSubmit}
+            , {renderObj: PreEnrollmentRecordFoundSubmit}
+            , {renderObj: CompletedPreEnrollment}
+            , {renderObj: ConfirmedPreEnrollment}
 
             //vocational forms
             , {title: "Seleccione su Escuela Vocacional", renderObj: VocationalPreEnrollment}

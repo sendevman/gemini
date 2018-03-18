@@ -12,14 +12,15 @@ export default class Instructions extends Component {
 
             <div key="inst" className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description"><h2>Instructions</h2>
+                    <div className="description"><h2>Instrucciones</h2>
                         <div className="violet-line"/>
                     </div>
 
-                    The standard Lorem Ipsum passage, used since the 1500s
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum."
+                    Bienvenidos al proceso de confirmación de matrícula del Departamento de Educación de Puerto Rico.
+                    Durante este proceso, tendrás la oportunidad de confirmar la matrícula de tu hijo/a o de solicitarle
+                    matrícula, para el próximo año escolar 2018-2019. Este proceso solo te tomará unos minutos. Presiona
+                    el botón de <span className="f20slb">‘continuar’</span> para comenzar el proceso.
+
                 </div>
 
                 {this.props.footer}

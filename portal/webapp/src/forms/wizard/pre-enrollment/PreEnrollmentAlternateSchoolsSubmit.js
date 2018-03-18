@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import leisureIllustration from "../../../style/img/leisure-illustration.png";
 import {connect} from "react-redux";
+import leisureIllustration from "../../../style/img/leisure-illustration.png";
+
 
 class PreEnrollmentRecordFound extends Component{
 
@@ -17,11 +18,11 @@ class PreEnrollmentRecordFound extends Component{
                 <div className="description mb40"><h2 className="f90sbg">06.</h2>
                     <div className="violet-line"></div>
                 </div>
-                <p className="f30sbg"><span className="f30sbb">El estudiante {student.fullName}</span> actualmente tiene un registro de Pre-Matricula Pre-enrollment en:</p>
+                <p className="f30sbg">El estudiante <span className="f30sbb">{student.fullName}</span> se le  desea crear un registro de Pre-Matricula en las siguientes alternativas:</p>
                 <p className="f22slg mb-1"><i className="fas fa-university mr5"></i> <span
-                    id="school">School Name</span>{preEnrollment.schoolName}</p>
-                <p className="f22slg mb-1"><i className="icon-teacher mr5"></i> <span id="level">Grado</span>{preEnrollment.nextGradeLevelDescription}</p>
-                {/*<p className="f22slg mb-1"><i className="icon-gps mr5"></i> <span id="adress">Direccion escuela</span></p>*/}
+                    id="school">{preEnrollment.schoolName}</span></p>
+                <p className="f22slg mb-1"><i className="icon-teacher mr5"></i> <span id="level">{preEnrollment.nextGradeLevelDescription}</span></p>
+                <p className="f22slg mb-1"><i className="icon-gps mr5"></i> <span id="adress">Direccion escuela</span></p>
                 <p className="f30sbg mt30">Habrá algun cambio para esta Pre-Matricula?</p>
             </div>
             {this.props.footer}
