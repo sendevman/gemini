@@ -157,8 +157,9 @@ class Wizard extends Component {
         if (props.currentPageType === "PERSONAL_INFO" || props.currentPageType === "STUDENT_LOOKUP")
             return (<div className="row action-section">
                 <div className="col-md-12 text-center text-lg-left p-0">
-                    <button onClick={this.next} className="button-green mr30 mob-mb30px"><span>y</span>{props.nextLabel}
-                    </button>
+                    <a className="button-green mr30 mob-mb30px" onClick={this.next}>
+                        <span>y</span>{props.nextLabel}
+                    </a>
                     {props.previousLabel
                         ? (<a className="button-white mob-mb30px" onClick={this.previous}>
                             <span>n</span>{props.previousLabel}

@@ -98,7 +98,7 @@ class Registration extends Component {
                                     <TextInput id="email"
                                                type="email"
                                                ref="email"
-                                               placeholder="Email"
+                                               label="Email"
                                                onChange={this.inputHandler}
                                                value={form.email}/>
                                 </div>
@@ -108,7 +108,7 @@ class Registration extends Component {
                                     <TextInput id="confirmEmail"
                                                type="email"
                                                ref="confirmEmail"
-                                               placeholder="Confirmar Email"
+                                               label="Confirmar Email"
                                                onChange={this.inputHandler}
                                                value={form.confirmEmail}/>
                                 </div>

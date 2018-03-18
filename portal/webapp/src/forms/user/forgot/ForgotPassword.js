@@ -61,7 +61,7 @@ class ForgotPassword extends Component {
                                         <TextInput id="email"
                                                    type="email"
                                                    ref="email"
-                                                   placeholder="Email"
+                                                   label="Email"
                                                    onChange={this.inputHandler}
                                                    value={form.email}/>
                                     </div>

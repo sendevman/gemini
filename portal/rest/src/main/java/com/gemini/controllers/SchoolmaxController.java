@@ -61,7 +61,7 @@ public class SchoolmaxController {
                 && studentNumber != null && studentNumber > 0L))
             return ResponseEntity.badRequest().body(null);
 
-        Student studentBean = null;//smaxService.retrieveStudentInfo(lastSSN, studentNumber, dateOfBirth);
+        Student studentBean = smaxService.retrieveStudentInfo(lastSSN, studentNumber, dateOfBirth);
         StudentResponse response = CopyUtils.convert(studentBean, StudentResponse.class);
         response.setFound(studentBean != null);
         if (studentBean != null)

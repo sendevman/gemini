@@ -116,13 +116,13 @@ class TextInput extends Component {
         let isPassword = this.props.type === 'password';
         let hasError = this.state.hasError && this.props.required;
         let grouped = this.props.grouped ? "group": "";
-        let groupClass = grouped + " form-group ".concat(hasError ? "has-error" : "");
+        let groupClass = grouped + " form-group has-feedback";//.concat(hasError ? "has-error" : "");
         let props = Object.assign({}, this.props);
         if (this.config.max || this.config.length)
             props = {...props, maxLength: this.config.max || this.config.length};
 
         let label = this.props.includeLabel
-            ? `${this.props.label || this.props.placeholder}:`
+            ? `${this.props.label || this.props.placeholder}`
             : '';
         delete  props.includeLabel;
         return (
@@ -135,8 +135,7 @@ class TextInput extends Component {
                        value={this.state.value}
                 />
 
-                {/*<input className="inputMaterial" type="email" name="email" required/>*/}
-                <i className="n icon-human"></i>
+                <i className={`n ${this.props.iconName}`}></i>
                 <span className="highlight"></span>
                 <span className="bar"></span>
                 {this.props.includeLabel ? (<label htmlFor={this.props.id}>{label}</label>) : (null)}

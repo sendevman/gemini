@@ -134,7 +134,11 @@ class PreEnrollment extends Component {
             ? "No ha selecionado escuela aun"
             : selectedSchool.address.addressFormatted;
 
-        return (<form>
+        return [<div className="col-md-7 content-section">
+            <div className="title">
+                <div className="description mb30"><h2>Pre-Enrollment <span>Record</span></h2></div>
+                <span className="f20slg"><span className="f20slb">Let’s create a new pre-enrollment record.</span> Please select the Region, Grade Level and School that your child will be attending:</span>
+            </div>
             <div className="row" style={{margin: 2, marginBottom: 15}}>
                 <div className="col-md-4">
                     <div className="row">
@@ -154,7 +158,6 @@ class PreEnrollment extends Component {
 
                 </div>
             </div>
-
             <div className="row">
 
                 <div className="col-md-2">
@@ -191,8 +194,10 @@ class PreEnrollment extends Component {
                                       value={form.schoolId}/>
                 </div>
             </div>
-
-        </form>);
+            {this.props.footer}
+        </div>, <div className="col-md-4 illustration-section d-flex align-items-center text-center">
+            <div className="illustration"><img src={entrollmentIllustration} alt=""/></div>
+        </div>];
     }
 }
 
