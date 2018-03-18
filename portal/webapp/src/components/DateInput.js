@@ -88,14 +88,14 @@ export default class DateInput extends Component {
         //     let year = date.format("YYYY");
         //     format = `(${day}/${month}/${year})`;
         // }
-        return <div className="form-group">
+        return <div className="group form-group ">
             <label htmlFor={this.props.id}>{`${this.props.label} ${format}:`}</label>
             {this.renderDateInput()}
         </div>;
     }
 
     renderDateInput() {
-        let formGroup = "form-group ".concat(!this.state.valid ? "has-error" : "");
+        let formGroup = "group form-group has-feedback".concat(!this.state.valid ? "has-error" : "");
         let props = {disabled: this.props.disabled};
         return (
             <div className="row ">

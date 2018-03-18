@@ -26,7 +26,7 @@ class CodeSelect extends Component {
             let selectedIndex = 0;
             let options = this.refs.codeSelect.options;
             for (let idx in options) {
-                if(options[idx].value === value){
+                if (options[idx].value === value) {
                     selectedIndex = idx;
                     break;
                 }
@@ -36,7 +36,7 @@ class CodeSelect extends Component {
     }
 
     onChange(e) {
-        console.log("onChange***")
+        console.log("onChange***");
         e.persist();
         let value = e.target.value;
         this.setState({value: value, selectedIndex: e.target.selectedIndex}, () => {

@@ -13,7 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>portal :: rest</name>
+    <name>portal :: api</name>
     <description>Backend project for Registro en Linea public portal</description>
 
 
@@ -74,6 +74,7 @@
             <artifactId>ojdbc6</artifactId>
         </dependency>
 
+        <!--this is use only for development-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

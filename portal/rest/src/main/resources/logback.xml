@@ -9,4 +9,6 @@
     <logger name="com.gemini" level="DEBUG"/>
     <logger name="org.springframework.ws.client.MessageTracing" level="TRACE"/>
     <logger name="org.hibernate" level="INFO"/>
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG"/>
+    <logger name="com.gemini.security.CsrfHeaderFilter" level="INFO"/>
 </configuration>

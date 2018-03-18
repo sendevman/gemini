@@ -1,5 +1,7 @@
 package com.gemini.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
@@ -10,7 +12,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class CsrfHeaderFilter extends OncePerRequestFilter {
 
-    private final Logger logger = Logger.getLogger(CsrfHeaderFilter.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(CsrfHeaderFilter.class.getName());
 
     private String uiContextPath;
 
@@ -37,8 +38,7 @@ public class CsrfHeaderFilter extends OncePerRequestFilter {
         if (csrf != null) {
             Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
             String token = csrf.getToken();
-            logger.info(String.format("uiContextPath %s", uiContextPath));
-            logger.info(String.format("token %s", token));
+            logger.debug(String.format("uiContextPath %s - token %s", uiContextPath, token));
             if (cookie == null || token != null && !token.equals(cookie.getValue())) {
                 cookie = new Cookie("XSRF-TOKEN", token);
                 cookie.setPath(uiContextPath);

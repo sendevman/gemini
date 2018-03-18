@@ -1,9 +1,9 @@
 import * as types from "../types";
-import Immutable from "immutable";
 import * as Utils from "../../Utils";
 
 const initialState = {
     current: 0,
+    currentPageType: null,
     initForm: false,
     isFinalStep: false,
     previousLabel: null,
@@ -35,6 +35,7 @@ const wizard = (state = Utils.freezeObject(initialState), action) => {
                 current: action.current,
                 previousLabel: btnType.previousButton,
                 nextLabel: btnType.nextButton,
+                currentPageType: action.pageType,
                 maxForms: action.formsToDisplay.length,
                 editing: action.editing,
                 formsToDisplay: action.formsToDisplay,
@@ -51,14 +52,16 @@ const wizard = (state = Utils.freezeObject(initialState), action) => {
                 isFinalStep: action.isFinalStep,
                 percentage: calculatePercentage(action.current),
                 previousLabel: btnType.previousButton,
-                nextLabel: btnType.nextButton
+                nextLabel: btnType.nextButton,
+                currentPageType: action.pageType,
             };
         case types.ON_WIZARD_GO_TO:
             return {
                 ...state,
                 current: action.current,
                 previousLabel: btnType.previousButton,
-                nextLabel: btnType.nextButton
+                nextLabel: btnType.nextButton,
+                pageType: action.pageType,
             };
         case types.ON_WIZARD_PREVIOUS_START:
             return state;
@@ -70,7 +73,8 @@ const wizard = (state = Utils.freezeObject(initialState), action) => {
                 isFinalStep: false,
                 percentage: calculatePercentage(action.current),
                 previousLabel: btnType.previousButton,
-                nextLabel: btnType.nextButton
+                nextLabel: btnType.nextButton,
+                currentPageType: action.pageType,
             };
         case types.ON_WIZARD_COMPLETED:
             return {...state, wizardCompleted: true};

@@ -2,23 +2,25 @@ import * as types from "../types";
 
 const START = {type: "START", nextButton: "Comenzar"};
 const QUESTION = {type: "YES_NO", nextButton: "Si", previousButton: "No"};
-const IN_PROGRESS = {type: "NEXT_PREVIOUS", nextButton: "Proximo", previousButton: "Retroceder"};
+const NOT_FOUND_QUESTION = {type: "YES_NO", nextButton: "Buscar Nuevamente", previousButton: "Crear Record"};
+const SEARCH = {type: "SEARCH", nextButton: "Buscar"};
+const IN_PROGRESS = {type: "NEXT_PREVIOUS", nextButton: "Continuar", previousButton: "Retroceder"};
 const CONTINUE = {type: "START", nextButton: "Continuar"};
 const END = {type: "FINALIZE", nextButton: "Someter"};
 
 let catalog = [
     {type: "USER_PROFILE", footerType: CONTINUE}
     , {type: "INSTRUCTIONS", footerType: CONTINUE}
-    , {type: "IS_VOCATIONAL_STUDENT_QUESTION", footerType: QUESTION, yes: "STUDENT_LOOKUP", no: "STUDENT_LOOKUP"}
+    , {type: "IS_VOCATIONAL_STUDENT_QUESTION", footerType: QUESTION, yes: "DEPR_ENROLLED_QUESTION", no: "DEPR_ENROLLED_QUESTION"}
     , {type: "DEPR_ENROLLED_QUESTION", yes: "STUDENT_LOOKUP", no: "PERSONAL_INFO", footerType: QUESTION}
     , {
         type: "STUDENT_LOOKUP",
-        footerType: IN_PROGRESS,
+        footerType: SEARCH,
         success: "FOUND_INFO",
         failure: "NOT_FOUND_QUESTION",
         waitForResult: true
     }
-    , {type: "NOT_FOUND_QUESTION", yes: "STUDENT_LOOKUP", no: "PERSONAL_INFO", footerType: QUESTION}
+    , {type: "NOT_FOUND_QUESTION", yes: "STUDENT_LOOKUP", no: "PERSONAL_INFO", footerType: NOT_FOUND_QUESTION}
     , {type: "FOUND_INFO", footerType: CONTINUE}
     , {type: "PERSONAL_INFO", footerType: IN_PROGRESS, editFooterType: CONTINUE}
     , {type: "ADDRESS", footerType: IN_PROGRESS, reviewHop: "VOCATIONAL_SUBMIT_REVIEW"}
@@ -159,6 +161,7 @@ export const load = (requestId) => (dispatch, getState) => {
         type: types.ON_WIZARD_LOAD_END,
         current: startPage,
         footerType: footerType,
+        pageType: startForm.type,
         editing: editing,
         formsToDisplay: flow,
         workingRequestId: requestId
@@ -170,7 +173,7 @@ function changeForms(dispatch, formToChange) {
     dispatch({type: types.ON_WIZARD_FORMS_CHANGE, forms: formToChange});
 }
 
-function changeToVocationalForm(dispatch, preEnrollment, formToChange){
+function changeToVocationalForm(dispatch, preEnrollment, formToChange) {
     preEnrollment.type = "VOCATIONAL";
     changeForms(dispatch, formToChange)
 }
@@ -178,10 +181,12 @@ function changeToVocationalForm(dispatch, preEnrollment, formToChange){
 export const goToAction = (type) => (dispatch) => {
     if (exists(type)) {
         let next = getIndexFromFlow(type);
+        let nextForm = getForm(next);
         dispatch({
             type: types.ON_WIZARD_GO_TO,
             current: next,
-            footerType: getForm(next).footerType
+            footerType: nextForm.footerType,
+            pageType: nextForm.type
         });
     }
 };
@@ -231,11 +236,13 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
         if (maxCurrent === current) {
             dispatch({type: types.ON_WIZARD_COMPLETED});
         } else {
+            let nextForm = getForm(next);
             dispatch({
                 type: types.ON_WIZARD_NEXT_END,
                 current: current < maxCurrent ? next : maxCurrent,
                 isFinalStep: maxCurrent === current,
-                footerType: getForm(next).footerType
+                footerType: nextForm.footerType,
+                pageType: nextForm.type
             });
         }
     })
@@ -262,11 +269,12 @@ export const onPreviousAction = () => (dispatch, getState) => {
             ? pop(flowNavigation, 2)
             : current - 1;
     }
-
+    let nextForm = getForm(next);
     dispatch({
         type: types.ON_WIZARD_PREVIOUS_END,
         current: next,
-        footerType: getForm(next).footerType
+        footerType: nextForm.footerType,
+        pageType: nextForm.type
     });
 };
 

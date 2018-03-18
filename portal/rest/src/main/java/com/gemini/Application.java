@@ -38,8 +38,9 @@ public class Application extends SpringBootServletInitializer {
     /*
             TMAX1O -> /tmax1o/ias/srs/portal/
             PMAX1O -> /pmax1o/ias/srs/portal/
+            DEV -> /home/ubuntu/srs/portal
      */
-    static final String PROPS_DIR = "/tmax1o/ias/srs/portal/";
+    static final String PROPS_DIR = "/home/ubuntu/srs/portal";
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
@@ -111,6 +112,7 @@ public class Application extends SpringBootServletInitializer {
         loggingFilter.setIncludeClientInfo(true);
         loggingFilter.setIncludeQueryString(true);
         loggingFilter.setIncludePayload(true);
+        loggingFilter.setIncludeHeaders(true);
         return loggingFilter;
     }
 }

@@ -2,15 +2,14 @@
  * Created by fran on 1/24/18.
  */
 import React, {Component} from "react";
-import {Alert, Button, Label} from "react-bootstrap";
-import "./Authentication.css";
+import {Alert} from "react-bootstrap";
 import Immutable from "immutable";
-import logo from "./logo.svg";
 import {Link} from "react-router-dom";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {clean, cleanLogin, login, toggleCleanTimeout} from "../redux/actions";
 import TextInput from "../components/TextInput";
+import registrationIllustration from "../style/img/registration-illustration.png";
 
 class Authentication extends Component {
     constructor(props) {
@@ -64,37 +63,63 @@ class Authentication extends Component {
                 </p>
             </Alert>)
             : (null);
-        return (
-            <form className="login-block" onSubmit={this.login}>
-                {showAlert}
-                <img src={logo} className="App-logo" alt="logo"/>
-                <h1 className="title"><Label bsStyle="primary">Registro en Linea</Label></h1>
-                <TextInput id="username" includeLabel={false} placeholder="Email" required={false}
-                           onChange={this.handleInputChange} value={username}/>
-                <TextInput id="password" includeLabel={false} type="password" placeholder="Contraseña" required={false}
-                           onChange={this.handleInputChange} value={password}/>
+        return [<div className="col-md-5 content-section">
+            <div className="title">
+                <div className="description"><h2>Entrar</h2>
+                    <div className="violet-line"></div>
+                </div>
+            </div>
+            <div className="body d-flex align-items-center flex-column justify-content-end">
+                <form className="signin-form" onSubmit={this.login}>
+                    {showAlert}
+                    {/*<div className="group form-group has-feedback">*/}
+                    {/*/!*<input className="inputMaterial" type="email" name="email" required>*!/*/}
 
-                <div style={{marginTop: -10, marginBottom: 10}}>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <Link to="/forgot/password/help">Olvido credenciales?</Link>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="pull-right">
-                                <Link to="/registration">No posee cuenta?</Link>
-                            </div>
-                        </div>
+                    {/*<i className="n icon-human"></i>*/}
+                    {/*<span className="highlight"></span>*/}
+                    {/*<span className="bar"></span>*/}
+                    {/*<label>Email Address</label>*/}
+                    {/*</div>*/}
+                    <TextInput id="username"
+                               includeLabel={false}
+                               placeholder="Email"
+                               required={false}
+                               onChange={this.handleInputChange}
+                               value={username}
+                               grouped/>
+
+                    {/*<div className="group form-group has-feedback">*/}
+                    {/*<i className="n icon-lock"></i>*/}
+                    {/*<i className="icon-eye"></i>*/}
+                    {/*<span className="highlight"></span>*/}
+                    {/*<span className="bar"></span>*/}
+                    {/*<label>Password</label>*/}
+                    {/*</div>*/}
+
+                    <TextInput id="password"
+                               includeLabel={false}
+                               type="password"
+                               placeholder="Contraseña"
+                               required={false}
+                               onChange={this.handleInputChange}
+                               value={password}
+                               grouped/>
+                    <button className="button-yellow mt50" id="buttonGet" type="submit">Entrar</button>
+                </form>
+                <div className="row w-100 mt50">
+                    <div className="col-md-6 p-0 text-lg-left text-center">
+                        <Link to="/forgot/password/help">Olvido credenciales?</Link>
+                    </div>
+                    <div className="col-md-6 p-0 text-lg-right text-center">
+                        <Link to="/registration">No posee cuenta?</Link>
                     </div>
                 </div>
-
-
-                <div className="row">
-                    <div className="col-md-12">
-                        <Button className="login-button" bsStyle="primary" type="submit">Entrar</Button>
-                    </div>
+            </div>
+        </div>,
+            <div className="col-md-6 illustration-section d-flex align-items-center text-center">
+                <div className="illustration"><img src={registrationIllustration} alt=""/>
                 </div>
-
-            </form>);
+            </div>];
     }
 
     login(e) {
