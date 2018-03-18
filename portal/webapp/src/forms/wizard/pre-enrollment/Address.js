@@ -46,34 +46,36 @@ class Address extends Component {
         let props = {...this.props};
         return [
             <div className="col-md-7 content-section">
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="row">
-                            <div className="col-md-2">
-                                <h5 htmlFor="">Residencial</h5>
-                            </div>
+                <div className="body">
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="row">
+                                <div className="col-md-2">
+                                    <h5 htmlFor="">Residencial</h5>
+                                </div>
 
-                            <div className="col-md-3" style={{marginLeft: 10}}>
-                                <Button onClick={this.copyAddress}
-                                        bsSize="small"
-                                        bsStyle="primary">Copiar residencial a postal</Button>
+                                <div className="col-md-3" style={{marginLeft: 10}}>
+                                    <Button onClick={this.copyAddress}
+                                            bsSize="small"
+                                            bsStyle="primary">Copiar residencial a postal</Button>
+                                </div>
+
                             </div>
+                            {this.renderAddressForm("physical", props.physical)}
 
                         </div>
-                        {this.renderAddressForm("physical", props.physical)}
 
-                    </div>
-
-                    <div className="col-md-6">
-                        <div className="row">
-                            <div className="col-md-12">
-                                <div className="form-group">
-                                    <h5 htmlFor="">Postal</h5>
+                        <div className="col-md-6">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="form-group">
+                                        <h5 htmlFor="">Postal</h5>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {this.renderAddressForm("postal", props.postal)}
+                            {this.renderAddressForm("postal", props.postal)}
 
+                        </div>
                     </div>
                 </div>
                 {this.props.footer}

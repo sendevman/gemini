@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 import {getSchools, loadCodes} from "../../../redux/actions";
 import entrollmentIllustration from "../../../style/img/entrollment-illustration.png";
 
-class PreEnrollment extends Component {
+class PreEnrollmentAlternateSchoolsSelection extends Component {
 
     constructor(props) {
         super(props);
@@ -136,62 +136,64 @@ class PreEnrollment extends Component {
 
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description mb30"><h2>Pre-Enrollment <span>Record</span></h2></div>
-                <span className="f20slg"><span className="f20slb">Let’s create a new pre-enrollment record.</span> Please select the Region, Grade Level and School that your child will be attending:</span>
+                <div className="description mb30"><h2>Registro de <span>Pre-Matricula</span></h2></div>
+                <span className="f20slg"><span className="f20slb">Vamos a crear el registro.</span> Selecciona dos escuelas como alternativas para la matr&iacute;cula del año escolar 2018-2019:</span>
             </div>
-            <div className="row" style={{margin: 2, marginBottom: 15}}>
-                <div className="col-md-4">
-                    <div className="row">
-                        <p>Estudiante: </p>
+            <div className="body" style={{marginTop: -100}}>
+                <div className="row" style={{margin: 2, marginBottom: 15}}>
+                    <div className="col-md-4">
+                        <div className="row">
+                            <p>Estudiante: </p>
+                        </div>
+                        <div className="row">
+                            <h5>{student && student.fullName}</h5>
+                        </div>
                     </div>
-                    <div className="row">
-                        <h5>{student && student.fullName}</h5>
+                    <div className="col-md-8">
+                        <div className="row">
+                            <p>Escuela: <span className="text-primary">{schoolName}</span></p>
+                        </div>
+                        <div className="row">
+                            <p>Direcci&oacute;n: <span className="text-primary">{schoolAddress}</span></p>
+                        </div>
+
                     </div>
                 </div>
-                <div className="col-md-8">
-                    <div className="row">
-                        <p>Escuela: <span className="text-primary">{schoolName}</span></p>
+                <div className="row">
+
+                    <div className="col-md-2">
+                        <RemoteCodeSelect id="gradeLevel"
+                                          label="Grado"
+                                          placeholder="Seleccione Grado"
+                                          onObjectChange={this.gradeLevelChanged}
+                                          codes={gradeLevels}
+                                          target="name"
+                                          display="displayName"
+                                          value={form.nextGradeLevel}/>
                     </div>
-                    <div className="row">
-                        <p>Direcci&oacute;n: <span className="text-primary">{schoolAddress}</span></p>
+
+                    <div className="col-md-2">
+                        <RemoteCodeSelect id="region"
+                                          label="Region"
+                                          placeholder="Seleccione Region"
+                                          onChange={this.regionChanged}
+                                          codes={regions}
+                                          target="regionId"
+                                          display="description"
+                                          value={form.regionId}/>
                     </div>
 
-                </div>
-            </div>
-            <div className="row">
 
-                <div className="col-md-2">
-                    <RemoteCodeSelect id="gradeLevel"
-                                      label="Grado"
-                                      placeholder="Seleccione Grado"
-                                      onObjectChange={this.gradeLevelChanged}
-                                      codes={gradeLevels}
-                                      target="name"
-                                      display="displayName"
-                                      value={form.nextGradeLevel}/>
-                </div>
-
-                <div className="col-md-2">
-                    <RemoteCodeSelect id="region"
-                                      label="Region"
-                                      placeholder="Seleccione Region"
-                                      onChange={this.regionChanged}
-                                      codes={regions}
-                                      target="regionId"
-                                      display="description"
-                                      value={form.regionId}/>
-                </div>
-
-
-                <div className="col-md-8">
-                    <RemoteCodeSelect id="schools"
-                                      label="Escuela a matricular"
-                                      placeholder="Seleccione escuela"
-                                      codes={schools}
-                                      onObjectChange={this.schoolChanged}
-                                      target="schoolId"
-                                      display="displayName"
-                                      value={form.schoolId}/>
+                    <div className="col-md-8">
+                        <RemoteCodeSelect id="schools"
+                                          label="Escuela a matricular"
+                                          placeholder="Seleccione escuela"
+                                          codes={schools}
+                                          onObjectChange={this.schoolChanged}
+                                          target="schoolId"
+                                          display="displayName"
+                                          value={form.schoolId}/>
+                    </div>
                 </div>
             </div>
             {this.props.footer}
@@ -216,4 +218,4 @@ function mapDispatchToActions(dispatch) {
     return bindActionCreators({loadCodes, getSchools}, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(PreEnrollment);
+export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(PreEnrollmentAlternateSchoolsSelection);
