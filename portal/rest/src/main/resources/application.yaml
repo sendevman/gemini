@@ -41,13 +41,6 @@ spring:
       maximum-pool-size: 30
     platform: mysql
 
-  smaxDatasource:
-    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
-    username: FPALOU
-    password: dev2@!8
-    driver-class-name: oracle.jdbc.driver.OracleDriver
-    hikari:
-      maximum-pool-size: 30
   thymeleaf:
     enabled: false #disabled MVC
 security:
@@ -61,6 +54,7 @@ website:
   context-path: /srs
 logging:
   config: classpath:logback.xml
+
 
 google:
   recaptcha:

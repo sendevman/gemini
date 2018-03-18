@@ -7,6 +7,7 @@ import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {getSchools, loadCodes} from "../../../redux/actions";
+import entrollmentIllustration from "../../../style/img/entrollment-illustration.png";
 
 class PreEnrollment extends Component {
 
@@ -60,6 +61,62 @@ class PreEnrollment extends Component {
             form.schoolAddress = schoolObject.address;
         }
         this.setState({selectedSchool: schoolObject});
+    }
+
+    renderUI() {
+        return [
+            <div className="col-md-7 content-section">
+                <div className="title">
+                    <div className="description mb30"><h2>Pre-Enrollment <span>Record</span></h2></div>
+                    <span className="f20slg"><span className="f20slb">Let’s create a new pre-enrollment record.</span> Please select the Region, Grade Level and School that your child will be attending:</span>
+                </div>
+                <div className="body d-flex align-items-center flex-column justify-content-end">
+                    <form id="enrollment-form" action="preenrollment" method="POST" className="mt50">
+                        <div className="row plr15">
+                            <div className="group form-group has-feedback col-md-6 pl-0 pr50">
+                                <input className="inputMaterial" type="text" name="region" required/>
+                                <i className="n icon-gps fs26"></i>
+                                <span className="highlight"></span>
+                                <span className="bar"></span>
+                                <label>Region Example</label>
+                            </div>
+                            <div className="group form-group has-feedback col-md-6 pl50 pr-0 numeric">
+                                <input className="inputMaterial" type="text" name="level" required/>
+                                <i className="n icon-teacher fs26"></i>
+                                <i className="icon-top"></i>
+                                <i className="icon-down"></i>
+                                <span className="highlight"></span>
+                                <span className="bar"></span>
+                                <label>Grade Level</label>
+                            </div>
+                            <div className="group form-group has-feedback col-md-6 pl-0 pr50">
+                                <input className="inputMaterial" type="text" name="school" required/>
+                                <i className="n fas fa-university fs26"></i>
+                                <span className="highlight"></span>
+                                <span className="bar"></span>
+                                <label>School Name</label>
+                            </div>
+                            <div className="group form-group has-feedback col-md-6 pl50 pr-0">
+                                <input className="inputMaterial" type="text" name="adress" required/>
+                                <i className="n fas fa-map-marker-alt fs26"></i>
+                                <span className="highlight"></span>
+                                <span className="bar"></span>
+                                <label>School Adress</label>
+                            </div>
+                        </div>
+                        <div className="row mt50 bt1p pt40">
+                            <div className="col-md-12">
+                                <button className="button-green mr30 mob-mb30px" type="submit"><span>s</span>Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>,
+            <div className="col-md-4 illustration-section d-flex align-items-center text-center">
+                <div className="illustration"><img src={entrollmentIllustration} alt=""/></div>
+            </div>
+        ]
     }
 
     render() {

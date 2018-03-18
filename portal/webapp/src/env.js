@@ -5,7 +5,7 @@ const tmaxio = 'https://prdesietest.dde.pr/schoolmax_tmax2-api';
 const pmax1o = 'https://prdesieprod.dde.pr/registro-api';
 
 //google sitekey
-//todo: fran generate one please
+//todo: fran generate one for production please
 const pamx1o_sitekey = "";
 const tmax1o_sitekey = "6Lffy0sUAAAAAEr5HqHBCLsf013N8K3XSpOLmeQ5";
 const dev_sitekey = "6LfwnkkUAAAAABRldWNGMVuTb3ifCU_e9ZG6oI_J";
@@ -19,7 +19,6 @@ const local_base = "srs";
 const BASE_CONTEXT = local_base;
 const REST_URL = local;
 const SITE_KEY = dev_sitekey;
-
 
 let config = {
     baseContext: BASE_CONTEXT,

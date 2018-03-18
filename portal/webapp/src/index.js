@@ -6,7 +6,6 @@ import {BrowserRouter as Router} from "react-router-dom";
 import registerServiceWorker from "./registerServiceWorker";
 //css
 import 'react-block-ui/style.css';
-import "./index.css";
 import App from "./App";
 import * as env from "./env";
 import ErrorCatcher from "./ErrorCatcher";

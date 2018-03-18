@@ -20,8 +20,9 @@
 
     <modules>
         <module>portal</module>
-        <module>enum-codes-generation</module>
         <module>admin-portal</module>
+        <module>srs-common</module>
+        <module>enum-codes-generation</module>
     </modules>
 
     <properties>
