@@ -1,5 +1,6 @@
 import * as types from "../types";
 
+//Responses
 const START = {type: "START", nextButton: "Comenzar"};
 const QUESTION = {type: "YES_NO", nextButton: "Si", previousButton: "No"};
 const NOT_FOUND_QUESTION = {type: "YES_NO", nextButton: "Buscar Nuevamente", previousButton: "Crear Record"};
@@ -7,6 +8,7 @@ const SEARCH = {type: "SEARCH", nextButton: "Buscar"};
 const IN_PROGRESS = {type: "NEXT_PREVIOUS", nextButton: "Continuar", previousButton: "Retroceder"};
 const CONTINUE = {type: "START", nextButton: "Continuar"};
 const END = {type: "FINALIZE", nextButton: "Someter"};
+const FINALIZE_OR_CHANGE = {type: "FINALIZE_OR_CHANGE", nextButton: "Someter", previousButton: "Modificar"};
 
 let catalog = [
     {type: "USER_PROFILE", footerType: CONTINUE}
@@ -24,9 +26,11 @@ let catalog = [
     , {type: "FOUND_INFO", footerType: CONTINUE}
     , {type: "PERSONAL_INFO", footerType: IN_PROGRESS, editFooterType: CONTINUE}
     , {type: "ADDRESS", footerType: IN_PROGRESS, reviewHop: "VOCATIONAL_SUBMIT_REVIEW"}
+
     , {type: "ENROLLMENT_QUESTION", yes: "SUBMIT", no: "ENROLLMENT", footerType: QUESTION}
     , {type: "ENROLLMENT", footerType: IN_PROGRESS}
-    , {type: "SUBMIT", footerType: END}
+
+    , {type: "SUBMIT", footerType: FINALIZE_OR_CHANGE}
 
     , {type: "VOCATIONAL_SCHOOL_SELECTION", footerType: CONTINUE}
     , {type: "VOCATIONAL_SCHOOL_INFO", footerType: CONTINUE}

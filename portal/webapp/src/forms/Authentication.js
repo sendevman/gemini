@@ -70,7 +70,7 @@ class Authentication extends Component {
                 </div>
             </div>
             <div className="body d-flex align-items-center flex-column justify-content-end">
-                <form className="signin-form" onSubmit={this.login}>
+                <form id="signin-form" className="signin-form" onSubmit={this.login}>
                     {showAlert}
                     {/*<div className="group form-group has-feedback">*/}
                     {/*/!*<input className="inputMaterial" type="email" name="email" required>*!/*/}
@@ -81,11 +81,10 @@ class Authentication extends Component {
                     {/*<label>Email Address</label>*/}
                     {/*</div>*/}
                     <TextInput id="username"
-                               includeLabel={false}
-                               placeholder="Email"
-                               required={false}
+                               label="Email"
                                onChange={this.handleInputChange}
                                value={username}
+                               iconName="icon-human"
                                grouped/>
 
                     {/*<div className="group form-group has-feedback">*/}
@@ -97,12 +96,11 @@ class Authentication extends Component {
                     {/*</div>*/}
 
                     <TextInput id="password"
-                               includeLabel={false}
                                type="password"
-                               placeholder="Contraseña"
-                               required={false}
+                               label="Contraseña"
                                onChange={this.handleInputChange}
                                value={password}
+                               iconName="icon-lock"
                                grouped/>
                     <button className="button-yellow mt50" id="buttonGet" type="submit">Entrar</button>
                 </form>

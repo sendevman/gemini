@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import leisureIllustration from "../../../style/img/leisure-illustration.png";
+import {connect} from "react-redux";
 
-export default class PreEnrollmentRecordFound extends Component{
+class PreEnrollmentRecordFound extends Component{
 
     constructor(props){
         super(props);
@@ -31,3 +32,13 @@ export default class PreEnrollmentRecordFound extends Component{
     }
 
 }
+
+function mapStateToProps(store) {
+    return {
+        student: store.studentInfo.student,
+        preEnrollment: store.preEnrollment.info
+    };
+}
+
+
+export default connect(mapStateToProps)(PreEnrollmentRecordFound);
