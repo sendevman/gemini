@@ -7,6 +7,8 @@ import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.conn.util.PublicSuffixMatcherLoader;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -34,25 +36,30 @@ import javax.sql.DataSource;
 @EnableConfigurationProperties
 @EnableWebSecurity
 @ServletComponentScan
-public class Application extends SpringBootServletInitializer {
+public class SRSPortalApplication extends SpringBootServletInitializer {
+
+    final static Logger logger = LoggerFactory.getLogger(SRSPortalApplication.class.getName());
     /*
             TMAX1O -> /tmax1o/ias/srs/portal/
             PMAX1O -> /pmax1o/ias/srs/portal/
-            DEV -> /home/ubuntu/srs/portal
+            DEV -> /home/ubuntu/srs/portal/
      */
-    static final String PROPS_DIR = "/home/ubuntu/srs/portal";
+    static final String PROPS_DIR = "/home/ubuntu/srs/portal/";
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class).properties("spring.config.location:".concat(PROPS_DIR));
+        logger.info("***Starting services from servlet***");
+        logger.info(String.format("***config location path : %s***", "spring.config.location:".concat(PROPS_DIR)));
+        return application.sources(SRSPortalApplication.class).properties("spring.config.location:".concat(PROPS_DIR));
     }
 
     public static void main(String[] args) {
         final String[] a = new String[args.length + 1];
-
         a[0] = "--spring.config.location=".concat(PROPS_DIR);
         System.arraycopy(args, 0, a, 1, args.length);
-        SpringApplication.run(Application.class, a);
+        logger.info("***Starting services from jar***");
+        logger.info(String.format("***config location path : %s***", "--spring.config.location:".concat(PROPS_DIR)));
+        SpringApplication.run(SRSPortalApplication.class, a);
     }
 
     @Bean
