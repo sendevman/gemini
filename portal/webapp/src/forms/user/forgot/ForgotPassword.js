@@ -4,6 +4,7 @@ import {Button} from "react-bootstrap";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {forgotPassword} from "../../../redux/actions";
+import registrationIllustration from "../../../style/img/registration-illustration.png";
 
 class ForgotPassword extends Component {
 
@@ -38,6 +39,37 @@ class ForgotPassword extends Component {
     }
 
     render() {
+        let form = this.props.form;
+
+        return [<div className="col-md-5 content-section">
+            <div className="title">
+                <div className="description"><h2 className="f60sbg">Olvido su contraseña</h2></div>
+                <span className="f30slg"><span
+                    className="f20slg">Le enviaremos un email con las intrucciones de como reiniciar su contraseña</span></span>
+            </div>
+            <div className="body d-flex align-items-center flex-column justify-content-end">
+                <form id="recover-form" onSubmit={this.sendEmail}>
+                    <TextInput id="email"
+                               type="email"
+                               ref="email"
+                               label="Email"
+                               onChange={this.inputHandler}
+                               value={form.email}
+                               iconName="icon-mail"
+                               grouped/>
+                    <button className="button-yellow mt50" id="buttonGet" type="submit"
+                            disabled={!this.state.valid}>Enviar Email
+                    </button>
+                </form>
+                <div className="row w-100 mt50"/>
+            </div>
+        </div>,
+            <div className="col-md-6 illustration-section d-flex align-items-center text-center">
+                <div className="illustration"><img src={registrationIllustration} alt=""/></div>
+            </div>]
+    }
+
+    renderOlde() {
         let form = this.props.form;
 
         return (<div>

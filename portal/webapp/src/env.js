@@ -17,7 +17,7 @@ const local_base = "srs";
 
 //todo: fran do logic here to determine these props dynamically
 const BASE_CONTEXT = local_base;
-const REST_URL = dev;
+const REST_URL = local;
 const SITE_KEY = dev_sitekey;
 
 let config = {

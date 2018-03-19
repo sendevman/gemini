@@ -29,12 +29,15 @@ export const registerUser = (userForm, success, error) => (dispatch, getState) =
 
 };
 
-export const existsCode = (code) => (dispatch) => {
+export const existsCode = (code, onInvalidCode) => (dispatch) => {
+    dispatch({type: types.ACTIVATION_USER_CLEAN});
     dispatch({type: types.USER_LOCATION_START});
     services()
         .existsCode(code)
         .then((response) => {
-            dispatch({type: types.USER_LOCATION_END, result: response === "true"})
+            dispatch({type: types.USER_LOCATION_END, result: response === "true"});
+            if (response !== "true")
+                onInvalidCode()
         });
 
 };
@@ -49,4 +52,9 @@ export const activateAccount = (activationForm, success, error) => (dispatch, ge
             dispatch({type: types.ACTIVATION_USER_END, result: response.successfullyRegistered});
             response.successfullyRegistered ? success() : error()
         });
+};
+
+export const cleanRegistration = () => (dispatch) => {
+    dispatch({type: types.REGISTER_CLEAN});
+
 };

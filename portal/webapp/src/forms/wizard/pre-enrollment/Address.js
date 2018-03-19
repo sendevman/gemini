@@ -115,7 +115,7 @@ class Address extends Component {
                 </div>
 
                 <div className="col-md-4">
-                    <TextInput type="zipcode" id={`${type}.zipcode`} label="Codigo Postal" 
+                    <TextInput type="zipcode" id={`${type}.zipcode`} label="Zip"
                                value={address.zipcode} onChange={this.inputHandler}/>
                 </div>
             </div>
