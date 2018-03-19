@@ -25,6 +25,8 @@ const studentInfo = (state = Utils.freezeObject(initialState), action) => {
             return {...state, postalAddress: action.postal};
         case types.STUDENT_UPDATED:
             return {...state, student: action.student};
+        case types.HOME_LOAD_END:
+            return initialState;
         default:
             return state;
     }

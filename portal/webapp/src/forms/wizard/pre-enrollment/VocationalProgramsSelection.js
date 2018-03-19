@@ -5,6 +5,7 @@ import {getVocationalPrograms, partialSaveVocationalPreEnrollment} from "../../.
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import Immutable from "immutable";
+import entrollmentIllustration from "../../../style/img/entrollment-illustration.png";
 
 class VocationalProgramsSelection extends Component {
 
@@ -17,7 +18,7 @@ class VocationalProgramsSelection extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.programs) {
-            
+
             this.setState({...this.state, formPrograms: Immutable.fromJS(nextProps.programs).toJS()})
         }
     }
@@ -65,6 +66,78 @@ class VocationalProgramsSelection extends Component {
     };
 
     render() {
+        let enrollment = this.props.currentVocationalEnrollment;
+        let programs = this.state.formPrograms;
+
+        return [
+            <div className="col-md-7 content-section">
+                <div className="title">
+                    <div className="description mb30"><h2>Pre-Matricula <span>Vocacional</span></h2></div>
+                    <p className="f30slg">Seleccione los programas vocacionales, que desea <span
+                        className="f30slb">pre-matricularse.</span></p>
+                </div>
+                <div className="body" style={{marginTop: -120}}>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="row">
+                                <div className="col-md-4">
+                                    <p>Escuela: </p>
+                                </div>
+                                <div className="col-md-8">
+                                    <h5>{enrollment && enrollment.schoolName}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="row">
+                                <div className="col-md-4">
+                                    <p>Direccion Escuela: </p>
+                                </div>
+                                <div className="col-md-8">
+                                    <h5>{enrollment && enrollment.schoolAddress.addressFormatted}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-8">
+                            <RemoteCodeSelect id="program"
+                                              label="Programa"
+                                              placeholder="Seleccione Programa"
+                                              codes={programs}
+                                              onObjectChange={this.onProgramChange}
+                                              target="programCode"
+                                              display="programDescription"
+                                              value={this.state.selectedProgram}
+                            />
+                        </div>
+                        <div className="col-md-4">
+                            <div className="form-group">
+                                <label>&nbsp;</label>
+                                <Button className="form-control" bsStyle="primary" onClick={this.onAdd}
+                                        disabled={!programs || programs.length === 0}>A&ntilde;adir</Button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-12">
+                            {this.renderProgramsSelections()}
+                        </div>
+                    </div>
+                    <div style={{marginTop: -100}}>
+                        {this.props.footer}
+                    </div>
+                </div>
+            </div>,
+            <div className="col-md-4 illustration-section d-flex align-items-center text-center">
+                <div className="illustration"><img src={entrollmentIllustration} alt=""/></div>
+            </div>
+        ];
+    }
+
+    renderOld() {
         let enrollment = this.props.currentVocationalEnrollment;
         let programs = this.state.formPrograms;
 
@@ -140,7 +213,7 @@ class VocationalProgramsSelection extends Component {
                         <td>{prog.programDescription}</td>
                         <td>
                             <Button bsSize="xsmall" bsStyle="danger" onClick={this.onDelete(index)}>
-                                <Glyphicon glyph="glyphicon glyphicon-trash"/>
+                                <i className="fas fa-trash"/>
                             </Button>
                         </td>
                     </tr>

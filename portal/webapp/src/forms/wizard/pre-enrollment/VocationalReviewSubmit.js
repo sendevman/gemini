@@ -12,6 +12,7 @@ import {
     submitVocationalPreEnrollment
 } from "../../../redux/actions";
 import {Button, Glyphicon, Panel} from "react-bootstrap";
+import entrollmentIllustration from "../../../style/img/entrollment-illustration.png";
 
 class VocationalReviewSubmit extends Component {
 
@@ -63,7 +64,24 @@ class VocationalReviewSubmit extends Component {
         this.props.submitVocationalPreEnrollment(this.getSubmitRequest(), onResult, onError);
     }
 
-    render() {
+    render(){
+        return [
+            <div className="col-md-7 content-section">
+                <div className="title">
+                    <div className="description mb30"><h2>Revise su Pre-Matricula <span>Vocacional</span></h2></div>
+                </div>
+                <div className="body" style={{marginTop: -220}}>
+                    {this.innerRender()}
+                    {this.props.footer}
+                </div>
+            </div>,
+            <div className="col-md-4 illustration-section d-flex align-items-center text-center">
+                <div className="illustration"><img src={entrollmentIllustration} alt=""/></div>
+            </div>
+        ]
+    }
+
+    innerRender() {
         let student = this.props.student;
         let preEnrollment = this.props.preEnrollment;
 
@@ -115,35 +133,28 @@ class VocationalReviewSubmit extends Component {
                     ? vocationalEnrollments.map((enrollment, index) => (
                         <div key={index} className="row">
                             <div className="col-md-12">
+                                <div className="card-block">
+                                    <div className="card-title">
+                                        <h5>Escuela {enrollment.schoolName}</h5>
+                                        <div className="float-right">
+                                            <Button bsSize="xsmall" onClick={this.onEdit(enrollment)}
+                                                    style={{marginBottom: 5, marginRight: 5}}>
+                                                <i className="fas fa-edit"/>
+                                            </Button>
+                                            <Button bsSize="xsmall" onClick={this.onDelete(enrollment)}
+                                                    style={{marginBottom: 5}}>
+                                                <i className="fas fa-trash"/>
+                                            </Button>
+                                        </div>
+                                    </div>
 
+                                    <div className="row">
+                                        <div className="col-md-12">
+                                            {this.renderVocationalPrograms(enrollment)}
+                                        </div>
+                                    </div>
 
-                                <Panel key={index} bsStyle="primary" defaultExpanded>
-                                    <Panel.Heading>
-                                        <Panel.Toggle componentClass="panel-title">
-                                            Escuela {enrollment.schoolName}
-                                            <div className="panel-title pull-right">
-                                                <Button bsSize="xsmall" onClick={this.onEdit(enrollment)}
-                                                        style={{marginBottom: 5, marginRight: 5}}>
-                                                    <Glyphicon bsStyle="primary" glyph="glyphicon glyphicon-pencil"/>
-                                                </Button>
-                                                <Button bsSize="xsmall" onClick={this.onDelete(enrollment)}
-                                                        style={{marginBottom: 5}}>
-                                                    <Glyphicon bsStyle="primary" glyph="glyphicon glyphicon-trash"/>
-                                                </Button>
-                                            </div>
-                                        </Panel.Toggle>
-
-                                    </Panel.Heading>
-                                    <Panel.Collapse>
-                                        <Panel.Body>
-                                            <div className="row">
-                                                <div className="col-md-12">
-                                                    {this.renderVocationalPrograms(enrollment)}
-                                                </div>
-                                            </div>
-                                        </Panel.Body>
-                                    </Panel.Collapse>
-                                </Panel>
+                                </div>
                             </div>
                         </div>
                     ))
@@ -159,7 +170,7 @@ class VocationalReviewSubmit extends Component {
             <thead>
             <tr>
                 <th>#</th>
-                <th>Programa</th>
+                <th>Programas</th>
             </tr>
             </thead>
             <tbody>
