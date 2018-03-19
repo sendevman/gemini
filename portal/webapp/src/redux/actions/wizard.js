@@ -35,7 +35,7 @@ let catalog = [
         footerType: IN_PROGRESS,
         onNotFoundPreEnrollment: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION",
         onFoundPreEnrollment: "PRE_ENROLLMENT_FOUND_SUBMIT",
-        reviewHop: "VOCATIONAL_SUBMIT_REVIEW"
+        reviewHop: "VOCATIONAL_REVIEW_SUBMIT"
     }
 
     , {type: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION", footerType: IN_PROGRESS}
@@ -53,22 +53,20 @@ let catalog = [
     }
 
     , {type: "PRE_ENROLLMENT_COMPLETED", footerType: CONTINUE}
-    , {type: "PRE_ENROLLMENT_CONFIRMED", footerType: QUESTION, completed: true, yes: "INSTRUCTIONS", no: "HOME"}
+    , {type: "PRE_ENROLLMENT_CONFIRMED", footerType: QUESTION, yes: "INSTRUCTIONS", no: "HOME"}
 
 
     , {type: "VOCATIONAL_SCHOOL_SELECTION", footerType: CONTINUE}
     , {type: "VOCATIONAL_SCHOOL_INFO", footerType: CONTINUE}
     , {type: "VOCATIONAL_PROGRAMS", footerType: CONTINUE}
     , {
-        type: "VOCATIONAL_SUBMIT_REVIEW",
-        footerType: END,
+        type: "VOCATIONAL_REVIEW_SUBMIT",
+        footerType: FINALIZE_OR_CHANGE,
+        yes: "PRE_ENROLLMENT_COMPLETED",
+        no: "VOCATIONAL_SCHOOL_SELECTION",
         addingSchoolHop: "VOCATIONAL_SCHOOL_SELECTION",
         editSchoolHop: "VOCATIONAL_PROGRAMS"
     }
-
-    // , {renderObj: PreEnrollmentAlternateSchoolsSelection}
-    // , {renderObj: PreEnrollmentAlternateSchoolsSubmit}
-    // , {renderObj: PreEnrollmentRecordFoundSubmit}
 
 ];
 
@@ -137,7 +135,9 @@ const studentRequesterVocationalFlow = [
     getIndexFromCatalog("VOCATIONAL_SCHOOL_SELECTION"),
     getIndexFromCatalog("VOCATIONAL_SCHOOL_INFO"),
     getIndexFromCatalog("VOCATIONAL_PROGRAMS"),
-    getIndexFromCatalog("VOCATIONAL_SUBMIT_REVIEW")
+    getIndexFromCatalog("VOCATIONAL_REVIEW_SUBMIT"),
+    getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
+    getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")
 ];
 const parentVocationalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
@@ -152,7 +152,9 @@ const parentVocationalFlow = [
     getIndexFromCatalog("VOCATIONAL_SCHOOL_SELECTION"),
     getIndexFromCatalog("VOCATIONAL_SCHOOL_INFO"),
     getIndexFromCatalog("VOCATIONAL_PROGRAMS"),
-    getIndexFromCatalog("VOCATIONAL_SUBMIT_REVIEW")
+    getIndexFromCatalog("VOCATIONAL_REVIEW_SUBMIT"),
+    getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
+    getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")
 ];
 const editNormalFlow = [
     getIndexFromCatalog("PERSONAL_INFO"),
@@ -170,7 +172,9 @@ const editVocationalFlow = [
     getIndexFromCatalog("VOCATIONAL_SCHOOL_SELECTION"),
     getIndexFromCatalog("VOCATIONAL_SCHOOL_INFO"),
     getIndexFromCatalog("VOCATIONAL_PROGRAMS"),
-    getIndexFromCatalog("VOCATIONAL_SUBMIT_REVIEW")
+    getIndexFromCatalog("VOCATIONAL_REVIEW_SUBMIT"),
+    getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
+    getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")
 ];
 
 export const load = (requestId) => (dispatch, getState) => {
@@ -276,7 +280,7 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
         }
 
         if (maxCurrent === current) {
-            dispatch({type: types.ON_WIZARD_COMPLETED});
+            dispatch({type: types.ON_WIZARD_COMPLETED, startOver: true});
         } else {
             let nextForm = getForm(next);
             dispatch({
@@ -296,6 +300,8 @@ export const onPreviousAction = () => (dispatch, getState) => {
     let wizard = getState().wizard;
     let flowNavigation = wizard.flowNavigation;
     let current = wizard.current;
+    let maxForms = wizard.maxForms;
+    let maxCurrent = (maxForms - 1);
 
     if (isType(current, "IS_VOCATIONAL_STUDENT_QUESTION")) {
         preEnrollment.type = "REGULAR";
@@ -313,12 +319,16 @@ export const onPreviousAction = () => (dispatch, getState) => {
             : current - 1;
     }
     let nextForm = getForm(next);
-    dispatch({
-        type: types.ON_WIZARD_PREVIOUS_END,
-        current: next,
-        footerType: nextForm.footerType,
-        pageType: nextForm.type
-    });
+    if (maxCurrent === current) {
+        dispatch({type: types.ON_WIZARD_COMPLETED, startOver: false});
+    }else {
+        dispatch({
+            type: types.ON_WIZARD_PREVIOUS_END,
+            current: next,
+            footerType: nextForm.footerType,
+            pageType: nextForm.type
+        });
+    }
 };
 
 export const onBackAction = (appBackAction) =>(dispatch, getState)=>{

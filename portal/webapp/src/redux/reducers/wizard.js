@@ -14,7 +14,8 @@ const initialState = {
     wizardCompleted: false,
     editing: false,
     formsToDisplay: [],
-    workingRequestId: null
+    workingRequestId: null,
+    startOver: false
 };
 
 const accountablePercentageForm = 4;
@@ -77,7 +78,7 @@ const wizard = (state = Utils.freezeObject(initialState), action) => {
                 currentPageType: action.pageType,
             };
         case types.ON_WIZARD_COMPLETED:
-            return {...state, wizardCompleted: true};
+            return {...state, wizardCompleted: true, startOver: action.startOver};
         case types.ON_WIZARD_RESET:
             return initialState;
         case types.ON_WIZARD_FORMS_CHANGE:

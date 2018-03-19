@@ -13,7 +13,6 @@ import Instructions from "./Instructions";
 import UserInfoRequest from "./pre-enrollment/UserInfoRequest";
 import VocationalProgramsSelection from "./pre-enrollment/VocationalProgramsSelection";
 import VocationalPreEnrollment from "./pre-enrollment/VocationalPreEnrollment";
-import Info from "./pre-enrollment/Info";
 import VocationalReviewSubmit from "./pre-enrollment/VocationalReviewSubmit";
 import IsVocationalQuestion from "./pre-enrollment/IsVocationalQuestion";
 import StudentFound from "./pre-enrollment/StudentFound";
@@ -24,6 +23,7 @@ import PreEnrollmentRecordFoundSubmit from "./pre-enrollment/PreEnrollmentRecord
 import PreEnrollmentAlternateSchoolsSubmit from "./pre-enrollment/PreEnrollmentAlternateSchoolsSubmit";
 import CompletedPreEnrollment from "./pre-enrollment/CompletedPreEnrollment";
 import ConfirmedPreEnrollment from "./pre-enrollment/ConfirmedPreEnrollment";
+import VocationalSchoolSelectionInfo from "./pre-enrollment/VocationalSchoolSelectionInfo";
 
 
 function form(title, form) {
@@ -48,7 +48,11 @@ class Wizard extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.wizardCompleted) {
-            this.props.history.push('/home')
+            if (nextProps.startOver) {
+                window.location.reload();
+            } else {
+                this.props.history.push('/home');
+            }
         }
 
     }
@@ -75,19 +79,6 @@ class Wizard extends Component {
         this.props.onPreviousAction();
     }
 
-    unusedForms() {
-        /* form("Datos Demograficos", <Demographic ref={`page${c++}`}/>),
-         form("Informaci\u00f3n Adicional", <AdditionalInfo ref={`page${c++}`}/>),
-         form("Contactos de Emergencia", <EmergencyContacts ref={`page${c++}`}/>),
-         form("Lenguajes", <LanguageInfo ref={`page${c++}`}/>),
-         form("Informacion Medica", <MedicalInfo ref={`page${c++}`}/>),
-         form("Informacion Medica Adicional", <MedicalInfoAdditional ref={`page${c++}`}/>),
-         form("Tutores Legales", <TutorInfo ref={`page${c++}`}/>),
-         form("Finanzas", <FinancialFamilyInfo ref={`page${c++}`}/>),
-         form("Transportaci\u00f3n", <TransportationInfo ref={`page${c++}`}/>)*/
-
-    }
-
     configForms() {
         let student = this.props.student;
         let preEnrollment = this.props.preEnrollment;
@@ -96,6 +87,7 @@ class Wizard extends Component {
             : "";
         let formsToDisplay = this.props.formsToDisplay;
         let vocationalSchool = this.props.currentVocationalEnrollment;
+        let currentPageType = this.props.wizard.currentPageType;
 
         let CATALOG = [
             {renderObj: UserInfoRequest}
@@ -114,14 +106,10 @@ class Wizard extends Component {
             , {renderObj: ConfirmedPreEnrollment}
 
             //vocational forms
-            , {title: "Seleccione su Escuela Vocacional", renderObj: VocationalPreEnrollment}
-            , {
-                title: null,
-                info: `Gracias, ahora por favor seleccione los programas a los cuales desea aplicar en la escuela ${vocationalSchool && vocationalSchool.schoolName}.`,
-                renderObj: Info
-            }
-            , {title: "Seleccione los Programas Vocacionales", renderObj: VocationalProgramsSelection}
-            , {title: "Revise su pre-matricula Vocacional", renderObj: VocationalReviewSubmit}
+            , {renderObj: VocationalPreEnrollment}
+            , {renderObj: VocationalSchoolSelectionInfo}
+            , {renderObj: VocationalProgramsSelection}
+            , {renderObj: VocationalReviewSubmit}
 
         ];
 
@@ -136,15 +124,19 @@ class Wizard extends Component {
                 props.question = pageConfig.question;
             else if (pageConfig.info)
                 props.info = pageConfig.info;
-            if (RenderObj instanceof StudentFound) {
+
+            if (currentPageType === "FOUND_INFO") {
                 props["studentName"] = student && student.fullName;
+            }
+
+            if (currentPageType === "VOCATIONAL_SCHOOL_INFO") {
+                props["vocationalSchool"] = vocationalSchool;
             }
 
             this.wizardForms.push(form(pageConfig.title, <RenderObj {...props}/>));
         }
 
     }
-
 
     render() {
         let current = this.props.current;
@@ -157,10 +149,10 @@ class Wizard extends Component {
 
     renderFooter() {
         let props = this.props.wizard;
-        let commonStyle = {zIndex:1000};
+        let commonStyle = {zIndex: 1000};
         // props.nextShortLabel
         // props.previousShortLabel
-        if (props.currentPageType === "PERSONAL_INFO" || props.currentPageType === "STUDENT_LOOKUP")
+        if (props.currentPageType === "PERSONAL_INFO")
             return (<div className="row action-section" style={commonStyle}>
                 <div className="col-md-12 text-center text-lg-left p-0">
                     <a className="button-green mr30 mob-mb30px" onClick={this.next}>
@@ -175,7 +167,8 @@ class Wizard extends Component {
                 </div>
             </div>);
 
-        return (<div key="footer" style={commonStyle} className="body d-flex align-items-center flex-column justify-content-end">
+        return (<div key="footer" className="body d-flex align-items-center flex-column justify-content-end"
+                     style={commonStyle}>
             <div className="row action-section">
                 <div className="col-md-12 text-center text-lg-left p-0">
                     <a className="button-green mr30 mob-mb30px" onClick={this.next}>
@@ -202,6 +195,7 @@ function mapStateToProps(store) {
         wizard: store.wizard,
         preEnrollment: store.preEnrollment.info,
         currentVocationalEnrollment: store.preEnrollment.currentVocationalEnrollment,
+        startOver: store.wizard.startOver
     };
 }
 
