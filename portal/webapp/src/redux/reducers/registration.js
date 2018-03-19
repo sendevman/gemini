@@ -17,7 +17,10 @@ const registration = (state = Utils.freezeObject(initialState), action) => {
         case types.REGISTER_START:
             return {...state, formValidated: action.valid, loading: true};
         case types.REGISTER_END:
-            return {...state, formValidated: action.valid, loading: false, form: {}};
+            return {...state, formValidated: action.valid, loading: false};
+        case types.REGISTER_CLEAN:
+        case types.ACTIVATION_USER_CLEAN:
+            return Utils.freezeObject(initialState);
         case types.ACTIVATION_USER_START:
         case types.USER_LOCATION_START:
             return state;

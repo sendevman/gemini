@@ -2,14 +2,13 @@
  * Created by fran on 2/1/18.
  */
 import React, {Component} from "react";
-import {Button} from "react-bootstrap";
 import TextInput from "../../../components/TextInput";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {registerUser, validateForm} from "../../../redux/actions";
+import {registerUser, validateForm, cleanRegistration} from "../../../redux/actions";
 import ReCAPTCHA from "react-google-recaptcha";
 import env from "../../../env";
-import "./Registration.css";
+import profileIllustration from "../../../style/img/profile-illustration.png";
 
 
 class Registration extends Component {
@@ -28,16 +27,19 @@ class Registration extends Component {
         this.verifyCallback = this.verifyCallback.bind(this);
     }
 
+    componentWillMount(){
+        this.props.cleanRegistration();
+    }
+
     register(e) {
         let user = this.props.form;
         e.preventDefault();
         this.props.registerUser(user, () => {
-            this.props.history.push("/activate/result/success")
+            this.props.history.push("/registration/result/success")
         }, () => {
-            this.props.history.push("/activate/result/error")
+            this.props.history.push("/registration/result/error")
         });
     }
-
 
     verifyCallback(response) {
         console.log(response);
@@ -83,66 +85,71 @@ class Registration extends Component {
 
     render() {
         let form = this.props.form;
-        return (
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-12" style={{textAlign: "center"}}>
-                        <h3>Registro de cuenta</h3>
+        return [
+            <div className="col-md-7 content-section">
+                <div className="title">
+                    <div className="description"><h2>Registrar Cuenta</h2>
+                        <div className="violet-line"></div>
                     </div>
                 </div>
-                <div className="row" style={{marginTop: 50}}>
-                    <div className="col-md-12">
-                        <form onSubmit={this.register} className="register-form">
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <TextInput id="email"
-                                               type="email"
-                                               ref="email"
-                                               label="Email"
-                                               onChange={this.inputHandler}
-                                               value={form.email}/>
-                                </div>
+                <div className="body d-flex align-items-center flex-column justify-content-end">
+                    <form onSubmit={this.register} >
+                        <div className="row plr15 ">
+                            <div className="col-md-12">
+                                <TextInput id="email"
+                                           type="email"
+                                           ref="email"
+                                           label="Email"
+                                           onChange={this.inputHandler}
+                                           value={form.email}
+                                           iconName="icon-mail"
+                                           grouped/>
                             </div>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <TextInput id="confirmEmail"
-                                               type="email"
-                                               ref="confirmEmail"
-                                               label="Confirmar Email"
-                                               onChange={this.inputHandler}
-                                               value={form.confirmEmail}/>
-                                </div>
+                        </div>
+                        <div className="row plr15">
+                            <div className="col-md-12">
+                                <TextInput id="confirmEmail"
+                                           type="email"
+                                           ref="confirmEmail"
+                                           label="Confirmar Email"
+                                           onChange={this.inputHandler}
+                                           value={form.confirmEmail}
+                                           iconName="icon-mail"
+                                           grouped/>
                             </div>
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <ReCAPTCHA
-                                        sitekey={env.reCAPTCHASiteKey}
-                                        onChange={this.verifyCallback}
-                                    />
-                                </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <ReCAPTCHA
+                                    sitekey={env.reCAPTCHASiteKey}
+                                    onChange={this.verifyCallback}
+                                />
                             </div>
+                        </div>
 
-                            <div className="row" style={{marginTop: 20}}>
-                                <div className="col-md-12">
-                                    <Button type="submit" block bsStyle="primary"
-                                            disabled={!this.state.valid}>Registrar</Button>
-                                </div>
+                        <div className="row mt50">
+                            <div className="col-md-12 ">
+                                <button className="button-green mr30 mob-mb30px" type="submit" disabled={!this.state.valid}><span>s</span>Registrar
+                                </button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
+            </div>,
+            <div className="col-md-4 illustration-section d-flex align-items-center text-center">
+                <div className="illustration"><img src={profileIllustration} alt=""/></div>
             </div>
-        );
+        ]
     }
-}
 
+}
 
 function mapStateToProps(store) {
     return {form: store.registration.form};
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({validateForm, registerUser}, dispatch)
+    return bindActionCreators({validateForm, registerUser, cleanRegistration}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions)(Registration);

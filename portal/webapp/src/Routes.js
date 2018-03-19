@@ -10,6 +10,7 @@ import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import Registration from "./forms/user/registration/Registration";
 import Activation from "./forms/user/registration/Activation";
 import Profile from "./forms/Profile";
+import ActivationResult from "./forms/user/registration/ActivationResult";
 import RegistrationResult from "./forms/user/registration/RegistrationResult";
 import ForgotPassword from "./forms/user/forgot/ForgotPassword";
 import ForgotPasswordResult from "./forms/user/forgot/ForgotPasswordResult";
@@ -32,14 +33,16 @@ class Routes extends Component {
             <Switch>
                 <Route exact path="/" component={Authentication}/>
                 {/*public routes*/}
+                <Route path="/registration/result/:result(success|error)" component={RegistrationResult}/>
                 <Route path="/registration" component={Registration}/>
+
                 <Route path="/forgot/password/help" component={ForgotPassword}/>
                 <Route path="/forgot/password/result/:result(success|error)" component={ForgotPasswordResult}/>
 
                 <Route path="/reset/password/result/:result(success|error|invalid)" component={ResetPasswordResult}/>
                 <Route path="/reset/password/:credentialLostKey" component={ResetPassword}/>
 
-                <Route path="/activate/result/:result(success|error)" component={RegistrationResult}/>
+                <Route path="/activate/result/:result(success|error)" component={ActivationResult}/>
                 <Route path="/activate/:activationCode" component={Activation}/>
 
                 <Route path="/cancel/reset/password/:key" component={CancelResetPasswordRequest}/>

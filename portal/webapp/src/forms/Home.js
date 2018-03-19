@@ -8,6 +8,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {loadHome, resetWizard} from "../redux/actions";
 import * as Utils from "../Utils";
+import leisureIllustration from "../style/img/leisure-illustration.png";
 
 class Home extends Component {
 
@@ -29,84 +30,91 @@ class Home extends Component {
         this.props.history.push(`/wizard/${id}`);
     };
 
+
     render() {
-        return (
-            <div className="container">
-                <div>
-                    <div className="row">
-                        <div className="col-md-10">
-                            <h3 style={{textAlign: "right"}}>Desea pre-matricular un estudiante?</h3>
-                        </div>
-                        <div className="col-md-2">
-                            <button className="button-yellow" onClick={this.preEnroll}>Pre-Matricular</button>
-                        </div>
-                    </div>
-                    <div className="row" style={{marginTop: 20}}>
-                        <div className="col-md-12">
-                            {this.renderPreEnrollmentList()}
-                        </div>
-                    </div>
+        return [
+            <div className="col-md-7 content-section">
+                <div className="body">
+                    {this.renderHome()}
+                </div>
+                {this.props.footer}
+            </div>,
+            <div className="col-md-4 illustration-section d-flex align-items-center text-center">
+                <div className="illustration"><img src={leisureIllustration} alt=""/></div>
+            </div>
+        ];
+    }
+
+    renderHome() {
+        return [
+
+            <div className="row">
+                <div className="col-md-8">
+                    <h5 className="f20slb" style={{textAlign: "right"}}>Desea pre-matricular un estudiante?</h5>
+                </div>
+                <div className="col-md-4">
+                    <button className="button-yellow" style={{padding: 10}} onClick={this.preEnroll}>Pre-Matricular
+                    </button>
+                </div>
+            </div>,
+            <div className="row" style={{marginTop: 20}}>
+                <div className="col-md-12">
+                    {this.renderPreEnrollmentList()}
                 </div>
             </div>
-        );
+        ];
     }
 
     renderPreEnrollmentList() {
         let preEnrollments = this.props.preEnrollments;
         if (!preEnrollments || preEnrollments.length <= 0)
             return (
-                <div className="panel panel-default">
-                    <div className="panel-body">
-                        No posee pre-matriculas aun
+                <div className="card">
+                    <div className="card-block">
+                        <span className="f20sbgr"><i className="fa fa-times-circle"/> No posee pre-matriculas a&uacute;n</span>
                     </div>
                 </div>
             );
 
         return preEnrollments.map((pre, index) => (
-            <div key={index} className="card" style={{height: 150, marginTop: 5}}>
+            <div key={index} style={{height: 150, marginTop: 5, padding: 20, borderBottom: "1px solid #edeef2"}}>
 
-                <div className="card-block">
-                    <div className="card-title">
-                        <h5>Estudiante {pre.student.fullName} -> {Utils.format(pre.student.dateOfBirth, "ll")}</h5>
-                        <div className="float-right" style={{marginTop: -40}}>
-                            {pre.requestStatus === "ACTIVE"
-                                ?
-                                (<Button bsSize="small" bsStyle="info" onClick={this.editPreEnroll(pre.id)}>
-                                    <i className="fas fa-edit"/>
-                                </Button>)
-                                : (null)
-                            }
-                        </div>
+                <h5>Estudiante {pre.student.fullName} -> {Utils.format(pre.student.dateOfBirth, "ll")}</h5>
+                <div className="float-right" style={{marginTop: -40}}>
+                    {pre.requestStatus === "ACTIVE"
+                        ?
+                        (<Button bsSize="small" bsStyle="info" onClick={this.editPreEnroll(pre.id)}>
+                            <i className="fas fa-edit"/>
+                        </Button>)
+                        : (null)
+                    }
+                </div>
+                <div className="row">
+                    <div className="col-md-3">
+                        Estatus:
                     </div>
-                    <div>
-                        <div className="row">
-                            <div className="col-md-3">
-                                Estatus de Pre-Matricula:
-                            </div>
-                            <div className="col-md-3">
-                                <span className="text-danger">{pre.requestStatusText}</span>
-                            </div>
-                            <div className="col-md-6"/>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-3">
-                                Fecha de Solicitud:
-                            </div>
-                            <div className="col-md-9">
-                                {(pre.submitDate && moment(pre.submitDate).format('LL, h:mm:ss a')) || "Aun no ha sido sometida"}
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-3">
-                                Matricula:
-                            </div>
-                            <div className="col-md-3">
-                                {pre.type === "VOCATIONAL" ? "Vocacional" : "Regular"}
-                            </div>
-                            <div className="col-md-6"/>
+                    <div className="col-md-6">
+                        <span className="text-danger">{pre.requestStatusText}</span>
+                    </div>
+                    <div className="col-md-3"/>
+                </div>
+                <div className="row">
+                    <div className="col-md-3">
+                        Fecha:
+                    </div>
+                    <div className="col-md-9">
+                        {(pre.submitDate && moment(pre.submitDate).format('LL, h:mm:ss a')) || "Aun no ha sido sometida"}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-3">
+                        Matricula:
+                    </div>
+                    <div className="col-md-3">
+                        {pre.type === "VOCATIONAL" ? "Vocacional" : "Regular"}
+                    </div>
+                    <div className="col-md-6"/>
 
-                        </div>
-                    </div>
                 </div>
             </div>));
     }
