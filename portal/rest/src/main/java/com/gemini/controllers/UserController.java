@@ -60,8 +60,8 @@ public class UserController {
 
     private void updatePrincipal(ParentProfileInfoRequest request, User loggedUser) {
         loggedUser.setFirstName(request.getFirstName());
-        loggedUser.setFatherLastName(request.getFatherLastName());
-        loggedUser.setMotherLastName(request.getMotherLastName());
+        loggedUser.setMiddleName(request.getMiddleName());
+        loggedUser.setLastName(request.getLastName());
         loggedUser.setProfileCompleted(true);
     }
 

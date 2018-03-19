@@ -120,8 +120,7 @@ public class PreEnrollmentRequestController {
         if (ValidationUtils.valid(initialRequest.getStudentNumber())
                 || ValidationUtils.valid(
                 initialRequest.getFirstName(),
-                initialRequest.getFatherLastName(),
-                initialRequest.getMotherLastName(),
+                initialRequest.getLastName(),
                 initialRequest.getDateOfBirth(),
                 initialRequest.getGender()))
             preEnrollmentBean = preEnrollmentService.createPreEnrollment(initialRequest, loggedUser);

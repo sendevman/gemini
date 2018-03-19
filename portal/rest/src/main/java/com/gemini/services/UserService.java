@@ -119,7 +119,7 @@ public class UserService {
         entity.setDateOfBirth(request.getDateOfBirth());
         entity.setFirstName(request.getFirstName());
         entity.setMiddleName(request.getMiddleName());
-        entity.setLastName(Utils.toLastName(request.getFatherLastName(), request.getMotherLastName()));
+        entity.setLastName(request.getLastName());
         entity.setProfileCompleted(true);
         entity = userRepository.save(entity);
         return entity != null;

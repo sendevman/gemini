@@ -20,7 +20,7 @@ class PreEnrollmentRecordFound extends Component {
         this.props.submitPreEnrollment(submitRequest, onResult, onError);
     }
 
-    render() {
+    oldRender() {
         let student = this.props.student;
         let preEnrollment = this.props.preEnrollment;
         return (
@@ -58,7 +58,7 @@ class PreEnrollmentRecordFound extends Component {
     }
 
 
-    renderUI() {
+    render() {
         let student = this.props.student;
         let preEnrollment = this.props.preEnrollment;
 

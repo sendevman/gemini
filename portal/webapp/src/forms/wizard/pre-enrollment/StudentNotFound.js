@@ -10,15 +10,13 @@ export default class StudentNotFound extends Component {
     }
 
     render() {
-        // question: "Estudiante no fue encontrado con la informacion provista, desea realizar nuevamente la busqueda",
-
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
                     <div className="description mb40"><h2 className="f90sbg">05.</h2>
                         <div className="violet-line"></div>
                     </div>
-                    <div className="search-empty visible">
+                    <div className="search-empty visible" style={{position: "static"}}>
                         <img className="search-guy" src={searchGuy} alt=""/>
                         <img className="pot" src={pot} alt=""/>
                         <div className="row">

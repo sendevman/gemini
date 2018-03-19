@@ -196,7 +196,9 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
                     </div>
                 </div>
             </div>
-            {this.props.footer}
+            <div style={{marginTop: -120}}>
+                {this.props.footer}
+            </div>
         </div>, <div className="col-md-4 illustration-section d-flex align-items-center text-center">
             <div className="illustration"><img src={entrollmentIllustration} alt=""/></div>
         </div>];

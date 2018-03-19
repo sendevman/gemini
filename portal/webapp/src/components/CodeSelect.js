@@ -117,19 +117,20 @@ class CodeSelect extends Component {
     }
 
     render() {
-        let formGroupCss = "form-group ".concat(!this.valid() ? "has-error" : "");
+        let formGroupCss = "form-group has-feedback";//.concat(!this.valid() ? "has-error" : "");
         let elementProps = Object.assign({}, this.props);
         delete elementProps.codeType;
         return (
             <div className={formGroupCss}>
-                <label htmlFor={this.props.id}>{this.props.label}:</label>
-                <select ref="codeSelect" className="form-control" {...elementProps} onChange={this.onChange}
+                <select ref="codeSelect" className="inputMaterial" {...elementProps} onChange={this.onChange}
                         value={this.state.value}>
                     <option value="-1">{this.props.placeholder}</option>
                     {this.codes.map((code, i) => (
                         <option key={i} value={code.value}>{code.description}</option>
                     ))}
                 </select>
+                <label htmlFor={this.props.id}>{this.props.label}:</label>
+
             </div>);
     }
 }

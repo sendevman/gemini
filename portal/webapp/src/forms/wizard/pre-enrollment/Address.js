@@ -91,31 +91,31 @@ class Address extends Component {
         return (<div>
             <div className="row">
                 <div className="col-md-12">
-                    <TextInput type="addressLine" id={`${type}.line1`} label="Linea 1" placeholder="Linea 1"
+                    <TextInput type="addressLine" id={`${type}.line1`}  label="Linea 1"
                                value={address.line1} onChange={this.inputHandler}/>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-12">
-                    <TextInput type="addressLine" id={`${type}.line2`} label="Linea 2" placeholder="Linea 2"
+                    <TextInput type="addressLine" id={`${type}.line2`}  label="Linea 2"
                                required={false}
                                value={address.line2} onChange={this.inputHandler}/>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-4">
-                    <CodeSelect id={`${type}.city`} label="Ciudad" placeholder="Seleccione municipio"
+                    <CodeSelect id={`${type}.city`} label="Ciudad"
                                 codeType="municipios"
                                 value={address.city} onChange={this.inputHandler}/>
                 </div>
                 <div className="col-md-4">
-                    <CodeSelect id={`${type}.state`} label="Estado" placeholder="Seleccione Estado" codeType="states"
+                    <CodeSelect id={`${type}.state`} label="Estado"  codeType="states"
                                 value={"PR"}
                                 disabled={true} onChange={this.inputHandler}/>
                 </div>
 
                 <div className="col-md-4">
-                    <TextInput type="zipcode" id={`${type}.zipcode`} label="Codigo Postal" placeholder="Zip Code"
+                    <TextInput type="zipcode" id={`${type}.zipcode`} label="Codigo Postal" 
                                value={address.zipcode} onChange={this.inputHandler}/>
                 </div>
             </div>

@@ -18,8 +18,7 @@ public class PreEnrollmentStudentInfoBean implements IdentityForm {
     private Long studentNumber;
     private String firstName;
     private String middleName;
-    private String fatherLastName;
-    private String motherLastName;
+    private String lastName;
     private Date dateOfBirth;
     private Gender gender;
     private Type type;
@@ -53,23 +52,12 @@ public class PreEnrollmentStudentInfoBean implements IdentityForm {
     }
 
     @Override
-    public String getFatherLastName() {
-        return fatherLastName;
+    public String getLastName() {
+        return lastName;
     }
 
-    @Override
-    public void setFatherLastName(String fatherLastName) {
-        this.fatherLastName = fatherLastName;
-    }
-
-    @Override
-    public String getMotherLastName() {
-        return motherLastName;
-    }
-
-    @Override
-    public void setMotherLastName(String motherLastName) {
-        this.motherLastName = motherLastName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override
@@ -93,7 +81,7 @@ public class PreEnrollmentStudentInfoBean implements IdentityForm {
     }
 
     public String getFullName(){
-        return Utils.toFullName(firstName, middleName, fatherLastName, motherLastName);
+        return Utils.toFullName(firstName, middleName, lastName);
     }
 
     public Type getType() {

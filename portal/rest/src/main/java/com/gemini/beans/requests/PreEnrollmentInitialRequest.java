@@ -1,5 +1,6 @@
 package com.gemini.beans.requests;
 
+import com.gemini.beans.IdentityForm;
 import com.gemini.beans.types.Gender;
 import com.gemini.beans.types.Type;
 
@@ -11,15 +12,14 @@ import java.util.Date;
  * Date: 2/20/18
  * Time: 10:08 PM
  */
-public class PreEnrollmentInitialRequest {
+public class PreEnrollmentInitialRequest implements IdentityForm{
     private Long requestId;
     private Type type;
     private Long studentNumber;
     private String ssn;
     private String firstName;
     private String middleName;
-    private String fatherLastName;
-    private String motherLastName;
+    private String lastName;
     private Date dateOfBirth;
     private Gender gender;
 
@@ -71,20 +71,12 @@ public class PreEnrollmentInitialRequest {
         this.middleName = middleName;
     }
 
-    public String getFatherLastName() {
-        return fatherLastName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setFatherLastName(String fatherLastName) {
-        this.fatherLastName = fatherLastName;
-    }
-
-    public String getMotherLastName() {
-        return motherLastName;
-    }
-
-    public void setMotherLastName(String motherLastName) {
-        this.motherLastName = motherLastName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Date getDateOfBirth() {

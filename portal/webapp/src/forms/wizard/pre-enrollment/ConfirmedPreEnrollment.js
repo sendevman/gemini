@@ -11,11 +11,11 @@ export default class ConfirmedPreEnrollment extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb40"><h2>Thank you!</h2>
+                    <div className="description mb40"><h2>¡Gracias!</h2>
                         <div className="violet-line"></div>
                     </div>
                     <p className="f40sllg">
-                        <span className="f40sbgr">¡Gracias! El expediente de matrícula fue creado exitosamente.</span> ¿Desea matricular otro estudiante?</p>
+                        <span className="f40sbgr">El expediente de matrícula fue creado exitosamente.</span> ¿Desea matricular otro estudiante?</p>
                 </div>
                 {this.props.footer}
             </div>,

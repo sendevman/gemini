@@ -17,8 +17,7 @@ public class StudentResponse implements IdentityForm {
     private Long studentNumber;
     private String firstName;
     private String middleName;
-    private String fatherLastName;
-    private String motherLastName;
+    private String lastName;
     private Date dateOfBirth;
     private Gender gender;
     //todo: refactoring alert fran check these fields they are not needed
@@ -50,20 +49,14 @@ public class StudentResponse implements IdentityForm {
         this.middleName = middleName;
     }
 
-    public String getFatherLastName() {
-        return fatherLastName;
+    @Override
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public void setFatherLastName(String fatherLastName) {
-        this.fatherLastName = fatherLastName;
-    }
-
-    public String getMotherLastName() {
-        return motherLastName;
-    }
-
-    public void setMotherLastName(String motherLastName) {
-        this.motherLastName = motherLastName;
+    @Override
+    public String getLastName() {
+        return lastName;
     }
 
     public Date getDateOfBirth() {
@@ -108,14 +101,9 @@ public class StudentResponse implements IdentityForm {
         this.found = found;
     }
 
-    public void setLastName(String lastName) {
-        StringTokenizer tokenizer = new StringTokenizer(lastName.trim(), " ");
-        this.fatherLastName = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
-        this.motherLastName = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
-    }
 
     public String getFullName() {
-        return Utils.toFullName(firstName, middleName, fatherLastName, motherLastName);
+        return Utils.toFullName(firstName, middleName, lastName);
     }
 
 }

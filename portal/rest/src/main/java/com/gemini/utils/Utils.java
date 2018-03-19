@@ -34,12 +34,8 @@ public final class Utils {
     }
 
     public static void copyLastNames(IdentityEntity entity, IdentityForm form) {
-        String token = StringUtils.hasText(entity.getLastName()) ? entity.getLastName().trim() : "";
-        StringTokenizer tokenizer = new StringTokenizer(token, " ");
-        String fatherLastName = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
-        String motherLastName = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
-        form.setFatherLastName(fatherLastName);
-        form.setMotherLastName(motherLastName);
+        String lastName = StringUtils.hasText(entity.getLastName()) ? entity.getLastName() : "";
+        form.setLastName(lastName);
     }
 
 }

@@ -14,7 +14,7 @@ export default class IsStudentCurrentlyEnrolled extends Component {
                 <div className="description mb40"><h2 className="f90sbg">02.</h2>
                     <div className="violet-line"></div>
                 </div>
-                <p className="f60sbg">Tienes, actualmente, <span className="f60sbb">un niño/a matriculado </span>en
+                <p className="f40sbg">Tienes, actualmente, <span className="f40sbb">un niño/a matriculado </span>en
                     alguna escuela del Departamento de Educación de Puerto Rico?</p>
             </div>
             {this.props.footer}
