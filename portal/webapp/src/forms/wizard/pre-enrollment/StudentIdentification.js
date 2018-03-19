@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {searchStudent} from "../../../redux/actions";
 import searchIllustration from "../../../style/img/search-illustration.png";
+import SimpleDateInput from "../../../components/SimpleDateInput";
 
 class StudentIdentification extends Component {
 
@@ -69,19 +70,20 @@ class StudentIdentification extends Component {
         let form = this.props.form;
         return [
             <div className="col-md-7 content-section">
-                <div className="title h100">
+                <div className="title">
                     <div className="description mb40"><h2 className="f90sbg">OK.</h2>
                         <div className="violet-line"></div>
                     </div>
                     <p className="f30slg">Vamos a buscar su niño/a en el sistema. Por favor facilitenos <span
                         className="f30slb">la siguiente informaci&oacute;n.</span></p>
-                    <div id="search-childs" className="body">
+                    <div id="search-childs" style={{padding: 0}} className="body">
                         <div className="row">
                             <div className="col-md-4">
-                                <DateInput id="dob"
-                                           value={form.dob}
-                                           onValidDate={this.onValidDate}
-                                           label="Fecha nacimiento"/>
+                                <SimpleDateInput id="dob"
+                                                 value={form.dob}
+                                                 required
+                                                 onValidDate={this.onValidDate}
+                                                 label="Fecha nacimiento"/>
                             </div>
                             <div className="col-md-4">
 

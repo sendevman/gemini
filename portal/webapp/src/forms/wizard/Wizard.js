@@ -157,10 +157,11 @@ class Wizard extends Component {
 
     renderFooter() {
         let props = this.props.wizard;
+        let commonStyle = {zIndex:1000};
         // props.nextShortLabel
         // props.previousShortLabel
         if (props.currentPageType === "PERSONAL_INFO" || props.currentPageType === "STUDENT_LOOKUP")
-            return (<div className="row action-section">
+            return (<div className="row action-section" style={commonStyle}>
                 <div className="col-md-12 text-center text-lg-left p-0">
                     <a className="button-green mr30 mob-mb30px" onClick={this.next}>
                         <span>y</span>{props.nextLabel}
@@ -174,7 +175,7 @@ class Wizard extends Component {
                 </div>
             </div>);
 
-        return (<div key="footer" className="body d-flex align-items-center flex-column justify-content-end">
+        return (<div key="footer" style={commonStyle} className="body d-flex align-items-center flex-column justify-content-end">
             <div className="row action-section">
                 <div className="col-md-12 text-center text-lg-left p-0">
                     <a className="button-green mr30 mob-mb30px" onClick={this.next}>

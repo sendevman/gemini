@@ -1,14 +1,22 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import leisureIllustration from "../../../style/img/leisure-illustration.png";
+import {bindActionCreators} from "redux";
+import {submitPreEnrollment} from "../../../redux/actions";
 
 
-class PreEnrollmentRecordFound extends Component{
+class PreEnrollmentRecordFound extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 
+    onPress(onResult, onError) {
+        let requestId = this.props.requestId;
+        let form = this.props.preEnrollment;
+        let submitRequest = {requestId: requestId, schoolId: form.schoolId, nextGradeLevel: form.nextGradeLevel};
+        this.props.submitPreEnrollment(submitRequest, onResult, onError);
+    }
 
     render() {
         let student = this.props.student;
@@ -18,11 +26,14 @@ class PreEnrollmentRecordFound extends Component{
                 <div className="description mb40"><h2 className="f90sbg">06.</h2>
                     <div className="violet-line"></div>
                 </div>
-                <p className="f30sbg">El estudiante <span className="f30sbb">{student.fullName}</span> se le  desea crear un registro de Pre-Matricula en las siguientes alternativas:</p>
+                <p className="f20sbg">El estudiante <span className="f20sbb">{student.fullName}</span>, se le desea
+                    crear un registro de Pre-Matricula en las siguientes alternativas:</p>
                 <p className="f22slg mb-1"><i className="fas fa-university mr5"></i> <span
                     id="school">{preEnrollment.schoolName}</span></p>
-                <p className="f22slg mb-1"><i className="icon-teacher mr5"></i> <span id="level">{preEnrollment.nextGradeLevelDescription}</span></p>
-                <p className="f22slg mb-1"><i className="icon-gps mr5"></i> <span id="adress">Direccion escuela</span></p>
+                <p className="f22slg mb-1"><i className="icon-teacher mr5"></i> <span
+                    id="level">{preEnrollment.nextGradeLevelDescription}</span></p>
+                <p className="f22slg mb-1"><i className="icon-gps mr5"></i> <span
+                    id="adress">{preEnrollment.schoolAddress.addressFormatted}</span></p>
                 <p className="f30sbg mt30">Habrá algun cambio para esta Pre-Matricula?</p>
             </div>
             {this.props.footer}
@@ -36,10 +47,15 @@ class PreEnrollmentRecordFound extends Component{
 
 function mapStateToProps(store) {
     return {
+        requestId: store.preEnrollment.requestId,
         student: store.studentInfo.student,
         preEnrollment: store.preEnrollment.info
     };
 }
 
+function mapDispatchToActions(dispatch) {
+    return bindActionCreators({submitPreEnrollment}, dispatch)
+}
 
-export default connect(mapStateToProps)(PreEnrollmentRecordFound);
+
+export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(PreEnrollmentRecordFound);

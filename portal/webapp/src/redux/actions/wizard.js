@@ -114,7 +114,7 @@ function exists(type) {
 let flow;
 const normalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
-    getIndexFromCatalog("STUDENT_LOOKUP"),
+    getIndexFromCatalog("INSTRUCTIONS"),
     getIndexFromCatalog("IS_VOCATIONAL_STUDENT_QUESTION"),
     getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
     getIndexFromCatalog("STUDENT_LOOKUP"),
@@ -249,9 +249,10 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
         }
     }
     let currentForm = getForm(current);
+    let type = currentForm.type;
     let next = current + 1;
 
-    if (currentForm.type.lastIndexOf("_QUESTION") > 0) {
+    if (type.lastIndexOf("_QUESTION") > 0 || type.lastIndexOf("_SUBMIT") > 0) {
         next = getIndexFromFlow(currentForm.yes);
     } else if (isType(current, "ADDRESS") && preEnrollment.type === "REGULAR") {
         let preEnrollmentInfo = preEnrollment.info;
@@ -302,8 +303,9 @@ export const onPreviousAction = () => (dispatch, getState) => {
     }
 
     let currentForm = getForm(current);
+    let type = currentForm.type;
     let next;
-    if (currentForm.type.lastIndexOf("_QUESTION") > 0) {
+    if (type.lastIndexOf("_QUESTION") > 0 || type.lastIndexOf("_SUBMIT") > 0 ) {
         next = getIndexFromFlow(currentForm.no);
     } else {
         next = flowNavigation.length > 0
@@ -317,6 +319,27 @@ export const onPreviousAction = () => (dispatch, getState) => {
         footerType: nextForm.footerType,
         pageType: nextForm.type
     });
+};
+
+export const onBackAction = (appBackAction) =>(dispatch, getState)=>{
+    let wizard = getState().wizard;
+    let flowNavigation = wizard.flowNavigation;
+    if(flowNavigation.length > 1){
+        dispatch({type: types.ON_WIZARD_PREVIOUS_START});
+        let next = pop(flowNavigation, 2);
+        let nextForm = getForm(next);
+        dispatch({
+            type: types.ON_WIZARD_PREVIOUS_END,
+            current: next,
+            footerType: nextForm.footerType,
+            pageType: nextForm.type
+        });
+    }else{
+        if(appBackAction)
+            appBackAction();
+    }
+
+
 };
 
 export const resetWizard = () => (dispatch) => {

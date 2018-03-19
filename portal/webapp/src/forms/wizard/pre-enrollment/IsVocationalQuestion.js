@@ -14,7 +14,7 @@ export default class IsVocationalQuestion extends Component {
                     <div className="description mb40"><h2 className="f90sbg">01.</h2>
                         <div className="violet-line"/>
                     </div>
-                    <p className="f60sbg">¿Vas a solicitar matr&iacute;cula en un programa de <span className="f60sbb">Educación Ocupacional o Técnica</span>?</p>
+                    <p className="f45sbg">¿Vas a solicitar matr&iacute;cula en un programa de <span className="f45sbb">Educación Ocupacional o Técnica</span>?</p>
                 </div>
 
                 {this.props.footer}

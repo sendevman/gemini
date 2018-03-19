@@ -30,7 +30,6 @@ export default class DateInput extends Component {
         return this.state.valid;
     }
 
-
     populateDate(date) {
         if (date) {
             let form = this.state;
@@ -88,7 +87,7 @@ export default class DateInput extends Component {
         //     let year = date.format("YYYY");
         //     format = `(${day}/${month}/${year})`;
         // }
-        return <div className="group form-group ">
+        return <div className="form-group">
             <label htmlFor={this.props.id}>{`${this.props.label} ${format}:`}</label>
             {this.renderDateInput()}
         </div>;
@@ -102,7 +101,7 @@ export default class DateInput extends Component {
                 <div className="col-xs-4" style={{textAlign: "center", paddingRight: 0}}>
                     <div className={formGroup} style={{display: "inline-flex"}}>
                         <InputMask {...props}
-                                   mask="99" maskChar=" " placeholder="Dia" className="form-control" id="day"
+                                   mask="99" maskChar=" " placeholder="Dia" className="inputMaterial" id="day"
                                    value={this.state.day}
                                    onChange={this.inputHandler}/>
                         <div style={{textAlign: "center", paddingLeft: 10}}>
@@ -115,7 +114,7 @@ export default class DateInput extends Component {
                 <div className="col-xs-4" style={{textAlign: "center", paddingRight: 0}}>
                     <div className={formGroup} style={{display: "inline-flex"}}>
                         <InputMask {...props}
-                                   mask="99" maskChar=" " placeholder="Mes" className="form-control" id="month"
+                                   mask="99" maskChar=" " placeholder="Mes" className="inputMaterial" id="month"
                                    value={this.state.month}
                                    onChange={this.inputHandler}/>
                         <div style={{textAlign: "center", paddingLeft: 10}}>
@@ -127,7 +126,7 @@ export default class DateInput extends Component {
                 <div className="col-xs-4">
                     <div className={formGroup}>
                         <InputMask {...props}
-                                   mask="9999" maskChar=" " className="form-control" id="year" placeholder="Año"
+                                   mask="9999" maskChar=" " className="inputMaterial" id="year" placeholder="Año"
                                    value={this.state.year}
                                    onChange={this.inputHandler}/>
                     </div>
@@ -136,5 +135,3 @@ export default class DateInput extends Component {
         );
     }
 }
-
-// style={{marginLeft: -15, marginRight: -15}}

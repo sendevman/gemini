@@ -8,7 +8,7 @@ import Routes from "./Routes";
 import moment from "moment";
 import esLocale from "moment/locale/es";
 import {connect} from "react-redux";
-import {checkSession, logout, onPreviousAction} from "./redux/actions";
+import {checkSession, logout, onBackAction} from "./redux/actions";
 import {blockUIActions, unblockUIActions} from "./redux/setup";
 import ReduxBlockUi from 'react-block-ui/redux';
 import {bindActionCreators} from "redux";
@@ -24,6 +24,7 @@ class App extends Component {
         this.handleLogout = this.handleLogout.bind(this);
         this.goToProfile = this.goToProfile.bind(this);
         this.goBack = this.goBack.bind(this);
+        this.goHome = this.goHome.bind(this);
     }
 
     componentWillMount() {
@@ -34,6 +35,10 @@ class App extends Component {
     onRouteChanged(nextRoute) {
         this.setState({showMenu: !env.isPublicUrl(nextRoute.pathname) && this.props.authenticated});
     };
+
+    goHome() {
+        this.props.history.push(`/home`);
+    }
 
     handleLogout() {
         this.props.logout(() => {
@@ -58,8 +63,10 @@ class App extends Component {
     goBack() {
         let pathname = this.props.location.pathname;
         if (pathname === "/wizard") {
-            this.props.onPreviousAction();
-        } else if (pathname !== "/")
+            this.props.onBackAction(() => {
+                this.props.history.goBack()
+            });
+        } else if (pathname !== "/" && pathname !== "/home")
             this.props.history.goBack();
     }
 
@@ -76,6 +83,8 @@ class App extends Component {
         return (
             <ReduxBlockUi tag="div" block={blockUIActions()} unblock={unblockUIActions()}>
                 <div className={`container-fluid ${baseClass}`}>
+                    {this.renderUserBar()}
+
                     <div className="row content">
                         <div className="col-md-1 navigation-section violet d-flex align-items-center"
                              onClick={this.goBack}>
@@ -93,6 +102,27 @@ class App extends Component {
                 </div>
             </ReduxBlockUi>
         );
+    }
+
+    renderUserBar() {
+        if (this.state.showMenu)
+            return (<div className="fixed-top" style={{margin: 10}}>
+                <div className="float-right">
+                    <div className="dropdown">
+                        <button id="user-bar" className="btn btn-secondary dropdown-toggle" type="button"
+                                data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                            <span className="pr-2">{this.props.fullName}</span>
+                            <i className="fas fa-user"/>
+                        </button>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a className="dropdown-item" onClick={this.goHome}>Solicitudes</a>
+                            <a className="dropdown-item" onClick={this.handleLogout}>Salir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>);
+        return (null);
     }
 
     renderNavbar() {
@@ -134,7 +164,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({logout, checkSession, onPreviousAction}, dispatch)
+    return bindActionCreators({logout, checkSession, onBackAction}, dispatch)
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToActions)(App));

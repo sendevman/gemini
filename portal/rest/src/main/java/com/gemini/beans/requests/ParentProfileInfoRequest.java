@@ -23,8 +23,7 @@ public class ParentProfileInfoRequest {
     private String middleName;
     @NotEmpty
     @NotNull
-    private String fatherLastName;
-    private String motherLastName;
+    private String lastName;
     @NotNull
     private Date dateOfBirth;
 
@@ -60,20 +59,12 @@ public class ParentProfileInfoRequest {
         this.middleName = middleName;
     }
 
-    public String getFatherLastName() {
-        return fatherLastName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setFatherLastName(String fatherLastName) {
-        this.fatherLastName = fatherLastName;
-    }
-
-    public String getMotherLastName() {
-        return motherLastName;
-    }
-
-    public void setMotherLastName(String motherLastName) {
-        this.motherLastName = motherLastName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Date getDateOfBirth() {

@@ -135,7 +135,7 @@ public class PreEnrollmentService {
             studentEntity.setPhysical(physical);
             studentEntity.setPostal(postal);
             studentEntity.setEntryType(EntryType.NEW);
-            studentEntity.setLastName(Utils.toLastName(request.getFatherLastName(), request.getMotherLastName()));
+            studentEntity.setLastName(request.getLastName());
             //saving student
             studentEntity = save(studentEntity);
             entity.setStudent(studentEntity);
@@ -180,7 +180,7 @@ public class PreEnrollmentService {
         if (EntryType.NEW.equals(studentEntity.getEntryType())) {
             studentEntity.setFirstName(request.getFirstName());
             studentEntity.setMiddleName(request.getMiddleName());
-            studentEntity.setLastName(Utils.toLastName(request.getFatherLastName(), request.getMotherLastName()));
+            studentEntity.setLastName(request.getLastName());
             studentEntity.setDateOfBirth(request.getDateOfBirth());
             studentEntity.setGender(request.getGender());
             studentEntity = studentRepository.save(studentEntity);

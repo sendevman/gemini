@@ -104,19 +104,12 @@ class UserInfoRequest extends Component {
                                onChange={this.inputHandler}
                                value={form.middleName}/>
                 </div>
-                <div className="col-md-3">
-                    <TextInput id="fatherLastName" type="lastname"
-                               ref="fatherLastName"
-                               placeholder="Apellido Paterno"
+                <div className="col-md-6">
+                    <TextInput id="lastName" type="lastname"
+                               ref="lastName"
+                               placeholder="Apellidos"
                                onChange={this.inputHandler}
-                               value={form.fatherLastName}/>
-                </div>
-                <div className="col-md-3">
-                    <TextInput id="motherLastName" type="lastname"
-                               ref="motherLastName"
-                               placeholder="Apellido Materno"
-                               onChange={this.inputHandler}
-                               value={form.motherLastName}/>
+                               value={form.lastName}/>
                 </div>
             </div>
             <div className="row">

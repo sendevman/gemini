@@ -20,13 +20,9 @@ public interface IdentityForm {
 
     void setMiddleName(String middleName);
 
-    String getFatherLastName();
+    String getLastName();
 
-    void setFatherLastName(String fatherLastName);
-
-    String getMotherLastName();
-
-    void setMotherLastName(String motherLastName);
+    void setLastName(String lastName);
 
     Date getDateOfBirth();
 

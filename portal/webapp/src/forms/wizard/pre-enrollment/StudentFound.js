@@ -14,7 +14,7 @@ export default class StudentFound extends Component {
                     <div className="description mb40"><h2 className="f90sbg">05.</h2>
                         <div className="violet-line"></div>
                     </div>
-                    <p className="f60sbg">¡Muy bien! El/la estudiante ha sido encontrado. <span className="f60sbb"
+                    <p className="f45sbg">¡Muy bien! El/la estudiante ha sido encontrado. <span className="f45sbb"
                                                                                                 id="name">{this.props.studentName}</span>
                     </p>
                 </div>

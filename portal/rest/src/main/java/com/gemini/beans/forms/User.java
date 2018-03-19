@@ -26,8 +26,7 @@ public class User implements UserDetails, CredentialsContainer, IdentityForm {
     private String password;
     private String firstName;
     private String middleName;
-    private String fatherLastName;
-    private String motherLastName;
+    private String lastName;
     private Date dateOfBirth;
     private Gender gender;
     private Date lastLogin;
@@ -86,20 +85,14 @@ public class User implements UserDetails, CredentialsContainer, IdentityForm {
         this.middleName = middleName;
     }
 
-    public String getFatherLastName() {
-        return fatherLastName;
+    @Override
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setFatherLastName(String fatherLastName) {
-        this.fatherLastName = fatherLastName;
-    }
-
-    public String getMotherLastName() {
-        return motherLastName;
-    }
-
-    public void setMotherLastName(String motherLastName) {
-        this.motherLastName = motherLastName;
+    @Override
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Date getDateOfBirth() {
@@ -201,6 +194,6 @@ public class User implements UserDetails, CredentialsContainer, IdentityForm {
 
 
     public String getFullName() {
-        return Utils.toFullName(firstName, middleName, fatherLastName, motherLastName);
+        return Utils.toFullName(firstName, middleName, lastName);
     }
 }
