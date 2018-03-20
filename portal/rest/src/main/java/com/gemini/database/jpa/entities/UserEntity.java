@@ -74,10 +74,10 @@ public class UserEntity implements IdentityEntity {
     private boolean credentialsNonExpired = true;
 
     @Column
-    private String credentialLostKey;
+    private String credLostKey;
 
     @Column
-    private Date credentialLostKeyExpireDate;
+    private Date credLostKeyExpireDate;
 
     @Column
     private boolean profileCompleted = false;
@@ -229,20 +229,20 @@ public class UserEntity implements IdentityEntity {
         this.credentialsNonExpired = credentialsNonExpired;
     }
 
-    public String getCredentialLostKey() {
-        return credentialLostKey;
+    public String getCredLostKey() {
+        return credLostKey;
     }
 
-    public void setCredentialLostKey(String credentialLostKey) {
-        this.credentialLostKey = credentialLostKey;
+    public void setCredLostKey(String credLostKey) {
+        this.credLostKey = credLostKey;
     }
 
-    public Date getCredentialLostKeyExpireDate() {
-        return credentialLostKeyExpireDate;
+    public Date getCredLostKeyExpireDate() {
+        return credLostKeyExpireDate;
     }
 
-    public void setCredentialLostKeyExpireDate(Date credentialLostKeyExpireDate) {
-        this.credentialLostKeyExpireDate = credentialLostKeyExpireDate;
+    public void setCredLostKeyExpireDate(Date credLostKeyExpireDate) {
+        this.credLostKeyExpireDate = credLostKeyExpireDate;
     }
 
     public boolean isProfileCompleted() {

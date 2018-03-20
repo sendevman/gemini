@@ -87,6 +87,7 @@ class UserInfoRequest extends Component {
                         </div>
                         <div className="col-md-6 pt-4">
                             <CodeSelect id="relationType"
+                                        mandatory
                                         label="Seleccione relacion con el estudiante"
                                         ref="registrationRelations"
                                         codeType="registrationRelations"
@@ -95,12 +96,6 @@ class UserInfoRequest extends Component {
                                         grouped/>
                         </div>
                     </div>
-                    {/*<div className="row mt50 bt1p pt40">*/}
-                    {/*<div className="col-md-12">*/}
-                    {/*<button className="button-green mr30 mob-mb30px" type="submit"><span>s</span>Submit</button>*/}
-                    {/*<a href="#" className="button-white"*/}
-                    {/*onclick="window.open('instructions.html', '_self')"><span>s</span>Skip</a></div>*/}
-                    {/*</div>*/}
                     {this.props.footer}
                 </form>
             </div>

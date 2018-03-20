@@ -7,6 +7,8 @@ import com.gemini.beans.requests.PreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.user.RegisterRequest;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -27,6 +29,7 @@ import java.util.Map;
  */
 @Service
 public class MailService {
+    static Logger logger = LoggerFactory.getLogger(MailService.class.getName());
 
     @Autowired
     private JavaMailSender mailSender;
@@ -113,8 +116,9 @@ public class MailService {
             helper.setText(message.getText(), true);
             mailSender.send(helper.getMimeMessage());
             sent = true;
-        } catch (MessagingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            //todo: fran create failover process to manage this
+            logger.error("Error while sending email", e);
         }
         return sent;
 

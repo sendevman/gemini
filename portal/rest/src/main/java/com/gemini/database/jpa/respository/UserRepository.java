@@ -21,6 +21,6 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
 
     UserEntity findByActivationKeyAndActivationKeyExpireDateIsAfter(String activationKey, Date currentDate);
 
-    UserEntity findByCredentialLostKeyAndCredentialLostKeyExpireDateIsAfter(String credentialLostKey, Date currentDate);
+    UserEntity findByCredLostKeyAndCredLostKeyExpireDateIsAfter(String credLostKey, Date currentDate);
 
 }

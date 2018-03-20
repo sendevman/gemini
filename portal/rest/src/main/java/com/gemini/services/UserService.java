@@ -92,7 +92,7 @@ public class UserService {
     }
 
     public boolean credentialKeyExists(String activationCode) {
-        UserEntity entity = userRepository.findByCredentialLostKeyAndCredentialLostKeyExpireDateIsAfter(activationCode, commonService.getCurrentDate());
+        UserEntity entity = userRepository.findByCredLostKeyAndCredLostKeyExpireDateIsAfter(activationCode, commonService.getCurrentDate());
         return entity != null;
     }
 
@@ -127,11 +127,11 @@ public class UserService {
 
     public boolean resetPassword(ResetPasswordRequest request) {
         boolean reset = false;
-        UserEntity entity = userRepository.findByCredentialLostKeyAndCredentialLostKeyExpireDateIsAfter(request.getCredentialLostKey(), commonService.getCurrentDate());
+        UserEntity entity = userRepository.findByCredLostKeyAndCredLostKeyExpireDateIsAfter(request.getCredentialLostKey(), commonService.getCurrentDate());
         if (entity != null) {
             String pwd = passwordEncoder.encode(request.getPassword());
-            entity.setCredentialLostKey(null);
-            entity.setCredentialLostKeyExpireDate(null);
+            entity.setCredLostKey(null);
+            entity.setCredLostKeyExpireDate(null);
             entity.setPassword(pwd);
             entity = userRepository.save(entity);
             reset = entity != null;
@@ -142,10 +142,10 @@ public class UserService {
 
     public boolean cancelResetPassword(String key, HttpServletRequest servletRequest) {
         boolean cancel = false;
-        UserEntity entity = userRepository.findByCredentialLostKeyAndCredentialLostKeyExpireDateIsAfter(key, commonService.getCurrentDate());
+        UserEntity entity = userRepository.findByCredLostKeyAndCredLostKeyExpireDateIsAfter(key, commonService.getCurrentDate());
         if (entity != null) {
-            entity.setCredentialLostKey(null);
-            entity.setCredentialLostKeyExpireDate(null);
+            entity.setCredLostKey(null);
+            entity.setCredLostKeyExpireDate(null);
             entity = userRepository.save(entity);
             cancel = entity != null;
             logUserAction(key, UserAction.CANCEL_RESET_PASSWORD, entity.getId(), servletRequest);
@@ -188,8 +188,8 @@ public class UserService {
         UserEntity userEntity = userRepository.findByEmailAndEnabledTrueAndActivationKeyIsNull(request.getEmail());
         if (userEntity != null) {
             String key = Utils.generateKey();
-            userEntity.setCredentialLostKey(key);
-            userEntity.setCredentialLostKeyExpireDate(DateUtils.toDate(LocalDateTime.now().plusMinutes(commonService.getCredentialKeyExpireInMinutes())));
+            userEntity.setCredLostKey(key);
+            userEntity.setCredLostKeyExpireDate(DateUtils.toDate(LocalDateTime.now().plusMinutes(commonService.getCredentialKeyExpireInMinutes())));
             userRepository.save(userEntity);
             mailService.sendPasswordForgotEmail(request.getEmail(), key);
             logUserAction(key, UserAction.RESET_PASSWORD, userEntity.getId(), servletRequest);
