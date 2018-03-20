@@ -1,16 +1,25 @@
 package com.gemini.database.dao;
 
+import com.gemini.beans.requests.StudentSearchRequest;
 import com.gemini.database.dao.beans.*;
+import com.gemini.utils.ValidationUtils;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,8 +27,7 @@ import java.util.List;
  * Date: 2/9/18
  * Time: 12:57 AM
  */
-@Repository("realSchoolMaxDao")
-public class SchoolMaxDaoImpl extends JdbcDaoSupport implements SchoolMaxDaoInterface {
+public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements SchoolMaxDaoInterface {
     @Autowired
     @Qualifier(value = "smaxDatasource")
     DataSource smaxDatasource;
@@ -28,8 +36,8 @@ public class SchoolMaxDaoImpl extends JdbcDaoSupport implements SchoolMaxDaoInte
     private final String STUDENT_SQL = "select * from VW_STUDENT ";
     private final String STUDENT_ADDRESS_SQL = "SELECT * FROM VW_STUDENT_ADDRESS ";
     private final String REGION_SQL = "SELECT * FROM VW_REGIONS ";
-    private final String ENROLLMENT_SQL = "SELECT * FROM VW_SIE_STUDENT_ENROLLMENT ";
-    private final String SCHOOL_SQL = "SELECT * FROM VW_VOCATIONAL_SCHOOLS S ";
+    private final String ENROLLMENT_SQL = "SELECT * FROM VW_SIE_NYE_STUDENT_ENROLLMENT ";
+    private final String SCHOOL_SQL = "SELECT * FROM VW_SCHOOLS S ";
     private final String VOCATIONAL_SCHOOLS = "SELECT * FROM VW_VOCATIONAL_SCHOOLS S ";
     private final String VOCATIONAL_PROGRAMS = "SELECT * FROM VW_VOCATIONAL_PROGRAMS ";
     private final String SCHOOL_GRADE_LEVELS = "SELECT * FROM VW_SCHOOLS_GRADE_LEVELS ";
@@ -47,9 +55,36 @@ public class SchoolMaxDaoImpl extends JdbcDaoSupport implements SchoolMaxDaoInte
     }
 
     @Override
-    public Student findStudent(String lastSsn, Date dob, Long studentNumber) {
-        String sql = STUDENT_SQL.concat(" WHERE SUBSTR(SSN, -4) = ? AND DATE_OF_BIRTH = ? and EXT_STUDENT_NUMBER = ? ORDER BY EXT_STUDENT_NUMBER DESC ");
-        List<Student> list = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(Student.class), lastSsn, dob, studentNumber);
+    public Student findStudent(StudentSearchRequest searchRequest) {
+        StringBuilder sql = new StringBuilder(STUDENT_SQL.concat(" WHERE 1=1 "));
+        Map<String, Object> params = Maps.newTreeMap();
+
+        if(ValidationUtils.valid(searchRequest.getFirstName())){
+            sql.append(" AND FIRST_NAME_CANON = GET_CANON_NAME(:firstName)");
+            params.put("firstName", searchRequest.getFirstName());
+        }
+
+        if(ValidationUtils.valid(searchRequest.getLastName())){
+            sql.append(" AND LAST_NAME_CANON = GET_CANON_NAME(:lastName)");
+            params.put("lastName", searchRequest.getFirstName());
+        }
+
+        if(ValidationUtils.valid(searchRequest.getLastSsn())){
+            sql.append(" AND SUBSTR(SSN, -4) = :lastSsn");
+            params.put("lastSsn", searchRequest.getLastSsn().toString());
+        }
+
+        if(ValidationUtils.valid(searchRequest.getDateOfBirth())){
+            sql.append(" AND trunc(DATE_OF_BIRTH) = :dob");
+            params.put("dob", searchRequest.getDateOfBirth());
+        }
+
+        if(ValidationUtils.valid(searchRequest.getStudentNumber())){
+            sql.append(" AND EXT_STUDENT_NUMBER = :studentNumber");
+            params.put("studentNumber", searchRequest.getStudentNumber());
+        }
+
+        List<Student> list = getNamedParameterJdbcTemplate().query(sql.toString(), params, new BeanPropertyRowMapper<>(Student.class));
         return list.isEmpty() ? null : list.get(0);
     }
 
@@ -69,7 +104,7 @@ public class SchoolMaxDaoImpl extends JdbcDaoSupport implements SchoolMaxDaoInte
 
     @Override
     public EnrollmentInfo findRecentStudentEnrollment(Long studentId) {
-        String sql = ENROLLMENT_SQL.concat(" WHERE ENROLLMENT_ID = (SELECT MAX(ENROLLMENT_ID) FROM VW_SIE_STUDENT_ENROLLMENT WHERE STUDENT_ID = ? )");
+        String sql = ENROLLMENT_SQL.concat(" WHERE ENROLLMENT_ID = (SELECT MAX(ENROLLMENT_ID) FROM VW_SIE_NYE_STUDENT_ENROLLMENT WHERE STUDENT_ID = ? )");
         List<EnrollmentInfo> enrollments = getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(EnrollmentInfo.class), studentId);
         return enrollments.isEmpty() ? null : enrollments.get(0);
     }

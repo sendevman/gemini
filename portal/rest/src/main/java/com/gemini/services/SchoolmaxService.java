@@ -1,15 +1,18 @@
 package com.gemini.services;
 
+import com.gemini.beans.requests.StudentSearchRequest;
 import com.gemini.database.dao.SchoolMaxDaoInterface;
 import com.gemini.database.dao.beans.*;
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +27,7 @@ import java.util.TreeMap;
 @Service
 public class SchoolmaxService {
 
+    final Logger logger = LoggerFactory.getLogger(SchoolmaxService.class.getName());
     static Map<String, String> gradeLevels = new TreeMap<>();
 
     static {
@@ -50,17 +54,21 @@ public class SchoolmaxService {
     }
 
     @Autowired
-    @Qualifier("mockSchoolMaxDao")
     private SchoolMaxDaoInterface smaxDao;
     @Autowired
     private CommonService commonService;
+
+    @PostConstruct
+    public void check() {
+        logger.info(String.format("*****Smax Interface Use is %s*****", smaxDao.getClass().getSimpleName()));
+    }
 
     public Parent retrieveHouseHeadInfo(String lastSsn, Date dob, String lastname) {
         return smaxDao.findHouseHead(lastSsn, dob, lastname);
     }
 
-    public Student retrieveStudentInfo(String lastSsn, Long studentNumber, Date dob) {
-        return smaxDao.findStudent(lastSsn, dob, studentNumber);
+    public Student retrieveStudentInfo(StudentSearchRequest searchRequest) {
+        return smaxDao.findStudent(searchRequest);
     }
 
     public Student retrieveStudentInfo(Long studentNumber) {

@@ -1,0 +1,40 @@
+.block-ui {
+    position: inherit;
+    min-height: 3em;
+}
+
+.block-ui-overlay {
+    width: 100%;
+    height: 100%;
+    /*opacity: 0.5;*/
+    /*filter: alpha(opacity=50);*/
+    /*background-color: black;*/
+}
+
+.loading-bullet {
+    display: inline-block;
+    /*opacity: 0;*/
+    font-size: 2em;
+    color: #4cc3c0;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.error-page {
+    display: block;
+    max-width: 600px;
+    margin: 10% auto;
+}
+
+.error-logo {
+    /*animation: App-logo-spin infinite 20s alternate;*/
+    height: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+

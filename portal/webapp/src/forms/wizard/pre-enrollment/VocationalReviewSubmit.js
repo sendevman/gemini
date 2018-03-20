@@ -5,14 +5,13 @@ import React, {Component} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {
-    goToAction,
     changeCurrentVocationalEnrollment,
+    goToAction,
     partialSaveVocationalPreEnrollment,
     retrieveVocationalPreEnrollment,
     submitVocationalPreEnrollment
 } from "../../../redux/actions";
-import {Button, Glyphicon, Panel} from "react-bootstrap";
-import entrollmentIllustration from "../../../style/img/entrollment-illustration.png";
+import {Button} from "react-bootstrap";
 
 class VocationalReviewSubmit extends Component {
 
@@ -64,7 +63,7 @@ class VocationalReviewSubmit extends Component {
         this.props.submitVocationalPreEnrollment(this.getSubmitRequest(), onResult, onError);
     }
 
-    render(){
+    render() {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
@@ -75,8 +74,10 @@ class VocationalReviewSubmit extends Component {
                     {this.props.footer}
                 </div>
             </div>,
-            <div className="col-md-4 illustration-section d-flex align-items-center text-center">
-                <div className="illustration"><img src={entrollmentIllustration} alt=""/></div>
+            <div className="col-md-4">
+                {/*<div className="illustration"><img src={entrollmentIllustration} alt=""/></div>*/}
+                {this.renderVocationalEnrollments()}
+
             </div>
         ]
     }
@@ -117,10 +118,6 @@ class VocationalReviewSubmit extends Component {
                         <Button onClick={this.onAdd} bsStyle="primary" block={true}>Añadir</Button>
                     </div>
                 </div>
-                <div className="row">
-                    {this.renderVocationalEnrollments()}
-                </div>
-
             </div>);
     }
 
@@ -133,27 +130,22 @@ class VocationalReviewSubmit extends Component {
                     ? vocationalEnrollments.map((enrollment, index) => (
                         <div key={index} className="row">
                             <div className="col-md-12">
-                                <div className="card-block">
-                                    <div className="card-title">
-                                        <h5>Escuela {enrollment.schoolName}</h5>
-                                        <div className="float-right">
-                                            <Button bsSize="xsmall" onClick={this.onEdit(enrollment)}
-                                                    style={{marginBottom: 5, marginRight: 5}}>
-                                                <i className="fas fa-edit"/>
-                                            </Button>
-                                            <Button bsSize="xsmall" onClick={this.onDelete(enrollment)}
-                                                    style={{marginBottom: 5}}>
-                                                <i className="fas fa-trash"/>
-                                            </Button>
-                                        </div>
-                                    </div>
+                                <div className="float-right">
+                                    <Button bsSize="xsmall" onClick={this.onEdit(enrollment)}
+                                            style={{marginBottom: 5, marginRight: 5}}>
+                                        <i className="fas fa-edit"/>
+                                    </Button>
+                                    <Button bsSize="xsmall" onClick={this.onDelete(enrollment)}
+                                            style={{marginBottom: 5}}>
+                                        <i className="fas fa-trash"/>
+                                    </Button>
+                                </div>
+                                <h5>Escuela {enrollment.schoolName}</h5>
 
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            {this.renderVocationalPrograms(enrollment)}
-                                        </div>
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        {this.renderVocationalPrograms(enrollment)}
                                     </div>
-
                                 </div>
                             </div>
                         </div>

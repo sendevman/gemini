@@ -77,7 +77,7 @@ export default class Services {
 
     //smax interface
     searchStudent(criteria) {
-        return this._get(`/smax/interface/search/student/lastssn/${criteria.lastSSN}/student/number/${criteria.studentNumber}/dob/${criteria.dob}`);
+        return this._securedPost(`/smax/interface/student/search`, criteria);
     }
 
     getRegions() {

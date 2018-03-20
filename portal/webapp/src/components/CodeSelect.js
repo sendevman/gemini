@@ -36,7 +36,6 @@ class CodeSelect extends Component {
     }
 
     onChange(e) {
-        console.log("onChange***");
         e.persist();
         let value = e.target.value;
         this.setState({value: value, selectedIndex: e.target.selectedIndex}, () => {
@@ -129,7 +128,7 @@ class CodeSelect extends Component {
                         <option key={i} value={code.value}>{code.description}</option>
                     ))}
                 </select>
-                <label htmlFor={this.props.id}>{this.props.label}:</label>
+                {/*<label htmlFor={this.props.id}>{this.props.label}:</label>*/}
 
             </div>);
     }

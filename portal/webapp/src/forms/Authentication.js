@@ -29,7 +29,6 @@ class Authentication extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(`nextProps = ${JSON.stringify(nextProps)}`);
         if (nextProps)
             this.setState({showAlert: nextProps.errorAtLogin || nextProps.invalidCredentials}, () => {
                 if (nextProps.errorAtLogin || nextProps.invalidCredentials) {
@@ -40,7 +39,7 @@ class Authentication extends Component {
     }
 
     handleDismiss() {
-        this.props.cleanLogin()
+        this.setState({showAlert: false})
     }
 
     handleInputChange(e) {
@@ -56,14 +55,15 @@ class Authentication extends Component {
         let invalidCredentials = this.props.invalidCredentials;
 
         let showAlert = this.state.showAlert
-            ? (<Alert bsStyle="danger" onDismiss={this.handleDismiss} className="auth-alert">
+            ? (<Alert style={{position: "fixed",zIndex: 1000,width: "39%", height: "15%"}} bsStyle="danger" onDismiss={this.handleDismiss} className="auth-alert">
                 <h4>Error!</h4>
-                <p>
-                    {invalidCredentials ? "Crendenciales invalidos" : "Ha occurido un error"}
-                </p>
+                <span>
+                    {invalidCredentials ? "Crendenciales invalidos" : "Ha ocurrido un error"}
+                </span>
             </Alert>)
             : (null);
         return [<div className="col-md-5 content-section">
+            {showAlert}
             <div className="title">
                 <div className="description"><h2>Entrar</h2>
                     <div className="violet-line"></div>
@@ -71,30 +71,12 @@ class Authentication extends Component {
             </div>
             <div className="body d-flex align-items-center flex-column justify-content-end">
                 <form id="signin-form" className="signin-form" onSubmit={this.login}>
-                    {showAlert}
-                    {/*<div className="group form-group has-feedback">*/}
-                    {/*/!*<input className="inputMaterial" type="email" name="email" required>*!/*/}
-
-                    {/*<i className="n icon-human"></i>*/}
-                    {/*<span className="highlight"></span>*/}
-                    {/*<span className="bar"></span>*/}
-                    {/*<label>Email Address</label>*/}
-                    {/*</div>*/}
                     <TextInput id="username"
                                label="Email"
                                onChange={this.handleInputChange}
                                value={username}
                                iconName="icon-human"
                                grouped/>
-
-                    {/*<div className="group form-group has-feedback">*/}
-                    {/*<i className="n icon-lock"></i>*/}
-                    {/*<i className="icon-eye"></i>*/}
-                    {/*<span className="highlight"></span>*/}
-                    {/*<span className="bar"></span>*/}
-                    {/*<label>Password</label>*/}
-                    {/*</div>*/}
-
                     <TextInput id="password"
                                type="password"
                                label="Contraseña"

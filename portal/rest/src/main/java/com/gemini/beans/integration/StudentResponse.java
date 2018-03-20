@@ -1,6 +1,7 @@
 package com.gemini.beans.integration;
 
 import com.gemini.beans.IdentityForm;
+import com.gemini.beans.responses.ResponseBase;
 import com.gemini.beans.types.Gender;
 import com.gemini.utils.Utils;
 
@@ -13,7 +14,7 @@ import java.util.StringTokenizer;
  * Date: 2/9/18
  * Time: 12:27 AM
  */
-public class StudentResponse implements IdentityForm {
+public class StudentResponse extends ResponseBase implements IdentityForm {
     private Long studentNumber;
     private String firstName;
     private String middleName;
