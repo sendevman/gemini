@@ -44,7 +44,7 @@ public class SRSPortalApplication extends SpringBootServletInitializer {
             PMAX1O -> /pmax1o/ias/srs/portal/
             DEV -> /home/ubuntu/srs/portal/
      */
-    static final String PROPS_DIR = "/home/ubuntu/srs/portal/";
+    static final String PROPS_DIR = "/tmax1o/ias/srs/portal/";
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {

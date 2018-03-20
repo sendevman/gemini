@@ -8,6 +8,8 @@ import com.gemini.beans.responses.ResponseBase;
 import com.gemini.services.MailService;
 import com.gemini.services.PreEnrollmentService;
 import com.gemini.utils.ValidationUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/enrollment/pre")
 public class PreEnrollmentRequestController {
+    static Logger logger = LoggerFactory.getLogger(PreEnrollmentRequestController.class.getName());
 
     @Autowired
     private PreEnrollmentService preEnrollmentService;
@@ -67,7 +70,7 @@ public class PreEnrollmentRequestController {
             saved = preEnrollmentService.submitPreEnrollment(submitRequest);
             loggedUser.setWorkingPreEnrollmentId(null);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("error submitted pre-enrollment " + submitRequest.getRequestId(), e);
         }
         if (saved)
             return ResponseEntity.ok(ResponseBase.success(submitRequest.getRequestId()));
@@ -77,13 +80,13 @@ public class PreEnrollmentRequestController {
     @RequestMapping(value = "/vocational/partial/save", method = RequestMethod.POST)
     public ResponseEntity<ResponseBase> partialVocationalSubmit(@RequestBody VocationalPreEnrollmentSubmitRequest request) {
         boolean saved = preEnrollmentService.partialVocationalPreEnrollmentSave(request);
-        if(saved)
+        if (saved)
             return ResponseEntity.ok(ResponseBase.success(request.getRequestId()));
         return ResponseEntity.ok(ResponseBase.error("Error submitting vocational pre-enrolmment"));
     }
 
     @RequestMapping(value = "/vocational/submit", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBase> vocationalSubmit(@RequestBody VocationalPreEnrollmentSubmitRequest request,  @AuthenticationPrincipal User loggedUser) {
+    public ResponseEntity<ResponseBase> vocationalSubmit(@RequestBody VocationalPreEnrollmentSubmitRequest request, @AuthenticationPrincipal User loggedUser) {
         boolean saved = false;
         try {
 //            mailService.sendPreEnrollmentSubmitEmail(loggedUser, request);

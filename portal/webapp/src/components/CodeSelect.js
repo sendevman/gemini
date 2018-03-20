@@ -128,7 +128,7 @@ class CodeSelect extends Component {
                         <option key={i} value={code.value}>{code.description}</option>
                     ))}
                 </select>
-                {/*<label htmlFor={this.props.id}>{this.props.label}:</label>*/}
+                {this.props.mandatory ? (<label htmlFor={this.props.id}>{this.props.label}:</label>) : (null)}
 
             </div>);
     }

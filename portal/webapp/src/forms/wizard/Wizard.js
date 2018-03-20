@@ -166,6 +166,15 @@ class Wizard extends Component {
                     }
                 </div>
             </div>);
+        else if (props.currentPageType === "USER_PROFILE") {
+            return (<div className="row mt50 bt1p pt40">
+                <div className="col-md-12">
+                    <a className="button-green mr30 mob-mb30px" onClick={this.next}>
+                        <span>y</span>{props.nextLabel}
+                    </a>
+                </div>
+            </div>)
+        }
 
         return (<div key="footer" className="body d-flex align-items-center flex-column justify-content-end"
                      style={commonStyle}>

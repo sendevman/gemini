@@ -44,7 +44,7 @@ export default class ResetPasswordResult extends Component {
     }
 
 
-    render() {
+    renderOld() {
         let result = this.props.match.params.result === "success";
         let title;
         if (result === "invalid")
