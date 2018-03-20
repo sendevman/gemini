@@ -32,6 +32,7 @@ export function blockUIActions() {
 export function unblockUIActions() {
     let list = evalTypes("_END");
     list.push(types.ON_WIZARD_COMPLETED);
+    list.push(types.CANCEL_BLOCK_UI);
     return list;
 }
 

@@ -65,7 +65,7 @@ class RemoteCodeSelect extends Component {
         delete elementProps.onObjectChange;
         return (
             <div className={formGroupCss}>
-                <label htmlFor={this.props.id}>{this.props.label || this.props.placeholder}:</label>
+                {/*<label htmlFor={this.props.id}>{this.props.label || this.props.placeholder}:</label>*/}
                 <select ref="codeSelect" className="form-control" {...elementProps} onChange={this.onChange}
                         value={this.state.value}>
                     <option value="-1">{this.props.placeholder}</option>

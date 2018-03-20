@@ -1,13 +1,16 @@
 package com.gemini.controllers;
 
+import com.gemini.beans.forms.VocationalProgramSelection;
 import com.gemini.beans.integration.ParentResponse;
 import com.gemini.beans.integration.RegionResponse;
 import com.gemini.beans.integration.SchoolResponse;
 import com.gemini.beans.integration.StudentResponse;
-import com.gemini.beans.forms.VocationalProgramSelection;
+import com.gemini.beans.requests.StudentSearchRequest;
+import com.gemini.beans.responses.ResponseBase;
 import com.gemini.database.dao.beans.*;
 import com.gemini.services.SchoolmaxService;
 import com.gemini.utils.CopyUtils;
+import com.gemini.utils.MessageHelper;
 import com.gemini.utils.ValidationUtils;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -16,6 +19,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +39,8 @@ public class SchoolmaxController {
 
     @Autowired
     private SchoolmaxService smaxService;
+    @Autowired
+    private MessageHelper messageHelper;
 
     @RequestMapping(value = "/search/parent/lastssn/{lastSSN}/dob/{dob}/lastname/{lastname}")
     public ResponseEntity<ParentResponse> searchParent(@PathVariable(value = "lastSSN") String lastSSN,
@@ -51,17 +57,25 @@ public class SchoolmaxController {
         return ResponseEntity.ok().body(CopyUtils.convert(parentBean, ParentResponse.class));
     }
 
-    @RequestMapping(value = "/search/student/lastssn/{lastSSN}/student/number/{studentNumber}/dob/{dob}")
-    public ResponseEntity<StudentResponse> searchStudent(@PathVariable(value = "lastSSN") String lastSSN,
-                                                         @PathVariable(value = "studentNumber") Long studentNumber,
-                                                         @PathVariable(value = "dob") @DateTimeFormat(pattern = "yyyyMMdd") String dob) {
-        Date dateOfBirth = ValidationUtils.validDate(dob);
-        if (!(dateOfBirth != null
-                && StringUtils.hasLength(lastSSN) && lastSSN.matches("[0-9]{4}")
-                && studentNumber != null && studentNumber > 0L))
-            return ResponseEntity.badRequest().body(null);
+    @RequestMapping(value = "/student/search")
+    public ResponseEntity<StudentResponse> searchStudent(@RequestBody StudentSearchRequest searchRequest) {
+        List<Object> fieldsRequired = Lists.newArrayList();
+        fieldsRequired.add(searchRequest.getDateOfBirth());
+        fieldsRequired.add(searchRequest.getFirstName());
 
-        Student studentBean = smaxService.retrieveStudentInfo(lastSSN, studentNumber, dateOfBirth);
+        if (!(ValidationUtils.valid(searchRequest.getLastSsn()) || ValidationUtils.valid(searchRequest.getStudentNumber()))) {
+            return ResponseEntity.ok(missingFields());
+        } else {
+            if (ValidationUtils.valid(searchRequest.getLastSsn()))
+                fieldsRequired.add(searchRequest.getLastSsn());
+            else
+                fieldsRequired.add(searchRequest.getStudentNumber());
+        }
+
+        if (!(ValidationUtils.valid(fieldsRequired.toArray())))
+            return ResponseEntity.ok(missingFields());
+
+        Student studentBean = smaxService.retrieveStudentInfo(searchRequest);
         StudentResponse response = CopyUtils.convert(studentBean, StudentResponse.class);
         response.setFound(studentBean != null);
         if (studentBean != null)
@@ -129,6 +143,14 @@ public class SchoolmaxController {
         };
 
         return ResponseEntity.ok(Lists.transform(programs, toSelection));
+    }
+
+    private StudentResponse missingFields() {
+        StudentResponse response = new StudentResponse();
+        ResponseBase base = ResponseBase.error("Missing required fields (%s or %s)",
+                messageHelper.processMessages("search.student.missing.required.fields"));
+        response.setResponseBase(base);
+        return response;
     }
 
 

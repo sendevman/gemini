@@ -1,12 +1,14 @@
 package com.gemini.database.dao;
 
+import com.gemini.beans.requests.StudentSearchRequest;
 import com.gemini.database.dao.beans.*;
+import com.gemini.utils.ValidationUtils;
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
@@ -20,7 +22,6 @@ import java.util.Map;
  * Date: 2/27/18
  * Time: 9:05 AM
  */
-@Repository("mockSchoolMaxDao")
 public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
     private Student student;
     private final String currentGradeLevel = "01";
@@ -41,11 +42,14 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
     }
 
     @Override
-    public Student findStudent(String lastSsn, Date dob, Long studentNumber) {
-        student.setDateOfBirth(dob);
-        student.setExtStudentNumber(studentNumber);
-        student.setStudentId(studentNumber);
-        student.setSsn(lastSsn);
+    public Student findStudent(StudentSearchRequest request) {
+        student.setDateOfBirth(request.getDateOfBirth());
+        if (ValidationUtils.valid(request.getStudentNumber())) {
+            student.setExtStudentNumber(request.getStudentNumber());
+            student.setStudentId(request.getStudentNumber());
+        }
+        if (ValidationUtils.valid(request.getLastSsn()))
+            student.setSsn(request.getLastSsn().toString());
         return student;
     }
 

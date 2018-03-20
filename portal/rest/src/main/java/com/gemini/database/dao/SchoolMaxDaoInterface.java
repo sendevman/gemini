@@ -1,5 +1,6 @@
 package com.gemini.database.dao;
 
+import com.gemini.beans.requests.StudentSearchRequest;
 import com.gemini.database.dao.beans.*;
 
 import java.util.Date;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface SchoolMaxDaoInterface {
     Parent findHouseHead(String lastSsn, Date dob, String lastname);
 
-    Student findStudent(String lastSsn, Date dob, Long studentNumber);
+    Student findStudent(StudentSearchRequest searchRequest);
 
     Student findStudent(Long studentNumber);
 

@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {MenuItem, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {withRouter} from "react-router-dom";
 // import "react-datepicker/dist/react-datepicker.min.css";
-// import "./App.css";
+import "./style/app.css";
 import classnames from "classnames";
 import Routes from "./Routes";
 import moment from "moment";

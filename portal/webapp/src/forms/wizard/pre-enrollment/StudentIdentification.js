@@ -3,7 +3,6 @@
  */
 
 import React, {Component} from "react";
-import DateInput from "../../../components/DateInput";
 import TextInput from "../../../components/TextInput";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -17,6 +16,7 @@ class StudentIdentification extends Component {
         super(props);
         this.inputHandler = this.inputHandler.bind(this);
         this.onValidDate = this.onValidDate.bind(this);
+        this.onError = this.onError.bind(this);
     }
 
     inputHandler(e) {
@@ -27,46 +27,20 @@ class StudentIdentification extends Component {
 
     onValidDate(date) {
         let form = this.props.form;
-        form.dob = date;
+        form.dateOfBirth = date;
     }
 
-    onPress(onResult, onError) {
+    onPress(onResult) {
         let form = this.props.form;
-        this.props.searchStudent(form, onResult, onError);
+        this.props.searchStudent(form, onResult, this.onError);
     }
+
+    onError(validationMessage) {
+        alert(JSON.stringify(validationMessage));
+    }
+
 
     render() {
-        return this.renderUI();
-    }
-
-    renderOld() {
-        let form = this.props.form.toJS();
-        return (<div className="row">
-            <div className="col-md-4">
-                <TextInput id="lastSSN"
-                           type="lastSSN"
-                           value={form.lastSSN}
-                           onChange={this.inputHandler}
-                           placeholder="Ultimo 4 digitos seguro social"/>
-            </div>
-            <div className="col-md-4">
-                <TextInput id="studentNumber"
-                           type="studentNumber"
-                           value={form.studentNumber}
-                           onChange={this.inputHandler}
-                           placeholder="Numero de Estudiante SIE"/>
-            </div>
-
-            <div className="col-md-4">
-                <DateInput id="dob"
-                           value={form.dob}
-                           onValidDate={this.onValidDate}
-                           label="Fecha nacimiento"/>
-            </div>
-        </div>);
-    }
-
-    renderUI() {
         let form = this.props.form;
         return [
             <div className="col-md-7 content-section">
@@ -80,17 +54,17 @@ class StudentIdentification extends Component {
                 <div className="body" style={{padding: 20, marginTop: -50}}>
                     <div className="row">
                         <div className="col-md-4">
-                            <SimpleDateInput id="dob"
-                                             value={form.dob}
+                            <SimpleDateInput id="dateOfBirth"
+                                             value={form.dateOfBirth}
                                              required
                                              onValidDate={this.onValidDate}
                                              label="Fecha nacimiento"/>
                         </div>
                         <div className="col-md-4">
 
-                            <TextInput id="lastSSN"
+                            <TextInput id="lastSsn"
                                        type="lastSSN"
-                                       value={form.lastSSN}
+                                       value={form.lastSsn}
                                        onChange={this.inputHandler}
                                        label="Ultimo 4 digitos SSN"/>
                         </div>
@@ -102,6 +76,23 @@ class StudentIdentification extends Component {
                                        onChange={this.inputHandler}
                                        label="Numero de Estudiante SIE"/>
                         </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-4">
+                            <TextInput id="firstName"
+                                       type="firstName"
+                                       value={form.firstName}
+                                       onChange={this.inputHandler}
+                                       label="Nombre"/>
+                        </div>
+                        <div className="col-md-4">
+                            <TextInput id="lastName"
+                                       type="name"
+                                       value={form.lastName}
+                                       onChange={this.inputHandler}
+                                       label="Apellidos"/>
+                        </div>
+                        <div className="col-md-4"/>
                     </div>
                     {this.props.footer}
                 </div>

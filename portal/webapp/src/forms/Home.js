@@ -79,7 +79,7 @@ class Home extends Component {
         return preEnrollments.map((pre, index) => (
             <div key={index} style={{height: 150, marginTop: 5, padding: 20, borderBottom: "1px solid #edeef2"}}>
 
-                <h5>Estudiante {pre.student.fullName} -> {Utils.format(pre.student.dateOfBirth, "ll")}</h5>
+                <h5>Estudiante {pre.student.fullName}</h5>
                 <div className="float-right" style={{marginTop: -40}}>
                     {pre.requestStatus === "ACTIVE"
                         ?

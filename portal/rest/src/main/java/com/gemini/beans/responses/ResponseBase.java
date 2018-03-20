@@ -69,6 +69,15 @@ public class ResponseBase<T> {
         this.validationMessages = validationMessages;
     }
 
+    public void setResponseBase(ResponseBase responseBase) {
+        this.requestId = responseBase.requestId;
+        this.successfulOperation = responseBase.successfulOperation;
+        this.content = (T) responseBase.content;
+        this.validationMessages = responseBase.validationMessages;
+        this.message = responseBase.message;
+        this.errorOperation = responseBase.errorOperation;
+    }
+
     public static ResponseBase success() {
         return success(null);
     }
