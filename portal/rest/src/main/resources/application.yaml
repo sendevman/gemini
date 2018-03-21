@@ -25,7 +25,7 @@ spring:
     test-connection: @mail.test-conection@
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: @main.db.jpa.mode@
     show-sql: true
     generate-ddl: true
     properties:
@@ -38,7 +38,7 @@ spring:
     driver-class-name: @main.db.driver.name@
     hikari:
       maximum-pool-size: 30
-    platform: mysql
+    platform: @main.db.platform@
   smaxDatasource:
     url: @smax.db.jdbc.url@
     username: @smax.db.user@
@@ -61,6 +61,9 @@ website:
 logging:
   config: classpath:logback.xml
 
+property:
+  load:
+    test: Working
 
 
 google:

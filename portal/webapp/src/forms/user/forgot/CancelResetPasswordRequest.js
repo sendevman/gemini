@@ -18,7 +18,7 @@ class CancelResetPasswordRequest extends Component {
     }
 
     onClick() {
-        this.props.history.push("/")
+        this.props.history.push("/login")
     }
 
     render() {

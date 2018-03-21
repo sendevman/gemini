@@ -3,9 +3,14 @@ package com.gemini;
 import com.gemini.database.dao.MockSchoolMaxDaoImpl;
 import com.gemini.database.dao.SchoolMaxDaoImpl;
 import com.gemini.database.dao.SchoolMaxDaoInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,15 +21,25 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppProperties {
 
+    static Logger logger = LoggerFactory.getLogger(AppProperties.class.getName());
+
+    @Value("${property.load.test}")
+    String value;
+
+    @PostConstruct
+    public void init() {
+        logger.info("Test Property Load from server path: " + value);
+    }
+
     @Bean
     @ConditionalOnProperty(value = "smax.interface.use", havingValue = "mock")
-    public SchoolMaxDaoInterface mockSmax(){
+    public SchoolMaxDaoInterface mockSmax() {
         return new MockSchoolMaxDaoImpl();
     }
 
     @Bean
     @ConditionalOnProperty(value = "smax.interface.use", havingValue = "real", matchIfMissing = true)
-    public SchoolMaxDaoInterface prodMax(){
+    public SchoolMaxDaoInterface prodMax() {
         return new SchoolMaxDaoImpl();
     }
 }
