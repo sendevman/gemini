@@ -26,6 +26,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
@@ -44,12 +45,20 @@ public class SRSPortalApplication extends SpringBootServletInitializer {
             PMAX1O -> /pmax1o/ias/srs/portal/
             DEV -> /home/ubuntu/srs/portal/
      */
-    static final String PROPS_DIR = "/tmax1o/ias/srs/portal/";
+    static final String PROPS_DIR;
+
+    static {
+        logger.info("***Getting props from System***");
+        if (StringUtils.hasText(System.getProperty("srs.config.path")))
+            PROPS_DIR = System.getProperty("srs.config.path");
+        else
+            PROPS_DIR = "/home/ubuntu/srs/portal/";
+        logger.info(String.format("***config location path in use is: %s***", "spring.config.location:".concat(PROPS_DIR)));
+    }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         logger.info("***Starting services from servlet***");
-        logger.info(String.format("***config location path : %s***", "spring.config.location:".concat(PROPS_DIR)));
         return application.sources(SRSPortalApplication.class).properties("spring.config.location:".concat(PROPS_DIR));
     }
 

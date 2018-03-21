@@ -16,16 +16,16 @@ const tmax1o_base = "schoolmax_tmax2";
 const local_base = "srs";
 
 //todo: fran do logic here to determine these props dynamically
-const BASE_CONTEXT = tmax1o_base;
-const REST_URL = tmaxio;
-const SITE_KEY = tmax1o_sitekey;
+const BASE_CONTEXT = local_base;
+const REST_URL = local;
+const SITE_KEY = dev_sitekey;
 
 let config = {
     baseContext: BASE_CONTEXT,
     restServer: REST_URL,
     loadingMinimumTime: 1000,
     reCAPTCHASiteKey: SITE_KEY,
-    userActionPath: ["/registration", "/activate", "/forgot", "/reset", "/cancel"],
+    userActionPath: ["/login", "/registration", "/activate", "/forgot", "/reset", "/cancel"],
 };
 
 config.publicPaths = ["/", ...config.userActionPath];

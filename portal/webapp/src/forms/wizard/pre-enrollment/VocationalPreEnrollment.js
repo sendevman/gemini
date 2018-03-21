@@ -96,18 +96,15 @@ class VocationalPreEnrollment extends Component {
                         <div className="row" style={{margin: 2, marginBottom: 15}}>
                             <div className="col-md-4">
                                 <div className="row">
-                                    <div className="col-md-4">
-                                        <p>Estudiante: </p>
-                                    </div>
-                                    <div className="col-md-8">
-                                        <h5>{student && student.fullName}</h5>
+                                    <div className="col-md-12">
+                                        <span>Estudiante: <h6>{student && student.fullName}</h6></span>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-8">
                                 <div className="row">
                                     <div className="col-md-12">
-                                        <p>Direcci&oacute;n Escuela: <span className="text-primary">{schoolAddress}</span></p>
+                                        <span>Direcci&oacute;n Escuela: <h6>{schoolAddress}</h6></span>
                                     </div>
 
                                 </div>
@@ -158,87 +155,6 @@ class VocationalPreEnrollment extends Component {
                 <div className="illustration"><img src={entrollmentIllustration} alt=""/></div>
             </div>
         ];
-    }
-
-    renderOld() {
-        let student = this.props.student;
-        let regions = this.props.regions;
-        let gradeLevels = this.props.gradeLevels;
-        let schools = this.props.schools;
-
-        let selectedSchool = this.state.selectedSchool;
-        let form = this.props.currentVocationalEnrollment;
-
-        let schoolName = !selectedSchool || selectedSchool.schoolId === -1
-            ? "No ha selecionado escuela aun"
-            : selectedSchool.displayName;
-
-        let schoolAddress = !selectedSchool || selectedSchool.schoolId === -1
-            ? "No ha selecionado escuela aun"
-            : selectedSchool.address.addressFormatted;
-
-        return (<form>
-
-            <div className="row" style={{margin: 2, marginBottom: 15}}>
-                <div className="col-md-4">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>Estudiante: </p>
-                        </div>
-                        <div className="col-md-8">
-                            <h5>{student && student.fullName}</h5>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-md-8">
-                    <div className="row">
-                        <div className="col-md-12">
-                            <p>Direcci&oacute;n Escuela: <span className="text-primary">{schoolAddress}</span></p>
-                        </div>
-
-                    </div>
-                    <div className="row"/>
-                </div>
-            </div>
-
-            <div className="row">
-
-                <div className="col-md-2">
-                    <RemoteCodeSelect id="gradeLevel"
-                                      label="Grado"
-                                      placeholder="Seleccione Grado"
-                                      onObjectChange={this.gradeLevelChanged}
-                                      codes={gradeLevels}
-                                      target="name"
-                                      display="displayName"
-                                      value={form.nextGradeLevel}/>
-                </div>
-
-                <div className="col-md-2">
-                    <RemoteCodeSelect id="region"
-                                      label="Region"
-                                      placeholder="Seleccione Region"
-                                      onChange={this.regionChanged}
-                                      codes={regions}
-                                      target="regionId"
-                                      display="description"
-                                      value={form.regionId}/>
-                </div>
-
-
-                <div className="col-md-8">
-                    <RemoteCodeSelect id="schools"
-                                      label="Escuela a matricular"
-                                      placeholder="Seleccione escuela"
-                                      codes={schools}
-                                      onObjectChange={this.schoolChanged}
-                                      target="schoolId"
-                                      display="displayName"
-                                      value={form.schoolId}/>
-                </div>
-            </div>
-
-        </form>);
     }
 }
 

@@ -649,8 +649,10 @@ label {
     left: 100px;
 }
 
+.inputMaterial:disabled {color:#bcbec5;}
 .inputMaterial:focus ~ label,
 .inputMaterial:valid ~ label,
+.inputMaterial:disabled ~ label,
 .has-error .inputMaterial:invalid ~ label {
     top: -15px;
     left: 0px;

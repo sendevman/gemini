@@ -107,9 +107,10 @@ async function _logout(onResult, dispatch) {
     dispatch({type: types.LOGOUT_END});
 }
 
-export const forgotPassword = (form, onSuccess, onError) => (dispatch) => {
+export const forgotPassword = (form, onSuccess, onError) => (dispatch, getState) => {
+    let token = getState().loginHelp.token;
     dispatch({type: types.FORGOT_PASSWORD_REQUEST_START});
-    services().forgotPassword(form)
+    services().forgotPassword(form, token)
         .then((response) => response.json())
         .then((response) => {
             dispatch({

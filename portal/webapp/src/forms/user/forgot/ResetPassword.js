@@ -35,7 +35,6 @@ class ResetPassword extends Component {
         this.setState({...this.state, token: response}, () => {
             this.validForm();
         });
-
     }
 
     inputHandler(e) {

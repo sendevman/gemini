@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import {MenuItem, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {withRouter} from "react-router-dom";
 // import "react-datepicker/dist/react-datepicker.min.css";
 import "./style/app.css";
@@ -22,9 +21,10 @@ class App extends Component {
         this.state = {showMenu: false};
         this.onRouteChanged = this.onRouteChanged.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
-        this.goToProfile = this.goToProfile.bind(this);
+        this.goProfile = this.goProfile.bind(this);
         this.goBack = this.goBack.bind(this);
         this.goHome = this.goHome.bind(this);
+        this.goAuthentication = this.goAuthentication.bind(this);
     }
 
     componentWillMount() {
@@ -36,17 +36,21 @@ class App extends Component {
         this.setState({showMenu: !env.isPublicUrl(nextRoute.pathname) && this.props.authenticated});
     };
 
+    goAuthentication() {
+        this.props.history.push("/login");
+    }
+
     goHome() {
         this.props.history.push(`/home`);
     }
 
     handleLogout() {
         this.props.logout(() => {
-            this.props.history.push(`/`);
+            this.props.history.push(`/login`);
         });
     }
 
-    goToProfile() {
+    goProfile() {
         this.props.history.push("/profile");
     }
 
@@ -74,10 +78,19 @@ class App extends Component {
         let pathname = this.props.location.pathname;
         let currentPageType = this.props.currentPageType;
         let baseClass = classnames({
-            "signin": pathname === "/",
+            "signin": pathname === "/login",
             "instructions": pathname === "/wizard" && currentPageType === "INSTRUCTIONS",
             "question": pathname === "/wizard" && currentPageType === "IS_VOCATIONAL_STUDENT_QUESTION"
         });
+        let showNavigation = pathname === "/"
+            ? (<div className="col-md-1 navigation-section d-flex align-items-center"
+                    onClick={this.goAuthentication}>
+                <i className="icon-arrow"/>
+            </div>)
+            : (<div className="col-md-1 navigation-section violet d-flex align-items-center"
+                    onClick={this.goBack}>
+                <i className="icon-arrow mirror"/>
+            </div>);
         console.log(`pathname = ${pathname} ${baseClass} ${currentPageType} ${currentPageType === "INSTRUCTIONS"}`);
 
         return (
@@ -86,10 +99,7 @@ class App extends Component {
                     {this.renderUserBar()}
 
                     <div className="row content">
-                        <div className="col-md-1 navigation-section violet d-flex align-items-center"
-                             onClick={this.goBack}>
-                            <i className="icon-arrow mirror"/>
-                        </div>
+                        {showNavigation}
                         <Routes loading={this.props.loading} authenticated={this.props.authenticated}
                                 onRouteChanged={this.onRouteChanged}/>
                     </div>
@@ -125,33 +135,6 @@ class App extends Component {
         return (null);
     }
 
-    renderNavbar() {
-        if (this.state.showMenu)
-            return (
-                <Navbar>
-                    <Navbar.Header>
-                        <Navbar.Brand>
-                            <a href={`/${env.default.baseContext}/home`}>SRS Student Registration System</a>
-                        </Navbar.Brand>
-                    </Navbar.Header>
-
-                    <Nav pullRight>
-                        <NavDropdown eventKey={3} title={this.props.fullName} id="navbarResponsive">
-                            <MenuItem eventKey="profile" onClick={this.goToProfile}>
-                                Perfil
-                            </MenuItem>
-                            <MenuItem divider/>
-                            <MenuItem eventKey="logout" onClick={this.handleLogout}>
-                                Salir
-                            </MenuItem>
-                        </NavDropdown>
-
-                    </Nav>
-                </Navbar>
-            );
-
-        return (null);
-    }
 }
 
 function mapStateToProps(store) {

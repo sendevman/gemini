@@ -18,7 +18,7 @@ const studentLookup = (state = Utils.freezeObject(initialState), action) => {
         case types.STUDENT_NOT_FOUND:
             return {...state, student: null, found: false};
         case types.HOME_LOAD_END:
-            return initialState;
+            return Utils.freezeObject(initialState);
         default:
             return state;
     }

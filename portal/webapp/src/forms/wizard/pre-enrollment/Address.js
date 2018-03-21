@@ -46,18 +46,18 @@ class Address extends Component {
         let props = {...this.props};
         return [
             <div className="col-md-7 content-section">
-                <div className="body">
+                <div className="body" style={{padding: 40}}>
                     <div className="row">
                         <div className="col-md-6">
                             <div className="row">
-                                <div className="col-md-2">
+                                <div className="col-md-5">
                                     <h5 htmlFor="">Residencial</h5>
                                 </div>
 
-                                <div className="col-md-3" style={{marginLeft: 10}}>
+                                <div className="col-md-6" style={{marginLeft: 5}}>
                                     <Button onClick={this.copyAddress}
                                             bsSize="small"
-                                            bsStyle="primary">Copiar residencial a postal</Button>
+                                            bsStyle="primary">Copiar</Button>
                                 </div>
 
                             </div>
@@ -88,7 +88,7 @@ class Address extends Component {
 
     renderAddressForm(type, address) {
         address.city = !address.city ? "-1" : address.city;
-        return (<div>
+        return (<div className="mt-4">
             <div className="row">
                 <div className="col-md-12">
                     <TextInput type="addressLine" id={`${type}.line1`}  label="Linea 1"
@@ -98,23 +98,22 @@ class Address extends Component {
             <div className="row">
                 <div className="col-md-12">
                     <TextInput type="addressLine" id={`${type}.line2`}  label="Linea 2"
-                               required={false}
                                value={address.line2} onChange={this.inputHandler}/>
                 </div>
             </div>
             <div className="row">
-                <div className="col-md-4">
+                <div className="col-md-6">
                     <CodeSelect id={`${type}.city`} label="Ciudad"
                                 codeType="municipios"
                                 value={address.city} onChange={this.inputHandler}/>
                 </div>
-                <div className="col-md-4">
-                    <CodeSelect id={`${type}.state`} label="Estado"  codeType="states"
-                                value={"PR"}
-                                disabled={true} onChange={this.inputHandler}/>
-                </div>
+                {/*<div className="col-md-4">*/}
+                    {/*<CodeSelect id={`${type}.state`} label="Estado"  codeType="states"*/}
+                                {/*value={"PR"}*/}
+                                {/*disabled={true} onChange={this.inputHandler}/>*/}
+                {/*</div>*/}
 
-                <div className="col-md-4">
+                <div className="col-md-6">
                     <TextInput type="zipcode" id={`${type}.zipcode`} label="Zip"
                                value={address.zipcode} onChange={this.inputHandler}/>
                 </div>
