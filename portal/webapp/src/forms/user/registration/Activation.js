@@ -78,7 +78,7 @@ class Activation extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description"><h2>Culmine su Registro</h2>
+                    <div className="description"><h2>Complete su Registro</h2>
                         <div className="violet-line"></div>
                     </div>
                 </div>

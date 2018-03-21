@@ -62,6 +62,7 @@ public class SchoolmaxController {
         List<Object> fieldsRequired = Lists.newArrayList();
         fieldsRequired.add(searchRequest.getDateOfBirth());
         fieldsRequired.add(searchRequest.getFirstName());
+        fieldsRequired.add(searchRequest.getLastName());
 
         if (!(ValidationUtils.valid(searchRequest.getLastSsn()) || ValidationUtils.valid(searchRequest.getStudentNumber()))) {
             return ResponseEntity.ok(missingFields());

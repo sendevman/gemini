@@ -18,10 +18,8 @@ var token = "5fsf4g%$fgdgdjh58444121dfffKd"; // FAKE TOKEN FOR TESTING
 var debug = 'true';
 
 $(document).ready(function () {
-
-    console.log("Here inside ready");
     entryAnimations();
-    // formsFunctional();
+    formsFunctional();
     // searchStudent();
     // searchSchool();
     // pasteStudentName();
@@ -47,7 +45,7 @@ $(document).ready(function () {
 
 function entryAnimations() {
     window.onload = function () {
-        $("root").addClass("play");
+        $("body").addClass("play");
 
         setTimeout(function () {
             $("body").removeClass("entry");
@@ -93,30 +91,29 @@ function pasteStudentName() {
 
 function formsFunctional() {
 
-    $(".numeric .icon-top").on('click', function () {
-        var i = Number($(".numeric input").val());
-        $(".numeric input").val(i + 1);
-        $(".numeric input").trigger("input");
-    });
-
-    $(".numeric .icon-down").on('click', function () {
-        var i = Number($(".numeric input").val());
-        if (i > 0) {
-            $(".numeric input").val(i - 1);
-            $(".numeric input").trigger("input");
-        }
-    });
+    // $(".numeric .icon-top").on('click', function () {
+    //     var i = Number($(".numeric input").val());
+    //     $(".numeric input").val(i + 1);
+    //     $(".numeric input").trigger("input");
+    // });
+    //
+    // $(".numeric .icon-down").on('click', function () {
+    //     var i = Number($(".numeric input").val());
+    //     if (i > 0) {
+    //         $(".numeric input").val(i - 1);
+    //         $(".numeric input").trigger("input");
+    //     }
+    // });
 
     $(".icon-eye").on('click', function () {
-
         if ($(this).hasClass('visible')) {
             $('.icon-eye').removeClass('visible');
-            $('input[name="password"]').attr('type', 'password');
-            $('input[name="confirmPassword"]').attr('type', 'password');
+            $('input[id="password"]').attr('type', 'password');
+            $('input[id="confirmPassword"]').attr('type', 'password');
         } else {
-            $('.icon-eye').addClass('visible');
-            $('input[name="password"]').attr('type', 'text');
-            $('input[name="confirmPassword"]').attr('type', 'text');
+            $('.group .icon-eye').addClass('visible');
+            $('input[id="password"]').attr('type', 'text');
+            $('input[id="confirmPassword"]').attr('type', 'text');
         }
 
     });

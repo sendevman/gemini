@@ -12,6 +12,7 @@ import java.util.Date;
 public class StudentSearchRequest {
     @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
     private Long studentNumber;
     private Long lastSsn;

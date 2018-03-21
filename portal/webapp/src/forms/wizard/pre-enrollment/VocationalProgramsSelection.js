@@ -126,7 +126,7 @@ class VocationalProgramsSelection extends Component {
                             {this.renderProgramsSelections()}
                         </div>
                     </div>
-                    <div style={{marginTop: -100}}>
+                    <div style={{marginTop: -40}}>
                         {this.props.footer}
                     </div>
                 </div>
@@ -161,7 +161,7 @@ class VocationalProgramsSelection extends Component {
                         </td>
                     </tr>
                 ))
-                : <label style={{left: 0, top: 0}}>No posee ningun programa aun</label>}
+                : <label style={{left: 50, top: 50}}>No posee ningun programa aun</label>}
             </tbody>
         </table>)
     }

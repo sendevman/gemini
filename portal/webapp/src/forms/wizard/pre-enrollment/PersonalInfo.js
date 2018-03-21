@@ -42,49 +42,6 @@ class PersonalInfo extends Component {
         this.props.savePreEnrollment(form, onResult, onError);
     }
 
-    original() {
-        return (<div>
-            <div class="col-md-7 content-section">
-                <div class="title">
-                    <div class="description mb40"><h2 class="f90sbg">OK.</h2>
-                        <div class="violet-line"></div>
-                    </div>
-                    <span class="f20slg"><span class="f30slg">Let’s <span class="f30slb">Pre-register</span> the student in the system</span></span>
-                </div>
-                <div class="body d-flex align-items-center flex-column justify-content-end">
-                    <form id="pre-register-form" action="#" method="POST" class="mt50">
-                        <div class="row plr15 pb50">
-                            <div class="group form-group has-feedback col-md-6 pl-0 pr50">
-                                <input class="inputMaterial" type="text" name="name" required/>
-                                <i class="n icon-human fs26"></i>
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Full Name</label>
-                            </div>
-                            <div class="group form-group has-feedback col-md-6 pl50 pr-0 numeric">
-                                <input class="inputMaterial" type="text" name="age" required/>
-                                <i class="n icon-teacher fs26"></i>
-                                <i class="icon-top"></i>
-                                <i class="icon-down"></i>
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Age</label>
-                            </div>
-                        </div>
-                        <div class="row action-section">
-                            <div class="col-md-12 text-center text-lg-left p-0">
-                                <button type="submit" class="button-green mr30 mob-mb30px"><span>s</span>Submit</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-4 illustration-section d-flex align-items-center text-center">
-                <div class="illustration"><img src="img/entrollment-illustration.png" alt=""/></div>
-            </div>
-        </div>)
-    }
-
     render() {
         let student = this.props.student;
         let studentExists = this.props.found;
@@ -131,7 +88,7 @@ class PersonalInfo extends Component {
                     </div>
                     <div className="col-md-6">
                         <SimpleDateInput id="dateOfBirth"
-                                         label="Fecha de Nacimiento"
+                                         label="Fecha de Nac."
                                          required
                                          value={student.dateOfBirth}
                                          onValidDate={this.onValidDate}
