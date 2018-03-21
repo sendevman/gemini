@@ -72,6 +72,7 @@ class Authentication extends Component {
             <div className="body d-flex align-items-center flex-column justify-content-end">
                 <form id="signin-form" className="signin-form" onSubmit={this.login}>
                     <TextInput id="username"
+                               type="email"
                                label="Email"
                                onChange={this.handleInputChange}
                                value={username}

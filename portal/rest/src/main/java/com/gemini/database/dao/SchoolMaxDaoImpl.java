@@ -65,8 +65,8 @@ public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements Sc
         }
 
         if(ValidationUtils.valid(searchRequest.getLastName())){
-            sql.append(" AND LAST_NAME_CANON = GET_CANON_NAME(:lastName)");
-            params.put("lastName", searchRequest.getFirstName());
+            sql.append(" AND LAST_NAME_CANON like GET_CANON_NAME(:lastName) || '%'");
+            params.put("lastName", searchRequest.getLastName());
         }
 
         if(ValidationUtils.valid(searchRequest.getLastSsn())){

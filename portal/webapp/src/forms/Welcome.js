@@ -15,8 +15,8 @@ export default class Welcome extends Component {
     render() {
         return [<div className="col-md-5 content-section">
                 <div className="title">
-                    <h2>Sistema de Registro</h2>
-                    <div className="description"><p>& Estudiantil</p>
+                    <h2>SIE-Registro</h2>
+                    <div className="description"><p>de Estudiante</p>
                         <div className="green-line"/>
                     </div>
 

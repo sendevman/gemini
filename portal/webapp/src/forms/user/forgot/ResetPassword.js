@@ -59,8 +59,13 @@ class ResetPassword extends Component {
     reset(e) {
         e.preventDefault();
         let form = this.props.form;
-        form.credentialLostKey = this.props.match.params.credentialLostKey;
-        this.props.resetPassword(form, () => {
+        let credentialLostKey = this.props.match.params.credentialLostKey;
+        let request = {
+            credentialLostKey: credentialLostKey,
+            password: form.password,
+            confirmPassword: form.confirmPassword
+        };
+        this.props.resetPassword(request, () => {
             this.props.history.push("/reset/password/result/success")
         }, () => {
             this.props.history.push("/reset/password/result/error")

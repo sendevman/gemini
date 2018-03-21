@@ -66,7 +66,8 @@ class UserInfoRequest extends Component {
                                        grouped/>
                         </div>
                         <div className="col-md-6">
-                            <TextInput id="lastName" type="lastname"
+                            <TextInput id="lastName"
+                                       type="lastname"
                                        ref="lastName"
                                        label="Apellidos"
                                        onChange={this.inputHandler}
@@ -76,8 +77,7 @@ class UserInfoRequest extends Component {
                     </div>
                     <div className="row">
                         <div className="col-md-6">
-                            <SimpleDateInput showFormat={false}
-                                             label="Fecha de Nacimiento"
+                            <SimpleDateInput label=""
                                              ref="dob"
                                              onValidDate={this.onValidDate}
                                              onInvalidDate={this.onInvalidDate}

@@ -58,7 +58,7 @@ class StudentIdentification extends Component {
                                              value={form.dateOfBirth}
                                              required
                                              onValidDate={this.onValidDate}
-                                             label="Fecha nac."/>
+                                             label=""/>
                         </div>
                         <div className="col-md-4">
 
@@ -87,7 +87,7 @@ class StudentIdentification extends Component {
                         </div>
                         <div className="col-md-4">
                             <TextInput id="lastName"
-                                       type="name"
+                                       type="lastname"
                                        value={form.lastName}
                                        onChange={this.inputHandler}
                                        label="Apellidos"/>

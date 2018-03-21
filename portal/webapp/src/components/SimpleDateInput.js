@@ -78,7 +78,7 @@ export default class SimpleDateInput extends Component {
     }
 
     render() {
-        let format = this.props.showFormat ? "(dd/mm/yyyy)" : "";
+        let format = "(dd/mm/yyyy)";
         let props = Object.assign({}, this.props);
         if (props.showFormat)
             delete props.showFormat;
@@ -87,11 +87,17 @@ export default class SimpleDateInput extends Component {
         return <div className="group form-group has-feedback">
             <InputMask {...props}
                        onChange={this.inputHandler}
+                       style={{paddingLeft: 20}}
                        className="inputMaterial"
                        mask="99/99/9999"
                        maskChar=" "
                        value={this.state.dateString}/>
-            <label htmlFor={this.props.id}>{`${this.props.label}`}</label>
+
+            {/*fa fa-birthday-cake*/}
+            <i className="n fa fa-birthday-cake"/>
+            <span className="highlight"/>
+            <span className="bar"/>
+            <label htmlFor={this.props.id}>{`${this.props.label} ${format}`}</label>
         </div>;
     }
 }

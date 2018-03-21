@@ -142,7 +142,7 @@ export const existsKey = (key, onError) => (dispatch) => {
 };
 
 export const resetPassword = (form, onSuccess, onError) => (dispatch, getState) => {
-    let token = getState().loginHelp.recaptchaToken;
+    let token = getState().loginHelp.token;
     dispatch({type: types.RESET_PASSWORD_START});
     services().resetPassword(form, token)
         .then((response) => response.json())

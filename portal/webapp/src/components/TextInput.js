@@ -2,7 +2,9 @@ import React, {Component} from "react";
 import * as Utils from "../Utils";
 import PropTypes from "prop-types";
 
-let onlyLetter = /^[^0-9]*$/;
+// [^0-9~!@#$%^&*()_+={}[]|\\"':;?.<>]
+let onlyLetter = /^[a-zA-Z]*$/;
+let onlyLetterAndSpace = /^[a-zA-Z ]*$/;
 let onlyNumber = /^[0-9]*$/;
 let onlyLetterAndNumber = /^.*$/;
 let emailAcceptedChar = /^\S*$/;
@@ -12,7 +14,7 @@ let field = {
     string: {min: 1, max: 128, regex: onlyLetter},
     number: {min: 1, max: 6, regex: onlyNumber},
     name: {min: 1, max: 128, regex: onlyLetter},
-    lastname: {min: 1, max: 128, regex: onlyLetter},
+    lastname: {min: 1, max: 128, regex: onlyLetterAndSpace},
     email: {regex: emailAcceptedChar, validation: emailValidation},
     lastSSN: {length: 4, regex: onlyNumber},
     studentNumber: {min: 4, max: 9, regex: onlyNumber},
@@ -116,7 +118,7 @@ class TextInput extends Component {
         let isPassword = this.props.type === 'password';
         let hasError = this.state.hasError && this.props.required;
         let grouped = this.props.grouped ? "group" : "";
-        let groupClass = grouped + " form-group has-feedback";//.concat(hasError ? "has-error" : "");
+        let groupClass = grouped + " form-group has-feedback".concat(hasError ? "has-error help-block" : "");
         let props = Object.assign({}, this.props);
         if (this.config.max || this.config.length)
             props = {...props, maxLength: this.config.max || this.config.length};
@@ -137,9 +139,10 @@ class TextInput extends Component {
                        value={this.state.value}
                 />
 
-                <i className={`n ${this.props.iconName}`}></i>
-                <span className="highlight"></span>
-                <span className="bar"></span>
+                <i className={`n ${this.props.iconName}`}/>
+                {this.props.type === "password" ? (<i className="icon-eye"/>) : (null)}
+                <span className="highlight"/>
+                <span className="bar"/>
                 {this.props.includeLabel ? (<label htmlFor={this.props.id}>{label}</label>) : (null)}
 
             </div>);
