@@ -3,6 +3,7 @@ import * as Utils from "../../Utils";
 
 const initialState = {
     email: "",
+    token: null,
     validEmail: false,
     passwordHasBeenReset: false,
     validKey: false,
@@ -25,7 +26,7 @@ const loginHelp = (state =  Utils.freezeObject(initialState), action) => {
         case types.RESET_PASSWORD_START:
             return {...state, loading: true};
         case types.CLEAN_FORM:
-            return initialState;
+            return Utils.freezeObject(initialState);
         default:
             return state;
     }

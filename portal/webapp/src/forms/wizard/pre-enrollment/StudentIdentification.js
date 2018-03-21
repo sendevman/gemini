@@ -58,7 +58,7 @@ class StudentIdentification extends Component {
                                              value={form.dateOfBirth}
                                              required
                                              onValidDate={this.onValidDate}
-                                             label="Fecha nacimiento"/>
+                                             label="Fecha nac."/>
                         </div>
                         <div className="col-md-4">
 
@@ -66,7 +66,7 @@ class StudentIdentification extends Component {
                                        type="lastSSN"
                                        value={form.lastSsn}
                                        onChange={this.inputHandler}
-                                       label="Ultimo 4 digitos SSN"/>
+                                       label="Ultimo #4 ssn"/>
                         </div>
 
                         <div className="col-md-4">
@@ -74,7 +74,7 @@ class StudentIdentification extends Component {
                                        type="studentNumber"
                                        value={form.studentNumber}
                                        onChange={this.inputHandler}
-                                       label="Numero de Estudiante SIE"/>
+                                       label="# Estudiante SIE"/>
                         </div>
                     </div>
                     <div className="row">

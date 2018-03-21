@@ -55,7 +55,7 @@ const preEnrollment = (state = Utils.freezeObject(initialState), action) => {
                 }
             };
         case types.HOME_LOAD_END:
-            return initialState;
+            return Utils.freezeObject(initialState);
         default:
             return state;
     }

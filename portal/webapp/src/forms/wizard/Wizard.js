@@ -176,7 +176,11 @@ class Wizard extends Component {
             </div>)
         }
 
-        return (<div key="footer" className="body d-flex align-items-center flex-column justify-content-end"
+        let cssClass = props.currentPageType !== "VOCATIONAL_PROGRAMS" && props.currentPageType !== "VOCATIONAL_SCHOOL_SELECTION"
+            ? "body d-flex align-items-center flex-column justify-content-end"
+            : "";
+
+        return (<div key="footer" className={cssClass}
                      style={commonStyle}>
             <div className="row action-section">
                 <div className="col-md-12 text-center text-lg-left p-0">

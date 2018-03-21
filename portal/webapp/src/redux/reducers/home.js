@@ -9,7 +9,7 @@ const initialState = {
 const home = (state = Utils.freezeObject(initialState), action) => {
     switch (action.type) {
         case types.HOME_LOAD_START:
-            return initialState;
+            return  Utils.freezeObject(initialState);
         case types.HOME_LOAD_END:
             return {...state, preEnrollments: action.response.preEnrollments};
         default:

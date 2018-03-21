@@ -62,7 +62,7 @@ const wizard = (state = Utils.freezeObject(initialState), action) => {
                 current: action.current,
                 previousLabel: btnType.previousButton,
                 nextLabel: btnType.nextButton,
-                pageType: action.pageType,
+                currentPageType: action.pageType,
             };
         case types.ON_WIZARD_PREVIOUS_START:
             return state;
@@ -80,7 +80,7 @@ const wizard = (state = Utils.freezeObject(initialState), action) => {
         case types.ON_WIZARD_COMPLETED:
             return {...state, wizardCompleted: true, startOver: action.startOver};
         case types.ON_WIZARD_RESET:
-            return initialState;
+            return Utils.freezeObject(initialState);
         case types.ON_WIZARD_FORMS_CHANGE:
             return {...state, formsToDisplay: action.forms, maxForms: action.forms.length};
         default:

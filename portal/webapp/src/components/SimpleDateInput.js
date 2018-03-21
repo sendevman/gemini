@@ -91,7 +91,7 @@ export default class SimpleDateInput extends Component {
                        mask="99/99/9999"
                        maskChar=" "
                        value={this.state.dateString}/>
-            <label htmlFor={this.props.id}>{`${this.props.label} ${format}:`}</label>
+            <label htmlFor={this.props.id}>{`${this.props.label}`}</label>
         </div>;
     }
 }

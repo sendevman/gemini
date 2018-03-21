@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
-import {Button, Glyphicon} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import {getVocationalPrograms, partialSaveVocationalPreEnrollment} from "../../../redux/actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -81,7 +81,7 @@ class VocationalProgramsSelection extends Component {
                         <div className="col-md-12">
                             <div className="row">
                                 <div className="col-md-4">
-                                    <p>Escuela: </p>
+                                    <span>Escuela: </span>
                                 </div>
                                 <div className="col-md-8">
                                     <h5>{enrollment && enrollment.schoolName}</h5>
@@ -93,10 +93,10 @@ class VocationalProgramsSelection extends Component {
                         <div className="col-md-12">
                             <div className="row">
                                 <div className="col-md-4">
-                                    <p>Direccion Escuela: </p>
+                                    <span>Direccion Escuela: </span>
                                 </div>
                                 <div className="col-md-8">
-                                    <h5>{enrollment && enrollment.schoolAddress.addressFormatted}</h5>
+                                    <h6>{enrollment && enrollment.schoolAddress.addressFormatted}</h6>
                                 </div>
                             </div>
                         </div>
@@ -137,63 +137,6 @@ class VocationalProgramsSelection extends Component {
         ];
     }
 
-    renderOld() {
-        let enrollment = this.props.currentVocationalEnrollment;
-        let programs = this.state.formPrograms;
-
-        return (<div>
-            <div className="row">
-                <div className="col-md-12">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>Escuela: </p>
-                        </div>
-                        <div className="col-md-8">
-                            <h5>{enrollment && enrollment.schoolName}</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-md-12">
-                    <div className="row">
-                        <div className="col-md-4">
-                            <p>Direccion Escuela: </p>
-                        </div>
-                        <div className="col-md-8">
-                            <h5>{enrollment && enrollment.schoolAddress.addressFormatted}</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-md-8">
-                    <RemoteCodeSelect id="program"
-                                      label="Programa"
-                                      placeholder="Seleccione Programa"
-                                      codes={programs}
-                                      onObjectChange={this.onProgramChange}
-                                      target="programCode"
-                                      display="programDescription"
-                                      value={this.state.selectedProgram}
-                    />
-                </div>
-                <div className="col-md-4">
-                    <div className="form-group">
-                        <label>&nbsp;</label>
-                        <Button className="form-control" bsStyle="primary" onClick={this.onAdd}
-                                disabled={!programs || programs.length === 0}>A&ntilde;adir</Button>
-                    </div>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-md-12">
-                    {this.renderProgramsSelections()}
-                </div>
-            </div>
-        </div>);
-    }
-
     renderProgramsSelections() {
         let form = this.props.currentVocationalEnrollment;
         let programs = form.programs;
@@ -218,7 +161,7 @@ class VocationalProgramsSelection extends Component {
                         </td>
                     </tr>
                 ))
-                : <div><label>No posee ningun programa aun</label></div>}
+                : <label style={{left: 0, top: 0}}>No posee ningun programa aun</label>}
             </tbody>
         </table>)
     }

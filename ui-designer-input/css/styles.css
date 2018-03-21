@@ -309,6 +309,8 @@ label {
 .pl50.group label {left: 100px;}
 
 .inputMaterial:focus ~ label,
+.inputMaterial:disabled ~ label,
+.inputMaterial:disabled {color:#bcbec5;}
 .inputMaterial:valid ~ label,
 .has-error .inputMaterial:invalid ~ label{
   top: -15px;

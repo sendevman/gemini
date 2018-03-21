@@ -17,6 +17,7 @@ import ForgotPasswordResult from "./forms/user/forgot/ForgotPasswordResult";
 import ResetPassword from "./forms/user/forgot/ResetPassword";
 import ResetPasswordResult from "./forms/user/forgot/ResetPasswordResult";
 import CancelResetPasswordRequest from "./forms/user/forgot/CancelResetPasswordRequest";
+import Welcome from "./forms/Welcome";
 
 class Routes extends Component {
 
@@ -31,7 +32,8 @@ class Routes extends Component {
         let loading = this.props.loading;
         return (
             <Switch>
-                <Route exact path="/" component={Authentication}/>
+                <Route exact path="/" component={Welcome}/>
+                <Route path="/login" component={Authentication}/>
                 {/*public routes*/}
                 <Route path="/registration/result/:result(success|error)" component={RegistrationResult}/>
                 <Route path="/registration" component={Registration}/>
@@ -65,8 +67,9 @@ const PrivateRoute = ({component: Component, ...rest}) => (
         {...rest}
         render={props =>
             rest.authenticated || rest.loading
-                ? rest.authenticated && !rest.loading ? (<Component {...props} />) : (<div>Esto no deberia suceder recargue la pagina</div>)
-                : (<Redirect to={{pathname: "/", state: {from: props.location}}}/>)
+                ? rest.authenticated && !rest.loading ? (<Component {...props} />) : (
+                    <div>Esto no deberia suceder recargue la pagina</div>)
+                : (<Redirect to={{pathname: "/login", state: {from: props.location}}}/>)
         }
     />
 );

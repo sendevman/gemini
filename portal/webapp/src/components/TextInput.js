@@ -115,7 +115,7 @@ class TextInput extends Component {
     render() {
         let isPassword = this.props.type === 'password';
         let hasError = this.state.hasError && this.props.required;
-        let grouped = this.props.grouped ? "group": "";
+        let grouped = this.props.grouped ? "group" : "";
         let groupClass = grouped + " form-group has-feedback";//.concat(hasError ? "has-error" : "");
         let props = Object.assign({}, this.props);
         if (this.config.max || this.config.length)
@@ -125,10 +125,12 @@ class TextInput extends Component {
             ? `${this.props.label || this.props.placeholder}`
             : '';
         delete  props.includeLabel;
+        let customCss = !props.iconName ? {paddingLeft: 0} : props.style;
         return (
 
             <div className={groupClass}>
                 <input {...props}
+                       style={customCss}
                        type={isPassword ? "password" : "text"}
                        className="inputMaterial"
                        onChange={this.inputHandler}

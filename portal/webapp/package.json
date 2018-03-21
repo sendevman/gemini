@@ -2,7 +2,7 @@
   "name": "project-gemini",
   "version": "0.0.1",
   "private": true,
-  "homepage": "https://prdesietest.dde.pr/schoolmax_tmax2/",
+  "homepage": "http://34.197.64.57/srs/",
   "dependencies": {
     "classnames": "^2.2.5",
     "immutable": "^3.8.2",

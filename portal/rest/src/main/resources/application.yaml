@@ -1,10 +1,10 @@
 server:
-  context-path: /srs-api
+  context-path: @api.base.context-path@
   port: 8081
   session:
-    timeout: 900  # in seconds
+    timeout: @session.timeout@  # in seconds
     cookie:
-      max-age: 900 # in seconds
+      max-age: @cookie.max-age@ # in seconds
     
 #management:
 #  port: 8083
@@ -15,14 +15,14 @@ spring:
   main:
     web-environment: true
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: de.pentaho@gmail.com
-    password: d3r3ply2@!4
+    host: @mail.host@
+    port: @mail.port@
+    username: @mail.username@
+    password: @mail.password@
     properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
-    test-connection: false
+      mail.smtp.auth: @mail.smtp.auth@
+      mail.smtp.starttls.enable: @mail.smtp.starttls.enable@
+    test-connection: @mail.test-conection@
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -30,21 +30,20 @@ spring:
     generate-ddl: true
     properties:
       hibernate.type: trace
-
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/SRS
-    username: srs
-    password: 12345678
-    driver-class-name: com.mysql.jdbc.Driver
+    url: @main.db.jdbc.url@
+    username: @main.db.user@
+    password: @main.db.password@
+    driver-class-name: @main.db.driver.name@
     hikari:
       maximum-pool-size: 30
     platform: mysql
   smaxDatasource:
-    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
-    username: PRDE_SRS
-    password: depl0y2@!8
-    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: @smax.db.jdbc.url@
+    username: @smax.db.user@
+    password: @smax.db.password@
+    driver-class-name: @smax.db.driver.name@
     hikari:
       maximum-pool-size: 30
 
@@ -55,26 +54,27 @@ security:
     enabled: true
 #    Since we are using GMAIL, we have to use the same email address because GMAIL doesn't allow to change the FROM property
 email:
-  from: DE-SIE@de.pr.gov
+  from: @email.from@
 website:
-  url: http://localhost:3000
-  context-path: /srs
+  url: @website.base.url@
+  context-path: @website.base.context-path@
 logging:
   config: classpath:logback.xml
 
 
+
 google:
   recaptcha:
-    secret: 6Lffy0sUAAAAAJ5r6JXLUMuns1KnrQkWwzPFnDpZ
-    active: false
+    secret: @google.recaptcha.secret.key@
+    active: @google.recaptcha.activate@
 oracle:
   proxy:
-    host:
-    port: 80
+    host: @oracle.proxy.host@
+    port: @oracle.proxy.port@
 
-#smax:
-#  interface:
-#    use:
+smax:
+  interface:
+    use: @smax.interface.in-use@
 
 #move this to a different properties file
 messages:

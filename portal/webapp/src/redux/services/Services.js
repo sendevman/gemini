@@ -59,8 +59,8 @@ export default class Services {
         return this._getRaw(`/account/activate/${code}`);
     }
 
-    forgotPassword(form) {
-        return this._publicPost(`/account/forgot/password`, form, null);
+    forgotPassword(form, token) {
+        return this._publicPost(`/account/forgot/password`, form, token);
     }
 
     existsKey(key) {

@@ -1,19 +1,21 @@
 import React, {Component} from "react";
 import TextInput from "../../../components/TextInput";
-import {Button} from "react-bootstrap";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {forgotPassword} from "../../../redux/actions";
 import registrationIllustration from "../../../style/img/registration-illustration.png";
+import env from "../../../env";
+import ReCAPTCHA from "react-google-recaptcha";
 
 class ForgotPassword extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {valid: false};
+        this.state = {valid: false, token: null};
         this.inputHandler = this.inputHandler.bind(this);
         this.validForm = this.validForm.bind(this);
         this.sendEmail = this.sendEmail.bind(this);
+        this.verifyCallback = this.verifyCallback.bind(this);
     }
 
     inputHandler(e) {
@@ -25,7 +27,15 @@ class ForgotPassword extends Component {
 
     validForm() {
         let valid = this.refs.email.valid();
-        this.setState({...this.state, valid: valid})
+        this.setState({...this.state, valid: valid && this.state.token})
+    }
+
+    verifyCallback(response) {
+        let form = this.props.form;
+        form.token = response;
+        this.setState({...this.state, token: response}, () => {
+            this.validForm();
+        });
     }
 
     sendEmail(e) {
@@ -57,6 +67,10 @@ class ForgotPassword extends Component {
                                value={form.email}
                                iconName="icon-mail"
                                grouped/>
+                    <ReCAPTCHA
+                        sitekey={env.reCAPTCHASiteKey}
+                        onChange={this.verifyCallback}
+                    />
                     <button className="button-yellow mt50" id="buttonGet" type="submit"
                             disabled={!this.state.valid}>Enviar Email
                     </button>
@@ -69,52 +83,10 @@ class ForgotPassword extends Component {
             </div>]
     }
 
-    renderOlde() {
-        let form = this.props.form;
-
-        return (<div>
-            <div className="container">
-                <div className="forgot-password">
-                    <div className="row">
-                        <div className="col-md-12" style={{textAlign: "center"}}>
-                            <h3>Olvido su contraseña</h3>
-                        </div>
-                    </div>
-                    <div className="row" style={{marginTop: 50}}>
-                        <div className="col-md-12">
-                            <span> Le enviaremos un email con las intrucciones de como reiniciar su contraseña</span>
-                        </div>
-                    </div>
-                    <div className="row" style={{marginTop: 10}}>
-                        <div className="col-md-12">
-                            <form onSubmit={this.sendEmail}>
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <TextInput id="email"
-                                                   type="email"
-                                                   ref="email"
-                                                   label="Email"
-                                                   onChange={this.inputHandler}
-                                                   value={form.email}/>
-                                    </div>
-                                </div>
-                                <div className="row" style={{marginTop: 20}}>
-                                    <div className="col-md-12">
-                                        <Button type="submit" block bsStyle="primary"
-                                                disabled={!this.state.valid}>Enviar Email</Button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>)
-    }
 }
 
 function mapStateToProps(store) {
-    return {form: Object.assign({}, store.loginHelp)};
+    return {form: store.loginHelp};
 }
 
 function mapDispatchToActions(dispatch) {
