@@ -99,7 +99,7 @@
     </dependencies>
 
     <build>
-        <finalName>schoolmax_tmax2-api###${version}-${maven.build.timestamp}</finalName>
+        <finalName>${war.name}###${version}-${maven.build.timestamp}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
