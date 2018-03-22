@@ -8,10 +8,15 @@ export const saveProfile = (form, success, error) => (dispatch) => {
         .then((response) => response.json())
         .then((response) => {
             dispatch({type: types.PROFILE_UPDATE_END, user: response.content || {}});
-            response.successfulOperation ? success() : error(response.validationMessages)
+            if (response.successfulOperation)
+                success();
+            else {
+                error(response.validationMessages);
+                dispatch({type: types.CANCEL_BLOCK_UI});
+            }
         })
 };
 
-export const validateProfile = (form, onSuccessValidation, onErrorValidation) => (dispatch) =>{
+export const validateProfile = (form, onSuccessValidation, onErrorValidation) => (dispatch) => {
 
 };

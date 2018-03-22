@@ -30,7 +30,7 @@ echo "Server = ${SERVER}"
 echo "Output War = ${WAR_NAME}"
 echo "Server Username = ${SERVER_USER}"
 
-echo -n "Do you want to continue with the deployment please press [ENTER]:"
+echo -n "Do you want to continue with the deployment please press [ENTER] ..."
 read env
 
 START_BUILD_DATE=date
@@ -42,13 +42,15 @@ cp -r WEB-INF build/
 cd build/
 
 echo "Generating war ${WAR_NAME}"
+jar -cvf ../${WAR_NAME} .
 
-tar -czvf ../${WAR_NAME} .
 cd ../
 if [[ "$ENVIRONMENT" = "DEV" ]]; then
     echo -e "scp ${WAR_NAME} ${SERVER}:${SERVER_OUTPUT}"
+    scp ${WAR_NAME} ${SERVER}:${SERVER_OUTPUT}
 else
     echo -e "scp ${WAR_NAME} ${SERVER_USER}@${SERVER}:${SERVER_OUTPUT}"
+    scp ${WAR_NAME} ${SERVER_USER}@${SERVER}:${SERVER_OUTPUT}
 fi
 
 echo "****End Building SRS Portal Frontend****"

@@ -87,6 +87,7 @@ messages:
   search:
     student.missing.required.fields: "Falta campos requerido Fecha de Nacimiento, (Ultimo SSN o Numero Estudiante) y Nombre"
   user:
+    missing.required.fields: "Faltan campos requeridos [Nombre, Apellidos, Fecha de Nacimiento, Relacion con el Estudiante]"
     already.exists: "Usuario existente"
     min.age.validation: "Usuario debe tener 18 años o mas"
     reset.password.invalid: "No se pudo completar el reinicio de su contraseña"
