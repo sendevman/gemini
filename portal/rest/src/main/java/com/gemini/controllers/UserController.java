@@ -7,6 +7,7 @@ import com.gemini.services.CommonService;
 import com.gemini.services.UserService;
 import com.gemini.utils.DateUtils;
 import com.gemini.utils.MessageHelper;
+import com.gemini.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,9 +35,9 @@ public class UserController {
     private MessageHelper messageHelper;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBase> save(@RequestBody @Valid ParentProfileInfoRequest request, @AuthenticationPrincipal User loggedUser, BindingResult result) {
-        if (result.hasErrors())
-            return ResponseEntity.ok(ResponseBase.error(messageHelper.processMessage("general.missing.required.fields")));
+    public ResponseEntity<ResponseBase> save(@RequestBody ParentProfileInfoRequest request, @AuthenticationPrincipal User loggedUser, BindingResult result) {
+        if (!ValidationUtils.valid(request.getRelationType(), request.getDateOfBirth(), request.getFirstName(), request.getLastName()))
+            return ResponseEntity.ok(ResponseBase.error("Missing required fields", messageHelper.processMessages("user.missing.required.fields")));
 
         int userAge = DateUtils.toYears(request.getDateOfBirth());
         if (userAge < commonService.getMinUserAgeToSubmitRequest()) {

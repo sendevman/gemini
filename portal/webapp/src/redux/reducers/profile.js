@@ -21,7 +21,14 @@ const profile = (state = Utils.freezeObject(initialState), action) => {
     let authentication = {username: action.username, password: ''};
     switch (action.type) {
         case types.AUTHENTICATING_START:
-            return {...state, loading: true, authentication: authentication, invalidCredentials: false, errorAtLogin: false, clean: false};
+            return {
+                ...state,
+                loading: true,
+                authentication: authentication,
+                invalidCredentials: false,
+                errorAtLogin: false,
+                clean: false
+            };
         case types.AUTHENTICATING_END:
             return {...state, loading: false};
         case types.AUTHENTICATED:

@@ -15,7 +15,6 @@ import java.util.Date;
 public class ParentProfileInfoRequest {
 
     private Long id;
-    @NotNull
     private RelationType relationType;
     @NotEmpty
     @NotNull
