@@ -39,3 +39,5 @@ _Student Registration System (SRS)_
 [Example](http://www.baeldung.com/registration-with-spring-mvc-and-spring-security)
 
 [Nginx deploy](https://stackoverflow.com/questions/16783657/nginx-reverse-proxy-setup-does-not-preserve-session-id-when-doing-cors-requests)
+
+[Spring Documentation](https://docs.spring.io/spring-boot/docs/1.5.10.RELEASE/reference/htmlsingle/)

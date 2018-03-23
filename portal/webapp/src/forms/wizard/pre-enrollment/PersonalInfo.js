@@ -10,6 +10,7 @@ import {bindActionCreators} from "redux";
 import {loadPersonalInfo, savePreEnrollment} from "../../../redux/actions";
 import entrollmentIllustration from "../.././../style/img/entrollment-illustration.png";
 import SimpleDateInput from "../../../components/SimpleDateInput";
+import AnimationHelper from "../../../AnimationHelper";
 
 class PersonalInfo extends Component {
 
@@ -101,66 +102,11 @@ class PersonalInfo extends Component {
             </div>
         </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
-                <div className="illustration"><img src={entrollmentIllustration} alt=""/></div>
+                {/*<div className="illustration"><img src={entrollmentIllustration} alt=""/></div>*/}
+                <AnimationHelper type="blackboard"/>
             </div>];
     }
 
-    renderOld() {
-        let student = this.props.student;
-        let studentExists = this.props.found;
-        return (
-            <form>
-                <div className="row">
-                    <div className="col-md-3">
-                        <TextInput id="firstName" type="name" labe="Nombre"
-                                   value={student.firstName}
-                                   onChange={this.inputHandler}
-                                   disabled={studentExists}/>
-                    </div>
-                    <div className="col-md-3">
-                        <TextInput id="middleName" type="name" placeholder="Segundo Nombre"
-                                   required={false}
-                                   value={student.middleName}
-                                   onChange={this.inputHandler}
-                                   disabled={studentExists}/>
-                    </div>
-                    <div className="col-md-3">
-                        <TextInput id="fatherLastName" type="lastname" placeholder="Apellido Paternal"
-                                   value={student.fatherLastName}
-                                   onChange={this.inputHandler}
-                                   disabled={studentExists}/>
-                    </div>
-                    <div className="col-md-3">
-                        <TextInput id="motherLastName" type="lastname" placeholder="Apellido Maternal"
-                                   value={student.motherLastName}
-                                   onChange={this.inputHandler}
-                                   disabled={studentExists}/>
-                    </div>
-
-                </div>
-
-                <div className="row">
-                    <div className="col-md-6">
-                        <CodeSelect id="gender"
-                                    label="Genero"
-                                    codeType="gender"
-                                    value={student.gender}
-                                    onChange={this.inputHandler}
-                                    placeholder="Seleccione su Genero"
-                                    disabled={studentExists}
-                        />
-
-                    </div>
-                    <div className="col-md-6">
-                        <DateInput id="dateOfBirth" label="Fecha de Nacimiento"
-                                   value={student.dateOfBirth}
-                                   onValidDate={this.onValidDate}
-                                   disabled={studentExists}/>
-                    </div>
-                </div>
-            </form>
-        );
-    }
 }
 
 

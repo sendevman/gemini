@@ -2,7 +2,6 @@ package com.gemini.database.jpa.entities;
 
 import com.gemini.beans.types.EntryType;
 import com.gemini.beans.types.Gender;
-import com.gemini.beans.types.Type;
 import com.gemini.database.IdentityEntity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

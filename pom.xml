@@ -81,7 +81,7 @@
         <profile>
             <id>tmaxio-dev-test</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
                 <war.name>srs-api</war.name>
@@ -183,7 +183,7 @@
                 <main.db.password>depl0y2@!8</main.db.password>
                 <main.db.driver.name>oracle.jdbc.driver.OracleDriver</main.db.driver.name>
                 <main.db.platform>oracle</main.db.platform>
-                <main.db.jpa.mode>create-drop</main.db.jpa.mode>
+                <main.db.jpa.mode>none</main.db.jpa.mode>
                 <!--smax db props-->
                 <smax.db.jdbc.url>jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM</smax.db.jdbc.url>
                 <smax.db.user>PRDE_SRS</smax.db.user>

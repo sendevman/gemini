@@ -6,6 +6,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {submitPreEnrollment} from "../../../redux/actions";
 import leisureIllustration from "../../../style/img/leisure-illustration.png";
+import AnimationHelper from "../../../AnimationHelper";
 
 class PreEnrollmentRecordFound extends Component {
 
@@ -19,44 +20,6 @@ class PreEnrollmentRecordFound extends Component {
         let submitRequest = {requestId: requestId, schoolId: form.schoolId, nextGradeLevel: form.nextGradeLevel};
         this.props.submitPreEnrollment(submitRequest, onResult, onError);
     }
-
-    oldRender() {
-        let student = this.props.student;
-        let preEnrollment = this.props.preEnrollment;
-        return (
-            <div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <blockquote>
-                            <p>Estudiante: {student && student.fullName}</p>
-                        </blockquote>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <blockquote>
-                            <p>Sera pre-matriculado en la escuela: {preEnrollment.schoolName}</p>
-                        </blockquote>
-                    </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-md-12">
-                        <blockquote>
-                            <p>Direccion de la escuela: {preEnrollment.schoolAddress.addressFormatted}</p>
-                        </blockquote>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <blockquote>
-                            <p>Proximo Grado será: {preEnrollment.nextGradeLevelDescription}</p>
-                        </blockquote>
-                    </div>
-                </div>
-            </div>);
-    }
-
 
     render() {
         let student = this.props.student;
@@ -80,7 +43,8 @@ class PreEnrollmentRecordFound extends Component {
             {this.props.footer}
         </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
-                <div className="illustration"><img src={leisureIllustration} alt=""/></div>
+                {/*<div className="illustration"><img src={leisureIllustration} alt=""/></div>*/}
+                <AnimationHelper type="rest"/>
             </div>]
     }
 }

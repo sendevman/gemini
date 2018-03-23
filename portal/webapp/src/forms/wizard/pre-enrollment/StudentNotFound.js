@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import leisureIllustration from "../../../style/img/leisure-illustration.png";
 import searchGuy from "../../../style/img/search-guy.png"
 import pot from "../../../style/img/pot.png";
+import AnimationHelper from "../../../AnimationHelper";
 
 export default class StudentNotFound extends Component {
 
@@ -36,7 +37,8 @@ export default class StudentNotFound extends Component {
             ,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 <div className="illustration">
-                    <img src={leisureIllustration} alt=""/>
+                    {/*<img src={leisureIllustration} alt=""/>*/}
+                    <AnimationHelper type="rest"/>
                 </div>
             </div>
         ];

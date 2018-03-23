@@ -6,7 +6,6 @@ import com.gemini.beans.types.Gender;
 import com.gemini.utils.Utils;
 
 import java.util.Date;
-import java.util.StringTokenizer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -101,7 +100,6 @@ public class StudentResponse extends ResponseBase implements IdentityForm {
     public void setFound(boolean found) {
         this.found = found;
     }
-
 
     public String getFullName() {
         return Utils.toFullName(firstName, middleName, lastName);

@@ -106,35 +106,35 @@ export default class Services {
 
     //pre-enrollment
     getActivePreEnrollment(requestId) {
-        return this._get(`/enrollment/pre/${requestId}`);
+        return this._get(`/pre/enrollment/${requestId}`);
     }
 
     getActiveVocationalPreEnrollment(requestId) {
-        return this._get(`/enrollment/pre/vocational/${requestId}`);
+        return this._get(`/pre/enrollment/vocational/${requestId}`);
     }
 
     savePreEnrollment(form) {
-        return this._securedPost(`/enrollment/pre/save`, form);
+        return this._securedPost(`/pre/enrollment/save`, form);
     }
 
     getPreEnrollmentAddress(requestId) {
-        return this._get(`/enrollment/pre/${requestId}/address`);
+        return this._get(`/pre/enrollment/${requestId}/address`);
     }
 
     partialSaveVocationalPreEnrollment(form) {
-        return this._securedPost(`/enrollment/pre/vocational/partial/save`, form)
+        return this._securedPost(`/pre/enrollment/vocational/partial/save`, form)
     }
 
     savePreEnrollmentAddress(addressForm) {
-        return this._securedPost(`/enrollment/pre/${addressForm.requestId}/address/save`, addressForm);
+        return this._securedPost(`/pre/enrollment/${addressForm.requestId}/address/save`, addressForm);
     }
 
     submitPreEnrollment(form) {
-        return this._securedPost(`/enrollment/pre/submit`, form);
+        return this._securedPost(`/pre/enrollment/submit`, form);
     }
 
     submitVocationalPreEnrollment(form) {
-        return this._securedPost(`/enrollment/pre/vocational/submit`, form);
+        return this._securedPost(`/pre/enrollment/vocational/submit`, form);
     }
 
     _login(path, credentials) {

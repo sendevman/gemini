@@ -1,7 +1,7 @@
 package com.gemini.database.jpa.entities;
 
 import com.gemini.beans.types.RequestStatus;
-import com.gemini.beans.types.Type;
+import com.gemini.beans.types.EnrollmentType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -29,7 +29,7 @@ public class PreEnrollmentRequestEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Type type = Type.REGULAR;
+    private EnrollmentType type = EnrollmentType.REGULAR;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
@@ -75,6 +75,9 @@ public class PreEnrollmentRequestEntity {
     private Date submitDate;
 
     @OneToMany(mappedBy = "preEnrollment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PreEnrollmentAlternateSchoolEntity> alternateSchools;
+
+    @OneToMany(mappedBy = "preEnrollment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PreEnrollmentVocationalSchoolEntity> vocationalSchools;
 
     @CreatedDate
@@ -100,11 +103,11 @@ public class PreEnrollmentRequestEntity {
         this.requestStatus = requestStatus;
     }
 
-    public Type getType() {
+    public EnrollmentType getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(EnrollmentType type) {
         this.type = type;
     }
 
@@ -218,6 +221,14 @@ public class PreEnrollmentRequestEntity {
 
     public void setSubmitDate(Date submitDate) {
         this.submitDate = submitDate;
+    }
+
+    public List<PreEnrollmentAlternateSchoolEntity> getAlternateSchools() {
+        return alternateSchools;
+    }
+
+    public void setAlternateSchools(List<PreEnrollmentAlternateSchoolEntity> alternateSchools) {
+        this.alternateSchools = alternateSchools;
     }
 
     public List<PreEnrollmentVocationalSchoolEntity> getVocationalSchools() {

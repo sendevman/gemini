@@ -1,5 +1,6 @@
 package com.gemini.controllers;
 
+import com.gemini.beans.forms.User;
 import com.gemini.beans.forms.VocationalProgramSelection;
 import com.gemini.beans.integration.ParentResponse;
 import com.gemini.beans.integration.RegionResponse;
@@ -8,6 +9,7 @@ import com.gemini.beans.integration.StudentResponse;
 import com.gemini.beans.requests.StudentSearchRequest;
 import com.gemini.beans.responses.ResponseBase;
 import com.gemini.database.dao.beans.*;
+import com.gemini.services.SchoolMaxSearchService;
 import com.gemini.services.SchoolmaxService;
 import com.gemini.utils.CopyUtils;
 import com.gemini.utils.MessageHelper;
@@ -17,6 +19,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +43,8 @@ public class SchoolmaxController {
     @Autowired
     private SchoolmaxService smaxService;
     @Autowired
+    private SchoolMaxSearchService smaxSearchService;
+    @Autowired
     private MessageHelper messageHelper;
 
     @RequestMapping(value = "/search/parent/lastssn/{lastSSN}/dob/{dob}/lastname/{lastname}")
@@ -58,7 +63,7 @@ public class SchoolmaxController {
     }
 
     @RequestMapping(value = "/student/search")
-    public ResponseEntity<StudentResponse> searchStudent(@RequestBody StudentSearchRequest searchRequest) {
+    public ResponseEntity<StudentResponse> searchStudent(@RequestBody StudentSearchRequest searchRequest, @AuthenticationPrincipal User logged) {
         List<Object> fieldsRequired = Lists.newArrayList();
         fieldsRequired.add(searchRequest.getDateOfBirth());
         fieldsRequired.add(searchRequest.getFirstName());
@@ -76,7 +81,7 @@ public class SchoolmaxController {
         if (!(ValidationUtils.valid(fieldsRequired.toArray())))
             return ResponseEntity.ok(missingFields());
 
-        Student studentBean = smaxService.retrieveStudentInfo(searchRequest);
+        Student studentBean = smaxSearchService.retrieveStudentInfo(searchRequest, logged);
         StudentResponse response = CopyUtils.convert(studentBean, StudentResponse.class);
         response.setFound(studentBean != null);
         if (studentBean != null)
@@ -148,8 +153,7 @@ public class SchoolmaxController {
 
     private StudentResponse missingFields() {
         StudentResponse response = new StudentResponse();
-        ResponseBase base = ResponseBase.error("Missing required fields (%s or %s)",
-                messageHelper.processMessages("search.student.missing.required.fields"));
+        ResponseBase base = ResponseBase.error(messageHelper.processMessages("search.student.missing.required.fields"));
         response.setResponseBase(base);
         return response;
     }

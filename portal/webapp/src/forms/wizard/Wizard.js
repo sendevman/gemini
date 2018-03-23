@@ -37,7 +37,6 @@ class Wizard extends Component {
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
         this.onError = this.onError.bind(this);
-
     }
 
     componentWillMount() {
@@ -53,8 +52,17 @@ class Wizard extends Component {
             } else {
                 this.props.history.push('/home');
             }
+        } else {
+            let current = this.props.wizard;
+            let next = nextProps.wizard;
+            console.log(`${current.currentPageType}  !== ${next.currentPageType} = ${current.currentPageType !== next.currentPageType}`);
+            if (current.currentPageType !== next.currentPageType)
+                window.scrollTo(0, 0);
         }
+    }
 
+    componentDidMount() {
+        window.scrollTo(0, 0)
     }
 
     onError() {

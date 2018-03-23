@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import profileIllustration from "../../../style/img/profile-illustration.png";
 import SimpleDateInput from "../../../components/SimpleDateInput";
+import AnimationHelper from "../../../AnimationHelper";
 
 class UserInfoRequest extends Component {
 
@@ -101,57 +102,11 @@ class UserInfoRequest extends Component {
             </div>
         </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
-                <div className="illustration"><img src={profileIllustration} alt=""/></div>
+                {/*<div className="illustration"><img src={profileIllustration} alt=""/></div>*/}
+                <AnimationHelper type="girlsTable"/>
             </div>];
     }
 
-    renderOld() {
-        let form = this.props.form;
-        return (<form>
-            <div className="row">
-                <div className="col-md-3">
-                    <TextInput id="firstName" type="name"
-                               placeholder="Nombre"
-                               ref="firstName"
-                               onChange={this.inputHandler}
-                               value={form.firstName}/>
-                </div>
-                <div className="col-md-3">
-                    <TextInput id="middleName" type="name"
-                               required={false}
-                               placeholder="Segundo Nombre"
-                               onChange={this.inputHandler}
-                               value={form.middleName}/>
-                </div>
-                <div className="col-md-6">
-                    <TextInput id="lastName" type="lastname"
-                               ref="lastName"
-                               placeholder="Apellidos"
-                               onChange={this.inputHandler}
-                               value={form.lastName}/>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-md-6">
-                    <DateInput showFormat={false}
-                               label="Fecha de Nacimiento"
-                               ref="dob"
-                               onValidDate={this.onValidDate}
-                               onInvalidDate={this.onInvalidDate}
-                               value={form.dateOfBirth}/>
-                </div>
-                <div className="col-md-6">
-                    <CodeSelect id="relationType"
-                                label="Seleccione relacion con el estudiante"
-                                ref="registrationRelations"
-                                codeType="registrationRelations"
-                                value={form.relationType}
-                                onChange={this.inputHandler}/>
-                </div>
-            </div>
-
-        </form>);
-    }
 }
 
 function mapStateToProps(store) {

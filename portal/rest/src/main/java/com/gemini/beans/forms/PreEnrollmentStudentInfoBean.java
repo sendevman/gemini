@@ -2,7 +2,7 @@ package com.gemini.beans.forms;
 
 import com.gemini.beans.IdentityForm;
 import com.gemini.beans.types.Gender;
-import com.gemini.beans.types.Type;
+import com.gemini.beans.types.EnrollmentType;
 import com.gemini.utils.Utils;
 
 import java.util.Date;
@@ -21,7 +21,7 @@ public class PreEnrollmentStudentInfoBean implements IdentityForm {
     private String lastName;
     private Date dateOfBirth;
     private Gender gender;
-    private Type type;
+    private EnrollmentType type;
 
     public Long getStudentNumber() {
         return studentNumber;
@@ -84,11 +84,11 @@ public class PreEnrollmentStudentInfoBean implements IdentityForm {
         return Utils.toFullName(firstName, middleName, lastName);
     }
 
-    public Type getType() {
+    public EnrollmentType getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(EnrollmentType type) {
         this.type = type;
     }
 }

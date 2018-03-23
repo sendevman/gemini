@@ -1,7 +1,8 @@
 package com.gemini.beans.responses;
 
+import com.google.common.collect.Lists;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,7 +13,6 @@ import java.util.List;
  */
 public class ResponseBase<T> {
     private Long requestId;
-    private String message;
     private boolean successfulOperation;
     private boolean errorOperation;
     private T content;
@@ -27,14 +27,6 @@ public class ResponseBase<T> {
 
     public void setRequestId(Long requestId) {
         this.requestId = requestId;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public boolean isSuccessfulOperation() {
@@ -74,16 +66,7 @@ public class ResponseBase<T> {
         this.successfulOperation = responseBase.successfulOperation;
         this.content = (T) responseBase.content;
         this.validationMessages = responseBase.validationMessages;
-        this.message = responseBase.message;
         this.errorOperation = responseBase.errorOperation;
-    }
-
-    public static ResponseBase success() {
-        return success(null);
-    }
-
-    public static <T> ResponseBase success(T responseBean) {
-        return success(null, responseBean);
     }
 
     public static ResponseBase success(Long requestId) {
@@ -93,23 +76,29 @@ public class ResponseBase<T> {
         return base;
     }
 
+    public static ResponseBase success() {
+        return success(null);
+    }
+
     public static <T> ResponseBase success(Long requestId, T responseBean) {
         ResponseBase base = success(requestId);
         base.content = responseBean;
         return base;
     }
 
-    public static ResponseBase error(String message, List<String> validationMessages) {
+    public static <T> ResponseBase success(T responseBean) {
+        return success(null, responseBean);
+    }
+
+    public static ResponseBase error(List<String> validationMessages) {
         ResponseBase base = new ResponseBase();
         base.errorOperation = true;
-        base.message = message;
         base.validationMessages = validationMessages;
         return base;
     }
 
     public static ResponseBase error(String message) {
-        return error(message, Collections.<String>emptyList());
+        return error(Lists.newArrayList(message));
     }
-
 
 }

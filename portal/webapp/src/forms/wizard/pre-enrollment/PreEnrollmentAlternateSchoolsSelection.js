@@ -8,6 +8,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {getSchools, loadCodes} from "../../../redux/actions";
 import entrollmentIllustration from "../../../style/img/entrollment-illustration.png";
+import AnimationHelper from "../../../AnimationHelper";
 
 class PreEnrollmentAlternateSchoolsSelection extends Component {
 
@@ -143,18 +144,18 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
                 <div className="row" style={{margin: 2, marginBottom: 15}}>
                     <div className="col-md-4">
                         <div className="row">
-                            <p>Estudiante: </p>
+                            <span>Estudiante: </span>
                         </div>
                         <div className="row">
-                            <h5>{student && student.fullName}</h5>
+                            <h6>{student && student.fullName}</h6>
                         </div>
                     </div>
                     <div className="col-md-8">
                         <div className="row">
-                            <p>Escuela: <span className="text-primary">{schoolName}</span></p>
+                            <span>Escuela: <h6>{schoolName}</h6></span>
                         </div>
                         <div className="row">
-                            <p>Direcci&oacute;n: <span className="text-primary">{schoolAddress}</span></p>
+                            <span>Direcci&oacute;n: <h6>{schoolAddress}</h6></span>
                         </div>
 
                     </div>
@@ -200,11 +201,11 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
                 {this.props.footer}
             </div>
         </div>, <div className="col-md-4 illustration-section d-flex align-items-center text-center">
-            <div className="illustration"><img src={entrollmentIllustration} alt=""/></div>
+            {/*<div className="illustration"><img src={entrollmentIllustration} alt=""/></div>*/}
+            <AnimationHelper type="blackboard"/>
         </div>];
     }
 }
-
 
 function mapStateToProps(store) {
     return {

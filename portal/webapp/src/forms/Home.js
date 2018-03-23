@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import {loadHome, resetWizard} from "../redux/actions";
 import * as Utils from "../Utils";
 import leisureIllustration from "../style/img/leisure-illustration.png";
+import AnimationHelper from "../AnimationHelper";
 
 class Home extends Component {
 
@@ -40,7 +41,8 @@ class Home extends Component {
                 {this.props.footer}
             </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
-                <div className="illustration"><img src={leisureIllustration} alt=""/></div>
+                {/*<div className="illustration"><img src={leisureIllustration} alt=""/></div>*/}
+                <AnimationHelper type="rest"/>
             </div>
         ];
     }

@@ -8,6 +8,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {getVocationalSchools, loadVocationalCodes, partialSaveVocationalPreEnrollment} from "../../../redux/actions";
 import entrollmentIllustration from "../../../style/img/entrollment-illustration.png";
+import AnimationHelper from "../../../AnimationHelper";
 
 class VocationalPreEnrollment extends Component {
 
@@ -152,7 +153,8 @@ class VocationalPreEnrollment extends Component {
                 </div>
             </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
-                <div className="illustration"><img src={entrollmentIllustration} alt=""/></div>
+                {/*<div className="illustration"><img src={entrollmentIllustration} alt=""/></div>*/}
+                <AnimationHelper type="blackboard"/>
             </div>
         ];
     }

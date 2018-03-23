@@ -84,6 +84,8 @@ export default class SimpleDateInput extends Component {
             delete props.showFormat;
         if (props.onValidDate)
             delete props.onValidDate;
+        let state = this.state;
+        let age = `${moment().diff(state.value, 'years')} años`;
         return <div className="group form-group has-feedback">
             <InputMask {...props}
                        onChange={this.inputHandler}
@@ -97,7 +99,7 @@ export default class SimpleDateInput extends Component {
             <i className="n fa fa-birthday-cake"/>
             <span className="highlight"/>
             <span className="bar"/>
-            <label htmlFor={this.props.id}>{`${this.props.label} ${format}`}</label>
+            <label htmlFor={this.props.id}>{`${this.props.label} ${state.valid ? `${state.value.format("DD/MMMM/YYYY")} - ${age} `  : format}`}</label>
         </div>;
     }
 }
