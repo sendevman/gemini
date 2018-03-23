@@ -1,8 +1,8 @@
-package com.gemini.beans.requests;
+package com.gemini.beans.requests.enrollment;
 
 import com.gemini.beans.IdentityForm;
 import com.gemini.beans.types.Gender;
-import com.gemini.beans.types.Type;
+import com.gemini.beans.types.EnrollmentType;
 
 import java.util.Date;
 
@@ -12,9 +12,9 @@ import java.util.Date;
  * Date: 2/20/18
  * Time: 10:08 PM
  */
-public class PreEnrollmentInitialRequest implements IdentityForm{
+public class PreEnrollmentInitialRequest implements IdentityForm {
     private Long requestId;
-    private Type type;
+    private EnrollmentType type;
     private Long studentNumber;
     private String ssn;
     private String firstName;
@@ -31,11 +31,11 @@ public class PreEnrollmentInitialRequest implements IdentityForm{
         this.requestId = requestId;
     }
 
-    public Type getType() {
+    public EnrollmentType getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(EnrollmentType type) {
         this.type = type;
     }
 

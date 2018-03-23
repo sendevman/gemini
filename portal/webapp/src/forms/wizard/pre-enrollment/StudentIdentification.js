@@ -9,6 +9,7 @@ import {bindActionCreators} from "redux";
 import {searchStudent} from "../../../redux/actions";
 import searchIllustration from "../../../style/img/search-illustration.png";
 import SimpleDateInput from "../../../components/SimpleDateInput";
+import AnimationHelper from "../../../AnimationHelper";
 
 class StudentIdentification extends Component {
 
@@ -98,7 +99,8 @@ class StudentIdentification extends Component {
                 </div>
             </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
-                <div className="illustration"><img className="w90" src={searchIllustration} alt=""/></div>
+                {/*<div className="illustration"><img className="w90" src={searchIllustration} alt=""/></div>*/}
+                <AnimationHelper type="search"/>
             </div>
 
         ];

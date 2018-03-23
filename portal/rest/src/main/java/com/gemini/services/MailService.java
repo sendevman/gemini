@@ -3,7 +3,7 @@ package com.gemini.services;
 import com.gemini.beans.forms.PreEnrollmentBean;
 import com.gemini.beans.forms.User;
 import com.gemini.beans.internal.UserAction;
-import com.gemini.beans.requests.PreEnrollmentSubmitRequest;
+import com.gemini.beans.requests.enrollment.PreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.user.RegisterRequest;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
-import javax.mail.MessagingException;
 import java.util.Map;
 
 /**

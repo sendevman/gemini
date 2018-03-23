@@ -1,4 +1,4 @@
-package com.gemini.beans.requests;
+package com.gemini.beans.requests.enrollment;
 
 /**
  * Created with IntelliJ IDEA.

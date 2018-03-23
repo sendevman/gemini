@@ -37,13 +37,12 @@ public class UserController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ResponseEntity<ResponseBase> save(@RequestBody ParentProfileInfoRequest request, @AuthenticationPrincipal User loggedUser, BindingResult result) {
         if (!ValidationUtils.valid(request.getRelationType(), request.getDateOfBirth(), request.getFirstName(), request.getLastName()))
-            return ResponseEntity.ok(ResponseBase.error("Missing required fields", messageHelper.processMessages("user.missing.required.fields")));
+            return ResponseEntity.ok(ResponseBase.error( messageHelper.processMessages("user.missing.required.fields")));
 
         int userAge = DateUtils.toYears(request.getDateOfBirth());
         if (userAge < commonService.getMinUserAgeToSubmitRequest()) {
             ResponseBase response =
-                    ResponseBase.error("Error unable to save profile",
-                            messageHelper.processMessages("user.min.age.validation"));
+                    ResponseBase.error(messageHelper.processMessages("user.min.age.validation"));
             return ResponseEntity.ok(response);
         }
 

@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Button} from "react-bootstrap";
 import {connect} from "react-redux";
 import leisureIllustration from "../../../style/img/leisure-illustration.png";
+import AnimationHelper from "../../../AnimationHelper";
 
 class ForgotPasswordResult extends Component {
 
@@ -33,28 +34,9 @@ class ForgotPasswordResult extends Component {
             </div>
         </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
-                <div className="illustration"><img src={leisureIllustration} alt=""/></div>
+                {/*<div className="illustration"><img src={leisureIllustration} alt=""/></div>*/}
+                <AnimationHelper type="rest"/>
             </div>];
-    }
-
-    renderOld() {
-        let success = this.props.match.params.result === "success";
-        let title = success ? "Email fue enviado" : "No existe cuenta para ese email";
-        return (<div className="container">
-            <div className="forgot-password-result">
-                <div className="row">
-                    <div className="col-md-12">
-                        <h5>{title}</h5>
-                    </div>
-                </div>
-                {this.renderSuccess()}
-                <div className="row">
-                    <div className="col-md-12">
-                        <Button block bsStyle="primary" onClick={this.onClick}> Volver</Button>
-                    </div>
-                </div>
-            </div>
-        </div>);
     }
 
     renderMessage() {

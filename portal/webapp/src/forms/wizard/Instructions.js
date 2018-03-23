@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import profileIlustration from "../../style/img/profile-illustration.png";
+import AnimationHelper from "../../AnimationHelper";
 
 export default class Instructions extends Component {
 
@@ -30,7 +31,8 @@ export default class Instructions extends Component {
 
             </div>,
             <div key="picture" className="col-md-4 illustration-section d-flex align-items-center text-center">
-                <div className="illustration"><img src={profileIlustration} alt=""/></div>
+                {/*<div className="illustration"><img src={profileIlustration} alt=""/></div>*/}
+                <AnimationHelper type="girlsTable"/>
             </div>
 
         ];

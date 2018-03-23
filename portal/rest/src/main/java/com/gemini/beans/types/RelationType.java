@@ -10,6 +10,6 @@ public enum RelationType {
 
     FATHER,
     MOTHER,
-    OTHER,
-    SAME_STUDENT
+    SAME_STUDENT,
+    OTHER
 }

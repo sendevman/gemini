@@ -5,10 +5,10 @@ import React, {Component} from "react";
 import TextInput from "../../../components/TextInput";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {registerUser, validateForm, cleanRegistration} from "../../../redux/actions";
+import {cleanRegistration, registerUser, validateForm} from "../../../redux/actions";
 import ReCAPTCHA from "react-google-recaptcha";
 import env from "../../../env";
-import profileIllustration from "../../../style/img/profile-illustration.png";
+import AnimationHelper from "../../../AnimationHelper";
 
 
 class Registration extends Component {
@@ -27,7 +27,7 @@ class Registration extends Component {
         this.verifyCallback = this.verifyCallback.bind(this);
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.props.cleanRegistration();
     }
 
@@ -93,7 +93,7 @@ class Registration extends Component {
                     </div>
                 </div>
                 <div className="body d-flex align-items-center flex-column justify-content-end">
-                    <form onSubmit={this.register} >
+                    <form onSubmit={this.register}>
                         <div className="row plr15 ">
                             <div className="col-md-12">
                                 <TextInput id="email"
@@ -129,7 +129,8 @@ class Registration extends Component {
 
                         <div className="row mt50">
                             <div className="col-md-12 ">
-                                <button className="button-green mr30 mob-mb30px" type="submit" disabled={!this.state.valid}><span>s</span>Registrar
+                                <button className="button-green mr30 mob-mb30px" type="submit"
+                                        disabled={!this.state.valid}><span>s</span>Registrar
                                 </button>
                             </div>
                         </div>
@@ -137,7 +138,8 @@ class Registration extends Component {
                 </div>
             </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
-                <div className="illustration"><img src={profileIllustration} alt=""/></div>
+                {/*<div className="illustration"><img src={profileIllustration} alt=""/></div>*/}
+                <AnimationHelper type="girlsTable"/>
             </div>
         ]
     }

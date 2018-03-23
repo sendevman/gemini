@@ -10,6 +10,7 @@ import {connect} from "react-redux";
 import {clean, cleanLogin, login, toggleCleanTimeout} from "../redux/actions";
 import TextInput from "../components/TextInput";
 import registrationIllustration from "../style/img/registration-illustration.png";
+import AnimationHelper from "../AnimationHelper";
 
 class Authentication extends Component {
     constructor(props) {
@@ -98,8 +99,8 @@ class Authentication extends Component {
             </div>
         </div>,
             <div className="col-md-6 illustration-section d-flex align-items-center text-center">
-                <div className="illustration"><img src={registrationIllustration} alt=""/>
-                </div>
+                {/*<div className="illustration"><img src={registrationIllustration} alt=""/></div>*/}
+                <AnimationHelper type="home"/>
             </div>];
     }
 

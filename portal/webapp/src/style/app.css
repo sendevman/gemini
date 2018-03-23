@@ -24,17 +24,17 @@
     float: none;
 }
 
-.error-page {
+.error-logo {
     display: block;
-    max-width: 600px;
-    margin: 10% auto;
+    height: auto;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 30px;
 }
 
-.error-logo {
-    /*animation: App-logo-spin infinite 20s alternate;*/
-    height: 200px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.error-message {
+    position: absolute;
+    top: 25%;
+    left: 50%;
 }
 

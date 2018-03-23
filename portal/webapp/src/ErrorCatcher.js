@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import failLogo from "./style/img/fail.png";
-import {Button} from "react-bootstrap";
+import failLogo from "./style/img/error.png";
 import {withRouter} from "react-router-dom";
 
 class ErrorCatcher extends Component {
@@ -26,14 +25,18 @@ class ErrorCatcher extends Component {
     render() {
         if (this.state.hasError) {
             // You can render any custom fallback UI
-            return <div className="error-page">
+            return <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-12">
-                        <div className="center-block" style={{width: 500}}>
-                            <img className="error-logo" src={failLogo}/>
-                            <h1>Upps!!! Ha ocurrido un error.</h1>
-                            <Button block bsStyle="primary" onClick={this.goBack}>Volver</Button>
+                        <img className="mx-auto d-block" src={failLogo}/>
+
+                        <div className="error-message">
+                            <h3>Upps!!! Ha ocurrido un error</h3>
+                            <button className="button-yellow mt50" type="button" onClick={this.goBack}>Volver</button>
+
                         </div>
+
+
                     </div>
                 </div>
 

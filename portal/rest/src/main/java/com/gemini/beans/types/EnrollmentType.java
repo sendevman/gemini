@@ -6,7 +6,8 @@ package com.gemini.beans.types;
  * Date: 3/12/18
  * Time: 12:04 PM
  */
-public enum Type {
+public enum EnrollmentType {
     REGULAR,
-    VOCATIONAL
+    VOCATIONAL,
+    ALTERNATE_SCHOOLS
 }

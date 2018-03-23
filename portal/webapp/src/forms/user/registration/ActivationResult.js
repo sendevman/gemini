@@ -33,6 +33,7 @@ export default class ActivationResult extends Component {
         </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 <div className="illustration"><img src={profileIllustration} alt=""/></div>
+
             </div>];
     }
 
