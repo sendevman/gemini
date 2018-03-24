@@ -4,6 +4,7 @@
 import React, {Component} from "react";
 import Codes from "./data/index";
 import PropTypes from "prop-types";
+import * as UIHelper from "../UIHelper";
 
 class CodeSelect extends Component {
 
@@ -116,19 +117,24 @@ class CodeSelect extends Component {
     }
 
     render() {
-        let formGroupCss = "form-group has-feedback";//.concat(!this.valid() ? "has-error" : "");
+        let formGroupCss = "form-group has-feedback";
         let elementProps = Object.assign({}, this.props);
         delete elementProps.codeType;
+        let validHtml = UIHelper.toggleFieldValidHtml(this.valid(), this.props.required);
+        let styleCss = this.props.grouped ? {height: 70} : null;
         return (
             <div className={formGroupCss}>
-                <select ref="codeSelect" className="inputMaterial" {...elementProps} onChange={this.onChange}
+                <select ref="codeSelect" className="inputMaterial"
+                        {...elementProps}
+                        style={styleCss}
+                        onChange={this.onChange}
                         value={this.state.value}>
-                    <option value="-1">{this.props.placeholder}</option>
+                    <option value="-1">{this.props.placeholder || "Seleccione"}</option>
                     {this.codes.map((code, i) => (
                         <option key={i} value={code.value}>{code.description}</option>
                     ))}
                 </select>
-                {this.props.mandatory ? (<label htmlFor={this.props.id}>{this.props.label}:</label>) : (null)}
+                <label htmlFor={this.props.id}>{this.props.label}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>
 
             </div>);
     }

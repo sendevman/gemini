@@ -7,7 +7,6 @@ import TextInput from "../../../components/TextInput";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {searchStudent} from "../../../redux/actions";
-import searchIllustration from "../../../style/img/search-illustration.png";
 import SimpleDateInput from "../../../components/SimpleDateInput";
 import AnimationHelper from "../../../AnimationHelper";
 
@@ -24,6 +23,7 @@ class StudentIdentification extends Component {
         let form = this.props.form;
         let element = e.target;
         form[element.id] = element.value;
+        this.forceUpdate();
     }
 
     onValidDate(date) {
@@ -43,6 +43,8 @@ class StudentIdentification extends Component {
 
     render() {
         let form = this.props.form;
+        let studentNumberRequired = (form && !form.lastSsn) || form.studentNumber;
+        let lastSsnRequired = (form && !form.studentNumber) || form.lastSsn;
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
@@ -67,6 +69,7 @@ class StudentIdentification extends Component {
                                        type="lastSSN"
                                        value={form.lastSsn}
                                        onChange={this.inputHandler}
+                                       required={lastSsnRequired}
                                        label="Ultimo #4 ssn"/>
                         </div>
 
@@ -75,6 +78,7 @@ class StudentIdentification extends Component {
                                        type="studentNumber"
                                        value={form.studentNumber}
                                        onChange={this.inputHandler}
+                                       required={studentNumberRequired}
                                        label="# Estudiante SIE"/>
                         </div>
                     </div>
@@ -84,6 +88,7 @@ class StudentIdentification extends Component {
                                        type="firstName"
                                        value={form.firstName}
                                        onChange={this.inputHandler}
+                                       required
                                        label="Nombre"/>
                         </div>
                         <div className="col-md-4">
@@ -91,6 +96,7 @@ class StudentIdentification extends Component {
                                        type="lastname"
                                        value={form.lastName}
                                        onChange={this.inputHandler}
+                                       required
                                        label="Apellidos"/>
                         </div>
                         <div className="col-md-4"/>
