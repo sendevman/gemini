@@ -60,6 +60,7 @@ class PersonalInfo extends Component {
                         <TextInput id="firstName" type="name" label="Nombre"
                                    value={student.firstName}
                                    onChange={this.inputHandler}
+                                   required
                                    disabled={studentExists}/>
                     </div>
                     <div className="col-md-3">
@@ -72,6 +73,7 @@ class PersonalInfo extends Component {
                         <TextInput id="lastName" type="lastname" label="Apellidos"
                                    value={student.lastName}
                                    onChange={this.inputHandler}
+                                   required
                                    disabled={studentExists}/>
                     </div>
                 </div>
@@ -81,6 +83,7 @@ class PersonalInfo extends Component {
                                     label="Genero"
                                     codeType="gender"
                                     value={student.gender}
+                                    required
                                     onChange={this.inputHandler}
                                     placeholder="Seleccione su Genero"
                                     disabled={studentExists}

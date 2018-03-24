@@ -2,14 +2,14 @@
  * Created by fran on 1/24/18.
  */
 import React, {Component} from "react";
-import {Alert} from "react-bootstrap";
+// import {Alert} from "react-bootstrap";
+import {Alert} from 'reactstrap';
 import Immutable from "immutable";
 import {Link} from "react-router-dom";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {clean, cleanLogin, login, toggleCleanTimeout} from "../redux/actions";
 import TextInput from "../components/TextInput";
-import registrationIllustration from "../style/img/registration-illustration.png";
 import AnimationHelper from "../AnimationHelper";
 
 class Authentication extends Component {
@@ -54,27 +54,28 @@ class Authentication extends Component {
         let username = form.username;
         let password = form.password;
         let invalidCredentials = this.props.invalidCredentials;
-
-        let showAlert = this.state.showAlert
-            ? (<Alert style={{position: "fixed",zIndex: 1000,width: "39%", height: "15%"}} bsStyle="danger" onDismiss={this.handleDismiss} className="auth-alert">
-                <h4>Error!</h4>
-                <span>
-                    {invalidCredentials ? "Crendenciales invalidos" : "Ha ocurrido un error"}
-                </span>
-            </Alert>)
-            : (null);
         return [<div className="col-md-5 content-section">
-            {showAlert}
+            <Alert className="auth-error" color="danger" isOpen={this.state.showAlert} toggle={this.handleDismiss}>
+                <strong>Error!</strong> {invalidCredentials ? "Crendenciales invalidos" : "Ha ocurrido un error"}
+            </Alert>
             <div className="title">
-                <div className="description"><h2>Entrar</h2>
-                    <div className="violet-line"></div>
+                <div className="description">
+                    <h2>Iniciar Sesi&oacute;n</h2>
+                    <div className="violet-line"/>
                 </div>
+                <p className="f20slg text-justify">
+                    Para iniciar sesi&oacute;n, entre a continuación su correo electrónico y contraseña que utiliz&oacute; para crear
+                    su cuenta.
+                </p>
+
             </div>
+
             <div className="body d-flex align-items-center flex-column justify-content-end">
                 <form id="signin-form" className="signin-form" onSubmit={this.login}>
                     <TextInput id="username"
                                type="email"
                                label="Email"
+                               required={false}
                                onChange={this.handleInputChange}
                                value={username}
                                iconName="icon-human"
@@ -82,11 +83,12 @@ class Authentication extends Component {
                     <TextInput id="password"
                                type="password"
                                label="Contraseña"
+                               required={false}
                                onChange={this.handleInputChange}
                                value={password}
                                iconName="icon-lock"
                                grouped/>
-                    <button className="button-yellow mt50" id="buttonGet" type="submit">Entrar</button>
+                    <button className="button-yellow" id="buttonGet" type="submit">Entrar</button>
                 </form>
                 <div className="row w-100 mt50">
                     <div className="col-md-6 p-0 text-lg-left text-center">

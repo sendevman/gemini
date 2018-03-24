@@ -119,7 +119,7 @@ class Activation extends Component {
                         <div className="row mt50">
                             <div className="col-md-12 ">
                                 <button className="button-green mr30 mob-mb30px" type="submit"
-                                        disabled={!this.state.valid}><span>s</span>Registrar
+                                        disabled={!this.state.valid}><span>s</span>Completar Registraci&oacute;n
                                 </button>
                             </div>
                         </div>

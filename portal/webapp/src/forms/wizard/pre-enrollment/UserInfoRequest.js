@@ -57,6 +57,7 @@ class UserInfoRequest extends Component {
                                        ref="firstName"
                                        onChange={this.inputHandler}
                                        value={form.firstName}
+                                       required
                                        grouped/>
                         </div>
                         <div className="col-md-3">
@@ -73,6 +74,7 @@ class UserInfoRequest extends Component {
                                        label="Apellidos"
                                        onChange={this.inputHandler}
                                        value={form.lastName}
+                                       required
                                        grouped/>
                         </div>
                     </div>
@@ -86,7 +88,7 @@ class UserInfoRequest extends Component {
                                              required
                                              grouped/>
                         </div>
-                        <div className="col-md-6 pt-4">
+                        <div className="col-md-6">
                             <CodeSelect id="relationType"
                                         mandatory
                                         label="Seleccione relacion con el estudiante"
@@ -94,6 +96,7 @@ class UserInfoRequest extends Component {
                                         codeType="registrationRelations"
                                         value={form.relationType}
                                         onChange={this.inputHandler}
+                                        required
                                         grouped/>
                         </div>
                     </div>

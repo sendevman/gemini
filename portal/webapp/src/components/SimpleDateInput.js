@@ -4,6 +4,7 @@
 import React, {Component} from "react";
 import InputMask from 'react-input-mask';
 import moment from "moment";
+import * as UIHelper from "../UIHelper";
 
 export default class SimpleDateInput extends Component {
 
@@ -86,6 +87,7 @@ export default class SimpleDateInput extends Component {
             delete props.onValidDate;
         let state = this.state;
         let age = `${moment().diff(state.value, 'years')} años`;
+        let validHtml = UIHelper.toggleFieldValidHtml(this.state.valid, this.props.required);
         return <div className="group form-group has-feedback">
             <InputMask {...props}
                        onChange={this.inputHandler}
@@ -93,13 +95,15 @@ export default class SimpleDateInput extends Component {
                        className="inputMaterial"
                        mask="99/99/9999"
                        maskChar=" "
+                       required
                        value={this.state.dateString}/>
 
             {/*fa fa-birthday-cake*/}
             <i className="n fa fa-birthday-cake"/>
             <span className="highlight"/>
             <span className="bar"/>
-            <label htmlFor={this.props.id}>{`${this.props.label} ${state.valid ? `${state.value.format("DD/MMMM/YYYY")} - ${age} `  : format}`}</label>
+            <label
+                htmlFor={this.props.id}>{`${this.props.label} ${state.valid ? `${state.value.format("DD/MMMM/YYYY")} - ${age} ` : format}`}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>
         </div>;
     }
 }

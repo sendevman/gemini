@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import * as Utils from "../Utils";
 import PropTypes from "prop-types";
+import * as UIHelper from "../UIHelper";
 
 // [^0-9~!@#$%^&*()_+={}[]|\\"':;?.<>]
 let onlyLetter = /^[a-zA-Z]*$/;
@@ -27,7 +28,7 @@ let field = {
 class TextInput extends Component {
 
     static defaultProps = {
-        required: true,
+        required: false,
         includeLabel: true
     };
 
@@ -118,7 +119,7 @@ class TextInput extends Component {
         let isPassword = this.props.type === 'password';
         let hasError = this.state.hasError && this.props.required;
         let grouped = this.props.grouped ? "group" : "";
-        let groupClass = grouped + " form-group has-feedback".concat(hasError ? "has-error help-block" : "");
+        let groupClass = grouped + " form-group has-feedback";
         let props = Object.assign({}, this.props);
         if (this.config.max || this.config.length)
             props = {...props, maxLength: this.config.max || this.config.length};
@@ -127,7 +128,9 @@ class TextInput extends Component {
             ? `${this.props.label || this.props.placeholder}`
             : '';
         delete  props.includeLabel;
-        let customCss = !props.iconName ? {paddingLeft: 0} : props.style;
+        let customCss = !props.iconName ? {paddingLeft: 10} : props.style;
+        let labelCss = !props.iconName ? {left: 10} : props.style;
+        let validHtml = UIHelper.toggleFieldValidHtml(!hasError, props.required);
         return (
 
             <div className={groupClass}>
@@ -137,13 +140,14 @@ class TextInput extends Component {
                        className="inputMaterial"
                        onChange={this.inputHandler}
                        value={this.state.value}
+                       required // this is required by the css
                 />
 
                 <i className={`n ${this.props.iconName}`}/>
                 {this.props.type === "password" ? (<i className="icon-eye"/>) : (null)}
                 <span className="highlight"/>
                 <span className="bar"/>
-                {this.props.includeLabel ? (<label htmlFor={this.props.id}>{label}</label>) : (null)}
+                {this.props.includeLabel ? (<label style={labelCss} htmlFor={this.props.id}>{label}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>) : (null)}
 
             </div>);
     }

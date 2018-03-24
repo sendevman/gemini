@@ -105,8 +105,10 @@ class Address extends Component {
             </div>
             <div className="row">
                 <div className="col-md-6">
-                    <CodeSelect id={`${type}.city`} label="Ciudad"
+                    <CodeSelect id={`${type}.city`}
+                                label="Ciudad"
                                 codeType="municipios"
+                                grouped
                                 value={address.city} onChange={this.inputHandler}/>
                 </div>
                 {/*<div className="col-md-4">*/}

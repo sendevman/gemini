@@ -3,6 +3,7 @@
  */
 import React, {Component} from "react";
 import PropTypes from "prop-types";
+import * as UIHelper from "../UIHelper";
 
 class RemoteCodeSelect extends Component {
 
@@ -61,7 +62,6 @@ class RemoteCodeSelect extends Component {
         let codes = this.props.codes;
         let displayKey = this.props.display;
         let targetKey = this.props.target;
-
         delete elementProps.onObjectChange;
         return (
             <div className={formGroupCss}>
