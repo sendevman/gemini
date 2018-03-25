@@ -26,6 +26,6 @@ public interface PreEnrollmentRepository extends CrudRepository<PreEnrollmentReq
 
     PreEnrollmentRequestEntity findByIdAndRequestStatusIs(Long id, RequestStatus requestStatus);
 
-    List<PreEnrollmentRequestEntity> findByUserIdOrderBySubmitDateDesc(@Param("userId") Long userId);
+//    List<PreEnrollmentRequestEntity> findByUserIdOrderBySubmitDateDesc(@Param("userId") Long userId);
 
 }

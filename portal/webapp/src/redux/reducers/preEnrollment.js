@@ -8,7 +8,7 @@ const initialState = {
         regionId: null,
         schoolId: null,
         schoolName: null,
-        schoolAddress: null,
+        schoolAddress: {addressFormatted: "Test"},
         nextGradeLevel: null,
         nextGradeLevelDescription: null
     },
@@ -19,6 +19,11 @@ const initialState = {
         schoolId: null,
         programs: [],
         programsToDelete: []
+    },
+    alternateSchoolEnrollment: {
+        nextGradeLevel: null,
+        alternateSchools: [],
+        alternateSchoolsToDelete: []
     },
     foundPreviousEnrollment: false,
     initialPreEnrollmentSaved: false,

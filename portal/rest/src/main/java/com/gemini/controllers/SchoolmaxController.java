@@ -114,8 +114,7 @@ public class SchoolmaxController {
         List<School> schools = smaxService.findSchoolByRegionAndGradeLevel(regionId, gradeLevel);
         List<SchoolResponse> schoolReturned = new ArrayList<>();
         for (School school : schools) {
-            SchoolResponse response = CopyUtils.convert(school, SchoolResponse.class);
-            response.setAddress(CopyUtils.createAddressBean(school));
+            SchoolResponse response = CopyUtils.createSchoolResponse(school);
             schoolReturned.add(response);
         }
 
@@ -127,8 +126,7 @@ public class SchoolmaxController {
         List<School> schools = smaxService.findVocationalSchoolsByRegionAndGradeLevel(regionId, gradeLevel);
         List<SchoolResponse> schoolReturned = new ArrayList<>();
         for (School school : schools) {
-            SchoolResponse response = CopyUtils.convert(school, SchoolResponse.class);
-            response.setAddress(CopyUtils.createAddressBean(school));
+            SchoolResponse response = CopyUtils.createSchoolResponse(school);
             schoolReturned.add(response);
         }
 

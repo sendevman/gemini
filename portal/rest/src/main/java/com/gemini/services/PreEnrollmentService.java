@@ -1,10 +1,12 @@
 package com.gemini.services;
 
 import com.gemini.beans.forms.*;
+import com.gemini.beans.requests.enrollment.AlternateSchoolPreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.enrollment.PreEnrollmentInitialRequest;
 import com.gemini.beans.requests.enrollment.PreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.enrollment.VocationalPreEnrollmentSubmitRequest;
 import com.gemini.beans.types.AddressType;
+import com.gemini.beans.types.EnrollmentType;
 import com.gemini.beans.types.EntryType;
 import com.gemini.beans.types.RequestStatus;
 import com.gemini.database.dao.beans.*;
@@ -12,6 +14,7 @@ import com.gemini.database.jpa.entities.*;
 import com.gemini.database.jpa.respository.AddressRepository;
 import com.gemini.database.jpa.respository.PreEnrollmentRepository;
 import com.gemini.database.jpa.respository.StudentRepository;
+import com.gemini.database.jpa.respository.UserRepository;
 import com.gemini.utils.CopyUtils;
 import com.gemini.utils.Utils;
 import com.gemini.utils.ValidationUtils;
@@ -42,6 +45,8 @@ public class PreEnrollmentService {
     @Autowired
     private SchoolmaxService smaxService;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private PreEnrollmentRepository preEnrollmentRepository;
     @Autowired
     private StudentRepository studentRepository;
@@ -54,10 +59,9 @@ public class PreEnrollmentService {
         PreEnrollmentBean preEnrollmentBean = null;
         PreEnrollmentRequestEntity entity = new PreEnrollmentRequestEntity();
         Long studentNumber = request.getStudentNumber();
-        UserEntity parent = CopyUtils.convert(loggedUser, UserEntity.class);
-
         entity.setType(request.getType());
-        entity.setUser(parent);
+//        UserEntity parent = CopyUtils.convert(loggedUser, UserEntity.class);
+//        entity.setUser(parent);
         entity.setSchoolYear(commonService.getPreEnrollmentYear());
         Student student = null;
         StudentAddress address = null;
@@ -69,12 +73,26 @@ public class PreEnrollmentService {
                 //let's find the most recent enrollment from SIS
                 EnrollmentInfo enrollmentInfo = smaxService.retrieveMostRecentEnrollment(student.getStudentId());
                 if (enrollmentInfo != null) {
-                    entity.setPreviousEnrollmentId(enrollmentInfo.getEnrollmentId());
-                    entity.setPreviousEnrollmentYear(enrollmentInfo.getSchoolYear());
-                    entity.setPreviousGradeLevel(enrollmentInfo.getGradeLevel());
+
                     preEnrollmentBean = CopyUtils.convert(entity, PreEnrollmentBean.class);
-                    School school = setNextEnrollmentSchoolInfo(enrollmentInfo.getSchoolId(), preEnrollmentBean, enrollmentInfo.getGradeLevel(), enrollmentInfo.getSchoolYear());
-                    preEnrollmentBean.setHasPreviousEnrollment(school != null);
+                    boolean hasPrevious = commonService.isPreviousEnrollment(enrollmentInfo);
+                    boolean hasPreEnrollment = commonService.isPreEnrollmentYear(enrollmentInfo);
+                    boolean hasOld = commonService.isOldEnrollment(enrollmentInfo);
+                    if (hasPrevious) {
+                        entity.setPreviousEnrollmentId(enrollmentInfo.getEnrollmentId());
+                        entity.setPreviousEnrollmentYear(enrollmentInfo.getSchoolYear());
+                        entity.setPreviousGradeLevel(enrollmentInfo.getGradeLevel());
+                        //fran ask if we should do this
+                        setNextGradeFromPreviousEnrollment(enrollmentInfo.getSchoolId(), preEnrollmentBean, enrollmentInfo.getGradeLevel(), enrollmentInfo.getSchoolYear());
+                        preEnrollmentBean.setHasPreviousEnrollment(hasPrevious);
+                    } else if (hasOld) {
+                        setNextGradeFromPreviousEnrollment(enrollmentInfo.getSchoolId(), preEnrollmentBean, enrollmentInfo.getGradeLevel(), enrollmentInfo.getSchoolYear());
+                    } else if (hasPreEnrollment) {
+                        entity.setPreEnrollmentId(enrollmentInfo.getEnrollmentId());
+                        setNextGradeFromNextEnrollment(enrollmentInfo.getSchoolId(), preEnrollmentBean, enrollmentInfo.getGradeLevel(), enrollmentInfo.getSchoolYear());
+                        preEnrollmentBean.setHasPreEnrollment(hasPreEnrollment);
+                    }
+
                 }
                 AddressEntity postal = copyAddressFrom(address, AddressType.POSTAL);
                 AddressEntity physical = copyAddressFrom(address, AddressType.PHYSICAL);
@@ -107,7 +125,9 @@ public class PreEnrollmentService {
         if (preEnrollmentBean != null && entity != null) {
             preEnrollmentBean.setId(entity.getId());
             preEnrollmentBean.setStudent(getPreEnrollmentStudentInfoBean(entity));
+            userService.saveUserPreEnrollment(loggedUser.getId(), entity);
         }
+
         return preEnrollmentBean;
 
     }
@@ -131,8 +151,10 @@ public class PreEnrollmentService {
         }
         if (requestEntity != null) {
             response = CopyUtils.convert(requestEntity, PreEnrollmentBean.class);
-            School school = setNextEnrollmentSchoolInfo(requestEntity.getSchoolId(), response, requestEntity.getPreviousGradeLevel(), requestEntity.getPreviousEnrollmentYear());
-            response.setHasPreviousEnrollment(school != null);
+            if (requestEntity.getPreEnrollmentId() != null)
+                response.setHasPreEnrollment(requestEntity.getPreEnrollmentId() != null);
+            else if (requestEntity.getPreviousEnrollmentId() != null)
+                response.setHasPreviousEnrollment(requestEntity.getPreviousEnrollmentId() != null);
             response.setStudent(getPreEnrollmentStudentInfoBean(requestEntity));
         }
 
@@ -149,7 +171,8 @@ public class PreEnrollmentService {
     }
 
     public List<PreEnrollmentBean> findPreEnrollmentByUser(User loggedUser) {
-        List<PreEnrollmentRequestEntity> entities = preEnrollmentRepository.findByUserIdOrderBySubmitDateDesc(loggedUser.getId());
+        UserEntity user = userRepository.findOne(loggedUser.getId());
+        List<PreEnrollmentRequestEntity> entities = user.getRequests();//userService.findByUserIdOrderBySubmitDateDesc(loggedUser.getId());
         if (entities != null) {
             List<PreEnrollmentBean> list = new ArrayList<>();
             for (PreEnrollmentRequestEntity entity : entities) {
@@ -259,6 +282,7 @@ public class PreEnrollmentService {
     public boolean submitPreEnrollment(PreEnrollmentSubmitRequest request) {
         PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
         setSchoolInfo(requestEntity, request.getSchoolId(), request.getNextGradeLevel());
+        requestEntity.setType(EnrollmentType.REGULAR);
         requestEntity.setRequestStatus(RequestStatus.PENDING_TO_REVIEW);
         requestEntity.setSubmitDate(commonService.getCurrentDate());
         requestEntity = preEnrollmentRepository.save(requestEntity);
@@ -334,6 +358,7 @@ public class PreEnrollmentService {
 
     public boolean vocationalPreEnrollmentSubmit(VocationalPreEnrollmentSubmitRequest request) {
         final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
+        requestEntity.setType(EnrollmentType.VOCATIONAL);
         List<PreEnrollmentVocationalSchoolEntity> list = requestEntity.getVocationalSchools();
         if (list.size() == 1) {
             Long schoolId = list.get(0).getSchoolId();
@@ -342,6 +367,82 @@ public class PreEnrollmentService {
         requestEntity.setRequestStatus(RequestStatus.PENDING_TO_REVIEW);
         requestEntity.setSubmitDate(commonService.getCurrentDate());
 
+        return preEnrollmentRepository.save(requestEntity) != null;
+    }
+
+    public AlternateSchoolPreEnrollmentBean findAlternatePreEnrollmentById(Long id){
+        PreEnrollmentRequestEntity entity = preEnrollmentRepository.findByIdAndRequestStatusIs(id, RequestStatus.ACTIVE);
+        if (entity == null)
+            return null;
+        PreEnrollmentBean preEnrollment = getPreEnrollmentBean(entity);
+        AlternateSchoolPreEnrollmentBean alternatePreEnrollmentBean = CopyUtils.convert(preEnrollment, AlternateSchoolPreEnrollmentBean.class);
+        Function<PreEnrollmentAlternateSchoolEntity, AlternateSchoolBean> toAlternate = new Function<PreEnrollmentAlternateSchoolEntity, AlternateSchoolBean>() {
+            @Override
+            public AlternateSchoolBean apply(PreEnrollmentAlternateSchoolEntity altEntity) {
+                AlternateSchoolBean bean = new AlternateSchoolBean();
+                School school = smaxService.findSchoolById(altEntity.getSchoolId());
+                bean.setPriority(altEntity.getPriority());
+                bean.setSchool(CopyUtils.createSchoolResponse(school));
+                return bean;
+            }
+        };
+        alternatePreEnrollmentBean.setAlternateSchools(Lists.transform(entity.getAlternateSchools(), toAlternate));
+
+        return alternatePreEnrollmentBean;
+    }
+
+    public boolean partialAlternatePreEnrollmentSave(final AlternateSchoolPreEnrollmentSubmitRequest request) {
+        final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
+
+        final List<PreEnrollmentAlternateSchoolEntity> alternateSchoolsDB = requestEntity.getAlternateSchools();
+        List<AlternateSchoolBean> altSchoolsInDBList = CopyUtils.convert(alternateSchoolsDB, AlternateSchoolBean.class);
+        Set<AlternateSchoolBean> alternateSchoolsFormInDb = new HashSet<>(altSchoolsInDBList);
+
+
+        Set<AlternateSchoolBean> alternateSchoolToSave = Sets.newHashSet();
+        boolean deleting = request.getAlternateSchoolsToDelete() != null && !request.getAlternateSchoolsToDelete().isEmpty();
+        boolean adding = request.getAlternateSchools() != null && !request.getAlternateSchools().isEmpty();
+        //deleting
+        if (deleting) {
+            alternateSchoolToSave = Sets.difference(alternateSchoolsFormInDb, Sets.newHashSet(request.getAlternateSchoolsToDelete()));
+            alternateSchoolsFormInDb = alternateSchoolToSave;
+        }
+        //adding
+        if (adding)
+            alternateSchoolToSave = Sets.union(alternateSchoolsFormInDb, new HashSet<>(request.getAlternateSchools()));
+
+        if (!(adding || deleting)) {
+            alternateSchoolToSave = alternateSchoolsFormInDb;
+        }
+
+        List<PreEnrollmentAlternateSchoolEntity> toSave = FluentIterable
+                .from(Lists.newArrayList(alternateSchoolToSave))
+                .transform(new Function<AlternateSchoolBean, PreEnrollmentAlternateSchoolEntity>() {
+                    @Override
+                    public PreEnrollmentAlternateSchoolEntity apply(AlternateSchoolBean alternateSchool) {
+                        PreEnrollmentAlternateSchoolEntity entity = new PreEnrollmentAlternateSchoolEntity();
+                        School school = smaxService.findSchoolById(alternateSchool.getSchoolId());
+                        entity.setSchoolId(school.getSchoolId());
+                        entity.setRegionId(school.getRegionId());
+                        entity.setDistrictId(school.getDistrictId());
+                        entity.setMunicipalityCode(school.getCityCd());
+                        entity.setPreEnrollment(requestEntity);
+                        return entity;
+                    }
+                })
+                .toList();
+
+        requestEntity.getAlternateSchools().clear();
+        requestEntity.getAlternateSchools().addAll(toSave);
+
+        return preEnrollmentRepository.save(requestEntity) != null;
+    }
+
+    public boolean alternatePreEnrollmentSubmit(final AlternateSchoolPreEnrollmentSubmitRequest request) {
+        final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
+        requestEntity.setType(EnrollmentType.ALTERNATE_SCHOOLS);
+        requestEntity.setRequestStatus(RequestStatus.PENDING_TO_REVIEW);
+        requestEntity.setSubmitDate(commonService.getCurrentDate());
         return preEnrollmentRepository.save(requestEntity) != null;
     }
 
@@ -405,10 +506,7 @@ public class PreEnrollmentService {
         return entity;
     }
 
-    private School setNextEnrollmentSchoolInfo(Long schoolId, PreEnrollmentBean enrollmentBean, String previousGradeLevel, Long previousSchoolYear) {
-//        if (!(previousSchoolYear == (PRE_ENROLLMENT_SCHOOL_YEAR - 1)) {
-//            return null;
-//        }
+    private School setNextGradeFromPreviousEnrollment(Long schoolId, PreEnrollmentBean enrollmentBean, String previousGradeLevel, Long previousSchoolYear) {
         School school = smaxService.findSchoolById(schoolId);
         //validating if the schoolYear enrolled is the current school year
         if (school != null && ValidationUtils.valid(previousSchoolYear, previousGradeLevel)) {
@@ -420,6 +518,21 @@ public class PreEnrollmentService {
                 GradeLevel gradeLevel = smaxService.getGradeLevelByCode(gradeLevelInfo.getNextYearGrade());
                 enrollmentBean.setNextGradeLevel(gradeLevel.getName());
                 enrollmentBean.setNextGradeLevelDescription(gradeLevel.getDisplayName());
+            }
+        }
+        return school;
+    }
+
+    private School setNextGradeFromNextEnrollment(Long schoolId, PreEnrollmentBean enrollmentBean, String gradeLevel, Long schoolYear) {
+        School school = smaxService.findSchoolById(schoolId);
+        if (school != null && ValidationUtils.valid(schoolYear, gradeLevel)) {
+            enrollmentBean.setSchoolId(schoolId);
+            enrollmentBean.setSchoolName(school.getSchoolName());
+            enrollmentBean.setSchoolAddress(CopyUtils.createAddressBean(school));
+            if (gradeLevel != null) {
+                GradeLevel nextGradeLevel = smaxService.getGradeLevelByCode(gradeLevel);
+                enrollmentBean.setNextGradeLevel(nextGradeLevel.getName());
+                enrollmentBean.setNextGradeLevelDescription(nextGradeLevel.getDisplayName());
             }
         }
         return school;

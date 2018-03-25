@@ -1,5 +1,7 @@
 package com.gemini.database.jpa.entities;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -28,6 +30,9 @@ public class StudentSearchLogEntity {
     private Date dateOfBirth;
     @Column
     private Long userId;
+    @CreatedDate
+    @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
+    private Date searchDate;
 
     public Long getId() {
         return id;
@@ -83,5 +88,13 @@ public class StudentSearchLogEntity {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Date getSearchDate() {
+        return searchDate;
+    }
+
+    public void setSearchDate(Date searchDate) {
+        this.searchDate = searchDate;
     }
 }

@@ -44,3 +44,7 @@
     height: 10%;
     z-index: 1000;
 }
+
+.table td, .table th {
+    padding: 0;
+}

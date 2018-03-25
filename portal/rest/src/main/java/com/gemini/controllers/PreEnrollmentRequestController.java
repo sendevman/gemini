@@ -1,6 +1,7 @@
 package com.gemini.controllers;
 
 import com.gemini.beans.forms.*;
+import com.gemini.beans.requests.enrollment.AlternateSchoolPreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.enrollment.PreEnrollmentInitialRequest;
 import com.gemini.beans.requests.enrollment.PreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.enrollment.VocationalPreEnrollmentSubmitRequest;
@@ -86,6 +87,40 @@ public class PreEnrollmentRequestController {
         return ResponseEntity.badRequest().body(ResponseBase.error("Address are not attached to this request"));
     }
 
+    //alternate schools
+    @RequestMapping(value = "/alternate/{requestId}")
+    public ResponseEntity<ResponseBase> retrieveAlternatePreEnrollment(@PathVariable Long requestId) {
+        AlternateSchoolPreEnrollmentBean alternatePreEnrollmentBean = null;
+        //todo: validate user has access to this enrollment
+        if (ValidationUtils.valid(requestId))
+            alternatePreEnrollmentBean = preEnrollmentService.findAlternatePreEnrollmentById(requestId);
+        return ResponseEntity.ok(ResponseBase.success(requestId, alternatePreEnrollmentBean));
+    }
+
+
+    @RequestMapping(value = "/alternate/partial/save", method = RequestMethod.POST)
+    public ResponseEntity<ResponseBase> partialAlternatePreEnrollmentSave(@RequestBody AlternateSchoolPreEnrollmentSubmitRequest request) {
+        boolean saved = preEnrollmentService.partialAlternatePreEnrollmentSave(request);
+        if (saved)
+            return ResponseEntity.ok(ResponseBase.success(request.getRequestId()));
+        return ResponseEntity.ok(ResponseBase.error("Error submitting alternate pre-enrolmment"));
+    }
+
+    @RequestMapping(value = "/alternate/submit", method = RequestMethod.POST)
+    public ResponseEntity<ResponseBase> alternateSchoolSubmit(@RequestBody AlternateSchoolPreEnrollmentSubmitRequest request, @AuthenticationPrincipal User loggedUser) {
+        boolean saved = false;
+        try {
+            mailService.sendPreEnrollmentSubmitEmail(loggedUser, request);
+            saved = preEnrollmentService.alternatePreEnrollmentSubmit(request);
+            loggedUser.setWorkingPreEnrollmentId(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (saved)
+            return ResponseEntity.ok(ResponseBase.success(request.getRequestId()));
+        return ResponseEntity.ok(ResponseBase.error("Error submitting alternate pre-enrollment"));
+    }
+
     //vocational
     @RequestMapping(value = "/vocational/{requestId}")
     public ResponseEntity<ResponseBase> retrieveVocationalPreEnrollment(@PathVariable Long requestId) {
@@ -119,7 +154,6 @@ public class PreEnrollmentRequestController {
         return ResponseEntity.ok(ResponseBase.error("Error submitting vocational pre-enrollment"));
     }
 
-
     private ResponseEntity<ResponseBase> handleCreatePreEnrollment(PreEnrollmentInitialRequest initialRequest, User loggedUser) {
         PreEnrollmentBean preEnrollmentBean;
         if (ValidationUtils.valid(initialRequest.getStudentNumber())
@@ -146,6 +180,5 @@ public class PreEnrollmentRequestController {
             return ResponseEntity.ok(ResponseBase.success(preEnrollmentBean.getId(), preEnrollmentBean));
         return ResponseEntity.ok(ResponseBase.error("Error updating pre-enrollment"));
     }
-
 
 }
