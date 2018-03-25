@@ -19,10 +19,10 @@ public class ConfigEntity {
     private Long id;
 
     @Column(nullable = false)
-    private Long currentSchoolYear = 2018L;
+    private Long currentSchoolYear;
 
     @Column(nullable = false)
-    private Long preEnrollmentSchoolYear = 2019L;
+    private Long preEnrollmentSchoolYear;
 
     @Column
     private Date preEnrollmentStart;
@@ -32,6 +32,18 @@ public class ConfigEntity {
 
     @Column(nullable = false)
     private boolean canEditFoundStudent = false;
+
+    @Column(nullable = false)
+    private Integer activationKeyExpireInHours;
+
+    @Column(nullable = false)
+    private Integer credentialKeyExpireInMinutes;
+
+    @Column(nullable = false)
+    private Integer minUserAgeToPreEnroll;
+
+    @Column(nullable = false)
+    private Integer minAlternateSchools;
 
     public Long getId() {
         return id;
@@ -79,6 +91,38 @@ public class ConfigEntity {
 
     public void setCanEditFoundStudent(boolean canEditFoundStudent) {
         this.canEditFoundStudent = canEditFoundStudent;
+    }
+
+    public Integer getActivationKeyExpireInHours() {
+        return activationKeyExpireInHours;
+    }
+
+    public void setActivationKeyExpireInHours(Integer activationKeyExpireInHours) {
+        this.activationKeyExpireInHours = activationKeyExpireInHours;
+    }
+
+    public Integer getCredentialKeyExpireInMinutes() {
+        return credentialKeyExpireInMinutes;
+    }
+
+    public void setCredentialKeyExpireInMinutes(Integer credentialKeyExpireInMinutes) {
+        this.credentialKeyExpireInMinutes = credentialKeyExpireInMinutes;
+    }
+
+    public Integer getMinUserAgeToPreEnroll() {
+        return minUserAgeToPreEnroll;
+    }
+
+    public void setMinUserAgeToPreEnroll(Integer minUserAgeToPreEnroll) {
+        this.minUserAgeToPreEnroll = minUserAgeToPreEnroll;
+    }
+
+    public Integer getMinAlternateSchools() {
+        return minAlternateSchools;
+    }
+
+    public void setMinAlternateSchools(Integer minAlternateSchools) {
+        this.minAlternateSchools = minAlternateSchools;
     }
 }
 

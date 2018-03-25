@@ -1,9 +1,12 @@
 package com.gemini.utils;
 
 import com.gemini.beans.forms.AddressBean;
+import com.gemini.beans.integration.SchoolResponse;
 import com.gemini.database.dao.beans.School;
 import org.springframework.beans.BeanUtils;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,6 +40,12 @@ public final class CopyUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static SchoolResponse createSchoolResponse(School school) {
+        SchoolResponse response = CopyUtils.convert(school, SchoolResponse.class);
+        response.setAddress(CopyUtils.createAddressBean(school));
+        return response;
     }
 
     public static AddressBean createAddressBean(School school) {

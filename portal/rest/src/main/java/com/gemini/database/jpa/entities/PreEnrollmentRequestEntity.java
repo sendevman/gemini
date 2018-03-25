@@ -31,8 +31,8 @@ public class PreEnrollmentRequestEntity {
     @Column(nullable = false)
     private EnrollmentType type = EnrollmentType.REGULAR;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity user;
+//    @ManyToOne(targetEntity = UserEntity.class, optional = false)
+//    private UserEntity user;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
@@ -46,6 +46,9 @@ public class PreEnrollmentRequestEntity {
 
     @Column
     private String previousGradeLevel = "00";
+
+    @Column
+    private Long preEnrollmentId;
 
     @Column(nullable = false)
     private String gradeLevel = "00";
@@ -111,13 +114,13 @@ public class PreEnrollmentRequestEntity {
         this.type = type;
     }
 
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
+//    public UserEntity getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(UserEntity user) {
+//        this.user = user;
+//    }
 
     public StudentEntity getStudent() {
         return student;
@@ -149,6 +152,14 @@ public class PreEnrollmentRequestEntity {
 
     public void setPreviousGradeLevel(String previousGradeLevel) {
         this.previousGradeLevel = previousGradeLevel;
+    }
+
+    public Long getPreEnrollmentId() {
+        return preEnrollmentId;
+    }
+
+    public void setPreEnrollmentId(Long preEnrollmentId) {
+        this.preEnrollmentId = preEnrollmentId;
     }
 
     public String getGradeLevel() {

@@ -163,7 +163,7 @@ class VocationalProgramsSelection extends Component {
                         </td>
                     </tr>
                 ))
-                : <label style={{left: 50, top: 50}}>No posee ningun programa aun</label>}
+                :  <tr><td colSpan={2} style={{left: 50, top: 50}}>No posee ningun programa a&uacute;n</td></tr>}
             </tbody>
         </table>)
     }

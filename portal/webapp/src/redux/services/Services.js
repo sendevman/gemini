@@ -113,6 +113,11 @@ export default class Services {
         return this._get(`/pre/enrollment/vocational/${requestId}`);
     }
 
+    getActiveAlternatePreEnrollment(requestId) {
+        return this._get(`/pre/enrollment/alternate/${requestId}`);
+    }
+
+
     savePreEnrollment(form) {
         return this._securedPost(`/pre/enrollment/save`, form);
     }
@@ -125,6 +130,10 @@ export default class Services {
         return this._securedPost(`/pre/enrollment/vocational/partial/save`, form)
     }
 
+    partialAlternatePreEnrollmentSave(form) {
+        return this._securedPost(`/pre/enrollment/alternate/partial/save`, form)
+    }
+
     savePreEnrollmentAddress(addressForm) {
         return this._securedPost(`/pre/enrollment/${addressForm.requestId}/address/save`, addressForm);
     }
@@ -135,6 +144,10 @@ export default class Services {
 
     submitVocationalPreEnrollment(form) {
         return this._securedPost(`/pre/enrollment/vocational/submit`, form);
+    }
+
+    submitAlternatePreEnrollment(form) {
+        return this._securedPost(`/pre/enrollment/alternate/submit`, form);
     }
 
     _login(path, credentials) {

@@ -82,7 +82,7 @@ public class UserEntity implements IdentityEntity {
     @Column
     private boolean profileCompleted = false;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<PreEnrollmentRequestEntity> requests;
 
     @CreatedDate

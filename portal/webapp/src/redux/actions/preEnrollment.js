@@ -112,6 +112,73 @@ export const retrieveVocationalPreEnrollment = (onResult, onError) => (dispatch,
 
 };
 
+export const partialAlternatePreEnrollmentSave = (form, onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.PARTIAL_ALT_PRE_ENROLLMENT_SAVE_START});
+    let preEnrollment = getState().preEnrollment;
+    form.requestId = preEnrollment.requestId;
+
+    services()
+        .partialAlternatePreEnrollmentSave(form)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.PARTIAL_ALT_PRE_ENROLLMENT_SAVE_END, response: response});
+
+            try {
+                if (response.successfulOperation)
+                    onResult();
+                else
+                    onError();
+            } catch (e) {
+                onError();
+            }
+        });
+};
+
+export const submitAlternatePreEnrollment = (form, onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.ALTERNATE_PRE_ENROLLMENT_SUBMIT_START});
+    let preEnrollment = getState().preEnrollment;
+    form.requestId = preEnrollment.requestId;
+
+    services()
+        .submitAlternatePreEnrollment(form)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.ALTERNATE_PRE_ENROLLMENT_SUBMIT_END, response: response});
+
+            try {
+                if (response.successfulOperation)
+                    onResult();
+                else
+                    onError();
+            } catch (e) {
+                onError();
+            }
+        });
+};
+
+export const retrieveAlternatePreEnrollment = (onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.ALTERNATE_PRE_ENROLLMENT_RETRIEVE_START});
+    let preEnrollment = getState().preEnrollment;
+    let requestId = preEnrollment.requestId;
+
+    // services()
+    services()
+        .getActiveAlternatePreEnrollment(requestId)
+        .then((response) => {
+            dispatch({type: types.ALTERNATE_PRE_ENROLLMENT_RETRIEVE_END, response: response});
+            try {
+                if (response.successfulOperation)
+                    onResult();
+                else
+                    onError();
+            } catch (e) {
+                onError();
+            }
+        });
+
+
+};
+
 export const changeCurrentVocationalEnrollment = (currentEnrollment) => (dispatch)=>{
     dispatch({type: types.CHANGE_VOCATIONAL_PRE_ENROLLMENT, enrollment: currentEnrollment})
 };

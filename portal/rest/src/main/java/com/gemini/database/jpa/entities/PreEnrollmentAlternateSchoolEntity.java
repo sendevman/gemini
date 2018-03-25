@@ -19,6 +19,9 @@ public class PreEnrollmentAlternateSchoolEntity {
     private Long schoolId;
 
     @Column(nullable = false)
+    private String municipalityCode;
+
+    @Column(nullable = false)
     private Long regionId = -1L;
 
     @Column(nullable = false)
@@ -44,6 +47,14 @@ public class PreEnrollmentAlternateSchoolEntity {
 
     public void setSchoolId(Long schoolId) {
         this.schoolId = schoolId;
+    }
+
+    public String getMunicipalityCode() {
+        return municipalityCode;
+    }
+
+    public void setMunicipalityCode(String municipalityCode) {
+        this.municipalityCode = municipalityCode;
     }
 
     public Long getRegionId() {

@@ -72,7 +72,7 @@ public class UserService {
             return null;
         User userBean = CopyUtils.convert(entity, User.class);
         Utils.copyLastNames(entity, userBean);
-        List<PreEnrollmentRequestEntity> preEnrollments = preEnrollmentRepository.findByUserIdOrderBySubmitDateDesc(entity.getId());
+        List<PreEnrollmentRequestEntity> preEnrollments = entity.getRequests();//preEnrollmentRepository.findByUserIdOrderBySubmitDateDesc(entity.getId());
         userBean.setTotalPreEnrollments(preEnrollments.size());
         userBean.setWorkingPreEnrollmentId(null);
         if (preEnrollments.isEmpty())
@@ -163,6 +163,12 @@ public class UserService {
         entity = userRepository.save(entity);
         logUserAction(activationKey, UserAction.ACCOUNT_ACTIVATION, entity.getId(), servletRequest);
         return entity != null ? activationKey : null;
+    }
+
+    public boolean saveUserPreEnrollment(Long userId, PreEnrollmentRequestEntity preEnrollment) {
+        UserEntity entity = userRepository.findOne(userId);
+        entity.getRequests().add(preEnrollment);
+        return userRepository.save(entity) != null;
     }
 
     public void saveLastLogin(User user) {

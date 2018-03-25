@@ -6,9 +6,9 @@ import React, {Component} from "react";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {getSchools, loadCodes} from "../../../redux/actions";
-import entrollmentIllustration from "../../../style/img/entrollment-illustration.png";
+import {getSchools, loadCodes, partialAlternatePreEnrollmentSave} from "../../../redux/actions";
 import AnimationHelper from "../../../AnimationHelper";
+import {Button} from "reactstrap";
 
 class PreEnrollmentAlternateSchoolsSelection extends Component {
 
@@ -18,14 +18,32 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
         this.regionChanged = this.regionChanged.bind(this);
         this.gradeLevelChanged = this.gradeLevelChanged.bind(this);
         this.schoolChanged = this.schoolChanged.bind(this);
+        this.onAdd = this.onAdd.bind(this);
     }
 
     componentWillMount() {
         this.props.loadCodes();
     }
 
+    onAdd() {
+        let form = this.props.alternateEnrollment;
+        let size = this.props.alternateEnrollment.length || 0;
+        let object = {priority: size + 1, school: this.state.selectedSchool};
+        form.alternateSchools.push(object);
+        this.cleanSchoolCode()
+    }
+
+    onDelete = (index) => (e) => {
+        let form = this.props.alternateEnrollment;
+        let schoolDeleted = form.alternateSchools[index];
+        form.alternateSchoolsToDelete.push(schoolDeleted);
+        form.alternateSchools.splice(index, 1);
+        this.forceUpdate();
+    };
+
     onPress(onResult) {
-        onResult();
+        let form = this.props.alternateEnrollment;
+        this.props.partialAlternatePreEnrollmentSave(form, onResult);
     }
 
     cleanSchoolCode() {
@@ -64,62 +82,6 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
         this.setState({selectedSchool: schoolObject});
     }
 
-    renderUI() {
-        return [
-            <div className="col-md-7 content-section">
-                <div className="title">
-                    <div className="description mb30"><h2>Pre-Enrollment <span>Record</span></h2></div>
-                    <span className="f20slg"><span className="f20slb">Let’s create a new pre-enrollment record.</span> Please select the Region, Grade Level and School that your child will be attending:</span>
-                </div>
-                <div className="body d-flex align-items-center flex-column justify-content-end">
-                    <form id="enrollment-form" action="preenrollment" method="POST" className="mt50">
-                        <div className="row plr15">
-                            <div className="group form-group has-feedback col-md-6 pl-0 pr50">
-                                <input className="inputMaterial" type="text" name="region" required/>
-                                <i className="n icon-gps fs26"></i>
-                                <span className="highlight"></span>
-                                <span className="bar"></span>
-                                <label>Region Example</label>
-                            </div>
-                            <div className="group form-group has-feedback col-md-6 pl50 pr-0 numeric">
-                                <input className="inputMaterial" type="text" name="level" required/>
-                                <i className="n icon-teacher fs26"></i>
-                                <i className="icon-top"></i>
-                                <i className="icon-down"></i>
-                                <span className="highlight"></span>
-                                <span className="bar"></span>
-                                <label>Grade Level</label>
-                            </div>
-                            <div className="group form-group has-feedback col-md-6 pl-0 pr50">
-                                <input className="inputMaterial" type="text" name="school" required/>
-                                <i className="n fas fa-university fs26"></i>
-                                <span className="highlight"></span>
-                                <span className="bar"></span>
-                                <label>School Name</label>
-                            </div>
-                            <div className="group form-group has-feedback col-md-6 pl50 pr-0">
-                                <input className="inputMaterial" type="text" name="adress" required/>
-                                <i className="n fas fa-map-marker-alt fs26"></i>
-                                <span className="highlight"></span>
-                                <span className="bar"></span>
-                                <label>School Adress</label>
-                            </div>
-                        </div>
-                        <div className="row mt50 bt1p pt40">
-                            <div className="col-md-12">
-                                <button className="button-green mr30 mob-mb30px" type="submit"><span>s</span>Submit
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>,
-            <div className="col-md-4 illustration-section d-flex align-items-center text-center">
-                <div className="illustration"><img src={entrollmentIllustration} alt=""/></div>
-            </div>
-        ]
-    }
-
     render() {
         let student = this.props.student;
         let regions = this.props.regions;
@@ -128,11 +90,11 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
         let selectedSchool = this.state.selectedSchool;
         let form = this.props.preEnrollment;
         let schoolName = !selectedSchool || selectedSchool.schoolId === -1
-            ? "No ha selecionado escuela aun"
+            ? "Sin Seleccion"
             : selectedSchool.displayName;
 
         let schoolAddress = !selectedSchool || selectedSchool.schoolId === -1
-            ? "No ha selecionado escuela aun"
+            ? "Sin Seleccion"
             : selectedSchool.address.addressFormatted;
 
         return [<div className="col-md-7 content-section">
@@ -140,27 +102,16 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
                 <div className="description mb30"><h2>Registro de <span>Pre-Matricula</span></h2></div>
                 <span className="f20slg"><span className="f20slb">Vamos a crear el registro.</span> Selecciona dos escuelas como alternativas para la matr&iacute;cula del año escolar 2018-2019:</span>
             </div>
-            <div className="body" style={{marginTop: -100}}>
+            <div className="body d-flex flex-column justify-content-end" style={{marginTop: -150}}>
                 <div className="row" style={{margin: 2, marginBottom: 15}}>
                     <div className="col-md-4">
-                        <div className="row">
-                            <span>Estudiante: </span>
-                        </div>
-                        <div className="row">
-                            <h6>{student && student.fullName}</h6>
-                        </div>
+                        <span>Escuela: <h6>{schoolName}</h6></span>
                     </div>
                     <div className="col-md-8">
-                        <div className="row">
-                            <span>Escuela: <h6>{schoolName}</h6></span>
-                        </div>
-                        <div className="row">
-                            <span>Direcci&oacute;n: <h6>{schoolAddress}</h6></span>
-                        </div>
-
+                        <span>Direcci&oacute;n: <h6>{schoolAddress}</h6></span>
                     </div>
                 </div>
-                <div className="row">
+                <div className="row mt-2">
 
                     <div className="col-md-2">
                         <RemoteCodeSelect id="gradeLevel"
@@ -185,7 +136,7 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
                     </div>
 
 
-                    <div className="col-md-8">
+                    <div className="col-md-7">
                         <RemoteCodeSelect id="schools"
                                           label="Escuela a matricular"
                                           placeholder="Seleccione escuela"
@@ -194,6 +145,14 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
                                           target="schoolId"
                                           display="displayName"
                                           value={form.schoolId}/>
+                    </div>
+                    <div className="col-md-1">
+                        <Button color="primary" onClick={this.onAdd}><i className="fa fa-plus"/></Button>
+                    </div>
+                </div>
+                <div className="row mt-3">
+                    <div className="col-md-12">
+                        {this.renderSchoolsSelected()}
                     </div>
                 </div>
             </div>
@@ -205,6 +164,38 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
             <AnimationHelper type="blackboard"/>
         </div>];
     }
+
+    renderSchoolsSelected() {
+        let alternateSchools = this.props.alternateEnrollment.alternateSchools;
+        return (
+            <table className="table table-striped table-hover ">
+                <thead>
+                <tr>
+                    <th>Prioridad</th>
+                    <th>Escuela</th>
+                    <th>Direccion</th>
+                    <th/>
+                </tr>
+                </thead>
+                <tbody>
+                {alternateSchools && alternateSchools.length > 0
+                    ? alternateSchools.map((school, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{school.school.schoolName}</td>
+                            <td>{school.school.address.addressFormatted}</td>
+                            <td>
+                                <Button size="sm" color="danger" onClick={this.onDelete(index)}>
+                                    <i className="fas fa-trash"/>
+                                </Button>
+                            </td>
+                        </tr>
+                    ))
+                    : <tr><td colSpan={3} style={{left: 50, top: 50}}>No posee ningun programa aun</td></tr>}
+                </tbody>
+            </table>
+        );
+    }
 }
 
 function mapStateToProps(store) {
@@ -213,12 +204,13 @@ function mapStateToProps(store) {
         regions: store.config.regions,
         gradeLevels: store.config.gradeLevels,
         schools: store.config.schools,
-        preEnrollment: store.preEnrollment.info
+        preEnrollment: store.preEnrollment.info,
+        alternateEnrollment: store.preEnrollment.alternateSchoolEnrollment
     };
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({loadCodes, getSchools}, dispatch)
+    return bindActionCreators({loadCodes, getSchools, partialAlternatePreEnrollmentSave}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(PreEnrollmentAlternateSchoolsSelection);

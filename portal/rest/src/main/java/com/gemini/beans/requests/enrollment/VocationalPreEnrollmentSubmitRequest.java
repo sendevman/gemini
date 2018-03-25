@@ -14,7 +14,6 @@ public class VocationalPreEnrollmentSubmitRequest extends PreEnrollmentSubmitReq
     private List<VocationalProgramSelection> programs;
     private List<VocationalProgramSelection> programsToDelete;
 
-
     public Long getSchoolIdToDelete() {
         return schoolIdToDelete;
     }

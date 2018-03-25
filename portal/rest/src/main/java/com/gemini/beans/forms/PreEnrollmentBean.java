@@ -28,6 +28,7 @@ public class PreEnrollmentBean {
     private Long extSchoolNumber = -1L;
     private String comments;
     private boolean hasPreviousEnrollment;
+    private boolean hasPreEnrollment;
     private Date submitDate;
     private PreEnrollmentStudentInfoBean student;
 
@@ -149,6 +150,14 @@ public class PreEnrollmentBean {
 
     public void setHasPreviousEnrollment(boolean hasPreviousEnrollment) {
         this.hasPreviousEnrollment = hasPreviousEnrollment;
+    }
+
+    public boolean isHasPreEnrollment() {
+        return hasPreEnrollment;
+    }
+
+    public void setHasPreEnrollment(boolean hasPreEnrollment) {
+        this.hasPreEnrollment = hasPreEnrollment;
     }
 
     public Date getSubmitDate() {
