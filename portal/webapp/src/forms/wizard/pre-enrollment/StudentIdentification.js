@@ -16,7 +16,6 @@ class StudentIdentification extends Component {
         super(props);
         this.inputHandler = this.inputHandler.bind(this);
         this.onValidDate = this.onValidDate.bind(this);
-        this.onError = this.onError.bind(this);
     }
 
     inputHandler(e) {
@@ -31,13 +30,9 @@ class StudentIdentification extends Component {
         form.dateOfBirth = date;
     }
 
-    onPress(onResult) {
+    onPress(onResult, onError) {
         let form = this.props.form;
-        this.props.searchStudent(form, onResult, this.onError);
-    }
-
-    onError(validationMessage) {
-        alert(JSON.stringify(validationMessage));
+        this.props.searchStudent(form, onResult, onError);
     }
 
 
@@ -54,8 +49,8 @@ class StudentIdentification extends Component {
                     <p className="f30slg">Vamos a buscar su niño/a en el sistema. Por favor facilitenos <span
                         className="f30slb">la siguiente informaci&oacute;n.</span></p>
                 </div>
-                <div className="body" style={{padding: 20, marginTop: -50}}>
-                    <div className="row">
+                <div className="body d-flex flex-column justify-content-end">
+                    <div className="row" style={{marginTop: -100}}>
                         <div className="col-md-4">
                             <SimpleDateInput id="dateOfBirth"
                                              value={form.dateOfBirth}
@@ -101,7 +96,9 @@ class StudentIdentification extends Component {
                         </div>
                         <div className="col-md-4"/>
                     </div>
-                    {this.props.footer}
+                    <div style={{marginTop: -20}}>
+                        {this.props.footer}
+                    </div>
                 </div>
             </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">

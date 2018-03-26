@@ -162,7 +162,7 @@ export const retrieveAlternatePreEnrollment = (onResult, onError) => (dispatch, 
     let requestId = preEnrollment.requestId;
 
     // services()
-    services()
+    return services()
         .getActiveAlternatePreEnrollment(requestId)
         .then((response) => {
             dispatch({type: types.ALTERNATE_PRE_ENROLLMENT_RETRIEVE_END, response: response});

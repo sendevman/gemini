@@ -48,7 +48,7 @@ public class CommonService {
     }
 
     public int getCredentialKeyExpireInMinutes() {
-        return systemConfig().getCredentialKeyExpireInMinutes();
+        return systemConfig().getCredKeyExpireInMinutes();
     }
 
     public boolean isOldEnrollment(EnrollmentInfo enrollmentInfo){

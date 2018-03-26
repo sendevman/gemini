@@ -39,13 +39,21 @@ public class AlternateSchoolBean {
         school.setSchoolId(schoolId);
     }
 
+    public String getSchoolName(){
+        return school.getSchoolName();
+    }
+
+    public AddressBean getSchoolAddress(){
+        return school.getAddress();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof AlternateSchoolBean)) return false;
         AlternateSchoolBean that = (AlternateSchoolBean) o;
         return Objects.equals(priority, that.priority)
-                && Objects.equals(getPriority(), that.getSchoolId());
+                && Objects.equals(getSchoolId(), that.getSchoolId());
     }
 
     @Override

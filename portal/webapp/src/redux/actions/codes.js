@@ -2,8 +2,8 @@ import * as types from "../types";
 import services from "../setup";
 import {changeCurrentVocationalEnrollment} from "./preEnrollment";
 
-export const loadCodes = () => (dispatch) => {
-    Promise.all([getRegions(dispatch), getGradeLevels(dispatch)]).then(() => {
+export const loadCodes = (promise) => (dispatch) => {
+    Promise.all([getRegions(dispatch), getGradeLevels(dispatch), promise()]).then(() => {
         //can enable school select
         // alert("regions");
     });

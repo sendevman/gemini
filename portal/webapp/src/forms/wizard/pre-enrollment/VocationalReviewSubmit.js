@@ -69,7 +69,7 @@ class VocationalReviewSubmit extends Component {
                 <div className="title">
                     <div className="description mb30"><h2>Revise su Pre-Matricula <span>Vocacional</span></h2></div>
                 </div>
-                <div className="body" style={{marginTop: -220}}>
+                <div className="body d-flex flex-column justify-content-end">
                     {this.innerRender()}
                     {this.props.footer}
                 </div>
@@ -86,39 +86,28 @@ class VocationalReviewSubmit extends Component {
         let student = this.props.student;
         let preEnrollment = this.props.preEnrollment;
 
-        return (
-            <div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <blockquote>
-                            <p>Estudiante: {student && student.fullName}</p>
-                        </blockquote>
-                    </div>
+        return [<div className="row" style={{marginTop: -200}}>
+            <div className="col-md-12">
+                <blockquote>
+                    <p>Estudiante: {student && student.fullName}</p>
+                </blockquote>
+            </div>
+        </div>,
+            <div className="row">
+                <div className="col-md-12">
+                    <blockquote>
+                        <p>Proximo Grado será: {preEnrollment.info.nextGradeLevelDescription}</p>
+                    </blockquote>
                 </div>
-                <div className="row">
-                    <div className="col-md-12">
-                        <blockquote>
-                            <p>Proximo Grado será: {preEnrollment.info.nextGradeLevelDescription}</p>
-                        </blockquote>
-                    </div>
+            </div>,
+            <div className="row" style={{marginBottom: 5}}>
+                <div className="col-md-10">
+                    <h3 style={{textAlign: "right"}}>Desea añadir otra escuela?</h3>
                 </div>
-
-                <div className="row">
-                    <div className="col-md-12">
-                        <blockquote>
-                            <p>Escuelas seleccionadas</p>
-                        </blockquote>
-                    </div>
+                <div className="col-md-2" style={{marginTop: 20}}>
+                    <Button onClick={this.onAdd} bsStyle="primary" block={true}>Añadir</Button>
                 </div>
-                <div className="row" style={{marginBottom: 5}}>
-                    <div className="col-md-10">
-                        <h3 style={{textAlign: "right"}}>Desea añadir otra escuela?</h3>
-                    </div>
-                    <div className="col-md-2" style={{marginTop: 20}}>
-                        <Button onClick={this.onAdd} bsStyle="primary" block={true}>Añadir</Button>
-                    </div>
-                </div>
-            </div>);
+            </div>];
     }
 
     renderVocationalEnrollments() {

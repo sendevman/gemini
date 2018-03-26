@@ -8,7 +8,7 @@ import java.util.List;
  * Date: 3/25/18
  * Time: 12:53 AM
  */
-public class AlternateSchoolPreEnrollmentBean extends PreEnrollmentBean{
+public class AlternateSchoolPreEnrollmentBean extends PreEnrollmentBean {
     private List<AlternateSchoolBean> alternateSchools;
 
     public List<AlternateSchoolBean> getAlternateSchools() {

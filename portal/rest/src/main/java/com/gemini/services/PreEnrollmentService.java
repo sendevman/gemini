@@ -393,6 +393,7 @@ public class PreEnrollmentService {
 
     public boolean partialAlternatePreEnrollmentSave(final AlternateSchoolPreEnrollmentSubmitRequest request) {
         final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
+        requestEntity.setType(EnrollmentType.ALTERNATE_SCHOOLS);
 
         final List<PreEnrollmentAlternateSchoolEntity> alternateSchoolsDB = requestEntity.getAlternateSchools();
         List<AlternateSchoolBean> altSchoolsInDBList = CopyUtils.convert(alternateSchoolsDB, AlternateSchoolBean.class);
@@ -422,6 +423,7 @@ public class PreEnrollmentService {
                     public PreEnrollmentAlternateSchoolEntity apply(AlternateSchoolBean alternateSchool) {
                         PreEnrollmentAlternateSchoolEntity entity = new PreEnrollmentAlternateSchoolEntity();
                         School school = smaxService.findSchoolById(alternateSchool.getSchoolId());
+                        entity.setPriority(alternateSchool.getPriority());
                         entity.setSchoolId(school.getSchoolId());
                         entity.setRegionId(school.getRegionId());
                         entity.setDistrictId(school.getDistrictId());
@@ -431,6 +433,9 @@ public class PreEnrollmentService {
                     }
                 })
                 .toList();
+
+        if (request.getNextGradeLevel() != null)
+            requestEntity.setGradeLevel(request.getNextGradeLevel());
 
         requestEntity.getAlternateSchools().clear();
         requestEntity.getAlternateSchools().addAll(toSave);

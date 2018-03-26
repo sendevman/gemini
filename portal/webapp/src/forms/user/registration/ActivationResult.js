@@ -44,7 +44,7 @@ export default class ActivationResult extends Component {
 
         return (<p>
             <span className="f20slb"> ¡Enhorabuena! </span>Ha completado su registro de cuenta en el sistema. Ahora
-            puede proceder a pre-matricular a su hijo/a
+            puede proceder a pre-matricular a su hijo/a.
         </p>)
     }
 

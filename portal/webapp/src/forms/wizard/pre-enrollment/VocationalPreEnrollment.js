@@ -92,7 +92,7 @@ class VocationalPreEnrollment extends Component {
                     <div className="description mb30"><h2><span>Registro de</span> Pre-Matricula Vocacional </h2></div>
                     <span className="f20slg"><span className="f20slb">Vamos a crear una nueva pre-matricula.</span> Por favor seleccione region, grado y escuela:</span>
                 </div>
-                <div className="body" style={{marginTop: -100, padding: 20}}>
+                <div className="body d-flex flex-column justify-content-end">
                     <form id="enrollment-form" className="mt50">
                         <div className="row" style={{margin: 2, marginBottom: 15}}>
                             <div className="col-md-4">
@@ -117,7 +117,7 @@ class VocationalPreEnrollment extends Component {
                             <div className="col-md-2">
                                 <RemoteCodeSelect id="gradeLevel"
                                                   label="Grado"
-                                                  placeholder="Seleccione Grado"
+                                                  placeholder="Grado"
                                                   onObjectChange={this.gradeLevelChanged}
                                                   codes={gradeLevels}
                                                   target="name"
@@ -128,7 +128,7 @@ class VocationalPreEnrollment extends Component {
                             <div className="col-md-2">
                                 <RemoteCodeSelect id="region"
                                                   label="Region"
-                                                  placeholder="Seleccione Region"
+                                                  placeholder="Region"
                                                   onChange={this.regionChanged}
                                                   codes={regions}
                                                   target="regionId"
@@ -140,7 +140,7 @@ class VocationalPreEnrollment extends Component {
                             <div className="col-md-8">
                                 <RemoteCodeSelect id="schools"
                                                   label="Escuela a matricular"
-                                                  placeholder="Seleccione escuela"
+                                                  placeholder="Escuela"
                                                   codes={schools}
                                                   onObjectChange={this.schoolChanged}
                                                   target="schoolId"

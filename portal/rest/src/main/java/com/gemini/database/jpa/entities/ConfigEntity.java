@@ -37,7 +37,7 @@ public class ConfigEntity {
     private Integer activationKeyExpireInHours;
 
     @Column(nullable = false)
-    private Integer credentialKeyExpireInMinutes;
+    private Integer credKeyExpireInMinutes;
 
     @Column(nullable = false)
     private Integer minUserAgeToPreEnroll;
@@ -101,12 +101,12 @@ public class ConfigEntity {
         this.activationKeyExpireInHours = activationKeyExpireInHours;
     }
 
-    public Integer getCredentialKeyExpireInMinutes() {
-        return credentialKeyExpireInMinutes;
+    public Integer getCredKeyExpireInMinutes() {
+        return credKeyExpireInMinutes;
     }
 
-    public void setCredentialKeyExpireInMinutes(Integer credentialKeyExpireInMinutes) {
-        this.credentialKeyExpireInMinutes = credentialKeyExpireInMinutes;
+    public void setCredKeyExpireInMinutes(Integer credKeyExpireInMinutes) {
+        this.credKeyExpireInMinutes = credKeyExpireInMinutes;
     }
 
     public Integer getMinUserAgeToPreEnroll() {

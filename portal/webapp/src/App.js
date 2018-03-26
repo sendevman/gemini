@@ -19,6 +19,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {showMenu: false};
+        this.sessionCheck = false;
         this.onRouteChanged = this.onRouteChanged.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
         this.goProfile = this.goProfile.bind(this);
@@ -28,8 +29,10 @@ class App extends Component {
     }
 
     componentWillMount() {
-        if (!env.isUserActionUrl(this.props.location.pathname))
+        if (!env.isUserActionUrl(this.props.location.pathname) && !this.sessionCheck){
             this.props.checkSession();
+            this.sessionCheck = true;
+        }
     }
 
     onRouteChanged(nextRoute) {

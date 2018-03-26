@@ -54,8 +54,8 @@ class PersonalInfo extends Component {
                 <span className="f20slg"><span className="f30slg">Vamos <span
                     className="f30slb">Registrar o Editar</span> el estudiante en el sistema</span></span>
             </div>
-            <div className="body" style={{padding: 20, marginTop: -50}}>
-                <div className="row ">
+            <div className="body d-flex flex-column">
+                <div className="row " style={{ marginTop: -150}}>
                     <div className="col-md-3 ">
                         <TextInput id="firstName" type="name" label="Nombre"
                                    value={student.firstName}
@@ -99,7 +99,7 @@ class PersonalInfo extends Component {
                                          disabled={studentExists}/>
                     </div>
                 </div>
-                <div style={{marginTop: -50}}>
+                <div style={{marginTop: -20}}>
                     {this.props.footer}
                 </div>
             </div>

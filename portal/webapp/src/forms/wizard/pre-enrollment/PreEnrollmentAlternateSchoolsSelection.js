@@ -6,7 +6,12 @@ import React, {Component} from "react";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {getSchools, loadCodes, partialAlternatePreEnrollmentSave} from "../../../redux/actions";
+import {
+    getSchools,
+    loadCodes,
+    partialAlternatePreEnrollmentSave,
+    retrieveAlternatePreEnrollment
+} from "../../../redux/actions";
 import AnimationHelper from "../../../AnimationHelper";
 import {Button} from "reactstrap";
 
@@ -22,15 +27,30 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
     }
 
     componentWillMount() {
-        this.props.loadCodes();
+        this.props.loadCodes(() => {
+            this.props.retrieveAlternatePreEnrollment(() => {
+            }, () => {
+                alert("Error loading")
+            });
+        });
     }
 
     onAdd() {
         let form = this.props.alternateEnrollment;
-        let size = this.props.alternateEnrollment.length || 0;
-        let object = {priority: size + 1, school: this.state.selectedSchool};
-        form.alternateSchools.push(object);
-        this.cleanSchoolCode()
+        let size = form.alternateSchools.length || 0;
+        let school = this.state.selectedSchool;
+        if (size < 2) {
+            let object = {
+                priority: size + 1,
+                school: school,
+                schoolName: school.schoolName,
+                schoolAddress: school.address
+            };
+            form.alternateSchools.push(object);
+            this.cleanSchoolCode()
+        } else {
+            alert("Maximo de dos escuela");
+        }
     }
 
     onDelete = (index) => (e) => {
@@ -41,9 +61,12 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
         this.forceUpdate();
     };
 
-    onPress(onResult) {
+    onPress(onResult, onError) {
         let form = this.props.alternateEnrollment;
-        this.props.partialAlternatePreEnrollmentSave(form, onResult);
+        let preEnrollment = this.props.preEnrollment;
+        form.nextGradeLevel = preEnrollment.nextGradeLevel;
+        form.nextGradeLevelDescription = preEnrollment.nextGradeLevelDescription;
+        this.props.partialAlternatePreEnrollmentSave(form, onResult, onError);
     }
 
     cleanSchoolCode() {
@@ -83,7 +106,7 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
     }
 
     render() {
-        let student = this.props.student;
+        let size = this.props.alternateEnrollment.alternateSchools.length;
         let regions = this.props.regions;
         let gradeLevels = this.props.gradeLevels;
         let schools = this.props.schools;
@@ -116,22 +139,24 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
                     <div className="col-md-2">
                         <RemoteCodeSelect id="gradeLevel"
                                           label="Grado"
-                                          placeholder="Seleccione Grado"
+                                          placeholder="Grado"
                                           onObjectChange={this.gradeLevelChanged}
                                           codes={gradeLevels}
                                           target="name"
                                           display="displayName"
+                                          disabled={size > 0}
                                           value={form.nextGradeLevel}/>
                     </div>
 
                     <div className="col-md-2">
                         <RemoteCodeSelect id="region"
                                           label="Region"
-                                          placeholder="Seleccione Region"
+                                          placeholder="Region"
                                           onChange={this.regionChanged}
                                           codes={regions}
                                           target="regionId"
                                           display="description"
+                                          disabled={size === 2}
                                           value={form.regionId}/>
                     </div>
 
@@ -139,15 +164,17 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
                     <div className="col-md-7">
                         <RemoteCodeSelect id="schools"
                                           label="Escuela a matricular"
-                                          placeholder="Seleccione escuela"
+                                          placeholder="Escuela"
                                           codes={schools}
                                           onObjectChange={this.schoolChanged}
                                           target="schoolId"
                                           display="displayName"
+                                          disabled={size === 2}
                                           value={form.schoolId}/>
                     </div>
                     <div className="col-md-1">
-                        <Button color="primary" onClick={this.onAdd}><i className="fa fa-plus"/></Button>
+                        <Button color="primary" onClick={this.onAdd} disabled={size === 2}><i
+                            className="fa fa-plus"/></Button>
                     </div>
                 </div>
                 <div className="row mt-3">
@@ -181,9 +208,9 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
                 {alternateSchools && alternateSchools.length > 0
                     ? alternateSchools.map((school, index) => (
                         <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{school.school.schoolName}</td>
-                            <td>{school.school.address.addressFormatted}</td>
+                            <td>{school.priority}</td>
+                            <td>{school.schoolName}</td>
+                            <td>{school.schoolAddress.addressFormatted}</td>
                             <td>
                                 <Button size="sm" color="danger" onClick={this.onDelete(index)}>
                                     <i className="fas fa-trash"/>
@@ -191,7 +218,9 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
                             </td>
                         </tr>
                     ))
-                    : <tr><td colSpan={3} style={{left: 50, top: 50}}>No posee ningun programa aun</td></tr>}
+                    : <tr>
+                        <td colSpan={3} style={{left: 50, top: 50}}>No posee ningun programa aun</td>
+                    </tr>}
                 </tbody>
             </table>
         );
@@ -210,7 +239,12 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({loadCodes, getSchools, partialAlternatePreEnrollmentSave}, dispatch)
+    return bindActionCreators({
+        loadCodes,
+        getSchools,
+        retrieveAlternatePreEnrollment,
+        partialAlternatePreEnrollmentSave
+    }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(PreEnrollmentAlternateSchoolsSelection);
