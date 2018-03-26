@@ -60,14 +60,14 @@ class UserInfoRequest extends Component {
                                        required
                                        grouped/>
                         </div>
-                        <div className="col-md-3">
+                        <div className="col-md-4">
                             <TextInput id="middleName" type="name"
                                        label="Segundo Nombre"
                                        onChange={this.inputHandler}
                                        value={form.middleName}
                                        grouped/>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-5">
                             <TextInput id="lastName"
                                        type="lastname"
                                        ref="lastName"

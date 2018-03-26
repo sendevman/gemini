@@ -77,8 +77,8 @@ class VocationalProgramsSelection extends Component {
                     <p className="f30slg">Seleccione los programas vocacionales, que desea <span
                         className="f30slb">pre-matricularse.</span></p>
                 </div>
-                <div className="body" style={{marginTop: -120}}>
-                    <div className="row">
+                <div className="body d-flex flex-column">
+                    <div className="row" style={{marginTop: -120}}>
                         <div className="col-md-12">
                             <div className="row">
                                 <div className="col-md-4">
@@ -106,7 +106,7 @@ class VocationalProgramsSelection extends Component {
                         <div className="col-md-8">
                             <RemoteCodeSelect id="program"
                                               label="Programa"
-                                              placeholder="Seleccione Programa"
+                                              placeholder="Programa"
                                               codes={programs}
                                               onObjectChange={this.onProgramChange}
                                               target="programCode"
@@ -163,7 +163,7 @@ class VocationalProgramsSelection extends Component {
                         </td>
                     </tr>
                 ))
-                :  <tr><td colSpan={2} style={{left: 50, top: 50}}>No posee ningun programa a&uacute;n</td></tr>}
+                :  <tr><td colSpan={3} style={{left: 50, top: 50}}>No posee ningun programa a&uacute;n</td></tr>}
             </tbody>
         </table>)
     }

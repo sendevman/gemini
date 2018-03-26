@@ -41,7 +41,6 @@ class Wizard extends Component {
 
     componentWillMount() {
         let requestId = this.props.match.params.id;
-        console.log(this.props.match.params.id);
         this.props.load(requestId);
     }
 
@@ -55,7 +54,6 @@ class Wizard extends Component {
         } else {
             let current = this.props.wizard;
             let next = nextProps.wizard;
-            console.log(`${current.currentPageType}  !== ${next.currentPageType} = ${current.currentPageType !== next.currentPageType}`);
             if (current.currentPageType !== next.currentPageType)
                 window.scrollTo(0, 0);
         }
@@ -65,8 +63,12 @@ class Wizard extends Component {
         window.scrollTo(0, 0)
     }
 
-    onError() {
-        alert("Ha ocurrido un error")
+    onError(validationMessage) {
+        if(validationMessage){
+            alert(JSON.stringify(validationMessage));
+        }else {
+            alert("Ha ocurrido un error")
+        }
     }
 
     next() {
@@ -89,10 +91,6 @@ class Wizard extends Component {
 
     configForms() {
         let student = this.props.student;
-        let preEnrollment = this.props.preEnrollment;
-        let enrollmentPredicate = preEnrollment && preEnrollment.hasPreviousEnrollment
-            ? `${preEnrollment.schoolName} para el grado ${preEnrollment.nextGradeLevelDescription}`
-            : "";
         let formsToDisplay = this.props.formsToDisplay;
         let vocationalSchool = this.props.currentVocationalEnrollment;
         let currentPageType = this.props.wizard.currentPageType;
@@ -160,7 +158,7 @@ class Wizard extends Component {
         let commonStyle = {zIndex: 1000};
         // props.nextShortLabel
         // props.previousShortLabel
-        if (props.currentPageType === "PERSONAL_INFO")
+        if (props.currentPageType === "PERSONAL_INFO" || props.currentPageType === "STUDENT_LOOKUP" || props.currentPageType === "VOCATIONAL_REVIEW_SUBMIT")
             return (<div className="row action-section" style={commonStyle}>
                 <div className="col-md-12 text-center text-lg-left p-0">
                     <a className="button-green mr30 mob-mb30px" onClick={this.next}>

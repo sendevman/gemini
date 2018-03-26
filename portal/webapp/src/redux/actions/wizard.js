@@ -2,7 +2,7 @@ import * as types from "../types";
 
 //Responses
 const START = {type: "START", nextButton: "Comenzar"};
-const QUESTION = {type: "YES_NO", nextButton: "Si", previousButton: "No"};
+const QUESTION = {type: "YES_NO", nextButton: "Sí", previousButton: "No"};
 const NOT_FOUND_QUESTION = {type: "YES_NO", nextButton: "Buscar Nuevamente", previousButton: "Crear Registro"};
 const SEARCH = {type: "SEARCH", nextButton: "Buscar"};
 const IN_PROGRESS = {type: "NEXT_PREVIOUS", nextButton: "Continuar", previousButton: "Retroceder"};
@@ -260,7 +260,8 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
         next = getIndexFromFlow(currentForm.yes);
     } else if (isType(current, "ADDRESS") && preEnrollment.type === "REGULAR") {
         let preEnrollmentInfo = preEnrollment.info;
-        if (!preEnrollmentInfo.hasPreviousEnrollment) {
+        if (!preEnrollmentInfo.hasPreEnrollment) {
+            preEnrollment.type = "ALTERNATE_SCHOOLS";
             next = getIndexFromFlow(currentForm.onNotFoundPreEnrollment);
         }else{
             next = getIndexFromFlow(currentForm.onFoundPreEnrollment);

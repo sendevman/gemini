@@ -8,7 +8,6 @@ import TextInput from "../../../components/TextInput";
 import {copyPhysicalToPostal, loadAddress, saveAddress} from "../../../redux/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import leisureIllustration from "../../../style/img/leisure-illustration.png";
 import AnimationHelper from "../../../AnimationHelper";
 
 class Address extends Component {
@@ -69,9 +68,7 @@ class Address extends Component {
                         <div className="col-md-6">
                             <div className="row">
                                 <div className="col-md-12">
-                                    <div className="form-group">
-                                        <h5 htmlFor="">Postal</h5>
-                                    </div>
+                                    <h5 htmlFor="">Postal</h5>
                                 </div>
                             </div>
                             {this.renderAddressForm("postal", props.postal)}
@@ -93,13 +90,13 @@ class Address extends Component {
         return (<div className="mt-4">
             <div className="row">
                 <div className="col-md-12">
-                    <TextInput type="addressLine" id={`${type}.line1`}  label="Linea 1"
+                    <TextInput type="addressLine" id={`${type}.line1`} label="Linea 1"
                                value={address.line1} onChange={this.inputHandler}/>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-12">
-                    <TextInput type="addressLine" id={`${type}.line2`}  label="Linea 2"
+                    <TextInput type="addressLine" id={`${type}.line2`} label="Linea 2"
                                value={address.line2} onChange={this.inputHandler}/>
                 </div>
             </div>
@@ -112,9 +109,9 @@ class Address extends Component {
                                 value={address.city} onChange={this.inputHandler}/>
                 </div>
                 {/*<div className="col-md-4">*/}
-                    {/*<CodeSelect id={`${type}.state`} label="Estado"  codeType="states"*/}
-                                {/*value={"PR"}*/}
-                                {/*disabled={true} onChange={this.inputHandler}/>*/}
+                {/*<CodeSelect id={`${type}.state`} label="Estado"  codeType="states"*/}
+                {/*value={"PR"}*/}
+                {/*disabled={true} onChange={this.inputHandler}/>*/}
                 {/*</div>*/}
 
                 <div className="col-md-6">
