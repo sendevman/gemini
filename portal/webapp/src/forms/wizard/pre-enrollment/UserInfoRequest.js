@@ -63,6 +63,7 @@ class UserInfoRequest extends Component {
                         <div className="col-md-4">
                             <TextInput id="middleName" type="name"
                                        label="Segundo Nombre"
+                                       labelStyle={{left: 0, fontSize: 18}}
                                        onChange={this.inputHandler}
                                        value={form.middleName}
                                        grouped/>

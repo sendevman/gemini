@@ -51,7 +51,11 @@ class PreEnrollmentAlternateSchoolsSubmit extends Component {
 
     renderAlternateSchool(altSchool) {
         let nextGradeLevelDescription = this.props.preEnrollment.nextGradeLevelDescription;
-        return (<div className="col-md-6">
+        return [
+            <div className="col-md-1">
+                <span className="f20sbb">{altSchool.priority}.</span>
+            </div>,
+            <div className="col-md-5">
             <p className="f22slg mb-1"><i className="fas fa-university mr5"></i> <span
                 id="school">{altSchool.schoolName}</span></p>
             <p className="f22slg mb-1"><i className="icon-teacher mr5"></i> <span
@@ -67,7 +71,7 @@ class PreEnrollmentAlternateSchoolsSubmit extends Component {
                 </div>
             </div>
 
-        </div>);
+        </div>];
     }
 
 }

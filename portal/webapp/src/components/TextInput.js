@@ -129,7 +129,7 @@ class TextInput extends Component {
             : '';
         delete  props.includeLabel;
         let customCss = !props.iconName ? {paddingLeft: 10} : props.style;
-        let labelCss = !props.iconName ? {left: 10} : props.style;
+        let labelCss = props.labelStyle ? props.labelStyle : (!props.iconName ? {left: 10} : props.style);
         let validHtml = UIHelper.toggleFieldValidHtml(!hasError, props.required);
         return (
 
@@ -147,7 +147,8 @@ class TextInput extends Component {
                 {this.props.type === "password" ? (<i className="icon-eye"/>) : (null)}
                 <span className="highlight"/>
                 <span className="bar"/>
-                {this.props.includeLabel ? (<label style={labelCss} htmlFor={this.props.id}>{label}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>) : (null)}
+                {this.props.includeLabel ? (<label style={labelCss}
+                                                   htmlFor={this.props.id}>{label}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>) : (null)}
 
             </div>);
     }

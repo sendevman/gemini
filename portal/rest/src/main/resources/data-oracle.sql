@@ -5,6 +5,6 @@ VALUES (HIBERNATE_SEQUENCE.NEXTVAL, CURRENT_TIMESTAMP, 'de.pentaho@gmail.com', 1
 
 
 INSERT INTO config (id, activation_key_expire_in_hours, can_edit_found_student, cred_key_expire_in_minutes, current_school_year, min_user_age_to_pre_enroll, pre_enrollment_end, pre_enrollment_school_year, pre_enrollment_start, min_alternate_schools)
-VALUES (HIBERNATE_SEQUENCE.NEXTVAL, 24, 1, 15, 2018, 18, NULL, 2019, '04/02/2018', 2);
+VALUES (HIBERNATE_SEQUENCE.NEXTVAL, 24, 1, 15, 2018, 18, NULL, 2019, NULL, 2);
 
 

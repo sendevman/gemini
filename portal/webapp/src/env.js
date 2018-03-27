@@ -16,8 +16,8 @@ const tmax1o_base = "schoolmax_tmax2";
 const local_base = "srs";
 
 //todo: fran do logic here to determine these props dynamically
-const BASE_CONTEXT = tmax1o_base;
-const REST_URL = tmaxio;
+const BASE_CONTEXT = local_base;
+const REST_URL = local;
 const SITE_KEY = tmax1o_sitekey;
 
 let config = {
