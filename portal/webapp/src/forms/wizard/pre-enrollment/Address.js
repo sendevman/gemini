@@ -2,13 +2,13 @@
  * Created by fran on 1/26/18.
  */
 import React, {Component} from "react";
-import {Button} from "react-bootstrap";
 import CodeSelect from "../../../components/CodeSelect";
 import TextInput from "../../../components/TextInput";
 import {copyPhysicalToPostal, loadAddress, saveAddress} from "../../../redux/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import AnimationHelper from "../../../AnimationHelper";
+import Button from "../../../components/Button";
 
 class Address extends Component {
 
@@ -55,9 +55,7 @@ class Address extends Component {
                                 </div>
 
                                 <div className="col-md-6" style={{marginLeft: 5}}>
-                                    <Button onClick={this.copyAddress}
-                                            bsSize="small"
-                                            bsStyle="primary">Copiar</Button>
+                                    <Button size="small" onClick={this.copyAddress}>Copiar</Button>
                                 </div>
 
                             </div>

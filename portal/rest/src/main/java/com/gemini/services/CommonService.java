@@ -24,7 +24,7 @@ public class CommonService {
 
     //todo: fran this system config can load if the current date is in a specific date range
     private ConfigEntity systemConfig() {
-        return configRepository.findOne(1L);
+        return configRepository.findAll().iterator().next();
     }
 
     public Date getCurrentDate() {
