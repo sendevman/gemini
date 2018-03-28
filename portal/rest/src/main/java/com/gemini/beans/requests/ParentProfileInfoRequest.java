@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class ParentProfileInfoRequest {
 
-    private Long id;
+    private Long userId;
     @NotNull
     private RelationType relationType;
     @NotEmpty
@@ -27,12 +27,12 @@ public class ParentProfileInfoRequest {
     @NotNull
     private Date dateOfBirth;
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public RelationType getRelationType() {

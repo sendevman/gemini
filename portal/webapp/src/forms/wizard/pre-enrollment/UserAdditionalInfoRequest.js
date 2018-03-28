@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import TextInput from "../../../components/TextInput";
-import {saveProfile} from "../../../redux/actions";
+import {completeProfile} from "../../../redux/actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import CurrencyInput from "../../../components/CurrencyInput";
@@ -22,7 +22,7 @@ class UserAdditionalInfoRequest extends Component {
 
     onPress(onResult, onError) {
         let form = this.props.form;
-        this.props.saveProfile(form, onResult, onError);
+        this.props.completeProfile(form, onResult, onError);
     }
 
 
@@ -35,9 +35,9 @@ class UserAdditionalInfoRequest extends Component {
                     <div className="violet-line"></div>
                 </div>
             </div>
-            <div className="body d-flex align-items-center flex-column justify-content-end" style={{padding: 20}}>
+            <div className="body d-flex align-items-center flex-column justify-content-end">
                 <form id="profile-form">
-                    <div className="row plr15">
+                    <div className="row">
                         <div className="col-md-6">
                             <CurrencyInput id="income"
                                            ref="income"
@@ -60,12 +60,13 @@ class UserAdditionalInfoRequest extends Component {
                     </div>
                     <div className="row">
                         <div className="col-md-6">
-                            <CodeSelect id="gender"
+                            <CodeSelect id="educationLevel"
                                         label="Escolaridad"
                                         codeType="educationLevels"
                                         value={form.educationLevel}
                                         onChange={this.inputHandler}
                                         placeholder=""
+                                        grouped
                             />
                         </div>
                     </div>
@@ -88,7 +89,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({saveProfile}, dispatch)
+    return bindActionCreators({completeProfile}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(UserAdditionalInfoRequest);

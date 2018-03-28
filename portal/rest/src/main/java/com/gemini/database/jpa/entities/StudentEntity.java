@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -56,12 +57,14 @@ public class StudentEntity implements IdentityEntity {
     private String citizenship;
     @Column
     private String language;
-    @Column
-    private String ethnicCode;
+
     @Column
     private boolean isBornPR;
     @Column
     private boolean isHispanic;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<EthnicCodeEntity> ethnicCodes;
 
     @OneToOne
     @JoinColumn(name = "physical_address_id")
@@ -182,12 +185,12 @@ public class StudentEntity implements IdentityEntity {
         this.language = language;
     }
 
-    public String getEthnicCode() {
-        return ethnicCode;
+    public List<EthnicCodeEntity> getEthnicCodes() {
+        return ethnicCodes;
     }
 
-    public void setEthnicCode(String ethnicCode) {
-        this.ethnicCode = ethnicCode;
+    public void setEthnicCodes(List<EthnicCodeEntity> ethnicCodes) {
+        this.ethnicCodes = ethnicCodes;
     }
 
     public boolean isBornPR() {

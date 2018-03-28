@@ -34,7 +34,7 @@ public class PreEnrollmentRequestEntity {
 //    @ManyToOne(targetEntity = UserEntity.class, optional = false)
 //    private UserEntity user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id")
     private StudentEntity student;
 

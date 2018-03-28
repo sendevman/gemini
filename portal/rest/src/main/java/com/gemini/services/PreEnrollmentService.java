@@ -481,6 +481,7 @@ public class PreEnrollmentService {
         PreEnrollmentStudentInfoBean studentInfo = CopyUtils.convert(studentEntity, PreEnrollmentStudentInfoBean.class);
         Utils.copyLastNames(studentEntity, studentInfo);
         studentInfo.setStudentNumber(studentEntity.getExtStudentNumber());
+        studentInfo.setId(studentEntity.getId());
         //todo: fran change this!!!
         studentInfo.setType(entity.getType());
         return studentInfo;

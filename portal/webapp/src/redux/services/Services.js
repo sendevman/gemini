@@ -1,5 +1,6 @@
 import fetch from "safe-fetch";
 import {buildUrl} from "../../Utils";
+import {triggerErrorOn} from "../actions";
 
 fetch.cookieName = 'XSRF-TOKEN';
 fetch.headerName = 'X-XSRF-TOKEN';
@@ -37,8 +38,8 @@ export default class Services {
         return this._securedPost(`/user/save`, form);
     }
 
-    validateProfile(form) {
-        return this._securedPost(`/user/validate`, form);
+    saveCompleteProfile(form) {
+        return this._securedPost(`/user/complete/profile`, form);
     }
 
     //home
@@ -71,7 +72,7 @@ export default class Services {
         return this._publicPost(`/account/reset/password/`, form, token);
     }
 
-    cancelResetPassword(key){
+    cancelResetPassword(key) {
         return this._get(`/account/cancel/reset/password/${key}`);
     }
 
@@ -117,7 +118,6 @@ export default class Services {
         return this._get(`/pre/enrollment/alternate/${requestId}`);
     }
 
-
     savePreEnrollment(form) {
         return this._securedPost(`/pre/enrollment/save`, form);
     }
@@ -148,6 +148,24 @@ export default class Services {
 
     submitAlternatePreEnrollment(form) {
         return this._securedPost(`/pre/enrollment/alternate/submit`, form);
+    }
+
+    //student additional info
+
+    getStudentDemographics(studentId) {
+        return this._get(`/student/${studentId}/demographics/retrieve`)
+    }
+
+    saveStudentDemographics(form) {
+        return this._securedPost(`/student/${form.studentId}/demographics/save`, form);
+    }
+
+    saveBornPr(form) {
+        return this._securedPost(`/student/${form.studentId}/born/pr/save`, form);
+    }
+
+    saveHispanic(form) {
+        return this._securedPost(`/student/${form.studentId}/hispanic/save`, form);
     }
 
     _login(path, credentials) {
@@ -235,15 +253,14 @@ export default class Services {
         if ((httpStatus >= 200 && httpStatus < 300) || (httpStatus >= 400 && httpStatus <= 403) || httpStatus === 423) {
             return response;
         } else {
+            this.store.dispatch(triggerErrorOn("Occurio un error interno, disculpe el inconveniente"));
             console.log(`internal server error, error info: ${response && response.statusText}`);
             let message = (response && response.statusText) || "unknown error";
 
             if (manageException) {
                 console.log(message);
                 // this.triggerError(error)
-            } else {
-                throw new Error(message);
-            }
+            } 
         }
     }
 

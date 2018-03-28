@@ -4,6 +4,7 @@ import com.gemini.beans.IdentityForm;
 import com.gemini.beans.types.Gender;
 import com.gemini.beans.types.EnrollmentType;
 import com.gemini.utils.Utils;
+import com.gemini.utils.ValidationUtils;
 
 import java.util.Date;
 
@@ -15,13 +16,31 @@ import java.util.Date;
  */
 public class PreEnrollmentStudentInfoBean implements IdentityForm {
 
+    private Long id;
     private Long studentNumber;
+    private String ssn;
     private String firstName;
     private String middleName;
     private String lastName;
     private Date dateOfBirth;
     private Gender gender;
     private EnrollmentType type;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSsn() {
+        return ssn;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
 
     public Long getStudentNumber() {
         return studentNumber;
@@ -91,4 +110,10 @@ public class PreEnrollmentStudentInfoBean implements IdentityForm {
     public void setType(EnrollmentType type) {
         this.type = type;
     }
+
+    public boolean isStudentExistsInSIE() {
+        return ValidationUtils.valid(studentNumber);
+    }
+
+
 }

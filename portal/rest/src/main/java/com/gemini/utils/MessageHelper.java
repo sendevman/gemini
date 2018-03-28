@@ -40,6 +40,10 @@ public class MessageHelper {
                 }).toList();
     }
 
+    public String generalError(){
+        return env.getProperty("messages.general.unknown.error");
+    }
+
     public String processMessage(String messageKey) {
         return env.getProperty("messages.".concat(messageKey));
     }

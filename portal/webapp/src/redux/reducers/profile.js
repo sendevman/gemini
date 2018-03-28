@@ -13,7 +13,9 @@ const initialState = {
     errorAtLogin: false,
     loading: true,
     cleanTimeoutId: null,
-    clean: false
+    clean: false,
+    generalErrorOccurred: false,
+    errorMessage: null
 
 };
 
@@ -56,6 +58,10 @@ const profile = (state = Utils.freezeObject(initialState), action) => {
             return {...state, user: action.user};
         case types.TOGGLE_LOGIN_CLEAN_TIMEOUT:
             return {...state, cleanTimeoutId: action.cleanTimeoutId};
+        case types.TRIGGER_ERROR_ON:
+            return {...state, generalErrorOccurred: true, errorMessage: action.message};
+        case types.TRIGGER_ERROR_OFF:
+            return {...state, generalErrorOccurred: false, errorMessage: null};
         default:
             return state;
     }

@@ -46,6 +46,10 @@ class CodeSelect extends Component {
 
     }
 
+    getRawObject() {
+        return this.codes[this.state.selectedIndex - 1]
+    }
+
     valid() {
         let selectedIndex = this.state.selectedIndex;
         return selectedIndex > 0;

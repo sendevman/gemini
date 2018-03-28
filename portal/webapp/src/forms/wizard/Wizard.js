@@ -27,7 +27,7 @@ import CompletedPreEnrollment from "./pre-enrollment/CompletedPreEnrollment";
 import ConfirmedPreEnrollment from "./pre-enrollment/ConfirmedPreEnrollment";
 import VocationalSchoolSelectionInfo from "./pre-enrollment/VocationalSchoolSelectionInfo";
 import ModalHelper from "../../components/ModalHelper";
-import PersonalAdditonalInfo from "./pre-enrollment/PersonalAdditonalInfo";
+import PersonalAdditionalInfo from "./pre-enrollment/PersonalAdditionalInfo";
 import IsStudentHispanicQuestion from "./pre-enrollment/IsStudentHispanicQuestion";
 import IsStudentBornPRQuestion from "./pre-enrollment/IsStudentBornPRQuestion";
 
@@ -80,7 +80,7 @@ class Wizard extends Component {
         }
     }
 
-    onProgramSelection = (selection) => e =>{
+    onProgramSelection = (selection) => e => {
         this.props.onProgramSelectionAction(selection);
     };
 
@@ -99,7 +99,17 @@ class Wizard extends Component {
     }
 
     previous() {
-        this.props.onPreviousAction();
+        let idx = `page${this.props.current}`;
+        let pageRef = this.refs[idx].getWrappedInstance ? this.refs[idx].getWrappedInstance() : null;
+
+        this.props.onPreviousAction((callback) => {
+            if (pageRef && pageRef.onBack) {
+                pageRef.onBack(callback, this.onError);
+            }
+            else {
+                callback();
+            }
+        });
     }
 
     configForms() {
@@ -118,7 +128,7 @@ class Wizard extends Component {
             , {renderObj: StudentNotFound}
             , {renderObj: StudentFound}
             , {renderObj: PersonalInfo}
-            , {renderObj: PersonalAdditonalInfo}
+            , {renderObj: PersonalAdditionalInfo}
             , {renderObj: IsStudentHispanicQuestion}
             , {renderObj: IsStudentBornPRQuestion}
             , {renderObj: Address}
@@ -156,6 +166,10 @@ class Wizard extends Component {
                 props["vocationalSchool"] = vocationalSchool;
             }
 
+            if(currentPageType === "PERSONAL_INFO"){
+                props["history"] = this.props.history;
+            }
+
             this.wizardForms.push(form(pageConfig.title, <RenderObj {...props}/>));
         }
 
@@ -170,14 +184,20 @@ class Wizard extends Component {
         return [this.wizardForms[current].form, <ModalHelper ref="modal"/>];
     }
 
+    //todo: fran this needs improvements
     renderFooter() {
         let props = this.props.wizard;
         let commonStyle = {zIndex: 1000};
-        let cssClass =  props.currentPageType  !== "PERSONAL_ADDITIONAL_INFO" && props.currentPageType !== "VOCATIONAL_PROGRAMS" && props.currentPageType !== "VOCATIONAL_SCHOOL_SELECTION"
+        let cssClass = props.currentPageType !== "USER_ADDITIONAL_INFO"
+        && props.currentPageType !== "PERSONAL_ADDITIONAL_INFO"
+        && props.currentPageType !== "VOCATIONAL_PROGRAMS"
+        && props.currentPageType !== "VOCATIONAL_SCHOOL_SELECTION"
             ? "body d-flex align-items-center flex-column justify-content-end"
             : "";
 
-        if (props.currentPageType === "PERSONAL_INFO" || props.currentPageType === "STUDENT_LOOKUP" || props.currentPageType === "VOCATIONAL_REVIEW_SUBMIT")
+        if (props.currentPageType === "PERSONAL_INFO"
+            || props.currentPageType === "STUDENT_LOOKUP"
+            || props.currentPageType === "VOCATIONAL_REVIEW_SUBMIT")
             return (<div className="row action-section" style={commonStyle}>
                 <div className="col-md-12 text-center text-lg-left p-0">
                     <a className="button-green mr30 mob-mb30px" onClick={this.next}>
@@ -205,13 +225,16 @@ class Wizard extends Component {
                      style={commonStyle}>
                     <div className="row action-section">
                         <div className="col-md-12 text-center text-lg-left p-0">
-                            <a className="button-green mr30 mob-mb30px" onClick={this.onProgramSelection(types.REGULAR_ENROLLMENT)}>
+                            <a className="button-green mr30 mob-mb30px"
+                               onClick={this.onProgramSelection(types.REGULAR_ENROLLMENT)}>
                                 <span>R</span>Regular
                             </a>
-                            <a className="button-white mob-mb30px" onClick={this.onProgramSelection(types.OCCUPATIONAL_ENROLLMENT)}>
+                            <a className="button-white mob-mb30px"
+                               onClick={this.onProgramSelection(types.OCCUPATIONAL_ENROLLMENT)}>
                                 <span>O</span>Ocupacional
                             </a>
-                            <a className="button-white mob-mb30px" onClick={this.onProgramSelection(types.TECHNIQUE_ENROLLMENT)}>
+                            <a className="button-white mob-mb30px"
+                               onClick={this.onProgramSelection(types.TECHNIQUE_ENROLLMENT)}>
                                 <span>T</span>T&eacute;cnica
                             </a>
                         </div>

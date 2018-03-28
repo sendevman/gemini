@@ -80,7 +80,7 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
     @Override
     public EnrollmentInfo findRecentStudentEnrollment(Long studentId) {
         EnrollmentInfo enrollmentInfo = new EnrollmentInfo();
-        enrollmentInfo.setSchoolYear(2018L);
+        enrollmentInfo.setSchoolYear(2019L);
         enrollmentInfo.setGradeLevel(currentGradeLevel);
         enrollmentInfo.setSchoolId(1L);
         enrollmentInfo.setEnrollmentId(1L);

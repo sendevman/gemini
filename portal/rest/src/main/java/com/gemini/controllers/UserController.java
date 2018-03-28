@@ -1,28 +1,24 @@
 package com.gemini.controllers;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.gemini.beans.forms.User;
+import com.gemini.beans.requests.FamilyInfoRequest;
 import com.gemini.beans.requests.ParentProfileInfoRequest;
 import com.gemini.beans.responses.ResponseBase;
 import com.gemini.services.CommonService;
 import com.gemini.services.UserService;
 import com.gemini.utils.DateUtils;
 import com.gemini.utils.MessageHelper;
-import com.gemini.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,7 +39,7 @@ public class UserController {
 
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseBase> save(@Valid @RequestBody ParentProfileInfoRequest request, BindingResult result, @AuthenticationPrincipal User loggedUser) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(messageHelper.missingFormFields(result));
         }
         int userAge = DateUtils.toYears(request.getDateOfBirth());
@@ -53,21 +49,34 @@ public class UserController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        request.setId(loggedUser.getId());
+        request.setUserId(loggedUser.getId());
         boolean saved = userService.updateUser(request);
         if (!saved)
             return ResponseEntity.ok(ResponseBase.error(messageHelper.processMessage("error.saving.profile")));
         else
             updatePrincipal(request, loggedUser);
 
-        return ResponseEntity.ok(ResponseBase.success());
+        return ResponseEntity.ok(ResponseBase.success(loggedUser));
+    }
+
+    @RequestMapping(value = "/complete/profile", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseBase> completeProfile(@Valid @RequestBody FamilyInfoRequest request, BindingResult result, @AuthenticationPrincipal User loggedUser) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(messageHelper.missingFormFields(result));
+        }
+        request.setUserId(loggedUser.getId());
+        boolean saved = userService.completeProfile(request);
+        if (!saved)
+            return ResponseEntity.ok(ResponseBase.error(messageHelper.processMessage("error.saving.profile")));
+        else
+            loggedUser.setProfileCompleted(true);
+        return ResponseEntity.ok(ResponseBase.success(loggedUser));
     }
 
     private void updatePrincipal(ParentProfileInfoRequest request, User loggedUser) {
         loggedUser.setFirstName(request.getFirstName());
         loggedUser.setMiddleName(request.getMiddleName());
         loggedUser.setLastName(request.getLastName());
-        loggedUser.setProfileCompleted(true);
     }
 
 

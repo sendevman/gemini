@@ -18,8 +18,6 @@ public class PreEnrollmentInitialRequest implements IdentityForm {
     private Long requestId;
     private EnrollmentType type;
     private Long studentNumber;
-    @NotNull
-    @NotBlank
     private String ssn;
     @NotNull
     @NotBlank

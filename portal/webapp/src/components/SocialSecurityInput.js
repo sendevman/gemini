@@ -34,9 +34,8 @@ export default class SocialSecurityInput extends Component {
         }
     }
 
-    checkValid() {
-        let form = this.state;
-        let valid = ssnRegex.test(form.value);
+    checkValid(value) {
+        let valid = ssnRegex.test(value);
         return {valid: valid}
     }
 
@@ -47,7 +46,7 @@ export default class SocialSecurityInput extends Component {
         let element = e.target;
         form.pristine = false;
 
-        let result = this.checkValid();
+        let result = this.checkValid(element.value);
         form.valid = result.valid;
         form.value = element.value;
         this.setState({...form}, () => {
@@ -74,7 +73,7 @@ export default class SocialSecurityInput extends Component {
                        mask="999-99-9999"
                        maskChar=" "
                        required
-                       value={this.state.dateString}/>
+                       value={this.state.value}/>
             {/*<i className="n fa fa-birthday-cake"/>*/}
             <span className="highlight"/>
             <span className="bar"/>
