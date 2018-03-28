@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +54,16 @@ public class UserEntity implements IdentityEntity {
     private Date lastLogin;
 
     @Column
-    private Long familyPortalId;
+    private BigDecimal income;
+
+    @Column
+    private Integer totalFamilyMembers;
+
+    @Column
+    private String educationLevel;
+
+    @Column
+    private Long familyPortalId; //not longer used
 
     @Column
     private String activationKey;
@@ -171,6 +181,30 @@ public class UserEntity implements IdentityEntity {
 
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    public BigDecimal getIncome() {
+        return income;
+    }
+
+    public void setIncome(BigDecimal income) {
+        this.income = income;
+    }
+
+    public Integer getTotalFamilyMembers() {
+        return totalFamilyMembers;
+    }
+
+    public void setTotalFamilyMembers(Integer totalFamilyMembers) {
+        this.totalFamilyMembers = totalFamilyMembers;
+    }
+
+    public String getEducationLevel() {
+        return educationLevel;
+    }
+
+    public void setEducationLevel(String educationLevel) {
+        this.educationLevel = educationLevel;
     }
 
     public Long getFamilyPortalId() {

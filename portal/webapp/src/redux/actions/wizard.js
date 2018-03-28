@@ -32,8 +32,8 @@ let catalog = [
     , {type: "FOUND_INFO", footerType: CONTINUE}
     , {type: "PERSONAL_INFO", footerType: IN_PROGRESS, editFooterType: CONTINUE}
     , {type: "PERSONAL_ADDITIONAL_INFO", footerType: IN_PROGRESS, editFooterType: CONTINUE}
-    , {type: "IS_STUDENT_HISPANIC", yes: "IS_STUDENT_BORN_PR", no: "IS_STUDENT_BORN_PR", footerType: QUESTION}
-    , {type: "IS_STUDENT_BORN_PR", yes: "ADDRESS", no: "ADDRESS", footerType: QUESTION}
+    , {type: "IS_STUDENT_HISPANIC_QUESTION", yes: "IS_STUDENT_BORN_PR_QUESTION", no: "IS_STUDENT_BORN_PR_QUESTION", footerType: QUESTION}
+    , {type: "IS_STUDENT_BORN_PR_QUESTION", yes: "ADDRESS", no: "ADDRESS", footerType: QUESTION}
 
     , {
         type: "ADDRESS",
@@ -126,8 +126,8 @@ const normalFlow = [
     getIndexFromCatalog("FOUND_INFO"),
     getIndexFromCatalog("PERSONAL_INFO"),
     getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
-    getIndexFromCatalog("IS_STUDENT_HISPANIC"),
-    getIndexFromCatalog("IS_STUDENT_BORN_PR"),
+    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
+    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
 
     getIndexFromCatalog("ADDRESS"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
@@ -146,8 +146,8 @@ const parentVocationalFlow = [
     getIndexFromCatalog("FOUND_INFO"),
     getIndexFromCatalog("PERSONAL_INFO"),
     getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
-    getIndexFromCatalog("IS_STUDENT_HISPANIC"),
-    getIndexFromCatalog("IS_STUDENT_BORN_PR"),
+    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
+    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
 
     getIndexFromCatalog("ADDRESS"),
     getIndexFromCatalog("VOCATIONAL_SCHOOL_SELECTION"),
@@ -159,6 +159,9 @@ const parentVocationalFlow = [
 ];
 const editNormalFlow = [
     getIndexFromCatalog("PERSONAL_INFO"),
+    getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
+    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
+    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
     getIndexFromCatalog("ADDRESS"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
@@ -168,6 +171,9 @@ const editNormalFlow = [
 ];
 const editVocationalFlow = [
     getIndexFromCatalog("PERSONAL_INFO"),
+    getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
+    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
+    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
     getIndexFromCatalog("ADDRESS"),
 
     getIndexFromCatalog("VOCATIONAL_SCHOOL_SELECTION"),
@@ -184,6 +190,9 @@ const studentRequesterVocationalFlow = [
     getIndexFromCatalog("INSTRUCTIONS"),
     //verify this
     getIndexFromCatalog("PERSONAL_INFO"),
+    getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
+    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
+    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
     getIndexFromCatalog("ADDRESS"),
 
     getIndexFromCatalog("VOCATIONAL_SCHOOL_SELECTION"),
@@ -262,6 +271,7 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_NEXT_START});
     let wizard = getState().wizard;
     let preEnrollment = getState().preEnrollment;
+    let student = getState().studentInfo.student;
     let user = getState().profile.user;
 
     let current = wizard.current;
@@ -279,6 +289,10 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
     let currentForm = getForm(current);
     let type = currentForm.type;
     let next = current + 1;
+
+    if(student.studentExistsInSIE && isType(current, "PERSONAL_INFO") ){
+        next = getIndexFromFlow("ADDRESS");
+    }
 
     if (type.lastIndexOf("_QUESTION") > 0 || type.lastIndexOf("_SUBMIT") > 0) {
         next = getIndexFromFlow(currentForm.yes);
@@ -320,7 +334,7 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
 };
 
 export const onProgramSelectionAction = (selection) => (dispatch, getState) => {
-    // selection can be: TECHNIQUE, OCUPATIONAL, REGULAR
+    // selection can be: TECHNIQUE, OCCUPATIONAL, REGULAR
     dispatch({type: types.ON_WIZARD_PREVIOUS_START});
     let preEnrollment = getState().preEnrollment;
     let wizard = getState().wizard;
@@ -351,7 +365,7 @@ export const onProgramSelectionAction = (selection) => (dispatch, getState) => {
 
 };
 
-export const onPreviousAction = () => (dispatch, getState) => {
+export const onPreviousAction = (onPress) => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_PREVIOUS_START});
     let preEnrollment = getState().preEnrollment;
     let wizard = getState().wizard;
@@ -376,16 +390,20 @@ export const onPreviousAction = () => (dispatch, getState) => {
             : current - 1;
     }
     let nextForm = getForm(next);
-    if (maxCurrent === current) {
-        dispatch({type: types.ON_WIZARD_COMPLETED, startOver: false});
-    } else {
-        dispatch({
-            type: types.ON_WIZARD_PREVIOUS_END,
-            current: next,
-            footerType: nextForm.footerType,
-            pageType: nextForm.type
-        });
-    }
+
+    onPress((result) => {
+        if (maxCurrent === current) {
+            dispatch({type: types.ON_WIZARD_COMPLETED, startOver: false});
+        } else {
+            dispatch({
+                type: types.ON_WIZARD_PREVIOUS_END,
+                current: next,
+                footerType: nextForm.footerType,
+                pageType: nextForm.type
+            });
+        }
+    });
+
 };
 
 export const onBackAction = (appBackAction) => (dispatch, getState) => {

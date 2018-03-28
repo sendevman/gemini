@@ -3,6 +3,7 @@ package com.gemini.services;
 import com.gemini.beans.forms.User;
 import com.gemini.beans.internal.FailureLogin;
 import com.gemini.beans.internal.UserAction;
+import com.gemini.beans.requests.FamilyInfoRequest;
 import com.gemini.beans.requests.ParentProfileInfoRequest;
 import com.gemini.beans.requests.user.ForgotPasswordRequest;
 import com.gemini.beans.requests.user.RegisterRequest;
@@ -114,12 +115,22 @@ public class UserService {
     }
 
     public boolean updateUser(ParentProfileInfoRequest request) {
-        UserEntity entity = userRepository.findOne(request.getId());
+        UserEntity entity = userRepository.findOne(request.getUserId());
         entity.setRelationType(request.getRelationType());
         entity.setDateOfBirth(request.getDateOfBirth());
         entity.setFirstName(request.getFirstName());
         entity.setMiddleName(request.getMiddleName());
         entity.setLastName(request.getLastName());
+        entity.setProfileCompleted(false);
+        entity = userRepository.save(entity);
+        return entity != null;
+    }
+
+    public boolean completeProfile(FamilyInfoRequest request) {
+        UserEntity entity = userRepository.findOne(request.getUserId());
+        entity.setIncome(request.getIncome());
+        entity.setEducationLevel(request.getEducationLevel());
+        entity.setTotalFamilyMembers(request.getTotalFamilyMembers());
         entity.setProfileCompleted(true);
         entity = userRepository.save(entity);
         return entity != null;

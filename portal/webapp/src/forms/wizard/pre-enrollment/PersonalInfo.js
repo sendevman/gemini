@@ -10,6 +10,7 @@ import {loadPersonalInfo, savePreEnrollment} from "../../../redux/actions";
 import SimpleDateInput from "../../../components/SimpleDateInput";
 import AnimationHelper from "../../../components/AnimationHelper";
 import SocialSecurityInput from "../../../components/SocialSecurityInput";
+import ModalHelper from "../../../components/ModalHelper";
 
 class PersonalInfo extends Component {
 
@@ -22,7 +23,9 @@ class PersonalInfo extends Component {
     componentWillMount() {
         this.props.loadPersonalInfo(() => {
         }, () => {
-            alert("Ocurrio un error buscando la solicitud");
+            this.refs.modal.open("Upss!!!", "Ocurrio un error buscando la solicitud", ()=>{
+                this.props.history.push("/home")
+            });
         });
     }
 
@@ -118,7 +121,7 @@ class PersonalInfo extends Component {
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 {/*<div className="illustration"><img src={entrollmentIllustration} alt=""/></div>*/}
                 <AnimationHelper type="blackboard"/>
-            </div>];
+            </div>,<ModalHelper ref="modal"/>];
     }
 
 }

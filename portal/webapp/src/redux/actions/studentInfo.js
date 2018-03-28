@@ -16,11 +16,12 @@ export const loadPersonalInfo = (onResult, onError) => (dispatch, getState) => {
             .getActivePreEnrollment(requestId)
             .then((response) => {
                 //todo: change this!!!
-                preEnrollment.type =  response.content.type;
                 dispatch({type: types.STUDENT_PERSONAL_INFO_LOAD_END, student: response.content});
                 try {
-                    if (response.successfulOperation)
+                    if (response.successfulOperation) {
+                        preEnrollment.type = response.content.type;
                         onResult();
+                    }
                     else
                         onError();
                 } catch (e) {
@@ -64,6 +65,86 @@ export const saveAddress = (form, onResult, onError) => (dispatch, getState) => 
         .then((response) => response.json())
         .then((response) => {
             dispatch({type: types.STUDENT_SAVE_ADDRESS_END, response: response});
+            try {
+                if (response.successfulOperation)
+                    onResult();
+                else {
+                    onError(Utils.errorObj(response));
+                    dispatch({type: types.CANCEL_BLOCK_UI});
+                }
+            } catch (e) {
+                onError(Utils.errorObj());
+                dispatch({type: types.CANCEL_BLOCK_UI});
+            }
+        });
+};
+
+export const loadDemographics = () => (dispatch, getState) => {
+    let student = getState().studentInfo.student;
+    dispatch({type: types.STUDENT_ADDITIONAL_INFO_START});
+    services()
+        .getStudentDemographics(student.id)
+        .then((response) => {
+            dispatch({type: types.STUDENT_ADDITIONAL_INFO_END, response: response});
+
+        });
+};
+
+export const saveDemographics = (form, onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.STUDENT_DEMOGRAPHICS_SAVE_START});
+    let student = getState().studentInfo.student;
+    let postObj = {studentId: student.id, ...form};
+    services()
+        .saveStudentDemographics(postObj)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.STUDENT_DEMOGRAPHICS_SAVE_END, response: response});
+            try {
+                if (response.successfulOperation)
+                    onResult();
+                else {
+                    onError(Utils.errorObj(response));
+                    dispatch({type: types.CANCEL_BLOCK_UI});
+                }
+            } catch (e) {
+                onError(Utils.errorObj());
+                dispatch({type: types.CANCEL_BLOCK_UI});
+            }
+        });
+};
+
+export const saveBornPR = (answer, onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.STUDENT_ADDITIONAL_INFO_START});
+    let student = getState().studentInfo.student;
+    let postObj = {studentId: student.id, answer: answer};
+    services()
+        .saveBornPr(postObj)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.STUDENT_ADDITIONAL_INFO_END, response: response});
+            try {
+                if (response.successfulOperation)
+                    onResult();
+                else {
+                    onError(Utils.errorObj(response));
+                    dispatch({type: types.CANCEL_BLOCK_UI});
+                }
+            } catch (e) {
+                onError(Utils.errorObj());
+                dispatch({type: types.CANCEL_BLOCK_UI});
+            }
+        });
+};
+
+export const saveHispanic = (answer, onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.STUDENT_ADDITIONAL_INFO_START});
+    let student = getState().studentInfo.student;
+    let postObj = {studentId: student.id, answer: answer};
+    services()
+        .saveHispanic(postObj)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.STUDENT_ADDITIONAL_INFO_END, response: response});
             try {
                 if (response.successfulOperation)
                     onResult();

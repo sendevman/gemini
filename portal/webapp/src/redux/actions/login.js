@@ -171,3 +171,14 @@ export const cancelResetPassword = (key) => (dispatch) => {
 export const clean = () => (dispatch) => {
     dispatch({type: types.CLEAN_FORM});
 };
+
+export const triggerErrorOn = (message) => (dispatch) => {
+    dispatch({type: types.TRIGGER_ERROR_ON, message: message});
+};
+
+export const triggerErrorOff = () => (dispatch) => {
+    dispatch({type: types.TRIGGER_ERROR_OFF});
+    dispatch({type: types.CANCEL_BLOCK_UI});
+
+};
+

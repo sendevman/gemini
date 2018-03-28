@@ -16,11 +16,15 @@ export default class ModalHelper extends Component {
         this.close = this.close.bind(this);
     }
 
-    open(title, messages) {
+    open(title, messages, afterCloseAction) {
+        this.action = afterCloseAction;
         this.setState({modal: true, title: title, message: messages});
     }
 
     close() {
+        if (this.action) {
+            this.action();
+        }
         this.setState({modal: false, title: null, message: null});
     }
 

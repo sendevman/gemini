@@ -7,11 +7,12 @@ import Routes from "./Routes";
 import moment from "moment";
 import esLocale from "moment/locale/es";
 import {connect} from "react-redux";
-import {checkSession, logout, onBackAction} from "./redux/actions";
+import {checkSession, logout, onBackAction, triggerErrorOff} from "./redux/actions";
 import {blockUIActions, unblockUIActions} from "./redux/setup";
 import ReduxBlockUi from 'react-block-ui/redux';
 import {bindActionCreators} from "redux";
 import * as env from "./env";
+import ModalHelper from "./components/ModalHelper";
 
 moment.updateLocale('es', esLocale);
 
@@ -28,8 +29,16 @@ class App extends Component {
         this.goAuthentication = this.goAuthentication.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps && nextProps.generalErrorOccurred && nextProps.errorMessage) {
+            this.refs.modal.open("Upss!!!", nextProps.errorMessage, ()=>{
+                this.props.triggerErrorOff();
+            });
+        }
+    }
+
     componentWillMount() {
-        if (!env.isUserActionUrl(this.props.location.pathname) && !this.sessionCheck){
+        if (!env.isUserActionUrl(this.props.location.pathname) && !this.sessionCheck) {
             this.props.checkSession();
             this.sessionCheck = true;
         }
@@ -69,7 +78,7 @@ class App extends Component {
 
     goBack() {
         let pathname = this.props.location.pathname;
-        if (pathname === "/wizard") {
+        if (pathname.startsWith("/wizard")) {
             this.props.onBackAction(() => {
                 this.props.history.goBack()
             });
@@ -113,6 +122,8 @@ class App extends Component {
                         </div>
                     </div>
                 </div>
+
+                <ModalHelper ref="modal"/>
             </ReduxBlockUi>
         );
     }
@@ -145,12 +156,14 @@ function mapStateToProps(store) {
         fullName: store.profile.user.fullName || "Sin Nombre",
         authenticated: store.profile.authenticated,
         loading: store.profile.loading,
-        currentPageType: store.wizard.currentPageType
+        currentPageType: store.wizard.currentPageType,
+        errorMessage: store.profile.errorMessage,
+        generalErrorOccurred: store.profile.generalErrorOccurred
     };
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({logout, checkSession, onBackAction}, dispatch)
+    return bindActionCreators({logout, checkSession, onBackAction, triggerErrorOff}, dispatch)
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToActions)(App));

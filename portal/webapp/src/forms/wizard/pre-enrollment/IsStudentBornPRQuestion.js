@@ -1,10 +1,25 @@
 import React, {Component} from "react";
 import AnimationHelper from "../../../components/AnimationHelper";
+import {saveBornPR} from "../../../redux/actions";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
 
-export default class IsStudentBornPRQuestion extends Component {
+class IsStudentBornPRQuestion extends Component {
 
     constructor(props) {
         super(props);
+    }
+
+    onPress(onResult, onError) {
+        this.save(true, onResult, onError);
+    }
+
+    onBack(onResult, onError) {
+        this.save(false, onResult, onError);
+    }
+
+    save(answer, onResult, onError) {
+        this.props.saveBornPR(answer, onResult, onError);
     }
 
     render() {
@@ -14,7 +29,7 @@ export default class IsStudentBornPRQuestion extends Component {
                     <div className="violet-line"></div>
                 </div>
                 <p className="f60sbg">El Estudiante es <span
-                    className="f60sbb"> puertorrique&nacute;o?</span></p>
+                    className="f60sbb"> puertorrique&ntilde;o?</span></p>
             </div>
             {this.props.footer}
         </div>,
@@ -24,5 +39,11 @@ export default class IsStudentBornPRQuestion extends Component {
             </div>];
     }
 }
+
+function mapDispatchToActions(dispatch) {
+    return bindActionCreators({saveBornPR}, dispatch)
+}
+
+export default connect(null, mapDispatchToActions, null, {withRef: true})(IsStudentBornPRQuestion);
 
 

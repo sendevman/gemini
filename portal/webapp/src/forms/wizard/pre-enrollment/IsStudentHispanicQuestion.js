@@ -1,10 +1,25 @@
 import React, {Component} from "react";
 import AnimationHelper from "../../../components/AnimationHelper";
+import {bindActionCreators} from "redux";
+import {saveHispanic} from "../../../redux/actions";
+import {connect} from "react-redux";
 
-export default class IsStudentHispanicQuestion extends Component {
+class IsStudentHispanicQuestion extends Component {
 
     constructor(props) {
         super(props);
+    }
+
+    onPress(onResult, onError) {
+        this.save(true, onResult, onError);
+    }
+
+    onBack(onResult, onError) {
+        this.save(false, onResult, onError);
+    }
+
+    save(answer, onResult, onError) {
+        this.props.saveHispanic(answer, onResult, onError);
     }
 
     render() {
@@ -23,4 +38,11 @@ export default class IsStudentHispanicQuestion extends Component {
             </div>];
     }
 }
+
+function mapDispatchToActions(dispatch) {
+    return bindActionCreators({saveHispanic}, dispatch)
+}
+
+export default connect(null, mapDispatchToActions, null, {withRef: true})(IsStudentHispanicQuestion);
+
 

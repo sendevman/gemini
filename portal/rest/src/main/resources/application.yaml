@@ -100,13 +100,17 @@ messages:
       gender: "Genero"
       lastSsn: "Ultimo 4 dígitos Seguro social"
       income: "Ingreso"
-      familyMembersTotal: "Total de miembros de la familia"
+      totalFamilyMembers: "Total de miembros de la familia"
       physical.line1: "Dirección Residencial Linea 1"
       physical.city: "Dirección Residencial Ciudad"
       physical.zipcode: "Dirección Residencial Codigo postal"
       postal.line1: "Dirección Postal: Linea 1"
       postal.city: "Dirección Postal: Ciudad"
       postal.zipcode: "Dirección Postal: Codigo postal"
+      language: "Lenguaje"
+      citizenship: "Cuidadanía"
+      ethnicCodes: "Debe selecciona al menos un codigo ethnico"
+
   search:
     student.missing.required.fields: "Debe proveer algunos de estos dos campos (Ultimo SSN o Numero Estudiante)"
   user:
