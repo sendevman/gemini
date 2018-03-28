@@ -1,6 +1,8 @@
 package com.gemini.beans.forms;
 
 
+import javax.validation.Valid;
+
 /**
  * Created with IntelliJ IDEA.
  * User: fran
@@ -10,7 +12,9 @@ package com.gemini.beans.forms;
 public class PreEnrollmentAddressBean {
 
     private Long requestId;
+    @Valid
     private AddressBean physical;
+    @Valid
     private AddressBean postal;
 
     public PreEnrollmentAddressBean() {

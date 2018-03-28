@@ -12,7 +12,7 @@ import {
     partialAlternatePreEnrollmentSave,
     retrieveAlternatePreEnrollment
 } from "../../../redux/actions";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 import {Button} from "reactstrap";
 
 class PreEnrollmentAlternateSchoolsSelection extends Component {

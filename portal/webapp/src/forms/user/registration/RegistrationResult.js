@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import profileIllustration from "../../../style/img/profile-illustration.png";
 import {connect} from "react-redux";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
 class RegistrationResult extends Component {
 

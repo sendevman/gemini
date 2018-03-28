@@ -4,8 +4,9 @@
 import env from "./env";
 import moment from "moment";
 import Immutable from "immutable";
+import * as types from "./redux/types";
 
-export function clone(obj){
+export function clone(obj) {
     return Object.assign({}, obj);
 }
 
@@ -41,10 +42,20 @@ export function validDate(value) {
     return value && moment(value).isValid();
 }
 
-export function format(date, format){
+export function format(date, format) {
     return moment(date).format(format);
 }
 
-export function freezeObject(obj){
+export function freezeObject(obj) {
     return Immutable.fromJS(obj).toJS();
+}
+
+export function normalizeEnumValue(value) {
+    return ((value && value === "-1") || !value) ? null : value;
+}
+
+export function errorObj(response, dispatch){
+    if(dispatch)
+        dispatch({type: types.CANCEL_BLOCK_UI});
+    return {title: response.titleMessage, messages: response.validationMessages};
 }

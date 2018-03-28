@@ -2,19 +2,21 @@
  * Created by fran on 1/24/18.
  */
 import React, {Component} from "react";
+import * as types from "../../redux/types";
 //forms
 import StudentIdentification from "./pre-enrollment/StudentIdentification";
 import PersonalInfo from "./pre-enrollment/PersonalInfo";
 import Address from "./pre-enrollment/Address";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {load, onNextAction, onPreviousAction} from "../../redux/actions";
+import {load, onNextAction, onPreviousAction, onProgramSelectionAction} from "../../redux/actions";
 import Instructions from "./Instructions";
 import UserInfoRequest from "./pre-enrollment/UserInfoRequest";
+import UserAdditionalInfoRequest from "./pre-enrollment/UserAdditionalInfoRequest";
 import VocationalProgramsSelection from "./pre-enrollment/VocationalProgramsSelection";
 import VocationalPreEnrollment from "./pre-enrollment/VocationalPreEnrollment";
 import VocationalReviewSubmit from "./pre-enrollment/VocationalReviewSubmit";
-import IsVocationalQuestion from "./pre-enrollment/IsVocationalQuestion";
+import DEProgramQuestion from "./pre-enrollment/DEProgramQuestion";
 import StudentFound from "./pre-enrollment/StudentFound";
 import StudentNotFound from "./pre-enrollment/StudentNotFound";
 import IsStudentCurrentlyEnrolled from "./pre-enrollment/IsStudentCurrentlyEnrolled";
@@ -24,7 +26,10 @@ import PreEnrollmentAlternateSchoolsSubmit from "./pre-enrollment/PreEnrollmentA
 import CompletedPreEnrollment from "./pre-enrollment/CompletedPreEnrollment";
 import ConfirmedPreEnrollment from "./pre-enrollment/ConfirmedPreEnrollment";
 import VocationalSchoolSelectionInfo from "./pre-enrollment/VocationalSchoolSelectionInfo";
-
+import ModalHelper from "../../components/ModalHelper";
+import PersonalAdditonalInfo from "./pre-enrollment/PersonalAdditonalInfo";
+import IsStudentHispanicQuestion from "./pre-enrollment/IsStudentHispanicQuestion";
+import IsStudentBornPRQuestion from "./pre-enrollment/IsStudentBornPRQuestion";
 
 function form(title, form) {
     return {title: title, form: form};
@@ -63,13 +68,21 @@ class Wizard extends Component {
         window.scrollTo(0, 0)
     }
 
-    onError(validationMessage) {
-        if(validationMessage){
-            alert(JSON.stringify(validationMessage));
-        }else {
-            alert("Ha ocurrido un error")
+    onError(validationObj) {
+        if (validationObj) {
+            let formattedMessage = validationObj.title ? `${validationObj.title}:\n` : "";
+            for (let message of validationObj.messages) {
+                formattedMessage += `*\t${message}\n`;
+            }
+            this.refs.modal.open("Validaci\u00f3n", formattedMessage)
+        } else {
+            this.refs.modal.open("Upps!!!", "Ha ocurrido un error, disculpe el inconveniente")
         }
     }
+
+    onProgramSelection = (selection) => e =>{
+        this.props.onProgramSelectionAction(selection);
+    };
 
     next() {
         let idx = `page${this.props.current}`;
@@ -97,13 +110,17 @@ class Wizard extends Component {
 
         let CATALOG = [
             {renderObj: UserInfoRequest}
+            , {renderObj: UserAdditionalInfoRequest}
             , {renderObj: Instructions}
-            , {renderObj: IsVocationalQuestion}
+            , {renderObj: DEProgramQuestion}
             , {renderObj: IsStudentCurrentlyEnrolled}
             , {renderObj: StudentIdentification}
             , {renderObj: StudentNotFound}
             , {renderObj: StudentFound}
             , {renderObj: PersonalInfo}
+            , {renderObj: PersonalAdditonalInfo}
+            , {renderObj: IsStudentHispanicQuestion}
+            , {renderObj: IsStudentBornPRQuestion}
             , {renderObj: Address}
             , {renderObj: PreEnrollmentAlternateSchoolsSelection}
             , {renderObj: PreEnrollmentAlternateSchoolsSubmit}
@@ -150,14 +167,16 @@ class Wizard extends Component {
         if (!this.wizardForms || this.wizardForms.length === 0)
             return (null);
 
-        return this.wizardForms[current].form;
+        return [this.wizardForms[current].form, <ModalHelper ref="modal"/>];
     }
 
     renderFooter() {
         let props = this.props.wizard;
         let commonStyle = {zIndex: 1000};
-        // props.nextShortLabel
-        // props.previousShortLabel
+        let cssClass =  props.currentPageType  !== "PERSONAL_ADDITIONAL_INFO" && props.currentPageType !== "VOCATIONAL_PROGRAMS" && props.currentPageType !== "VOCATIONAL_SCHOOL_SELECTION"
+            ? "body d-flex align-items-center flex-column justify-content-end"
+            : "";
+
         if (props.currentPageType === "PERSONAL_INFO" || props.currentPageType === "STUDENT_LOOKUP" || props.currentPageType === "VOCATIONAL_REVIEW_SUBMIT")
             return (<div className="row action-section" style={commonStyle}>
                 <div className="col-md-12 text-center text-lg-left p-0">
@@ -180,11 +199,26 @@ class Wizard extends Component {
                     </a>
                 </div>
             </div>)
+        } else if (props.currentPageType === "DE_PROGRAM_QUESTION") {
+            return (
+                <div key="footer" className={cssClass}
+                     style={commonStyle}>
+                    <div className="row action-section">
+                        <div className="col-md-12 text-center text-lg-left p-0">
+                            <a className="button-green mr30 mob-mb30px" onClick={this.onProgramSelection(types.REGULAR_ENROLLMENT)}>
+                                <span>R</span>Regular
+                            </a>
+                            <a className="button-white mob-mb30px" onClick={this.onProgramSelection(types.OCCUPATIONAL_ENROLLMENT)}>
+                                <span>O</span>Ocupacional
+                            </a>
+                            <a className="button-white mob-mb30px" onClick={this.onProgramSelection(types.TECHNIQUE_ENROLLMENT)}>
+                                <span>T</span>T&eacute;cnica
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            )
         }
-
-        let cssClass = props.currentPageType !== "VOCATIONAL_PROGRAMS" && props.currentPageType !== "VOCATIONAL_SCHOOL_SELECTION"
-            ? "body d-flex align-items-center flex-column justify-content-end"
-            : "";
 
         return (<div key="footer" className={cssClass}
                      style={commonStyle}>
@@ -219,7 +253,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({load, onNextAction, onPreviousAction}, dispatch)
+    return bindActionCreators({load, onNextAction, onPreviousAction, onProgramSelectionAction}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions)(Wizard);

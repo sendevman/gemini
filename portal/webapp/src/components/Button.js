@@ -1,15 +1,15 @@
 import React, {Component} from "react";
 
-export default class Button extends Component{
+export default class Button extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.sizeCss = {padding: 2};
 
-        switch(this.props.size){
+        switch (this.props.size) {
             case "small":
                 this.sizeCss = {padding: 2};
                 break;
@@ -23,12 +23,21 @@ export default class Button extends Component{
                 this.sizeCss = {padding: 20};
                 break;
         }
+
+        switch (this.props.color) {
+            case "primary":
+                this.color = "button-blue";
+                break;
+            default:
+                this.color = "button-yellow";
+
+        }
     }
 
-    render(){
-        return(
-            <button style={this.sizeCss} className="button-yellow" {...this.props}>
+    render() {
+        return (
+            <button style={this.sizeCss} className={this.color} {...this.props}>
                 {this.props.children}
-        </button>);
+            </button>);
     }
 }

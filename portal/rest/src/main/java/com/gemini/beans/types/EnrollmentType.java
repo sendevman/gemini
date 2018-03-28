@@ -8,6 +8,7 @@ package com.gemini.beans.types;
  */
 public enum EnrollmentType {
     REGULAR,
-    VOCATIONAL,
+    OCCUPATIONAL,
+    TECHNIQUE,
     ALTERNATE_SCHOOLS
 }

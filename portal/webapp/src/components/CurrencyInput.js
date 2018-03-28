@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import NumberFormat from "react-number-format";
+import * as UIHelper from "../UIHelper";
 
 const maxValueAllowed = "999,999,999,999.00";
 export default class CurrencyInput extends Component {
@@ -18,18 +19,22 @@ export default class CurrencyInput extends Component {
     }
 
     render() {
-        let groupCss = "form-group ".concat(!this.state.valid ? "has-error" : "");
+        let grouped = this.props.grouped ? "group" : "";
+        let groupCss = grouped + " form-group has-feedback";
+
+        let validHtml = UIHelper.toggleFieldValidHtml(this.state.valid, this.props.required);
+
         return (
             <div className={groupCss}>
-                <label htmlFor={this.props.id}>{this.props.label || this.props.placeholder}:</label>
                 <NumberFormat {...this.props}
                               onChange={this.onChange}
                               maxLength={maxValueAllowed.length}
-                              className="form-control"
+                              className="inputMaterial"
                               decimalScale={2}
                               displayType='input'
                               thousandSeparator={true}
                               prefix={'$'}/>
+                <label htmlFor={this.props.id}>{this.props.label || this.props.placeholder}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>
             </div>);
     }
 }

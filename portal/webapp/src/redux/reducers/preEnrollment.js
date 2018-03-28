@@ -45,7 +45,7 @@ const preEnrollment = (state = Utils.freezeObject(initialState), action) => {
                 ...state,
                 info: resp,
                 requestId: action.response.requestId,
-                initialPreEnrollmentSaved: true
+                initialPreEnrollmentSaved: !resp
             };
         case types.PRE_ENROLLMENT_SUBMIT_START:
             return state;

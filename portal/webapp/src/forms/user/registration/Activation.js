@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {activateAccount, existsCode} from "../../../redux/actions";
 import ReCAPTCHA from "react-google-recaptcha";
 import env from "../../../env";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
 class Activation extends Component {
 

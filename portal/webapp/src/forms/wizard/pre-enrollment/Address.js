@@ -7,7 +7,7 @@ import TextInput from "../../../components/TextInput";
 import {copyPhysicalToPostal, loadAddress, saveAddress} from "../../../redux/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 import Button from "../../../components/Button";
 
 class Address extends Component {

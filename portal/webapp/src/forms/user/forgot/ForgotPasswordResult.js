@@ -1,8 +1,7 @@
 import React, {Component} from "react";
-import {Button} from "react-bootstrap";
 import {connect} from "react-redux";
 import leisureIllustration from "../../../style/img/leisure-illustration.png";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
 class ForgotPasswordResult extends Component {
 

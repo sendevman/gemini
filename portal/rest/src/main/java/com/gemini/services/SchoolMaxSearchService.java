@@ -34,6 +34,7 @@ public class SchoolMaxSearchService {
         try {
             StudentSearchLogEntity log = CopyUtils.convert(searchRequest, StudentSearchLogEntity.class);
             log.setUserId(user.getId());
+            log.setFound(student != null);
             searchLogRepository.save(log);
         } catch (Exception e) {
             logger.error("error logging search request for user " + user.getId(), e);

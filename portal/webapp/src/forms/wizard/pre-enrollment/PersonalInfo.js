@@ -3,14 +3,13 @@
  */
 import React, {Component} from "react";
 import CodeSelect from "../../../components/CodeSelect";
-import DateInput from "../../../components/DateInput";
 import TextInput from "../../../components/TextInput";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {loadPersonalInfo, savePreEnrollment} from "../../../redux/actions";
-import entrollmentIllustration from "../.././../style/img/entrollment-illustration.png";
 import SimpleDateInput from "../../../components/SimpleDateInput";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
+import SocialSecurityInput from "../../../components/SocialSecurityInput";
 
 class PersonalInfo extends Component {
 
@@ -48,14 +47,24 @@ class PersonalInfo extends Component {
         let studentExists = this.props.found;
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description mb40"><h2 className="f90sbg">OK.</h2>
+                <div className="description"><h2 className="f90sbg">OK.</h2>
                     <div className="violet-line"></div>
                 </div>
-                <span className="f20slg"><span className="f30slg">Vamos <span
-                    className="f30slb">Registrar o Editar</span> el estudiante en el sistema</span></span>
+                <span className="f30slg">Vamos <span
+                    className="f30slb">Registrar o Editar</span> el estudiante en el sistema</span>
             </div>
             <div className="body d-flex flex-column">
-                <div className="row " style={{ marginTop: -150}}>
+                <div className="row" style={{marginTop: -170}}>
+                    <div className="col-md-12">
+                        <SocialSecurityInput id="ssn"
+                                             label="Seguro Social"
+                                             value={student.ssn}
+                                             onChange={this.inputHandler}
+                                             required
+                                             disabled={studentExists}/>
+                    </div>
+                </div>
+                <div className="row pt-5">
                     <div className="col-md-3 ">
                         <TextInput id="firstName" type="name" label="Nombre"
                                    value={student.firstName}
@@ -79,7 +88,7 @@ class PersonalInfo extends Component {
                                    disabled={studentExists}/>
                     </div>
                 </div>
-                <div className="row">
+                <div className="row pt-5">
                     <div className="col-md-6 pt-4">
                         <CodeSelect id="gender"
                                     label="Genero"
@@ -87,7 +96,7 @@ class PersonalInfo extends Component {
                                     value={student.gender}
                                     required
                                     onChange={this.inputHandler}
-                                    placeholder="Seleccione su Genero"
+                                    placeholder="Genero"
                                     disabled={studentExists}
                         />
 

@@ -1,27 +1,34 @@
 import * as types from "../types";
+import * as Utils from "../../Utils";
 import services from "../setup";
 
+
 export const savePreEnrollment = (form, onResult, onError) => (dispatch, getState) => {
+
     dispatch({type: types.STUDENT_CREATE_PRE_ENROLLMENT_START});
     let studentInfo = getState().studentInfo;
     let preEnrollment = getState().preEnrollment;
+    let gender = Utils.normalizeEnumValue(form.gender);
+
     form.requestId = preEnrollment.requestId;
     form.studentNumber = studentInfo.student.studentNumber;
     form.type = preEnrollment.type;
+    let postObj = {type: null, firstName: null, lastName: null, dateOfBirth: null, ...form, gender: gender};
     services()
-        .savePreEnrollment(form)
+        .savePreEnrollment(postObj)
         .then((response) => response.json())
         .then((response) => {
-            dispatch({type: types.STUDENT_UPDATED, student: response.content.student});
             dispatch({type: types.STUDENT_CREATE_PRE_ENROLLMENT_END, response: response});
 
             try {
-                if (response.successfulOperation)
+                if (response.successfulOperation) {
+                    dispatch({type: types.STUDENT_UPDATED, student: response.content.student});
                     onResult();
+                }
                 else
-                    onError();
+                    onError(Utils.errorObj(response, dispatch));
             } catch (e) {
-                onError();
+                onError(Utils.errorObj(response, dispatch));
             }
         });
 };
@@ -179,6 +186,6 @@ export const retrieveAlternatePreEnrollment = (onResult, onError) => (dispatch, 
 
 };
 
-export const changeCurrentVocationalEnrollment = (currentEnrollment) => (dispatch)=>{
+export const changeCurrentVocationalEnrollment = (currentEnrollment) => (dispatch) => {
     dispatch({type: types.CHANGE_VOCATIONAL_PRE_ENROLLMENT, enrollment: currentEnrollment})
 };

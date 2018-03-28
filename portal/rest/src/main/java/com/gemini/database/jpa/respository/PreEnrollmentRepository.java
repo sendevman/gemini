@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,6 +23,18 @@ public interface PreEnrollmentRepository extends CrudRepository<PreEnrollmentReq
     @Query(value = "select e from PreEnrollmentRequestEntity e " +
             " inner join e.student s where s.extStudentNumber = :studentNumber")
     PreEnrollmentRequestEntity findByStudentNumber(@Param("studentNumber") Long studentNumber);
+
+
+    @Query(value = "select e from PreEnrollmentRequestEntity e " +
+            " inner join e.student s where s.extStudentNumber = :studentNumber and s.dateOfBirth = :dateOfBirth " +
+            " and s.firstName  = :firstName and lastName = :lastName")
+    PreEnrollmentRequestEntity findByDateOfBirthAndFirstNameAndLastName(@Param("dateOfBirth") Date dateOfBirth,
+                                                                        @Param("firstName") String firstName,
+                                                                        @Param("lastName") String lastName);
+
+    @Query(value = "select e from PreEnrollmentRequestEntity e " +
+            " inner join e.student s where s.ssn = :ssn ")
+    PreEnrollmentRequestEntity findBySsn(@Param("ssn") String ssn);
 
     PreEnrollmentRequestEntity findByIdAndRequestStatusIs(Long id, RequestStatus requestStatus);
 

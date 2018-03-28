@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import * as env from "./env";
+import * as env from "../env";
 
 
 export default class AnimationHelper extends Component {
@@ -26,7 +26,7 @@ export default class AnimationHelper extends Component {
             <iframe width="1000" height="1041" src={`${base}/anim-girls-table/index.html`} style={style}/>
         </div>);
         let animTable = (<div className="illustration anim-offset d-flex align-items-center">
-                <iframe width="1000" height="1041" src={`${base}/anim-girls-table/index.html`}
+                <iframe width="1000" height="1041" src={`${base}/anim-table/index.html`}
                         style={style}/>
             </div>
         );

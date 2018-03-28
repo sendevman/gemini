@@ -1,13 +1,12 @@
 import React, {Component} from "react";
 import TextInput from "../../../components/TextInput";
 import CodeSelect from "../../../components/CodeSelect";
-import DateInput from "../../../components/DateInput";
 import {saveProfile} from "../../../redux/actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import profileIllustration from "../../../style/img/profile-illustration.png";
 import SimpleDateInput from "../../../components/SimpleDateInput";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
+import CurrencyInput from "../../../components/CurrencyInput";
 
 class UserInfoRequest extends Component {
 
@@ -15,7 +14,6 @@ class UserInfoRequest extends Component {
         super(props);
         this.inputHandler = this.inputHandler.bind(this);
         this.onValidDate = this.onValidDate.bind(this);
-        this.onError = this.onError.bind(this);
     }
 
     inputHandler(e) {
@@ -30,14 +28,11 @@ class UserInfoRequest extends Component {
     }
 
 
-    onPress(onResult) {
+    onPress(onResult, onError) {
         let form = this.props.form;
-        this.props.saveProfile(form, onResult, this.onError);
+        this.props.saveProfile(form, onResult, onError);
     }
 
-    onError(validationMessage) {
-        alert(JSON.stringify(validationMessage));
-    }
 
     render() {
         let form = this.props.form;
@@ -48,7 +43,7 @@ class UserInfoRequest extends Component {
                     <div className="violet-line"></div>
                 </div>
             </div>
-            <div className="body d-flex align-items-center flex-column justify-content-end" style={{padding: 20}}>
+            <div className="body d-flex align-items-center flex-column justify-content-end">
                 <form id="profile-form">
                     <div className="row plr15">
                         <div className="col-md-3">

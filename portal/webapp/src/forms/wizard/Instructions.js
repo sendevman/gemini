@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import profileIlustration from "../../style/img/profile-illustration.png";
-import AnimationHelper from "../../AnimationHelper";
+import AnimationHelper from "../../components/AnimationHelper";
 
 export default class Instructions extends Component {
 

@@ -1,9 +1,7 @@
 import React, {Component} from "react";
-import leisureIllustration from "../../../style/img/leisure-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
 
-
-export default class IsStudentCurrentlyEnrolled extends Component {
+export default class IsStudentHispanicQuestion extends Component {
 
     constructor(props) {
         super(props);
@@ -12,11 +10,10 @@ export default class IsStudentCurrentlyEnrolled extends Component {
     render() {
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description mb40"><h2 className="f90sbg">02.</h2>
+                <div className="description mb40"><h2 className="f90sbg">06.</h2>
                     <div className="violet-line"></div>
                 </div>
-                <p className="f40sbg text-justify">Tienes, actualmente, <span className="f40sbb">un niño/a matriculado </span>en
-                    alguna escuela del Departamento de Educación de Puerto Rico?</p>
+                <p className="f60sbg text-justify">El Estudiante es <span className="f60sbb"> hispano/latino?</span></p>
             </div>
             {this.props.footer}
         </div>,
@@ -26,3 +23,4 @@ export default class IsStudentCurrentlyEnrolled extends Component {
             </div>];
     }
 }
+

@@ -16,6 +16,7 @@ public class ResponseBase<T> {
     private boolean successfulOperation;
     private boolean errorOperation;
     private T content;
+    private String titleMessage;
     private List<String> validationMessages = new ArrayList<>();
 
     public ResponseBase() {
@@ -61,12 +62,30 @@ public class ResponseBase<T> {
         this.validationMessages = validationMessages;
     }
 
+    public String getTitleMessage() {
+        return titleMessage;
+    }
+
+    public void setTitleMessage(String titleMessage) {
+        this.titleMessage = titleMessage;
+    }
+
     public void setResponseBase(ResponseBase responseBase) {
         this.requestId = responseBase.requestId;
         this.successfulOperation = responseBase.successfulOperation;
         this.content = (T) responseBase.content;
         this.validationMessages = responseBase.validationMessages;
         this.errorOperation = responseBase.errorOperation;
+    }
+
+    public boolean hasError(){
+        return this.validationMessages != null && !this.validationMessages.isEmpty();
+    }
+
+    public void addError(String message){
+        if(this.validationMessages == null)
+            this.validationMessages = new ArrayList<>();
+        this.validationMessages.add(message);
     }
 
     public static ResponseBase success(Long requestId) {
@@ -88,6 +107,14 @@ public class ResponseBase<T> {
 
     public static <T> ResponseBase success(T responseBean) {
         return success(null, responseBean);
+    }
+
+    public static ResponseBase error(String titleMessage, List<String> validationMessages) {
+        ResponseBase base = new ResponseBase();
+        base.errorOperation = true;
+        base.titleMessage = titleMessage;
+        base.validationMessages = validationMessages;
+        return base;
     }
 
     public static ResponseBase error(List<String> validationMessages) {

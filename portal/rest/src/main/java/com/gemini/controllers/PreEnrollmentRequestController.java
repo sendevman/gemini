@@ -8,13 +8,17 @@ import com.gemini.beans.requests.enrollment.VocationalPreEnrollmentSubmitRequest
 import com.gemini.beans.responses.ResponseBase;
 import com.gemini.services.MailService;
 import com.gemini.services.PreEnrollmentService;
+import com.gemini.utils.MessageHelper;
 import com.gemini.utils.ValidationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,6 +35,8 @@ public class PreEnrollmentRequestController {
     private PreEnrollmentService preEnrollmentService;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private MessageHelper messageHelper;
 
     @RequestMapping(value = "/{requestId}")
     public ResponseEntity<ResponseBase> retrieve(@PathVariable Long requestId) {
@@ -42,7 +48,11 @@ public class PreEnrollmentRequestController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBase> savePreEnrollmentRequest(@RequestBody PreEnrollmentInitialRequest initialRequest, @AuthenticationPrincipal User loggedUser) {
+    public ResponseEntity<ResponseBase> savePreEnrollmentRequest(@Valid @RequestBody PreEnrollmentInitialRequest initialRequest, BindingResult result, @AuthenticationPrincipal User loggedUser) {
+        if(result.hasErrors() && !ValidationUtils.valid(initialRequest.getStudentNumber())){
+            return ResponseEntity.badRequest().body(messageHelper.missingFormFields(result));
+        }
+
         boolean exists = preEnrollmentService.exists(initialRequest, loggedUser);
         ResponseEntity<ResponseBase> response;
         if (!exists) {
@@ -76,9 +86,14 @@ public class PreEnrollmentRequestController {
     }
 
     @RequestMapping(value = "/{requestId}/address/save", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBase> savePreEnrollmentAddress(@PathVariable Long requestId, @RequestBody PreEnrollmentAddressBean request) {
+    public ResponseEntity<ResponseBase> savePreEnrollmentAddress(@PathVariable Long requestId, @Valid @RequestBody PreEnrollmentAddressBean request, BindingResult result) {
         boolean validRequest = preEnrollmentService.validAddressForRequestId(requestId, request.getPhysical(), request.getPostal());
         if (validRequest) {
+
+            if(result.hasErrors()){
+                return ResponseEntity.badRequest().body(messageHelper.missingFormFields(result));
+            }
+
             boolean saved;
             saved = preEnrollmentService.updateStudentAddress(request.getPhysical());
             saved &= preEnrollmentService.updateStudentAddress(request.getPostal());
@@ -96,7 +111,6 @@ public class PreEnrollmentRequestController {
             alternatePreEnrollmentBean = preEnrollmentService.findAlternatePreEnrollmentById(requestId);
         return ResponseEntity.ok(ResponseBase.success(requestId, alternatePreEnrollmentBean));
     }
-
 
     @RequestMapping(value = "/alternate/partial/save", method = RequestMethod.POST)
     public ResponseEntity<ResponseBase> partialAlternatePreEnrollmentSave(@RequestBody AlternateSchoolPreEnrollmentSubmitRequest request) {
@@ -155,22 +169,13 @@ public class PreEnrollmentRequestController {
     }
 
     private ResponseEntity<ResponseBase> handleCreatePreEnrollment(PreEnrollmentInitialRequest initialRequest, User loggedUser) {
-        PreEnrollmentBean preEnrollmentBean;
-        if (ValidationUtils.valid(initialRequest.getStudentNumber())
-                || ValidationUtils.valid(
-                initialRequest.getFirstName(),
-                initialRequest.getLastName(),
-                initialRequest.getDateOfBirth(),
-                initialRequest.getGender()))
-            preEnrollmentBean = preEnrollmentService.createPreEnrollment(initialRequest, loggedUser);
-        else
-            return ResponseEntity.badRequest().body(ResponseBase.error("Missing fields to create pre-enrollment"));
+        PreEnrollmentBean preEnrollmentBean = preEnrollmentService.createPreEnrollment(initialRequest, loggedUser);
 
         ResponseBase response;
         if (preEnrollmentBean != null)
             response = ResponseBase.success(preEnrollmentBean.getId(), preEnrollmentBean);
         else
-            response = ResponseBase.error("Error saving pre-enrollment");
+            response = ResponseBase.error(messageHelper.processMessage("general.unknown.error"));
         return ResponseEntity.ok(response);
     }
 
