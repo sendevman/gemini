@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import leisureIllustration from "../../../style/img/leisure-illustration.png";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
-export default class IsVocationalQuestion extends Component {
+export default class DEProgramQuestion extends Component {
 
     constructor(props) {
         super(props);
@@ -15,7 +15,7 @@ export default class IsVocationalQuestion extends Component {
                     <div className="description mb40"><h2 className="f90sbg">01.</h2>
                         <div className="violet-line"/>
                     </div>
-                    <p className="f45sbg">¿Vas a solicitar matr&iacute;cula en un programa de <span className="f45sbb">Educación Ocupacional o Técnica</span>?</p>
+                    <p className="f40sbg text-justify">¿Favor de seleccionar el programa en el cual vas a solicitar matr&iacute;cula: <span className="f40sbb">Regular, Ocupacional o Técnica</span>?</p>
                 </div>
 
                 {this.props.footer}

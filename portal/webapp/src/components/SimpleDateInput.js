@@ -50,7 +50,6 @@ export default class SimpleDateInput extends Component {
         let formatted = (form.dateString && form.dateString.replace(/\s/g, '')) || 'empty';
         let valid = moment(formatted, "DD/MM/YYYY").isValid() && formatted.length === 10;
         let value = valid ? moment(formatted, "DD/MM/YYYY") : null;
-        console.log(`${valid}  - ${formatted}`);
         return {valid: valid, value: value}
     }
 

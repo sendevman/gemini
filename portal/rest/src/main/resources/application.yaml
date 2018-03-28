@@ -11,6 +11,9 @@ server:
 #  security:
 #    enabled: false
 
+srs:
+  version: @srs.version@
+
 spring:
   main:
     web-environment: true
@@ -22,7 +25,7 @@ spring:
     properties:
       mail.smtp.auth: @mail.smtp.auth@
       mail.smtp.starttls.enable: @mail.smtp.starttls.enable@
-    test-connection: @mail.test-conection@
+    test-connection: false
   jpa:
     hibernate:
       ddl-auto: @main.db.jpa.mode@
@@ -39,6 +42,8 @@ spring:
     hikari:
       maximum-pool-size: 30
     platform: @main.db.platform@
+  jmx:
+    default-domain: @war.name@-${srs.version}
   smaxDatasource:
     url: @smax.db.jdbc.url@
     username: @smax.db.user@
@@ -82,10 +87,28 @@ smax:
 #move this to a different properties file
 messages:
   general:
-    unknown.error: "Error Desconocido"
+    unknown.error: "Ha occurrido un error disculpe el incoveniente"
     missing.required.fields: "Faltan campos requeridos"
+  fields:
+      relationType: "Relación con el estudiante"
+      firstName: "Nombre"
+      middleName: "Segundo Nombre"
+      lastName: "Apellidos"
+      dateOfBirth: "Fecha de Nacimiento"
+      studentNumber: "Número del SIE"
+      ssn: "Seguro Social"
+      gender: "Genero"
+      lastSsn: "Ultimo 4 dígitos Seguro social"
+      income: "Ingreso"
+      familyMembersTotal: "Total de miembros de la familia"
+      physical.line1: "Dirección Residencial Linea 1"
+      physical.city: "Dirección Residencial Ciudad"
+      physical.zipcode: "Dirección Residencial Codigo postal"
+      postal.line1: "Dirección Postal: Linea 1"
+      postal.city: "Dirección Postal: Ciudad"
+      postal.zipcode: "Dirección Postal: Codigo postal"
   search:
-    student.missing.required.fields: "Falta campos requerido Fecha de Nacimiento, (Ultimo SSN o Numero Estudiante) y Nombre"
+    student.missing.required.fields: "Debe proveer algunos de estos dos campos (Ultimo SSN o Numero Estudiante)"
   user:
     missing.required.fields: "Faltan campos requeridos [Nombre, Apellidos, Fecha de Nacimiento, Relacion con el Estudiante]"
     already.exists: "Usuario existente"
@@ -95,6 +118,11 @@ messages:
     error.saving.profile: "Error al grabar datos del usuario"
     invalid.forgot.password.request: "Solicitud de cambio de contraseña invalida"
     cancel.reset.password.invalid: "Solicitud de cancelar reinicio de contraseña invalida"
+  preenrollment:
+    invalid.address.postal: "Dirección postal inválida"
+    invalid.address.residential: "Dirección residencial inválida"
+    already.exists: "Pre-Matricula ya existe en el sistema"
+
 
 
 

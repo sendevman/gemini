@@ -49,6 +49,20 @@ public class StudentEntity implements IdentityEntity {
     @Column(nullable = false)
     private String lastName;
 
+    @Column(nullable = false)
+    private String ssn;
+
+    @Column
+    private String citizenship;
+    @Column
+    private String language;
+    @Column
+    private String ethnicCode;
+    @Column
+    private boolean isBornPR;
+    @Column
+    private boolean isHispanic;
+
     @OneToOne
     @JoinColumn(name = "physical_address_id")
     private AddressEntity physical;
@@ -142,6 +156,54 @@ public class StudentEntity implements IdentityEntity {
     @Override
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getSsn() {
+        return ssn;
+    }
+
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
+
+    public String getCitizenship() {
+        return citizenship;
+    }
+
+    public void setCitizenship(String citizenship) {
+        this.citizenship = citizenship;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getEthnicCode() {
+        return ethnicCode;
+    }
+
+    public void setEthnicCode(String ethnicCode) {
+        this.ethnicCode = ethnicCode;
+    }
+
+    public boolean isBornPR() {
+        return isBornPR;
+    }
+
+    public void setBornPR(boolean bornPR) {
+        isBornPR = bornPR;
+    }
+
+    public boolean isHispanic() {
+        return isHispanic;
+    }
+
+    public void setHispanic(boolean hispanic) {
+        isHispanic = hispanic;
     }
 
     public AddressEntity getPhysical() {

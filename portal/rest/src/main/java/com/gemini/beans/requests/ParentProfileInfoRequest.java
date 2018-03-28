@@ -15,6 +15,7 @@ import java.util.Date;
 public class ParentProfileInfoRequest {
 
     private Long id;
+    @NotNull
     private RelationType relationType;
     @NotEmpty
     @NotNull
@@ -73,4 +74,5 @@ public class ParentProfileInfoRequest {
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
 }

@@ -2,6 +2,9 @@ package com.gemini.beans.forms;
 
 import com.gemini.beans.types.AddressType;
 import com.google.common.base.Joiner;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,11 +15,18 @@ import com.google.common.base.Joiner;
 public class AddressBean {
 
     private Long id;
+    @NotNull
     private AddressType type;
+    @NotNull
+    @NotBlank
     private String line1;
     private String line2;
+    @NotNull
+    @NotBlank
     private String city;
     private String country = "PR";
+    @NotNull
+    @NotBlank
     private String zipcode;
 
     public Long getId() {

@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {searchStudent} from "../../../redux/actions";
 import SimpleDateInput from "../../../components/SimpleDateInput";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
 class StudentIdentification extends Component {
 

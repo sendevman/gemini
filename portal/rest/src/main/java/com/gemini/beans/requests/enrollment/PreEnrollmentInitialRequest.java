@@ -3,7 +3,9 @@ package com.gemini.beans.requests.enrollment;
 import com.gemini.beans.IdentityForm;
 import com.gemini.beans.types.Gender;
 import com.gemini.beans.types.EnrollmentType;
+import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -16,11 +18,19 @@ public class PreEnrollmentInitialRequest implements IdentityForm {
     private Long requestId;
     private EnrollmentType type;
     private Long studentNumber;
+    @NotNull
+    @NotBlank
     private String ssn;
+    @NotNull
+    @NotBlank
     private String firstName;
     private String middleName;
+    @NotNull
+    @NotBlank
     private String lastName;
+    @NotNull
     private Date dateOfBirth;
+    @NotNull
     private Gender gender;
 
     public Long getRequestId() {

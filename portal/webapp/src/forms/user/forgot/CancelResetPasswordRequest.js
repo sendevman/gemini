@@ -2,9 +2,8 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {cancelResetPassword} from "../../../redux/actions";
-import {Button} from "react-bootstrap";
 import leisureIllustration from "../../../style/img/leisure-illustration.png";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
 class CancelResetPasswordRequest extends Component {
 

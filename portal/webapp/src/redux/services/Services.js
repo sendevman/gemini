@@ -232,7 +232,7 @@ export default class Services {
     _handleHttpCode(response, manageException = false) {
 
         let httpStatus = response.status;
-        if ((httpStatus >= 200 && httpStatus < 300) || (httpStatus > 400 && httpStatus <= 403) || httpStatus === 423) {
+        if ((httpStatus >= 200 && httpStatus < 300) || (httpStatus >= 400 && httpStatus <= 403) || httpStatus === 423) {
             return response;
         } else {
             console.log(`internal server error, error info: ${response && response.statusText}`);

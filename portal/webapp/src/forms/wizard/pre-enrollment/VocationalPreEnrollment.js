@@ -8,7 +8,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {getVocationalSchools, loadVocationalCodes, partialSaveVocationalPreEnrollment} from "../../../redux/actions";
 import entrollmentIllustration from "../../../style/img/entrollment-illustration.png";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
 class VocationalPreEnrollment extends Component {
 

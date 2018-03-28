@@ -10,7 +10,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {clean, cleanLogin, login, toggleCleanTimeout} from "../redux/actions";
 import TextInput from "../components/TextInput";
-import AnimationHelper from "../AnimationHelper";
+import AnimationHelper from "../components/AnimationHelper";
 
 class Authentication extends Component {
     constructor(props) {

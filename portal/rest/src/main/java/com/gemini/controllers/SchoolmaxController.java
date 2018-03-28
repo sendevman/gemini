@@ -21,11 +21,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,26 +65,20 @@ public class SchoolmaxController {
     }
 
     @RequestMapping(value = "/student/search")
-    public ResponseEntity<StudentResponse> searchStudent(@RequestBody StudentSearchRequest searchRequest, @AuthenticationPrincipal User logged) {
-        List<Object> fieldsRequired = Lists.newArrayList();
-        fieldsRequired.add(searchRequest.getDateOfBirth());
-        fieldsRequired.add(searchRequest.getFirstName());
-        fieldsRequired.add(searchRequest.getLastName());
-
-        if (!(ValidationUtils.valid(searchRequest.getLastSsn()) || ValidationUtils.valid(searchRequest.getStudentNumber()))) {
-            return ResponseEntity.ok(missingFields());
-        } else {
-            if (ValidationUtils.valid(searchRequest.getLastSsn()))
-                fieldsRequired.add(searchRequest.getLastSsn());
-            else
-                fieldsRequired.add(searchRequest.getStudentNumber());
+    public ResponseEntity<StudentResponse> searchStudent(@Valid @RequestBody StudentSearchRequest searchRequest, BindingResult result, @AuthenticationPrincipal User logged) {
+        StudentResponse response = new StudentResponse();
+        if(result.hasErrors()){
+            response = messageHelper.missingFieldsOnStudentSearch(result);
         }
 
-        if (!(ValidationUtils.valid(fieldsRequired.toArray())))
-            return ResponseEntity.ok(missingFields());
+        if(!(ValidationUtils.valid(searchRequest.getLastSsn()) || ValidationUtils.valid(searchRequest.getStudentNumber())))
+            response.addError(messageHelper.processMessage("search.student.missing.required.fields"));
+
+        if (response != null && response.hasError())
+            return ResponseEntity.badRequest().body(response);
 
         Student studentBean = smaxSearchService.retrieveStudentInfo(searchRequest, logged);
-        StudentResponse response = CopyUtils.convert(studentBean, StudentResponse.class);
+        response = CopyUtils.convert(studentBean, StudentResponse.class);
         response.setFound(studentBean != null);
         if (studentBean != null)
             response.setStudentNumber(studentBean.getExtStudentNumber());
@@ -148,13 +144,5 @@ public class SchoolmaxController {
 
         return ResponseEntity.ok(Lists.transform(programs, toSelection));
     }
-
-    private StudentResponse missingFields() {
-        StudentResponse response = new StudentResponse();
-        ResponseBase base = ResponseBase.error(messageHelper.processMessages("search.student.missing.required.fields"));
-        response.setResponseBase(base);
-        return response;
-    }
-
 
 }

@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {submitAlternatePreEnrollment} from "../../../redux/actions";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
 
 class PreEnrollmentAlternateSchoolsSubmit extends Component {
@@ -45,7 +45,7 @@ class PreEnrollmentAlternateSchoolsSubmit extends Component {
         </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 {/*<div className="illustration"><img src={leisureIllustration} alt=""/></div>*/}
-                <AnimationHelper type="rest"/>
+                <AnimationHelper type="blackboard"/>
             </div>];
     }
 

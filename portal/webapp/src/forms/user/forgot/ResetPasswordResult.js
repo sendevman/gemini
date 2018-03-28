@@ -1,7 +1,6 @@
 import React, {Component} from "react";
-import {Button} from "react-bootstrap";
 import leisureIllustration from "../../../style/img/leisure-illustration.png";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
 export default class ResetPasswordResult extends Component {
 

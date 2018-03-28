@@ -6,7 +6,7 @@ import {forgotPassword} from "../../../redux/actions";
 import registrationIllustration from "../../../style/img/registration-illustration.png";
 import env from "../../../env";
 import ReCAPTCHA from "react-google-recaptcha";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
 class ForgotPassword extends Component {
 

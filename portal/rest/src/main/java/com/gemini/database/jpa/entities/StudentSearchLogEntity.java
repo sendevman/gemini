@@ -30,6 +30,8 @@ public class StudentSearchLogEntity {
     private Date dateOfBirth;
     @Column
     private Long userId;
+    @Column(nullable = false)
+    private boolean found =false;
     @CreatedDate
     @Column(nullable = false, insertable = false, updatable = false, columnDefinition = "timestamp default CURRENT_TIMESTAMP")
     private Date searchDate;
@@ -88,6 +90,14 @@ public class StudentSearchLogEntity {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public boolean isFound() {
+        return found;
+    }
+
+    public void setFound(boolean found) {
+        this.found = found;
     }
 
     public Date getSearchDate() {

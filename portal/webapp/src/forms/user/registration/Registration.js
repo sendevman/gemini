@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 import {cleanRegistration, registerUser, validateForm} from "../../../redux/actions";
 import ReCAPTCHA from "react-google-recaptcha";
 import env from "../../../env";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
 
 class Registration extends Component {

@@ -1,5 +1,7 @@
 package com.gemini;
 
+import com.gemini.beans.responses.ResponseBase;
+import com.gemini.utils.MessageHelper;
 import com.gemini.utils.ValidationUtils;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.http.HttpHost;
@@ -9,6 +11,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -17,26 +20,34 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.boot.web.support.ErrorPageFilter;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.sql.DataSource;
 
 @SpringBootApplication
 @ComponentScan
 @EnableConfigurationProperties
+//@EnableWebMvc
 @EnableWebSecurity
-@ServletComponentScan
 public class SRSPortalApplication extends SpringBootServletInitializer {
 
     final static Logger logger = LoggerFactory.getLogger(SRSPortalApplication.class.getName());
@@ -122,13 +133,27 @@ public class SRSPortalApplication extends SpringBootServletInitializer {
         return smaxDatasourceProperties().initializeDataSourceBuilder().build();
     }
 
+//    @Bean
+//    public CommonsRequestLoggingFilter requestLoggingFilter() {
+//        CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
+//        loggingFilter.setIncludeClientInfo(true);
+//        loggingFilter.setIncludeQueryString(true);
+//        loggingFilter.setIncludePayload(true);
+//        loggingFilter.setIncludeHeaders(true);
+//        return loggingFilter;
+//    }
+
+
     @Bean
-    public CommonsRequestLoggingFilter requestLoggingFilter() {
-        CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
-        loggingFilter.setIncludeClientInfo(true);
-        loggingFilter.setIncludeQueryString(true);
-        loggingFilter.setIncludePayload(true);
-        loggingFilter.setIncludeHeaders(true);
-        return loggingFilter;
+    public ErrorPageFilter errorPageFilter() {
+        return new ErrorPageFilter();
+    }
+
+    @Bean
+    public FilterRegistrationBean disableSpringBootErrorFilter(ErrorPageFilter filter) {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        filterRegistrationBean.setFilter(filter);
+        filterRegistrationBean.setEnabled(false);
+        return filterRegistrationBean;
     }
 }

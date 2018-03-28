@@ -25,10 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -185,12 +182,39 @@ public class PreEnrollmentService {
 
     public boolean exists(PreEnrollmentInitialRequest request, User loggedUser) {
         boolean exists = false;
+        PreEnrollmentRequestEntity entity = null;
+
         if (ValidationUtils.valid(request.getRequestId())) {
-            exists = preEnrollmentRepository.exists(request.getRequestId());
+            entity = preEnrollmentRepository.findOne(request.getRequestId());
+            exists = entity != null;
         }
+
         if (!exists && ValidationUtils.valid(request.getStudentNumber())) {
-            exists = preEnrollmentRepository.existsByStudentNumber(request.getStudentNumber());
+            entity = preEnrollmentRepository.findByStudentNumber(request.getStudentNumber());
+            exists = entity != null;
         }
+
+        if(!exists){
+            //do search by firstname, lastname, birthdate & ssn
+//            entity = preEnrollmentRepository.findByDateOfBirthAndFirstNameAndLastName(request.getDateOfBirth(), request.getFirstName(), request.getLastName());
+            entity = preEnrollmentRepository.findBySsn(request.getSsn());
+            exists = entity != null;
+        }
+//
+//        if(exists){
+//            final Long matchId = entity.getId();
+//            UserEntity userEntity = userRepository.findOne(loggedUser.getId());
+//            boolean isUserRequest = FluentIterable
+//                    .from(userEntity.getRequests())
+//                    .firstMatch(new Predicate<PreEnrollmentRequestEntity>() {
+//                        @Override
+//                        public boolean apply(PreEnrollmentRequestEntity preEntity) {
+//                            return preEntity.getId().equals(matchId);
+//                        }
+//                    }).isPresent();
+//        }
+
+
         return exists;
     }
 
@@ -358,7 +382,7 @@ public class PreEnrollmentService {
 
     public boolean vocationalPreEnrollmentSubmit(VocationalPreEnrollmentSubmitRequest request) {
         final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
-        requestEntity.setType(EnrollmentType.VOCATIONAL);
+        requestEntity.setType(EnrollmentType.OCCUPATIONAL);
         List<PreEnrollmentVocationalSchoolEntity> list = requestEntity.getVocationalSchools();
         if (list.size() == 1) {
             Long schoolId = list.get(0).getSchoolId();
@@ -370,7 +394,7 @@ public class PreEnrollmentService {
         return preEnrollmentRepository.save(requestEntity) != null;
     }
 
-    public AlternateSchoolPreEnrollmentBean findAlternatePreEnrollmentById(Long id){
+    public AlternateSchoolPreEnrollmentBean findAlternatePreEnrollmentById(Long id) {
         PreEnrollmentRequestEntity entity = preEnrollmentRepository.findByIdAndRequestStatusIs(id, RequestStatus.ACTIVE);
         if (entity == null)
             return null;

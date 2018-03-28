@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import AnimationHelper from "../AnimationHelper";
+import AnimationHelper from "../components/AnimationHelper";
 
 export default class Welcome extends Component {
 

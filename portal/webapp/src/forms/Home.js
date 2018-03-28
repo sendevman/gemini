@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 import {loadHome, resetWizard} from "../redux/actions";
 import * as Utils from "../Utils";
 import leisureIllustration from "../style/img/leisure-illustration.png";
-import AnimationHelper from "../AnimationHelper";
+import AnimationHelper from "../components/AnimationHelper";
 
 class Home extends Component {
 

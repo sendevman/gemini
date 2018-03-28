@@ -1,5 +1,6 @@
 import * as types from "../types";
 import services from "../setup";
+import * as Utils from "../../Utils";
 
 //todo fran: please review this preEnrollment needs to load before, in the wizard config start
 export const loadPersonalInfo = (onResult, onError) => (dispatch, getState) => {
@@ -66,10 +67,13 @@ export const saveAddress = (form, onResult, onError) => (dispatch, getState) => 
             try {
                 if (response.successfulOperation)
                     onResult();
-                else
-                    onError();
+                else {
+                    onError(Utils.errorObj(response));
+                    dispatch({type: types.CANCEL_BLOCK_UI});
+                }
             } catch (e) {
-                onError();
+                onError(Utils.errorObj());
+                dispatch({type: types.CANCEL_BLOCK_UI});
             }
         });
 };

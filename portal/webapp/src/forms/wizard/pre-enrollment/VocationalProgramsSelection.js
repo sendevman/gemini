@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import Immutable from "immutable";
 import entrollmentIllustration from "../../../style/img/entrollment-illustration.png";
-import AnimationHelper from "../../../AnimationHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
 class VocationalProgramsSelection extends Component {
 
