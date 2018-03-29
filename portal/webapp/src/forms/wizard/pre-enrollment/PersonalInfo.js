@@ -56,64 +56,67 @@ class PersonalInfo extends Component {
                 <span className="f30slg">Vamos <span
                     className="f30slb">Registrar o Editar</span> el estudiante en el sistema</span>
             </div>
-            <div className="body d-flex flex-column">
-                <div className="row" style={{marginTop: -170}}>
-                    <div className="col-md-12">
-                        <SocialSecurityInput id="ssn"
-                                             label="Seguro Social"
-                                             value={student.ssn}
-                                             onChange={this.inputHandler}
-                                             required
-                                             disabled={studentExists}/>
+            <div className="body d-flex flex-column justify-content-end ">
+                <form>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <SocialSecurityInput id="ssn"
+                                                 label="Seguro Social"
+                                                 value={student.ssn}
+                                                 onChange={this.inputHandler}
+                                                 required
+                                                 disabled={studentExists}/>
+                        </div>
                     </div>
-                </div>
-                <div className="row pt-5">
-                    <div className="col-md-3 ">
-                        <TextInput id="firstName" type="name" label="Nombre"
-                                   value={student.firstName}
-                                   onChange={this.inputHandler}
-                                   required
-                                   disabled={studentExists}/>
+                    <div className="row">
+                        <div className="col-md-3 ">
+                            <TextInput id="firstName" type="name" label="Nombre"
+                                       value={student.firstName}
+                                       onChange={this.inputHandler}
+                                       required
+                                       disabled={studentExists}/>
+                        </div>
+                        <div className="col-md-3">
+                            <TextInput id="middleName" type="name"
+                                       label="Segundo Nombre"
+                                       labelStyle={{left: 0, fontSize: 18}}
+                                       value={student.middleName}
+                                       onChange={this.inputHandler}
+                                       disabled={studentExists}/>
+                        </div>
+                        <div className="col-md-6">
+                            <TextInput id="lastName" type="lastname" label="Apellidos"
+                                       value={student.lastName}
+                                       onChange={this.inputHandler}
+                                       required
+                                       disabled={studentExists}/>
+                        </div>
                     </div>
-                    <div className="col-md-3">
-                        <TextInput id="middleName" type="name"
-                                   label="Segundo Nombre"
-                                   labelStyle={{left: 0, fontSize: 18}}
-                                   value={student.middleName}
-                                   onChange={this.inputHandler}
-                                   disabled={studentExists}/>
-                    </div>
-                    <div className="col-md-6">
-                        <TextInput id="lastName" type="lastname" label="Apellidos"
-                                   value={student.lastName}
-                                   onChange={this.inputHandler}
-                                   required
-                                   disabled={studentExists}/>
-                    </div>
-                </div>
-                <div className="row pt-5">
-                    <div className="col-md-6 pt-4">
-                        <CodeSelect id="gender"
-                                    label="Genero"
-                                    codeType="gender"
-                                    value={student.gender}
-                                    required
-                                    onChange={this.inputHandler}
-                                    placeholder="Genero"
-                                    disabled={studentExists}
-                        />
+                    <div className="row">
+                        <div className="col-md-6 pt-4">
+                            <CodeSelect id="gender"
+                                        label="Genero"
+                                        codeType="gender"
+                                        value={student.gender}
+                                        required
+                                        onChange={this.inputHandler}
+                                        placeholder="Genero"
+                                        disabled={studentExists}
+                            />
 
+                        </div>
+                        <div className="col-md-6">
+                            <SimpleDateInput id="dateOfBirth"
+                                             label="Fecha de Nac."
+                                             required
+                                             value={student.dateOfBirth}
+                                             onValidDate={this.onValidDate}
+                                             disabled={studentExists}/>
+                        </div>
                     </div>
-                    <div className="col-md-6">
-                        <SimpleDateInput id="dateOfBirth"
-                                         label="Fecha de Nac."
-                                         required
-                                         value={student.dateOfBirth}
-                                         onValidDate={this.onValidDate}
-                                         disabled={studentExists}/>
-                    </div>
-                </div>
-                <div style={{marginTop: -20}}>
+                </form>
+
+                <div style={{marginTop: -90}}>
                     {this.props.footer}
                 </div>
             </div>

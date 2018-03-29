@@ -8,7 +8,6 @@ import * as types from "./types";
 
 let instance = null;
 
-
 export function setupStore() {
     const logger = createLogger({});
     const enhancer = compose(applyMiddleware(reduxMiddleware, thunk, logger));
@@ -26,14 +25,19 @@ export default function services() {
 
 
 export function blockUIActions() {
-    return evalTypes("_START");
+    console.log(evalTypes("_START"));
+    return [types.STUDENT_CREATE_PRE_ENROLLMENT_START];
 }
 
 export function unblockUIActions() {
-    let list = evalTypes("_END");
+    let list = [];
     list.push(types.ON_WIZARD_COMPLETED);
     list.push(types.CANCEL_BLOCK_UI);
-    return list;
+    for (let obj of evalTypes("_END")) {
+        list.push(obj);
+    }
+    console.log(list);
+    return [types.CANCEL_BLOCK_UI];
 }
 
 function evalTypes(searchToken) {

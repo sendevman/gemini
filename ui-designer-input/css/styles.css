@@ -218,7 +218,7 @@ input:-webkit-autofill {-webkit-animation-name: autofill;-webkit-animation-fill-
 .group {position: relative;margin-bottom: 50px;}
 
 .inputMaterial {
-  font-size: 30px;
+  font-size: 20px;
   color: #383c4b;
   padding: 10px 10px 10px 5px;
 	padding-left: 50px;

@@ -16,6 +16,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -50,11 +51,11 @@ public class JSEnumCodeGeneration implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+               doConstruct(args);
 //        Authenticator.setDefault(new ProxyAuthenticator("", ""));
 //        System.setProperty("http.proxyHost", "");
 //        System.setProperty("http.proxyPort", "80");
-//               doConstruct(args);
-        testMailService(args);
+//        testMailService(args);
     }
 
     private void testMailService(String... args) {
@@ -133,13 +134,13 @@ public class JSEnumCodeGeneration implements CommandLineRunner {
 
     private void doConstruct(String... args) {
         System.out.println(new File(".").getAbsoluteFile());
-        if (args == null || args.length == 0)
-            throw new RuntimeException("Process cannot run if there is not a directory output specify");
-        String location = args[0];
-//        FileSystemUtils.deleteRecursively(new File(location + "/"));
-//        new File(location).mkdir();
-        System.out.println(args[0]);
-//        /Users/fran/Documents/Projects/UpperCase/project-gemini/webapp/src/forms/data
+        String base = new File(".").getAbsoluteFile().getPath().replace(".", "");
+//        if (args == null || args.length == 0)
+//            throw new RuntimeException("Process cannot run if there is not a directory output specify");
+        String location = base.concat("portal/webapp/src/components/data/codes");
+        System.out.println(location);
+        FileSystemUtils.deleteRecursively(new File(location + "/"));
+        new File(location).mkdir();
 
         constructCodeJS(location, "residentialStatus", "ENUM_CE_RESIDENTIAL_STATUS");
         constructCodeJS(location, "municipios", "ENUM_CE_MUNICIPALITY_CODE");
@@ -181,4 +182,5 @@ public class JSEnumCodeGeneration implements CommandLineRunner {
 
 
     }
+
 }

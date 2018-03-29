@@ -1,6 +1,7 @@
 package com.gemini.services;
 
 import com.gemini.beans.forms.*;
+import com.gemini.beans.internal.RequestSearchResult;
 import com.gemini.beans.requests.enrollment.AlternateSchoolPreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.enrollment.PreEnrollmentInitialRequest;
 import com.gemini.beans.requests.enrollment.PreEnrollmentSubmitRequest;
@@ -93,10 +94,11 @@ public class PreEnrollmentService {
                 }
                 AddressEntity postal = copyAddressFrom(address, AddressType.POSTAL);
                 AddressEntity physical = copyAddressFrom(address, AddressType.PHYSICAL);
-                postal = save(postal);
-                physical = save(physical);
-
-                StudentEntity studentEntity = save(student, postal, physical);
+                postal = saveAddress(postal);
+                physical = saveAddress(physical);
+                //todo: fran verify this later
+                student.setFamilyId(address.getFamilyId());
+                StudentEntity studentEntity = saveStudent(student, postal, physical);
                 entity.setStudent(studentEntity);
                 entity = preEnrollmentRepository.save(entity);
             }
@@ -106,14 +108,14 @@ public class PreEnrollmentService {
             AddressEntity physical = copyAddressFrom(null, AddressType.PHYSICAL);
             StudentEntity studentEntity = CopyUtils.convert(request, StudentEntity.class);
             //saving addresses
-            postal = save(postal);
-            physical = save(physical);
+            postal = saveAddress(postal);
+            physical = saveAddress(physical);
             studentEntity.setPhysical(physical);
             studentEntity.setPostal(postal);
             studentEntity.setEntryType(EntryType.NEW);
             studentEntity.setLastName(request.getLastName());
             //saving student
-            studentEntity = save(studentEntity);
+            studentEntity = saveStudent(studentEntity);
             entity.setStudent(studentEntity);
             entity = preEnrollmentRepository.save(entity);
             preEnrollmentBean = CopyUtils.convert(entity, PreEnrollmentBean.class);
@@ -180,42 +182,43 @@ public class PreEnrollmentService {
         return null;
     }
 
-    public boolean exists(PreEnrollmentInitialRequest request, User loggedUser) {
-        boolean exists = false;
+    public RequestSearchResult exists(PreEnrollmentInitialRequest request, User loggedUser) {
+        RequestSearchResult result = new RequestSearchResult();
         PreEnrollmentRequestEntity entity = null;
 
         if (ValidationUtils.valid(request.getRequestId())) {
             entity = preEnrollmentRepository.findOne(request.getRequestId());
-            exists = entity != null;
+            result.setExists(entity != null);
         }
 
-        if (!exists && ValidationUtils.valid(request.getStudentNumber())) {
+        if (!result.isExists() && ValidationUtils.valid(request.getStudentNumber())) {
             entity = preEnrollmentRepository.findByStudentNumber(request.getStudentNumber());
-            exists = entity != null;
+            result.setExists(entity != null);
         }
 
-        if(!exists){
+        if(!result.isExists()){
             //do search by firstname, lastname, birthdate & ssn
 //            entity = preEnrollmentRepository.findByDateOfBirthAndFirstNameAndLastName(request.getDateOfBirth(), request.getFirstName(), request.getLastName());
             entity = preEnrollmentRepository.findBySsn(request.getSsn());
-            exists = entity != null;
+            result.setExists(entity != null);
         }
-//
-//        if(exists){
-//            final Long matchId = entity.getId();
-//            UserEntity userEntity = userRepository.findOne(loggedUser.getId());
-//            boolean isUserRequest = FluentIterable
-//                    .from(userEntity.getRequests())
-//                    .firstMatch(new Predicate<PreEnrollmentRequestEntity>() {
-//                        @Override
-//                        public boolean apply(PreEnrollmentRequestEntity preEntity) {
-//                            return preEntity.getId().equals(matchId);
-//                        }
-//                    }).isPresent();
-//        }
+
+        if(result.isExists()){
+            final Long matchId = entity.getId();
+            UserEntity userEntity = userRepository.findOne(loggedUser.getId());
+            boolean isUserRequest = FluentIterable
+                    .from(userEntity.getRequests())
+                    .firstMatch(new Predicate<PreEnrollmentRequestEntity>() {
+                        @Override
+                        public boolean apply(PreEnrollmentRequestEntity preEntity) {
+                            return preEntity.getId().equals(matchId);
+                        }
+                    }).isPresent();
+            result.setBelongsToUser(isUserRequest);
+        }
 
 
-        return exists;
+        return result;
     }
 
     public PreEnrollmentStudentInfoBean findPreEnrollmentById(Long id) {
@@ -271,7 +274,7 @@ public class PreEnrollmentService {
 
     public boolean updateStudentAddress(AddressBean address) {
         AddressEntity entity = CopyUtils.convert(address, AddressEntity.class);
-        entity = save(entity);
+        entity = saveAddress(entity);
         return entity != null;
     }
 
@@ -494,20 +497,26 @@ public class PreEnrollmentService {
         return enrollmentBean;
     }
 
-    private StudentEntity save(Student bean, AddressEntity postal, AddressEntity physical) {
+    private StudentEntity saveStudent(Student bean, AddressEntity postal, AddressEntity physical) {
         StudentEntity entity = CopyUtils.convert(bean, StudentEntity.class);
         entity.setGender(bean.getGender());
         entity.setSisStudentId(bean.getStudentId());
         entity.setPostal(postal);
         entity.setPhysical(physical);
+        if(StringUtils.hasText(bean.getEthnicCd())){
+            EthnicCodeEntity ethnicCodeEntity = new EthnicCodeEntity();
+            ethnicCodeEntity.setValue(bean.getEthnicCd());
+            ethnicCodeEntity.setDescription(bean.getEthnicCode());
+            entity.setEthnicCodes(Arrays.asList(ethnicCodeEntity));
+        }
         return studentRepository.save(entity);
     }
 
-    private AddressEntity save(AddressEntity entity) {
+    private AddressEntity saveAddress(AddressEntity entity) {
         return addressRepository.save(entity);
     }
 
-    private StudentEntity save(StudentEntity entity) {
+    private StudentEntity saveStudent(StudentEntity entity) {
         return studentRepository.save(entity);
     }
 
@@ -520,17 +529,16 @@ public class PreEnrollmentService {
             case POSTAL:
                 entity.setLine1(address.getPostalAddress_1());
                 entity.setLine2(address.getPostalAddress_2());
-                entity.setCity(address.getPostalCity());
+                entity.setCity(address.getPostalCityCode());
                 entity.setCountry(PR_COUNTRY);
                 entity.setZipcode(address.getPostalZipcode());
                 break;
             case PHYSICAL:
                 entity.setLine1(address.getPhysicalAddress_1());
                 entity.setLine2(address.getPhysicalAddress_2());
-                entity.setCity(address.getPhysicalCity());
+                entity.setCity(address.getPhysicalCityCode());
                 entity.setCountry(PR_COUNTRY);
                 entity.setZipcode(address.getPhysicalZipcode());
-
                 break;
         }
         return entity;

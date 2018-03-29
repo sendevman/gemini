@@ -99,7 +99,7 @@ class Address extends Component {
                 </div>
             </div>
             <div className="row">
-                <div className="col-md-6">
+                <div className="col-md-7">
                     <CodeSelect id={`${type}.city`}
                                 label="Ciudad"
                                 codeType="municipios"
@@ -112,7 +112,7 @@ class Address extends Component {
                 {/*disabled={true} onChange={this.inputHandler}/>*/}
                 {/*</div>*/}
 
-                <div className="col-md-6">
+                <div className="col-md-5">
                     <TextInput type="zipcode" id={`${type}.zipcode`} label="Zip"
                                value={address.zipcode} onChange={this.inputHandler}/>
                 </div>

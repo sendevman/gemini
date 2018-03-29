@@ -1,6 +1,7 @@
 package com.gemini.controllers;
 
 import com.gemini.beans.forms.*;
+import com.gemini.beans.internal.RequestSearchResult;
 import com.gemini.beans.requests.enrollment.AlternateSchoolPreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.enrollment.PreEnrollmentInitialRequest;
 import com.gemini.beans.requests.enrollment.PreEnrollmentSubmitRequest;
@@ -53,11 +54,24 @@ public class PreEnrollmentRequestController {
             return ResponseEntity.badRequest().body(messageHelper.missingFormFields(result));
         }
 
-        boolean exists = preEnrollmentService.exists(initialRequest, loggedUser);
+        RequestSearchResult searchResult = preEnrollmentService.exists(initialRequest, loggedUser);
+        if(searchResult.cannotUseRequest()){
+            ResponseBase responseBase = ResponseBase.error("Validaci\u00f3n", messageHelper.processMessages("already.exists"));
+            return ResponseEntity.ok().body(responseBase);
+        }
+
+        if(searchResult.requestIsCompleted()){
+            ResponseBase responseBase = ResponseBase.error("Validaci\u00f3n", messageHelper.processMessages("already.submitted"));
+            return ResponseEntity.ok().body(responseBase);
+        }
+
         ResponseEntity<ResponseBase> response;
-        if (!exists) {
+        if (!searchResult.isExists()) {
             response = handleCreatePreEnrollment(initialRequest, loggedUser);
         } else {
+            if(!ValidationUtils.valid(initialRequest.getRequestId())){
+                initialRequest.setRequestId(searchResult.getRequestId());
+            }
             response = handleEditPreEnrollment(initialRequest);
         }
 
@@ -70,7 +84,7 @@ public class PreEnrollmentRequestController {
         try {
             mailService.sendPreEnrollmentSubmitEmail(loggedUser, submitRequest);
             saved = preEnrollmentService.submitPreEnrollment(submitRequest);
-            loggedUser.setWorkingPreEnrollmentId(null);
+            cleanWorkingRequest(loggedUser);
         } catch (Exception e) {
             logger.error("error submitted pre-enrollment " + submitRequest.getRequestId(), e);
         }
@@ -126,7 +140,7 @@ public class PreEnrollmentRequestController {
         try {
             mailService.sendPreEnrollmentSubmitEmail(loggedUser, request);
             saved = preEnrollmentService.alternatePreEnrollmentSubmit(request);
-            loggedUser.setWorkingPreEnrollmentId(null);
+            cleanWorkingRequest(loggedUser);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -159,7 +173,7 @@ public class PreEnrollmentRequestController {
         try {
             mailService.sendPreEnrollmentSubmitEmail(loggedUser, request);
             saved = preEnrollmentService.vocationalPreEnrollmentSubmit(request);
-            loggedUser.setWorkingPreEnrollmentId(null);
+            cleanWorkingRequest(loggedUser);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -184,6 +198,10 @@ public class PreEnrollmentRequestController {
         if (preEnrollmentBean != null)
             return ResponseEntity.ok(ResponseBase.success(preEnrollmentBean.getId(), preEnrollmentBean));
         return ResponseEntity.ok(ResponseBase.error("Error updating pre-enrollment"));
+    }
+
+    private void cleanWorkingRequest(User user){
+        user.setWorkingPreEnrollmentId(null);
     }
 
 }

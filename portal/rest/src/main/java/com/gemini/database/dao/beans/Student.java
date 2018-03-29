@@ -12,6 +12,7 @@ import java.util.Date;
  */
 public class Student {
     private Long studentId;
+    private Long familyId;
     private Long extStudentNumber;
     private String firstName;
     private String middleName;
@@ -31,7 +32,9 @@ public class Student {
     private String studentType;
     private String ethnicCd;
     private String ethnicCode;
-    private String lenguaje;
+    private String language;
+    private String languageDescription;
+    private String citizenship;
 
     public Long getStudentId() {
         return studentId;
@@ -39,6 +42,14 @@ public class Student {
 
     public void setStudentId(Long studentId) {
         this.studentId = studentId;
+    }
+
+    public Long getFamilyId() {
+        return familyId;
+    }
+
+    public void setFamilyId(Long familyId) {
+        this.familyId = familyId;
     }
 
     public Long getExtStudentNumber() {
@@ -197,11 +208,27 @@ public class Student {
         this.ethnicCode = ethnicCode;
     }
 
-    public String getLenguaje() {
-        return lenguaje;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setLenguaje(String lenguaje) {
-        this.lenguaje = lenguaje;
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getLanguageDescription() {
+        return languageDescription;
+    }
+
+    public void setLanguageDescription(String languageDescription) {
+        this.languageDescription = languageDescription;
+    }
+
+    public String getCitizenship() {
+        return citizenship;
+    }
+
+    public void setCitizenship(String citizenship) {
+        this.citizenship = citizenship;
     }
 }

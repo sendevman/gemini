@@ -2,9 +2,9 @@ spring:
   main:
     web-environment: false
   datasource:
-    url: jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM
-    username: FPALOU
-    password: dev2@!8
+    url: jdbc:oracle:thin:@auohsmaxi76-vip.oracleoutsourcing.com:11010/PMAX1O.ORACLEOUTSOURCING.COM
+    username: PRDE_SRS
+    password: pr234Srs987
     driver-class-name: oracle.jdbc.driver.OracleDriver
   mail:
     host: smtp.gmail.com

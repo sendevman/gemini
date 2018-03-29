@@ -1,6 +1,5 @@
-module.exports =  [{ name:  'No hay datos', description: 'No hay datos', value: 'ND', orderBy: '1'},
+module.exports =  [{ name:  'Diabético Tipo 1', description: 'Diabético', value: 'DIAB01', orderBy: '1'},
 { name:  'Vision/Lentes de contacto', description: 'Vision/Lentes de contacto', value: 'VISION01', orderBy: '1'},
-{ name:  'Hipoglucémico', description: 'Hipoglucémico', value: 'HIPOG', orderBy: '1'},
 { name:  'Vision/Espejuelos', description: '', value: 'VISION02', orderBy: '1'},
 { name:  'Vision/Otros', description: '', value: 'VISION03', orderBy: '1'},
 { name:  'Asma', description: 'Asma', value: 'ASMA', orderBy: '1'},
@@ -18,4 +17,4 @@ module.exports =  [{ name:  'No hay datos', description: 'No hay datos', value: 
 { name:  'Problemas Cardiacos - Marcapaso', description: 'Problemas Cardiacos - Marcapaso', value: 'CARDIO02', orderBy: '1'},
 { name:  'Dieta Especial', description: 'Dieta Especial', value: 'DIET01', orderBy: '1'},
 { name:  'Estudiante Registrado en Educación Especial', description: 'Estudiante Registrado en Educación Especial', value: 'EEREG', orderBy: '1'},
-{ name:  'Diabético Tipo 1', description: 'Diabético', value: 'DIAB01', orderBy: '1'}];
+{ name:  'Hipoglucémico', description: 'Hipoglucémico', value: 'HIPOG', orderBy: '1'}];

@@ -9,6 +9,7 @@ export default class CurrencyInput extends Component {
         super(props);
         this.state = {valid: false};
         this.onChange = this.onChange.bind(this);
+        this.isAllowed = this.isAllowed.bind(this);
     }
 
     onChange(e) {
@@ -16,6 +17,14 @@ export default class CurrencyInput extends Component {
         this.setState({valid: value.length > 0});
         if (this.props.onChange)
             this.props.onChange(e);
+    }
+
+    isAllowed(inputValue) {
+        let limit = this.props.limit;
+        if (inputValue && inputValue.value && limit) {
+            return parseInt(inputValue.value) < limit
+        }
+        return true;
     }
 
     render() {
@@ -30,11 +39,13 @@ export default class CurrencyInput extends Component {
                               onChange={this.onChange}
                               maxLength={maxValueAllowed.length}
                               className="inputMaterial"
+                              isAllowed={this.isAllowed}
                               decimalScale={2}
                               displayType='input'
                               thousandSeparator={true}
                               prefix={'$'}/>
-                <label htmlFor={this.props.id}>{this.props.label || this.props.placeholder}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>
+                <label
+                    htmlFor={this.props.id}>{this.props.label || this.props.placeholder}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>
             </div>);
     }
 }
