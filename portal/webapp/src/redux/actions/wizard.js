@@ -116,7 +116,7 @@ function exists(type) {
 
 let flow;
 const normalFlow = [
-    getIndexFromCatalog("USER_PROFILE"),
+    getIndexFromCatalog("USER_ADDITIONAL_INFO"),
     getIndexFromCatalog("USER_ADDITIONAL_INFO"),
     getIndexFromCatalog("INSTRUCTIONS"),
     getIndexFromCatalog("DE_PROGRAM_QUESTION"),

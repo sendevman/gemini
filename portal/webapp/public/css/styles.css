@@ -363,7 +363,7 @@ input:-webkit-autofill {
 }
 
 .inputMaterial {
-    font-size: 30px;
+    font-size: 20px;
     color: #383c4b;
     padding: 10px 10px 10px 5px;
     padding-left: 50px;
@@ -1596,7 +1596,7 @@ label {
 .illustration {position: relative;width: 1000px;height: auto;}
 
 .illustration.anim-full {transform: scale(0.8);width: 1000px;height: 856px;transform-origin: left center;padding-left: 10%;}
-.illustration.anim-offset {transform-origin: left center;transform: scale(0.65);width: 1000px;height: 1041px;margin-left: -80px;}
+.illustration.anim-offset {transform-origin: left center;transform: scale(0.65);width: 1000px;height: 1041px;margin-left: -35px;}
 
 
 @-webkit-keyframes spin {0% {transform: rotate(0deg);}100% {transform: rotate(360deg);}}

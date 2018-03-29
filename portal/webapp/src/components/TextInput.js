@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import * as UIHelper from "../UIHelper";
 
 // [^0-9~!@#$%^&*()_+={}[]|\\"':;?.<>]
+let rangeFrom0to15 = /^([0-9]|[1][0-5])$/;
 let onlyLetter = /^[a-zA-Z]*$/;
 let onlyLetterAndSpace = /^[a-zA-Z ]*$/;
 let onlyNumber = /^[0-9]*$/;
@@ -21,7 +22,8 @@ let field = {
     studentNumber: {min: 4, max: 9, regex: onlyNumber},
     zipcode: {length: 5, regex: onlyNumber},
     addressLine: {min: 1, max: 100, regex: onlyLetterAndNumber},
-    password: {min: 4, max: 20, regex: emailAcceptedChar, validation: onlyLetterAndNumber}
+    password: {min: 4, max: 20, regex: emailAcceptedChar, validation: onlyLetterAndNumber},
+    totalMembers: {regex: rangeFrom0to15}
 };
 
 //TODO: fran check when lost focus weird behaviour
@@ -86,6 +88,8 @@ class TextInput extends Component {
                 case 'password':
                     this.config = field.password;
                     break;
+                case 'totalMembers':
+                    this.config = field.totalMembers;
             }
         }
     }
@@ -116,6 +120,7 @@ class TextInput extends Component {
     }
 
     render() {
+        let cssClass = "inputMaterial " + (this.props.alignCenter ? "text-center" : "");
         let isPassword = this.props.type === 'password';
         let hasError = this.state.hasError && this.props.required;
         let grouped = this.props.grouped ? "group" : "";
@@ -137,7 +142,7 @@ class TextInput extends Component {
                 <input {...props}
                        style={customCss}
                        type={isPassword ? "password" : "text"}
-                       className="inputMaterial"
+                       className={cssClass}
                        onChange={this.inputHandler}
                        value={this.state.value}
                        required // this is required by the css

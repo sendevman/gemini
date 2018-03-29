@@ -39,6 +39,9 @@ public class StudentEntity implements IdentityEntity {
     private Long sisStudentId = -1L;
 
     @Column(nullable = false)
+    private Long familyId = -1L;
+
+    @Column(nullable = false)
     private Date dateOfBirth;
 
     @Column(nullable = false)
@@ -121,6 +124,14 @@ public class StudentEntity implements IdentityEntity {
 
     public void setSisStudentId(Long sisStudentId) {
         this.sisStudentId = sisStudentId;
+    }
+
+    public Long getFamilyId() {
+        return familyId;
+    }
+
+    public void setFamilyId(Long familyId) {
+        this.familyId = familyId;
     }
 
     public Date getDateOfBirth() {

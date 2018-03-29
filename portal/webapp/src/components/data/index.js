@@ -13,8 +13,6 @@ import residentialStatus from "./codes/residentialStatus";
 import states from "./codes/states";
 import foodOptions from "./codes/foodOptions.js";
 import medicalConditions from "./codes/medicalConditions";
-import dummyGrades from "./codes/dummyGrades";
-import dummySchools from "./codes/dummySchools";
 
 //constant
 import gender from "./constants/gender";
@@ -41,8 +39,6 @@ export default {
     transportationTypes: transportationTypes,
     foodOptions: foodOptions,
     medicalConditions: medicalConditions,
-    schools: dummySchools,
-    grades: dummyGrades,
     jobTypes: jobTypes,
     incomeTypes: incomeTypes,
     registrationRelations: registrationRelationTypes

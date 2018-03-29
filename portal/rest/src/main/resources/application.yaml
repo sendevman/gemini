@@ -125,7 +125,8 @@ messages:
   preenrollment:
     invalid.address.postal: "Dirección postal inválida"
     invalid.address.residential: "Dirección residencial inválida"
-    already.exists: "Pre-Matricula ya existe en el sistema"
+    already.exists: "Matricula ya existe en el sistema"
+    already.submitted: "Usted ya sometio Matricula para este estudiante"
 
 
 

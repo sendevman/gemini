@@ -14,6 +14,7 @@ public class StudentAddress {
     private String postalAddress_1;
     private String postalAddress_2;
     private String postalCity;
+    private String postalCityCode;
     private String postalCityDesc;
     private String postalState;
     private String postalZipcode;
@@ -21,6 +22,7 @@ public class StudentAddress {
     private String physicalAddress_1;
     private String physicalAddress_2;
     private String physicalCity;
+    private String physicalCityCode;
     private String physicalCityDesc;
     private String physicalState;
     private String physicalZipcode;
@@ -73,6 +75,14 @@ public class StudentAddress {
         this.postalCity = postalCity;
     }
 
+    public String getPostalCityCode() {
+        return postalCityCode;
+    }
+
+    public void setPostalCityCode(String postalCityCode) {
+        this.postalCityCode = postalCityCode;
+    }
+
     public String getPostalCityDesc() {
         return postalCityDesc;
     }
@@ -119,6 +129,14 @@ public class StudentAddress {
 
     public void setPhysicalCity(String physicalCity) {
         this.physicalCity = physicalCity;
+    }
+
+    public String getPhysicalCityCode() {
+        return physicalCityCode;
+    }
+
+    public void setPhysicalCityCode(String physicalCityCode) {
+        this.physicalCityCode = physicalCityCode;
     }
 
     public String getPhysicalCityDesc() {

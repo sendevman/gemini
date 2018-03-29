@@ -29,7 +29,7 @@ public class CodeService extends JdbcDaoSupport {
         return getJdbcTemplate().query(
                 String.format("SELECT " +
                         "'{ name:  '''|| NAME || ''', description: '''|| DESCRIPTION||''', value: '''|| VALUE || ''', orderBy: '''|| ORDER_DEFAULT||'''}' as JSON_OBJECT " +
-                        "FROM %s ORDER BY ORDER_DEFAULT ", enumTable), new SingleColumnRowMapper<String>());
+                        "FROM %s WHERE IS_ACTIVE_IND = 1 ORDER BY ORDER_DEFAULT ", enumTable), new SingleColumnRowMapper<String>());
     }
 
 }

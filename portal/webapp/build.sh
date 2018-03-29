@@ -39,8 +39,10 @@ yarn build
 END_BUILD_DATE=date
 echo "Yarn build Start At" `$END_BUILD_DATE '+%Y-%m-%d %H:%M:%S'`
 cp -r WEB-INF build/
+cp -r META-INF build/
 cd build/
 
+pwd
 echo "Generating war ${WAR_NAME}"
 jar -cvf ../${WAR_NAME} .
 

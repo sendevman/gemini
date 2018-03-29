@@ -174,11 +174,17 @@ export const clean = () => (dispatch) => {
 
 export const triggerErrorOn = (message) => (dispatch) => {
     dispatch({type: types.TRIGGER_ERROR_ON, message: message});
+
 };
 
 export const triggerErrorOff = () => (dispatch) => {
     dispatch({type: types.TRIGGER_ERROR_OFF});
-    dispatch({type: types.CANCEL_BLOCK_UI});
+    let times = 0;
+    while(times < 3){
+        dispatch({type: types.CANCEL_BLOCK_UI});
+        times++;
+    }
+
 
 };
 

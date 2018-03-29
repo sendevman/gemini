@@ -18,7 +18,6 @@ module.exports =  [{ name:  'Español', description: 'Español', value: '1', ord
 { name:  'Bosnio', description: 'Bosnio', value: '12', orderBy: '12'},
 { name:  'Búlgaro', description: 'Búlgaro', value: '13', orderBy: '13'},
 { name:  'Camboyano', description: 'Camboyano', value: '14', orderBy: '14'},
-{ name:  'Cantonés', description: 'Cantonés', value: '15', orderBy: '15'},
 { name:  'Checo', description: 'Checo', value: '16', orderBy: '16'},
 { name:  'Coreano', description: 'Coreano', value: '17', orderBy: '17'},
 { name:  'Criollo', description: 'Corillo', value: '18', orderBy: '18'},
@@ -70,5 +69,4 @@ module.exports =  [{ name:  'Español', description: 'Español', value: '1', ord
 { name:  'Turco', description: 'Turco', value: '64', orderBy: '64'},
 { name:  'Ucraniano', description: 'Ucraniano', value: '65', orderBy: '65'},
 { name:  'Vietnamita', description: 'Vietnamita', value: '66', orderBy: '66'},
-{ name:  'Yidish', description: 'Yidish', value: '67', orderBy: '67'},
-{ name:  'Otro', description: 'Otro', value: '68', orderBy: '68'}];
+{ name:  'Yidish', description: 'Yidish', value: '67', orderBy: '67'}];

@@ -8,7 +8,6 @@ import moment from "moment";
 import esLocale from "moment/locale/es";
 import {connect} from "react-redux";
 import {checkSession, logout, onBackAction, triggerErrorOff} from "./redux/actions";
-import {blockUIActions, unblockUIActions} from "./redux/setup";
 import ReduxBlockUi from 'react-block-ui/redux';
 import {bindActionCreators} from "redux";
 import * as env from "./env";
@@ -27,11 +26,13 @@ class App extends Component {
         this.goBack = this.goBack.bind(this);
         this.goHome = this.goHome.bind(this);
         this.goAuthentication = this.goAuthentication.bind(this);
+        this.blockUIRegEx = new RegExp(/^\S*_START$/);
+        this.unblockUIActionsRegEx = new RegExp(/^(\S*_END)|(\S*_OFF)$/);
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps && nextProps.generalErrorOccurred && nextProps.errorMessage) {
-            this.refs.modal.open("Upss!!!", nextProps.errorMessage, ()=>{
+            this.refs.modal.open("Upss!!!", nextProps.errorMessage, () => {
                 this.props.triggerErrorOff();
             });
         }
@@ -87,6 +88,7 @@ class App extends Component {
     }
 
     render() {
+
         let pathname = this.props.location.pathname;
         let currentPageType = this.props.currentPageType;
         let baseClass = classnames({
@@ -106,7 +108,7 @@ class App extends Component {
         console.log(`pathname = ${pathname} ${baseClass} ${currentPageType} ${currentPageType === "INSTRUCTIONS"}`);
 
         return (
-            <ReduxBlockUi tag="div" block={blockUIActions()} unblock={unblockUIActions()}>
+            <ReduxBlockUi tag="div" block={this.blockUIRegEx} unblock={this.unblockUIActionsRegEx}>
                 <div className={`container-fluid ${baseClass}`}>
                     {this.renderUserBar()}
 
@@ -117,8 +119,11 @@ class App extends Component {
                     </div>
                     <div className="row footer d-flex align-items-center">
                         <div className="col-md-1"/>
-                        <div className="col-md-11">
+                        <div className="col-md-8">
                             <span>© 2018 All Rights Reserved</span>
+                        </div>
+                        <div className="col-md-3 text-right">
+                            <span>Build Version: 1.0</span>
                         </div>
                     </div>
                 </div>

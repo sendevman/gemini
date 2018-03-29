@@ -102,12 +102,6 @@ class CodeSelect extends Component {
             case "medicalConditions":
                 this.codes = Codes.medicalConditions;
                 break;
-            case "schools":
-                this.codes = Codes.schools;
-                break;
-            case "grades":
-                this.codes = Codes.grades;
-                break;
             case "jobTypes":
                 this.codes = Codes.jobTypes;
                 break;
@@ -125,7 +119,7 @@ class CodeSelect extends Component {
         let elementProps = Object.assign({}, this.props);
         delete elementProps.codeType;
         let validHtml = UIHelper.toggleFieldValidHtml(this.valid(), this.props.required);
-        let styleCss = this.props.grouped ? {height: 70} : null;
+        let styleCss = this.props.grouped ? {height: 50} : null;
         return (
             <div className={formGroupCss}>
                 <select ref="codeSelect" className="inputMaterial"

@@ -65,7 +65,7 @@ export default class SocialSecurityInput extends Component {
         if (props.showFormat)
             delete props.showFormat;
         let validHtml = UIHelper.toggleFieldValidHtml(this.state.valid, this.props.required);
-        return <div className="group form-group has-feedback">
+        return <div className="form-group has-feedback">
             <InputMask {...props}
                        onChange={this.inputHandler}
                        style={{paddingLeft: 20}}

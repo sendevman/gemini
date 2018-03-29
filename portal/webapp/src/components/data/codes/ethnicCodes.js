@@ -1,11 +1,5 @@
-module.exports =  [{ name:  'Hispano no Puertorriqueño', description: 'Hispano no Puertorriqueño', value: '8', orderBy: '1'},
-{ name:  'Puertorriqueño', description: 'Puertorriqueño', value: '7', orderBy: '1'},
-{ name:  'Hispano', description: 'Hispano', value: '1', orderBy: '2'},
-{ name:  'Pacific Islands', description: 'Pacific Islands', value: '4', orderBy: '3'},
-{ name:  'Blanco no Hispano', description: 'Blanco no Hispano', value: '2', orderBy: '4'},
+module.exports =  [{ name:  'Blanco no Hispano', description: 'Blanco no Hispano', value: '2', orderBy: '4'},
 { name:  'Indio Americano/Nativo de Alaska', description: 'Indio Americano/Nativo de Alaska', value: '5', orderBy: '5'},
 { name:  'Nativo Hawaiano/Islas del Pacífico', description: 'Nativo Hawaiano/Islas del Pacífico', value: '6', orderBy: '6'},
 { name:  'Asiatico', description: 'Asiatico', value: '10', orderBy: '6'},
-{ name:  'Datos No Disponibles', description: 'Datos No Disponibles', value: '0', orderBy: '6'},
-{ name:  'Negro o Afroamericano', description: 'Negro o Afroamericano', value: '9', orderBy: '7'},
-{ name:  'Negro, no hispano', description: 'Negro, no hispano', value: '3', orderBy: '7'}];
+{ name:  'Negro o Afroamericano', description: 'Negro o Afroamericano', value: '9', orderBy: '7'}];

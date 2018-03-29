@@ -41,19 +41,22 @@ class UserAdditionalInfoRequest extends Component {
                         <div className="col-md-6">
                             <CurrencyInput id="income"
                                            ref="income"
-                                           label="Ingresos"
+                                           label="Ingreso Anual"
                                            onChange={this.inputHandler}
                                            value={form.income}
+                                           limit={250001}
                                            required
                                            grouped/>
                         </div>
                         <div className="col-md-6">
                             <TextInput id="totalFamilyMembers"
-                                       type="number"
+                                       type="totalMembers"
                                        ref="totalFamilyMembers"
                                        label="Total de Miembros de la Familia"
                                        onChange={this.inputHandler}
+                                       alignCenter
                                        value={form.totalFamilyMembers}
+                                       max={15}
                                        required
                                        grouped/>
                         </div>
