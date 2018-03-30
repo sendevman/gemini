@@ -25,8 +25,11 @@ export const savePreEnrollment = (form, onResult, onError) => (dispatch, getStat
                     dispatch({type: types.STUDENT_UPDATED, student: response.content.student});
                     onResult();
                 }
-                else
-                    onError(Utils.errorObj(response, dispatch));
+                else {
+                    if (response.found)
+                        dispatch({type: types.PRE_ENROLLMENT_ACTIVE_FOUND});
+                    else onError(Utils.errorObj(response, dispatch));
+                }
             } catch (e) {
                 onError(Utils.errorObj(response, dispatch));
             }

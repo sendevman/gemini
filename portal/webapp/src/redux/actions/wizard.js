@@ -18,41 +18,75 @@ let catalog = [
         type: "DE_PROGRAM_QUESTION",
         footerType: QUESTION,
         yes: "DEPR_ENROLLED_QUESTION",
-        no: "DEPR_ENROLLED_QUESTION"
+        no: "DEPR_ENROLLED_QUESTION",
+        isQuestion: true
     }
-    , {type: "DEPR_ENROLLED_QUESTION", yes: "STUDENT_LOOKUP", no: "PERSONAL_INFO", footerType: QUESTION}
+    , {
+        type: "DEPR_ENROLLED_QUESTION",
+        yes: "STUDENT_LOOKUP",
+        no: "PERSONAL_INFO",
+        footerType: QUESTION,
+        isQuestion: true
+    }
     , {
         type: "STUDENT_LOOKUP",
         footerType: SEARCH,
         success: "FOUND_INFO",
         failure: "NOT_FOUND_QUESTION",
-        waitForResult: true
+        waitForResult: true,
+        isQuestion: true
     }
-    , {type: "NOT_FOUND_QUESTION", yes: "STUDENT_LOOKUP", no: "PERSONAL_INFO", footerType: NOT_FOUND_QUESTION}
+    , {
+        type: "NOT_FOUND_QUESTION",
+        yes: "STUDENT_LOOKUP",
+        no: "PERSONAL_INFO",
+        footerType: NOT_FOUND_QUESTION,
+        isQuestion: true
+    }
     , {type: "FOUND_INFO", footerType: CONTINUE}
     , {type: "PERSONAL_INFO", footerType: IN_PROGRESS, editFooterType: CONTINUE}
     , {type: "PERSONAL_ADDITIONAL_INFO", footerType: IN_PROGRESS, editFooterType: CONTINUE}
-    , {type: "IS_STUDENT_HISPANIC_QUESTION", yes: "IS_STUDENT_BORN_PR_QUESTION", no: "IS_STUDENT_BORN_PR_QUESTION", footerType: QUESTION}
-    , {type: "IS_STUDENT_BORN_PR_QUESTION", yes: "ADDRESS", no: "ADDRESS", footerType: QUESTION}
+    , {
+        type: "IS_STUDENT_HISPANIC_QUESTION",
+        yes: "IS_STUDENT_BORN_PR_QUESTION",
+        no: "IS_STUDENT_BORN_PR_QUESTION",
+        footerType: QUESTION,
+        isQuestion: true
+    }
+    , {type: "IS_STUDENT_BORN_PR_QUESTION", yes: "ADDRESS", no: "ADDRESS", footerType: QUESTION, isQuestion: true}
 
     , {
         type: "ADDRESS",
-        footerType: IN_PROGRESS,
+        footerType: IN_PROGRESS
+    }
+    , {
+        type: "NEED_TRANSPORTATION_QUESTION",
+        // //conditioned
+        // yes: "PRE_ENROLLMENT_FOUND_SUBMIT",
+        // no: "PRE_ENROLLMENT_FOUND_SUBMIT",
+
+        onNotFoundPreEnrollmentWhenSpecialized: "PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION",
         onNotFoundPreEnrollment: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION",
         onFoundPreEnrollment: "PRE_ENROLLMENT_FOUND_SUBMIT",
-        reviewHop: "VOCATIONAL_REVIEW_SUBMIT"
+        reviewHop: "VOCATIONAL_REVIEW_SUBMIT",
+
+        footerType: QUESTION,
+    }
+    , {
+        type: "PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION",
+        footerType: IN_PROGRESS
     }
 
     , {type: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION", footerType: IN_PROGRESS}
     , {
         type: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT",
-        footerType: FINALIZE_OR_CHANGE,
+        footerType: QUESTION,
         yes: "PRE_ENROLLMENT_COMPLETED",
         no: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"
     }
     , {
         type: "PRE_ENROLLMENT_FOUND_SUBMIT",
-        footerType: FINALIZE_OR_CHANGE,
+        footerType: QUESTION,
         yes: "PRE_ENROLLMENT_COMPLETED",
         no: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"
     }
@@ -66,7 +100,7 @@ let catalog = [
     , {type: "VOCATIONAL_PROGRAMS", footerType: CONTINUE}
     , {
         type: "VOCATIONAL_REVIEW_SUBMIT",
-        footerType: FINALIZE_OR_CHANGE,
+        footerType: QUESTION,
         yes: "PRE_ENROLLMENT_COMPLETED",
         no: "VOCATIONAL_SCHOOL_SELECTION",
         addingSchoolHop: "VOCATIONAL_SCHOOL_SELECTION",
@@ -116,7 +150,7 @@ function exists(type) {
 
 let flow;
 const normalFlow = [
-    getIndexFromCatalog("USER_ADDITIONAL_INFO"),
+    getIndexFromCatalog("USER_PROFILE"),
     getIndexFromCatalog("USER_ADDITIONAL_INFO"),
     getIndexFromCatalog("INSTRUCTIONS"),
     getIndexFromCatalog("DE_PROGRAM_QUESTION"),
@@ -130,6 +164,8 @@ const normalFlow = [
     getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
 
     getIndexFromCatalog("ADDRESS"),
+    getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
+    getIndexFromCatalog("PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
@@ -150,6 +186,7 @@ const parentVocationalFlow = [
     getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
 
     getIndexFromCatalog("ADDRESS"),
+    getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
     getIndexFromCatalog("VOCATIONAL_SCHOOL_SELECTION"),
     getIndexFromCatalog("VOCATIONAL_SCHOOL_INFO"),
     getIndexFromCatalog("VOCATIONAL_PROGRAMS"),
@@ -163,6 +200,8 @@ const editNormalFlow = [
     getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
     getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
     getIndexFromCatalog("ADDRESS"),
+    getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
+    getIndexFromCatalog("PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
@@ -175,6 +214,7 @@ const editVocationalFlow = [
     getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
     getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
     getIndexFromCatalog("ADDRESS"),
+    getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
 
     getIndexFromCatalog("VOCATIONAL_SCHOOL_SELECTION"),
     getIndexFromCatalog("VOCATIONAL_SCHOOL_INFO"),
@@ -207,7 +247,7 @@ export const load = (requestId) => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_LOAD_START});
     let user = getState().profile.user;
     let profileCompleted = user.profileCompleted;
-    let editing = (user.workingPreEnrollmentId && user.workingPreEnrollmentId > 0) || requestId;
+    let editing = requestId;
 
     flow = editing
         ? (user.userVocationalStudent ? editVocationalFlow : editNormalFlow)
@@ -241,6 +281,11 @@ function changeForms(dispatch, formToChange) {
 
 function changeToRegularForm(dispatch, preEnrollment, formToChange) {
     preEnrollment.type = types.REGULAR_ENROLLMENT;
+    changeForms(dispatch, formToChange)
+}
+
+function changeToSpecializedForm(dispatch, preEnrollment, formToChange) {
+    preEnrollment.type = types.SPECIALIZED_SCHOOLS_ENROLLMENT;
     changeForms(dispatch, formToChange)
 }
 
@@ -290,21 +335,28 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
     let type = currentForm.type;
     let next = current + 1;
 
-    if(student.studentExistsInSIE && isType(current, "PERSONAL_INFO") ){
+    if (student.studentExistsInSIE && isType(current, "PERSONAL_INFO")) {
         next = getIndexFromFlow("ADDRESS");
     }
 
-    if (type.lastIndexOf("_QUESTION") > 0 || type.lastIndexOf("_SUBMIT") > 0) {
+    if (type.isQuestion || type.lastIndexOf("_SUBMIT") > 0) {
         next = getIndexFromFlow(currentForm.yes);
-    } else if (isType(current, "ADDRESS") && preEnrollment.type === types.REGULAR_ENROLLMENT) {
+    } else if (isType(current, "NEED_TRANSPORTATION_QUESTION")
+        && (preEnrollment.type === types.REGULAR_ENROLLMENT
+            || preEnrollment.type === types.REGULAR_ALTERNATE_SCHOOLS
+            || preEnrollment.type === types.SPECIALIZED_SCHOOLS_ENROLLMENT)) {
         let preEnrollmentInfo = preEnrollment.info;
         if (!preEnrollmentInfo.hasPreEnrollment) {
-            preEnrollment.type = "ALTERNATE_SCHOOLS";
-            next = getIndexFromFlow(currentForm.onNotFoundPreEnrollment);
+            if (preEnrollment.type === types.SPECIALIZED_SCHOOLS_ENROLLMENT) {
+                next = getIndexFromFlow(currentForm.onNotFoundPreEnrollmentWhenSpecialized);
+            } else {
+                next = getIndexFromFlow(currentForm.onNotFoundPreEnrollment);
+                preEnrollment.type = types.REGULAR_ALTERNATE_SCHOOLS;
+            }
         } else {
             next = getIndexFromFlow(currentForm.onFoundPreEnrollment);
         }
-    } else if (isType(current, "ADDRESS") && preEnrollment.type === types.OCCUPATIONAL_ENROLLMENT && wizard.editing && currentForm.reviewHop) {
+    } else if (isType(current, "NEED_TRANSPORTATION_QUESTION") && preEnrollment.type === types.OCCUPATIONAL_ENROLLMENT && wizard.editing && currentForm.reviewHop) {
         next = getIndexFromFlow(currentForm.reviewHop);
     } else if (isType(current, "PRE_ENROLLMENT_CONFIRMED")) {
         resetWizard()(dispatch);
@@ -350,6 +402,9 @@ export const onProgramSelectionAction = (selection) => (dispatch, getState) => {
             break;
         case types.REGULAR_ENROLLMENT:
             changeToRegularForm(dispatch, preEnrollment, normalFlow);
+            break;
+        case types.SPECIALIZED_SCHOOLS_ENROLLMENT:
+            changeToSpecializedForm(dispatch, preEnrollment, normalFlow);
             break;
     }
 

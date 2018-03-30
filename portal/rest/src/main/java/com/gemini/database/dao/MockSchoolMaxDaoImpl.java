@@ -1,6 +1,7 @@
 package com.gemini.database.dao;
 
 import com.gemini.beans.requests.StudentSearchRequest;
+import com.gemini.beans.types.SpecializedSchoolCategory;
 import com.gemini.database.dao.beans.*;
 import com.gemini.utils.ValidationUtils;
 import com.google.common.base.Function;
@@ -154,8 +155,18 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
     }
 
     @Override
-    public List<School> findVocationalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel) {
+    public List<School> findOccupationalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel) {
         return findSchoolsByRegionAndGradeLevel(regionId, schoolYear, gradeLevel);
+    }
+
+    @Override
+    public List<School> findSpecializedSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel, SpecializedSchoolCategory category) {
+        return findSchoolsByRegionAndGradeLevel(regionId, schoolYear, gradeLevel);
+    }
+
+    @Override
+    public List<School> findTechnicalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear) {
+        return findSchoolsByRegionAndGradeLevel(regionId, schoolYear, "00");
     }
 
     @Override

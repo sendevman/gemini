@@ -15,7 +15,9 @@ const initialState = {
     cleanTimeoutId: null,
     clean: false,
     generalErrorOccurred: false,
-    errorMessage: null
+    errorMessage: null,
+    sessionExpired: false,
+    sessionMessage: null
 
 };
 
@@ -62,6 +64,11 @@ const profile = (state = Utils.freezeObject(initialState), action) => {
             return {...state, generalErrorOccurred: true, errorMessage: action.message};
         case types.TRIGGER_ERROR_OFF:
             return {...state, generalErrorOccurred: false, errorMessage: null};
+        case types.TRIGGER_SESSION_EXPIRED_ON:
+            return {...state, sessionExpired: true, sessionMessage: action.message};
+        case types.LOGOUT_END:
+        case  types.TRIGGER_SESSION_EXPIRED_OFF:
+            return Utils.freezeObject(initialState);
         default:
             return state;
     }

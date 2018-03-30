@@ -64,11 +64,11 @@ async function _session(dispatch) {
 
 async function _login(form, dispatch, getState, onSuccess, onError) {
     let authResponse;
-    let jsonResponse;
+    let user;
 
     try {
         authResponse = await services().authenticate(form);
-        jsonResponse = await authResponse.json();
+        user = await authResponse.json();
     } catch (e) {
         dispatch({type: types.UNKNOWN_LOGIN_ERROR})
     }
@@ -83,10 +83,12 @@ async function _login(form, dispatch, getState, onSuccess, onError) {
                 break;
             case 200:
                 toggleCleanTimeout()(dispatch, getState);
-                dispatch({type: types.AUTHENTICATED, response: jsonResponse});
+                dispatch({type: types.AUTHENTICATED, response: user});
                 await services().token();
-                let canGoHome = jsonResponse.canGoHome;
-                let nextPath = canGoHome ? "/home" : "/wizard";
+                let canGoHome = user.canGoHome;
+                let requestId = user.workingPreEnrollmentId && parseInt(user.workingPreEnrollmentId) > 0 ?  user.workingPreEnrollmentId : "";
+                let nextPath = canGoHome ? "/home" : `/wizard/${requestId}`;
+                console.log(nextPath);
                 onSuccess(nextPath);
                 break;
             default:
@@ -172,6 +174,15 @@ export const clean = () => (dispatch) => {
     dispatch({type: types.CLEAN_FORM});
 };
 
+export const triggerSessionExpiredOn = (message) => (dispatch) => {
+    dispatch({type: types.TRIGGER_SESSION_EXPIRED_ON, message: message});
+};
+
+export const triggerSessionExpiredOff = (message) => (dispatch) => {
+    dispatch({type: types.TRIGGER_SESSION_EXPIRED_OFF, message: message});
+    unblockUI(dispatch);
+};
+
 export const triggerErrorOn = (message) => (dispatch) => {
     dispatch({type: types.TRIGGER_ERROR_ON, message: message});
 
@@ -179,12 +190,14 @@ export const triggerErrorOn = (message) => (dispatch) => {
 
 export const triggerErrorOff = () => (dispatch) => {
     dispatch({type: types.TRIGGER_ERROR_OFF});
+    unblockUI(dispatch);
+};
+
+function unblockUI(dispatch) {
     let times = 0;
-    while(times < 3){
+    while (times < 3) {
         dispatch({type: types.CANCEL_BLOCK_UI});
         times++;
     }
-
-
-};
+}
 

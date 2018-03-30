@@ -11,7 +11,12 @@ export const loadCodes = (promise) => (dispatch) => {
 
 //todo: fran validate this!!!
 export const loadVocationalCodes = () => (dispatch) => {
-    Promise.all([getVocationalRegions(dispatch), getGradeLevels(dispatch)]).then(() => {
+    Promise.all([getVocationalRegions(dispatch), getGradeLevels(dispatch, types.OCCUPATIONAL)]).then(() => {
+    });
+};
+
+export const loadSpecializedCodes = () => (dispatch) => {
+    Promise.all([getRegions(dispatch), getGradeLevels(dispatch, types.SPECIALIZED), getSpecializedSchoolCategories(dispatch)]).then(() => {
     });
 };
 
@@ -30,16 +35,30 @@ function getRegions(dispatch) {
     });
 }
 
-function getGradeLevels(dispatch) {
+function getGradeLevels(dispatch, category) {
     dispatch({type: types.GRADELEVEL_LOAD_START});
-    return services().getGradeLevels().then((response) => {
+    return services().getGradeLevels(category).then((response) => {
         dispatch({type: types.GRADELEVEL_LOAD_END, response: response});
+    });
+}
+
+function getSpecializedSchoolCategories(dispatch) {
+    dispatch({type: types.CATEGORIES_LOAD_START});
+    return services().getSpecializedSchoolCategories().then((response) => {
+        dispatch({type: types.CATEGORIES_LOAD_END, response: response});
     });
 }
 
 export const getSchools = (regionId, gradeLevel) => (dispatch) => {
     dispatch({type: types.SCHOOL_LOAD_START});
     return services().getSchoolsByRegionAndGradeLevel(regionId, gradeLevel).then((response) => {
+        dispatch({type: types.SCHOOL_LOAD_END, response: response});
+    });
+};
+
+export const getSpecializedSchools = (regionId, gradeLevel, category) => (dispatch) => {
+    dispatch({type: types.SCHOOL_LOAD_START});
+    return services().getSpecializedSchoolsByRegionAndGradeLevel(regionId, gradeLevel, category).then((response) => {
         dispatch({type: types.SCHOOL_LOAD_END, response: response});
     });
 };

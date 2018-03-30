@@ -196,14 +196,14 @@ public class PreEnrollmentService {
             result.setExists(entity != null);
         }
 
-        if(!result.isExists()){
+        if (!result.isExists()) {
             //do search by firstname, lastname, birthdate & ssn
 //            entity = preEnrollmentRepository.findByDateOfBirthAndFirstNameAndLastName(request.getDateOfBirth(), request.getFirstName(), request.getLastName());
             entity = preEnrollmentRepository.findBySsn(request.getSsn());
             result.setExists(entity != null);
         }
 
-        if(result.isExists()){
+        if (result.isExists()) {
             final Long matchId = entity.getId();
             UserEntity userEntity = userRepository.findOne(loggedUser.getId());
             boolean isUserRequest = FluentIterable
@@ -217,7 +217,10 @@ public class PreEnrollmentService {
             result.setBelongsToUser(isUserRequest);
         }
 
-
+        if (result.isExists()) {
+            result.setRequestId(entity.getId());
+            result.setCompleted(!RequestStatus.ACTIVE.equals(entity.getRequestStatus()));
+        }
         return result;
     }
 
@@ -420,7 +423,7 @@ public class PreEnrollmentService {
 
     public boolean partialAlternatePreEnrollmentSave(final AlternateSchoolPreEnrollmentSubmitRequest request) {
         final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
-        requestEntity.setType(EnrollmentType.ALTERNATE_SCHOOLS);
+        requestEntity.setType(EnrollmentType.REGULAR_ALTERNATE_SCHOOLS);
 
         final List<PreEnrollmentAlternateSchoolEntity> alternateSchoolsDB = requestEntity.getAlternateSchools();
         List<AlternateSchoolBean> altSchoolsInDBList = CopyUtils.convert(alternateSchoolsDB, AlternateSchoolBean.class);
@@ -472,7 +475,7 @@ public class PreEnrollmentService {
 
     public boolean alternatePreEnrollmentSubmit(final AlternateSchoolPreEnrollmentSubmitRequest request) {
         final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
-        requestEntity.setType(EnrollmentType.ALTERNATE_SCHOOLS);
+        requestEntity.setType(EnrollmentType.REGULAR_ALTERNATE_SCHOOLS);
         requestEntity.setRequestStatus(RequestStatus.PENDING_TO_REVIEW);
         requestEntity.setSubmitDate(commonService.getCurrentDate());
         return preEnrollmentRepository.save(requestEntity) != null;
@@ -503,7 +506,7 @@ public class PreEnrollmentService {
         entity.setSisStudentId(bean.getStudentId());
         entity.setPostal(postal);
         entity.setPhysical(physical);
-        if(StringUtils.hasText(bean.getEthnicCd())){
+        if (StringUtils.hasText(bean.getEthnicCd())) {
             EthnicCodeEntity ethnicCodeEntity = new EthnicCodeEntity();
             ethnicCodeEntity.setValue(bean.getEthnicCd());
             ethnicCodeEntity.setDescription(bean.getEthnicCode());

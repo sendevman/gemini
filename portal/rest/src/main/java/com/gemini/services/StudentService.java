@@ -93,4 +93,12 @@ public class StudentService {
         entity = studentRepository.save(entity);
         return entity != null;
     }
+
+
+    public boolean saveRequestTransportation(StudentAnswerRequest request) {
+        StudentEntity entity = studentRepository.findOne(request.getStudentId());
+        entity.setTransportationRequested(request.getAnswer());
+        entity = studentRepository.save(entity);
+        return entity != null;
+    }
 }

@@ -23,7 +23,6 @@ public class StudentResponse extends ResponseBase implements IdentityForm {
     //todo: refactoring alert fran check these fields they are not needed
     private boolean isEnrolled;
     private int currentGradeLevel;
-    private boolean found;
 
     public Long getStudentNumber() {
         return studentNumber;
@@ -91,14 +90,6 @@ public class StudentResponse extends ResponseBase implements IdentityForm {
 
     public void setCurrentGradeLevel(int currentGradeLevel) {
         this.currentGradeLevel = currentGradeLevel;
-    }
-
-    public boolean isFound() {
-        return found;
-    }
-
-    public void setFound(boolean found) {
-        this.found = found;
     }
 
     public String getFullName() {

@@ -87,5 +87,21 @@ public class StudentController {
         return ResponseEntity.ok(ResponseBase.error(messageHelper.generalError()));
     }
 
+    @RequestMapping(value = "/{studentId}/request/transportation/save", method = RequestMethod.POST)
+    public ResponseEntity<ResponseBase> saveRequestTransportationAnswer(@PathVariable Long studentId, @Valid @RequestBody StudentAnswerRequest request, BindingResult result) {
+        boolean saved;
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(messageHelper.missingFormFields(result));
+        }
+
+        request.setStudentId(studentId);
+        saved = studentService.saveRequestTransportation(request);
+        if (saved) {
+            return ResponseEntity.ok(ResponseBase.success());
+        }
+
+        return ResponseEntity.ok(ResponseBase.error(messageHelper.generalError()));
+    }
+
 
 }

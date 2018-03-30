@@ -8,6 +8,7 @@ const initialState = {
         , citizenship: null
         , ethnicCodes: []
         , ethnicCodesToDelete: []
+        , saved: false
     },
     physicalAddress: {line1: '', line2: '', city: '', country: '', zipcode: ''},
     postalAddress: {line1: '', line2: '', city: '', country: '', zipcode: ''}
@@ -32,6 +33,8 @@ const studentInfo = (state = Utils.freezeObject(initialState), action) => {
         case types.STUDENT_UPDATED:
             return {...state, student: action.student};
         case types.STUDENT_DEMOGRAPHICS_SAVE_END:
+            return {...state, demographics: {...state.demographics, saved: true}};
+        case types.STUDENT_DEMOGRAPHICS_LOAD_END:
             return {...state, demographics: action.response.content || state.demographics};
         case types.HOME_LOAD_END:
             return Utils.freezeObject(initialState);

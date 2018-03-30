@@ -45,7 +45,7 @@ public class Student {
     }
 
     public Long getFamilyId() {
-        return familyId;
+        return familyId == null ? -1L : familyId;
     }
 
     public void setFamilyId(Long familyId) {

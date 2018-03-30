@@ -23,6 +23,7 @@ class Routes extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.location !== prevProps.location) {
+            console.log(`this.props.location = ${this.props.location}`);
             this.props.onRouteChanged(this.props.location);
         }
     }
@@ -52,6 +53,7 @@ class Routes extends Component {
                 {/*privates routes*/}
                 <PrivateRoute path="/home" component={Home} authenticated={authenticated} loading={loading}/>
                 <PrivateRoute path="/wizard/:id?" component={Wizard} authenticated={authenticated} loading={loading}/>
+                {/*<RefreshRoute path="/wizard/edit/:id?" component={Wizard} authenticated={authenticated} loading={loading}/>*/}
                 <PrivateRoute path="/profile" component={Profile} authenticated={authenticated} loading={loading}/>
 
                 {/*404 page*/}
@@ -71,6 +73,19 @@ const PrivateRoute = ({component: Component, ...rest}) => (
                     <div>Esto no deberia suceder recargue la pagina</div>)
                 : (<Redirect to={{pathname: "/login", state: {from: props.location}}}/>)
         }
+    />
+);
+
+const RefreshRoute = ({ path}) => (
+    <Route
+        path={path}
+        component={({ history, location, match }) => {
+            history.replace({
+                ...location,
+                pathname:location.pathname.substring(match.path.length)
+            });
+            return null;
+        }}
     />
 );
 

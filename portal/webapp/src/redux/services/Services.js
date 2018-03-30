@@ -1,6 +1,8 @@
 import fetch from "safe-fetch";
 import {buildUrl} from "../../Utils";
-import {triggerErrorOn} from "../actions";
+
+import Cookies from 'cookies-js';
+import {triggerErrorOn, triggerSessionExpiredOn} from "../actions";
 
 fetch.cookieName = 'XSRF-TOKEN';
 fetch.headerName = 'X-XSRF-TOKEN';
@@ -86,23 +88,37 @@ export default class Services {
     }
 
     getVocationalRegions() {
-        return this._get(`/smax/interface/retrieve/vocational/regions`);
+        return this._get(`/smax/interface/retrieve/occupational/regions`);
     }
 
-    getGradeLevels() {
-        return this._get(`/smax/interface/retrieve/grade/levels`);
+    getGradeLevels(category) {
+        let param = category ? `?category=${category}` : "";
+        return this._get(`/smax/interface/retrieve/grade/levels/school/category${param}`);
     }
 
     getSchoolsByRegionAndGradeLevel(regionId, gradeLevel) {
         return this._get(`/smax/interface/retrieve/school/${regionId}/grade/level/${gradeLevel}`);
     }
 
+    getSchoolsByRegionAndGradeLevel(regionId, gradeLevel) {
+        return this._get(`/smax/interface/retrieve/school/${regionId}/grade/level/${gradeLevel}`);
+    }
+
+    getSpecializedSchoolCategories(){
+        return this._get(`/smax/interface/retrieve/specialized/school/categories`);
+    }
+
+    getSpecializedSchoolsByRegionAndGradeLevel(regionId, gradeLevel, category) {
+        let param = category ? `?category=${category}` : "";
+        return this._get(`/smax/interface/specialized/school/${regionId}/grade/level/${gradeLevel}${param}`);
+    }
+
     getVocationalSchoolsByRegionAndGradeLevel(regionId, gradeLevel) {
-        return this._get(`/smax/interface/retrieve/vocational/school/${regionId}/grade/level/${gradeLevel}`);
+        return this._get(`/smax/interface/retrieve/occupational/school/${regionId}/grade/level/${gradeLevel}`);
     }
 
     getVocationalProgramsBySchool(schoolId) {
-        return this._get(`/smax/interface/retrieve/vocational/programs/school/${schoolId}`);
+        return this._get(`/smax/interface/retrieve/occupational/programs/school/${schoolId}`);
     }
 
     //pre-enrollment
@@ -168,10 +184,15 @@ export default class Services {
         return this._securedPost(`/student/${form.studentId}/hispanic/save`, form);
     }
 
+    saveNeedTransportationService(form) {
+        return this._securedPost(`/student/${form.studentId}/request/transportation/save`, form);
+    }
+
+
     _login(path, credentials) {
         let authorization = `Basic ${btoa(credentials.username + ':' + credentials.password)}`;
         return fetch(buildUrl(path), {method: "POST", ...this._addHeader(authorization), credentials: "same-origin"})
-            .then((response) => this._handleHttpCode(response))
+            .then((response) => this._handleHttpCode(response, false))
 
     }
 
@@ -247,20 +268,24 @@ export default class Services {
         return headersObj;
     }
 
-    _handleHttpCode(response, manageException = false) {
+    _handleHttpCode(response, manageException = true) {
 
         let httpStatus = response.status;
-        if ((httpStatus >= 200 && httpStatus < 300) || (httpStatus >= 400 && httpStatus <= 403) || httpStatus === 423) {
+        if ((httpStatus >= 200 && httpStatus < 300) || (httpStatus >= 400 && httpStatus <= 402)) {
             return response;
+        } else if (httpStatus === 403) {
+            if (manageException) {
+                this.store.dispatch(triggerSessionExpiredOn("Su session ha expirado"));
+            }
         } else {
-            this.store.dispatch(triggerErrorOn("Occurio un error interno, disculpe el inconveniente"));
+            if (manageException)
+                this.store.dispatch(triggerErrorOn("Occurio un error interno, disculpe el inconveniente"));
             console.log(`internal server error, error info: ${response && response.statusText}`);
             let message = (response && response.statusText) || "unknown error";
 
             if (manageException) {
                 console.log(message);
-                // this.triggerError(error)
-            } 
+            }
         }
     }
 
