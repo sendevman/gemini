@@ -56,14 +56,22 @@ public class PreEnrollmentRequestController {
 
         RequestSearchResult searchResult = preEnrollmentService.exists(initialRequest, loggedUser);
         if(searchResult.cannotUseRequest()){
-            ResponseBase responseBase = ResponseBase.error("Validaci\u00f3n", messageHelper.processMessages("already.exists"));
+            ResponseBase responseBase = ResponseBase.error("Validaci\u00f3n", messageHelper.processMessages("enrollment.already.exists"));
             return ResponseEntity.ok().body(responseBase);
         }
 
         if(searchResult.requestIsCompleted()){
-            ResponseBase responseBase = ResponseBase.error("Validaci\u00f3n", messageHelper.processMessages("already.submitted"));
+            ResponseBase responseBase = ResponseBase.error("Validaci\u00f3n", messageHelper.processMessages("enrollment.already.submitted"));
             return ResponseEntity.ok().body(responseBase);
         }
+
+        if(searchResult.isExists() && !ValidationUtils.valid(initialRequest.getRequestId())){
+            ResponseBase responseBase = ResponseBase.error( messageHelper.processMessages("enrollment.already.active"));
+            responseBase.setRequestId(searchResult.getRequestId());
+            responseBase.setFound(true);
+            return ResponseEntity.ok().body(responseBase);
+        }
+
 
         ResponseEntity<ResponseBase> response;
         if (!searchResult.isExists()) {

@@ -1,23 +1,19 @@
 package com.gemini.database.dao;
 
 import com.gemini.beans.requests.StudentSearchRequest;
+import com.gemini.beans.types.SpecializedSchoolCategory;
 import com.gemini.database.dao.beans.*;
 import com.gemini.utils.ValidationUtils;
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +35,7 @@ public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements Sc
     private final String ENROLLMENT_SQL = "SELECT * FROM VW_SIE_NYE_STUDENT_ENROLLMENT ";
     private final String SCHOOL_SQL = "SELECT * FROM VW_SCHOOLS S ";
     private final String VOCATIONAL_SCHOOLS = "SELECT * FROM VW_VOCATIONAL_SCHOOLS S ";
+    private final String SPECIALIZED_SCHOOLS = "SELECT * FROM VW_SPECIALIZED_SCHOOLS S ";
     private final String VOCATIONAL_PROGRAMS = "SELECT * FROM VW_VOCATIONAL_PROGRAMS ";
     private final String SCHOOL_GRADE_LEVELS = "SELECT * FROM VW_SCHOOLS_GRADE_LEVELS ";
 
@@ -59,27 +56,27 @@ public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements Sc
         StringBuilder sql = new StringBuilder(STUDENT_SQL.concat(" WHERE 1=1 "));
         Map<String, Object> params = Maps.newTreeMap();
 
-        if(ValidationUtils.valid(searchRequest.getFirstName())){
+        if (ValidationUtils.valid(searchRequest.getFirstName())) {
             sql.append(" AND FIRST_NAME_CANON = GET_CANON_NAME(:firstName)");
             params.put("firstName", searchRequest.getFirstName());
         }
 
-        if(ValidationUtils.valid(searchRequest.getLastName())){
+        if (ValidationUtils.valid(searchRequest.getLastName())) {
             sql.append(" AND LAST_NAME_CANON like GET_CANON_NAME(:lastName) || '%'");
             params.put("lastName", searchRequest.getLastName());
         }
 
-        if(ValidationUtils.valid(searchRequest.getLastSsn())){
+        if (ValidationUtils.valid(searchRequest.getLastSsn())) {
             sql.append(" AND SUBSTR(SSN, -4) = :lastSsn");
             params.put("lastSsn", searchRequest.getLastSsn().toString());
         }
 
-        if(ValidationUtils.valid(searchRequest.getDateOfBirth())){
+        if (ValidationUtils.valid(searchRequest.getDateOfBirth())) {
             sql.append(" AND trunc(DATE_OF_BIRTH) = :dob");
             params.put("dob", searchRequest.getDateOfBirth());
         }
 
-        if(ValidationUtils.valid(searchRequest.getStudentNumber())){
+        if (ValidationUtils.valid(searchRequest.getStudentNumber())) {
             sql.append(" AND EXT_STUDENT_NUMBER = :studentNumber");
             params.put("studentNumber", searchRequest.getStudentNumber());
         }
@@ -119,12 +116,35 @@ public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements Sc
     }
 
     @Override
-    public List<School> findVocationalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel) {
+    public List<School> findOccupationalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel) {
         String sql = VOCATIONAL_SCHOOLS.concat(" WHERE REGION_ID = ? " +
                 "AND EXISTS(SELECT 1 FROM VW_SCHOOLS_GRADE_LEVELS SGL " +
                 "WHERE SGL.SCHOOL_ID = S.SCHOOL_ID " +
                 "AND SGL.SCHOOL_YEAR = ? AND SGL.VALUE = ?) ORDER BY SCHOOL_NAME");
         return getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(School.class), regionId, schoolYear, gradeLevel);
+    }
+
+    @Override
+    public List<School> findSpecializedSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel, SpecializedSchoolCategory category) {
+        Map<String, Object> params = ImmutableMap.<String, Object>of("regionId", regionId, "schoolYear", schoolYear, "gradeLevel", gradeLevel);
+        String sql = SPECIALIZED_SCHOOLS.concat(" WHERE REGION_ID = :regionId " +
+                "AND EXISTS(SELECT 1 FROM VW_SCHOOLS_GRADE_LEVELS SGL " +
+                "WHERE SGL.SCHOOL_ID = S.SCHOOL_ID " +
+                "AND SGL.SCHOOL_YEAR = :schoolYear AND SGL.VALUE = :gradeLevel) ");
+        if (category != null) {
+            sql.concat(" AND SPECIALIZED_CATEGORY_CODE = :category");
+            params.put("category", category);
+        }
+        sql.concat(" ORDER BY SCHOOL_NAME");
+
+        return getNamedParameterJdbcTemplate().query(sql, params, new BeanPropertyRowMapper<>(School.class));
+    }
+
+    //todo: fran change this!!!
+    @Override
+    public List<School> findTechnicalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear) {
+        String sql = SCHOOL_SQL.concat("WHERE REGION_ID = ? ORDER BY SCHOOL_NAME");
+        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(School.class), regionId, schoolYear);
     }
 
     @Override

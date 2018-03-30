@@ -15,6 +15,7 @@ public class ResponseBase<T> {
     private Long requestId;
     private boolean successfulOperation;
     private boolean errorOperation;
+    private boolean found;
     private T content;
     private String titleMessage;
     private List<String> validationMessages = new ArrayList<>();
@@ -44,6 +45,14 @@ public class ResponseBase<T> {
 
     public void setErrorOperation(boolean errorOperation) {
         this.errorOperation = errorOperation;
+    }
+
+    public boolean isFound() {
+        return found;
+    }
+
+    public void setFound(boolean found) {
+        this.found = found;
     }
 
     public T getContent() {

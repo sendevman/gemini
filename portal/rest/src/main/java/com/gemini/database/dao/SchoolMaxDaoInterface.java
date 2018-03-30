@@ -1,6 +1,7 @@
 package com.gemini.database.dao;
 
 import com.gemini.beans.requests.StudentSearchRequest;
+import com.gemini.beans.types.SpecializedSchoolCategory;
 import com.gemini.database.dao.beans.*;
 
 import java.util.Date;
@@ -23,9 +24,17 @@ public interface SchoolMaxDaoInterface {
 
     EnrollmentInfo findRecentStudentEnrollment(Long studentId);
 
+    //regular schools
     List<School> findSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel);
 
-    List<School> findVocationalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel);
+    //occupational schools
+    List<School> findOccupationalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel);
+
+    //specialized schools
+    List<School> findSpecializedSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel, SpecializedSchoolCategory category);
+
+    //technical schools
+    List<School> findTechnicalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear);
 
     School findSchoolById(Long schoolId);
 

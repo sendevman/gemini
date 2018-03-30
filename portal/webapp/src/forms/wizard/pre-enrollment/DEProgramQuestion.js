@@ -15,7 +15,7 @@ export default class DEProgramQuestion extends Component {
                     <div className="description mb40"><h2 className="f90sbg">01.</h2>
                         <div className="violet-line"/>
                     </div>
-                    <p className="f40sbg text-justify">¿Favor de seleccionar el programa en el cual vas a solicitar matr&iacute;cula: <span className="f40sbb">Regular, Ocupacional o Técnica</span>?</p>
+                    <p className="f40sbg text-justify">¿Favor de seleccionar el programa en el cual vas a solicitar matr&iacute;cula: <span className="f40sbb">Regular, Ocupacional, Institutos y Especializadas</span>?</p>
                 </div>
 
                 {this.props.footer}

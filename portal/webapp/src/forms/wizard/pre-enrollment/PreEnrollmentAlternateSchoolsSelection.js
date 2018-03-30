@@ -110,8 +110,8 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
         let regions = this.props.regions;
         let gradeLevels = this.props.gradeLevels;
         let schools = this.props.schools;
-        let selectedSchool = this.state.selectedSchool;
         let form = this.props.preEnrollment;
+        let selectedSchool = this.state.selectedSchool;
         let schoolName = !selectedSchool || selectedSchool.schoolId === -1
             ? "Sin Seleccion"
             : selectedSchool.displayName;

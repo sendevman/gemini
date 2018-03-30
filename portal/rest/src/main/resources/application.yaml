@@ -122,9 +122,10 @@ messages:
     error.saving.profile: "Error al grabar datos del usuario"
     invalid.forgot.password.request: "Solicitud de cambio de contraseña invalida"
     cancel.reset.password.invalid: "Solicitud de cancelar reinicio de contraseña invalida"
-  preenrollment:
+  enrollment:
     invalid.address.postal: "Dirección postal inválida"
     invalid.address.residential: "Dirección residencial inválida"
+    already.active: "Posee una matricula activa"
     already.exists: "Matricula ya existe en el sistema"
     already.submitted: "Usted ya sometio Matricula para este estudiante"
 

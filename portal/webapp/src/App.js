@@ -7,7 +7,7 @@ import Routes from "./Routes";
 import moment from "moment";
 import esLocale from "moment/locale/es";
 import {connect} from "react-redux";
-import {checkSession, logout, onBackAction, triggerErrorOff} from "./redux/actions";
+import {checkSession, logout, onBackAction, triggerErrorOff, triggerSessionExpiredOff} from "./redux/actions";
 import ReduxBlockUi from 'react-block-ui/redux';
 import {bindActionCreators} from "redux";
 import * as env from "./env";
@@ -31,9 +31,17 @@ class App extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps && nextProps.generalErrorOccurred && nextProps.errorMessage) {
+        let hasGeneralError = nextProps && nextProps.generalErrorOccurred && nextProps.errorMessage;
+        let sessionExpired = nextProps && nextProps.sessionExpired;
+
+        if (hasGeneralError) {
             this.refs.modal.open("Upss!!!", nextProps.errorMessage, () => {
                 this.props.triggerErrorOff();
+            });
+        } else if(sessionExpired){
+            this.refs.modal.open("Upss!!!", nextProps.sessionMessage, () => {
+                this.props.triggerSessionExpiredOff();
+                this.props.history.push(`/login`);
             });
         }
     }
@@ -163,12 +171,14 @@ function mapStateToProps(store) {
         loading: store.profile.loading,
         currentPageType: store.wizard.currentPageType,
         errorMessage: store.profile.errorMessage,
-        generalErrorOccurred: store.profile.generalErrorOccurred
+        generalErrorOccurred: store.profile.generalErrorOccurred,
+        sessionMessage: store.profile.sessionMessage,
+        sessionExpired: store.profile.sessionExpired,
     };
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({logout, checkSession, onBackAction, triggerErrorOff}, dispatch)
+    return bindActionCreators({logout, checkSession, onBackAction, triggerErrorOff, triggerSessionExpiredOff}, dispatch)
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToActions)(App));

@@ -15,6 +15,10 @@ class PersonalAdditionalInfo extends Component {
         this.inputHandler = this.inputHandler.bind(this);
     }
 
+    componentWillMount(){
+        this.props.loadDemographics();
+    }
+
     inputHandler(e) {
         let form = this.props.form;
         let element = e.target;

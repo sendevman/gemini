@@ -1,5 +1,6 @@
 package com.gemini.controllers;
 
+import com.gemini.beans.forms.EnumCode;
 import com.gemini.beans.forms.User;
 import com.gemini.beans.forms.VocationalProgramSelection;
 import com.gemini.beans.integration.ParentResponse;
@@ -7,7 +8,8 @@ import com.gemini.beans.integration.RegionResponse;
 import com.gemini.beans.integration.SchoolResponse;
 import com.gemini.beans.integration.StudentResponse;
 import com.gemini.beans.requests.StudentSearchRequest;
-import com.gemini.beans.responses.ResponseBase;
+import com.gemini.beans.types.SchoolCategory;
+import com.gemini.beans.types.SpecializedSchoolCategory;
 import com.gemini.database.dao.beans.*;
 import com.gemini.services.SchoolMaxSearchService;
 import com.gemini.services.SchoolmaxService;
@@ -15,6 +17,7 @@ import com.gemini.utils.CopyUtils;
 import com.gemini.utils.MessageHelper;
 import com.gemini.utils.ValidationUtils;
 import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,13 +25,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -67,11 +68,11 @@ public class SchoolmaxController {
     @RequestMapping(value = "/student/search")
     public ResponseEntity<StudentResponse> searchStudent(@Valid @RequestBody StudentSearchRequest searchRequest, BindingResult result, @AuthenticationPrincipal User logged) {
         StudentResponse response = new StudentResponse();
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             response = messageHelper.missingFieldsOnStudentSearch(result);
         }
 
-        if(!(ValidationUtils.valid(searchRequest.getLastSsn()) || ValidationUtils.valid(searchRequest.getStudentNumber())))
+        if (!(ValidationUtils.valid(searchRequest.getLastSsn()) || ValidationUtils.valid(searchRequest.getStudentNumber())))
             response.addError(messageHelper.processMessage("search.student.missing.required.fields"));
 
         if (response != null && response.hasError())
@@ -94,17 +95,32 @@ public class SchoolmaxController {
 
 
     @RequestMapping(value = "/retrieve/vocational/regions")
-    public ResponseEntity<List<RegionResponse>> getVocationalRegions() {
+    public ResponseEntity<List<RegionResponse>> getOccupationalRegions() {
         List<Region> regions = smaxService.getAllRegions();
         return ResponseEntity.ok(CopyUtils.convert(regions, RegionResponse.class));
     }
 
-    @RequestMapping(value = "/retrieve/grade/levels")
-    public ResponseEntity<List<GradeLevel>> getGradeLevels() {
-        List<GradeLevel> levels = smaxService.getAllGradeLevels();
+    @RequestMapping(value = "/retrieve/grade/levels/school/category")
+    public ResponseEntity<List<GradeLevel>> getGradeLevels(@RequestParam(name = "category", required = false) SchoolCategory category) {
+        List<GradeLevel> levels = smaxService.getAllGradeLevels(category);
         return ResponseEntity.ok(levels);
     }
 
+    @RequestMapping(value = "/retrieve/specialized/school/categories")
+    public ResponseEntity<List<EnumCode>> getSpecializedSchoolCategories() {
+        List<EnumCode> enumCodes = FluentIterable
+                .from(SpecializedSchoolCategory.values())
+                .transform(new Function<SpecializedSchoolCategory, EnumCode>() {
+                    @Override
+                    public EnumCode apply(SpecializedSchoolCategory category) {
+                        return new EnumCode(category.name(), category.getDescription());
+                    }
+                }).toList();
+
+        return ResponseEntity.ok(enumCodes);
+    }
+
+    //schools
     @RequestMapping(value = "/retrieve/school/{regionId}/grade/level/{gradeLevel}")
     public ResponseEntity<List<SchoolResponse>> getSchoolByRegionAndGradeLevel(@PathVariable Long regionId, @PathVariable String gradeLevel) {
         List<School> schools = smaxService.findSchoolByRegionAndGradeLevel(regionId, gradeLevel);
@@ -117,9 +133,11 @@ public class SchoolmaxController {
         return ResponseEntity.ok(schoolReturned);
     }
 
-    @RequestMapping(value = "/retrieve/vocational/school/{regionId}/grade/level/{gradeLevel}")
-    public ResponseEntity<List<SchoolResponse>> getVocationalSchoolByRegionAndGradeLevel(@PathVariable Long regionId, @PathVariable String gradeLevel) {
-        List<School> schools = smaxService.findVocationalSchoolsByRegionAndGradeLevel(regionId, gradeLevel);
+    @RequestMapping(value = "/retrieve/specialized/school/{regionId}/grade/level/{gradeLevel}")
+    public ResponseEntity<List<SchoolResponse>> getSpecializedSchoolByRegionAndGradeLevel(@PathVariable Long regionId
+            , @PathVariable String gradeLevel
+            , @RequestParam(name = "category", required = false) SpecializedSchoolCategory category) {
+        List<School> schools = smaxService.findSpecializedSchoolsByRegionAndGradeLevel(regionId, gradeLevel, category);
         List<SchoolResponse> schoolReturned = new ArrayList<>();
         for (School school : schools) {
             SchoolResponse response = CopyUtils.createSchoolResponse(school);
@@ -129,8 +147,20 @@ public class SchoolmaxController {
         return ResponseEntity.ok(schoolReturned);
     }
 
-    @RequestMapping(value = "/retrieve/vocational/programs/school/{schoolId}")
-    public ResponseEntity<List<VocationalProgramSelection>> getVocationalSchoolByRegionAndGradeLevel(@PathVariable Long schoolId) {
+    @RequestMapping(value = "/retrieve/occupational/school/{regionId}/grade/level/{gradeLevel}")
+    public ResponseEntity<List<SchoolResponse>> getOccupationalSchoolByRegionAndGradeLevel(@PathVariable Long regionId, @PathVariable String gradeLevel) {
+        List<School> schools = smaxService.findOccupationalSchoolsByRegionAndGradeLevel(regionId, gradeLevel);
+        List<SchoolResponse> schoolReturned = new ArrayList<>();
+        for (School school : schools) {
+            SchoolResponse response = CopyUtils.createSchoolResponse(school);
+            schoolReturned.add(response);
+        }
+
+        return ResponseEntity.ok(schoolReturned);
+    }
+
+    @RequestMapping(value = "/retrieve/occupational/programs/school/{schoolId}")
+    public ResponseEntity<List<VocationalProgramSelection>> getOccupationalSchoolByRegionAndGradeLevel(@PathVariable Long schoolId) {
         List<VocationalProgram> programs = smaxService.getVocationalPrograms(schoolId);
         Function<VocationalProgram, VocationalProgramSelection> toSelection = new Function<VocationalProgram, VocationalProgramSelection>() {
             @Override

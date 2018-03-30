@@ -28,6 +28,7 @@ const rootReducer = (state, action) => {
         case types.LOGOUT_END:
         case types.RESET_PASSWORD_END:
         case types.FORGOT_PASSWORD_REQUEST_END:
+        case types.TRIGGER_SESSION_EXPIRED_OFF:
             console.log('cleaning');
             state = undefined;
             break;

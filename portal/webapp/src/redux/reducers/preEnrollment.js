@@ -27,7 +27,8 @@ const initialState = {
     },
     foundPreviousEnrollment: false,
     initialPreEnrollmentSaved: false,
-    completePreEnrollment: false
+    completePreEnrollment: false,
+    activePreEnrollmentFound: false
 };
 
 const preEnrollment = (state = Utils.freezeObject(initialState), action) => {
@@ -47,6 +48,17 @@ const preEnrollment = (state = Utils.freezeObject(initialState), action) => {
                 requestId: action.response.requestId,
                 initialPreEnrollmentSaved: !resp
             };
+        case types.PRE_ENROLLMENT_ACTIVE_FOUND:
+            return {
+                ...state,
+                activePreEnrollmentFound: true
+            };
+        case types.ON_WIZARD_LOAD_START:
+            return {
+                ...state,
+                activePreEnrollmentFound: false
+            };
+            return {...state, activePreEnrollmentFound: false};
         case types.PRE_ENROLLMENT_SUBMIT_START:
             return state;
         case types.PRE_ENROLLMENT_SUBMIT_END:

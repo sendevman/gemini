@@ -17,6 +17,8 @@ public class School {
   private String schoolName;
   private String schoolTypeCd;
   private String schoolType;
+  private String specializedCategoryCode;
+  private String specializedCategory;
   private boolean isVocational;
   private String addressLine_1;
   private String addressLine_2;
@@ -98,6 +100,22 @@ public class School {
 
   public void setSchoolType(String schoolType) {
     this.schoolType = schoolType;
+  }
+
+  public String getSpecializedCategoryCode() {
+    return specializedCategoryCode;
+  }
+
+  public void setSpecializedCategoryCode(String specializedCategoryCode) {
+    this.specializedCategoryCode = specializedCategoryCode;
+  }
+
+  public String getSpecializedCategory() {
+    return specializedCategory;
+  }
+
+  public void setSpecializedCategory(String specializedCategory) {
+    this.specializedCategory = specializedCategory;
   }
 
   public boolean isVocational() {

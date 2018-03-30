@@ -81,11 +81,11 @@ export const saveAddress = (form, onResult, onError) => (dispatch, getState) => 
 
 export const loadDemographics = () => (dispatch, getState) => {
     let student = getState().studentInfo.student;
-    dispatch({type: types.STUDENT_ADDITIONAL_INFO_START});
+    dispatch({type: types.STUDENT_DEMOGRAPHICS_LOAD_START});
     services()
         .getStudentDemographics(student.id)
         .then((response) => {
-            dispatch({type: types.STUDENT_ADDITIONAL_INFO_END, response: response});
+            dispatch({type: types.STUDENT_DEMOGRAPHICS_LOAD_END, response: response});
 
         });
 };
@@ -156,5 +156,24 @@ export const saveHispanic = (answer, onResult, onError) => (dispatch, getState) 
                 onError(Utils.errorObj());
                 dispatch({type: types.CANCEL_BLOCK_UI});
             }
+        });
+};
+
+export const saveNeedTransportationService = (answer, onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.STUDENT_ADDITIONAL_INFO_START});
+    let student = getState().studentInfo.student;
+    let postObj = {studentId: student.id, answer: answer};
+    services()
+        .saveNeedTransportationService(postObj)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.STUDENT_ADDITIONAL_INFO_END, response: response});
+            if (response.successfulOperation)
+                onResult();
+            else {
+                onError(Utils.errorObj(response));
+                dispatch({type: types.CANCEL_BLOCK_UI});
+            }
+
         });
 };

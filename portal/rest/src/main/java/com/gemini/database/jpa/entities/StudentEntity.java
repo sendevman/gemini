@@ -66,6 +66,9 @@ public class StudentEntity implements IdentityEntity {
     @Column
     private boolean isHispanic;
 
+    @Column
+    private boolean transportationRequested;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<EthnicCodeEntity> ethnicCodes;
 
@@ -218,6 +221,14 @@ public class StudentEntity implements IdentityEntity {
 
     public void setHispanic(boolean hispanic) {
         isHispanic = hispanic;
+    }
+
+    public boolean isTransportationRequested() {
+        return transportationRequested;
+    }
+
+    public void setTransportationRequested(boolean transportationRequested) {
+        this.transportationRequested = transportationRequested;
     }
 
     public AddressEntity getPhysical() {

@@ -1,11 +1,13 @@
 package com.gemini.services;
 
 import com.gemini.beans.requests.StudentSearchRequest;
+import com.gemini.beans.types.SchoolCategory;
+import com.gemini.beans.types.SpecializedSchoolCategory;
 import com.gemini.database.dao.SchoolMaxDaoInterface;
 import com.gemini.database.dao.beans.*;
 import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import com.google.common.base.Predicate;
+import com.google.common.collect.FluentIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +48,14 @@ public class SchoolmaxService {
         gradeLevels.put("11", "Undécimo");
         gradeLevels.put("12", "Duodécimo");
 
-//        ask for these grade levels
+//        Educacion Especial
         gradeLevels.put("EE", "EE-Elemental");
         gradeLevels.put("EI", "EE-Intermedia");
         gradeLevels.put("ES", "EE-Superior");
 
     }
+
+    final Integer OCCUPATIONAL_MIN_GRADE_LEVEL = 9;
 
     @Autowired
     private SchoolMaxDaoInterface smaxDao;
@@ -93,9 +97,14 @@ public class SchoolmaxService {
         return smaxDao.findSchoolsByRegionAndGradeLevel(regionId, schoolYear, gradeLevel);
     }
 
-    public List<School> findVocationalSchoolsByRegionAndGradeLevel(Long regionId, String gradeLevel) {
+    public List<School> findOccupationalSchoolsByRegionAndGradeLevel(Long regionId, String gradeLevel) {
         Long schoolYear = commonService.getCurrentSchoolYear();
-        return smaxDao.findVocationalSchoolsByRegionAndGradeLevel(regionId, schoolYear, gradeLevel);
+        return smaxDao.findOccupationalSchoolsByRegionAndGradeLevel(regionId, schoolYear, gradeLevel);
+    }
+
+    public List<School> findSpecializedSchoolsByRegionAndGradeLevel(Long regionId, String gradeLevel, SpecializedSchoolCategory category) {
+        Long schoolYear = commonService.getCurrentSchoolYear();
+        return smaxDao.findSpecializedSchoolsByRegionAndGradeLevel(regionId, schoolYear, gradeLevel, category);
     }
 
     @Cacheable
@@ -114,14 +123,31 @@ public class SchoolmaxService {
     }
 
     @Cacheable
-    public List<GradeLevel> getAllGradeLevels() {
-        Function<Map.Entry<String, String>, GradeLevel> mapToGradeLevel = new Function<Map.Entry<String, String>, GradeLevel>() {
-            @Override
-            public GradeLevel apply(Map.Entry<String, String> entry) {
-                return new GradeLevel(entry.getKey(), entry.getValue());
-            }
-        };
-        return Lists.newArrayList(Iterables.transform(gradeLevels.entrySet(), mapToGradeLevel));
+    public List<GradeLevel> getAllGradeLevels(final SchoolCategory category) {
+        return FluentIterable
+                .from(gradeLevels.entrySet())
+                .filter(new Predicate<Map.Entry<String, String>>() {
+                    @Override
+                    public boolean apply(Map.Entry<String, String> entry) {
+
+                        if (SchoolCategory.OCCUPATIONAL.equals(category)) {
+                            try {
+                                int gradeLevelInt = Integer.valueOf(entry.getKey());
+                                return gradeLevelInt >= OCCUPATIONAL_MIN_GRADE_LEVEL;
+                            } catch (NumberFormatException e) {
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    }
+                })
+                .transform(new Function<Map.Entry<String, String>, GradeLevel>() {
+                    @Override
+                    public GradeLevel apply(Map.Entry<String, String> entry) {
+                        return new GradeLevel(entry.getKey(), entry.getValue());
+                    }
+                }).toList();
     }
 
     public GradeLevel getGradeLevelByCode(String code) {

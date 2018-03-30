@@ -14,6 +14,7 @@ public class SchoolResponse {
   private Long extSchoolNumber;
   private String schoolName;
   private String schoolType;
+  private String specializedCategory;
   private boolean isVocational;
   private AddressBean address = new AddressBean();
   private String email;
@@ -49,6 +50,14 @@ public class SchoolResponse {
 
   public void setSchoolType(String schoolType) {
     this.schoolType = schoolType;
+  }
+
+  public String getSpecializedCategory() {
+    return specializedCategory;
+  }
+
+  public void setSpecializedCategory(String specializedCategory) {
+    this.specializedCategory = specializedCategory;
   }
 
   public boolean isVocational() {

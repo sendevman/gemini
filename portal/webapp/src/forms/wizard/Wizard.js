@@ -30,6 +30,8 @@ import ModalHelper from "../../components/ModalHelper";
 import PersonalAdditionalInfo from "./pre-enrollment/PersonalAdditionalInfo";
 import IsStudentHispanicQuestion from "./pre-enrollment/IsStudentHispanicQuestion";
 import IsStudentBornPRQuestion from "./pre-enrollment/IsStudentBornPRQuestion";
+import NeedTransportationServiceQuestion from "./pre-enrollment/NeedTransportationServiceQuestion";
+import PreEnrollmentSpecializedSchoolsSelections from "./pre-enrollment/PreEnrollmentSpecializedSchoolsSelections";
 
 function form(title, form) {
     return {title: title, form: form};
@@ -39,23 +41,30 @@ class Wizard extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {reloading: false};
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
         this.onError = this.onError.bind(this);
+        this.state.reloading = false;
     }
 
     componentWillMount() {
         let requestId = this.props.match.params.id;
+        console.log("...loading...");
         this.props.load(requestId);
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.wizardCompleted) {
             if (nextProps.startOver) {
-                window.location.reload();
+                this.props.history.push("/wizard")
             } else {
                 this.props.history.push('/home');
             }
+        } else if (nextProps.activePreEnrollmentFound && !this.state.reloading) {
+            let requestId = nextProps.requestId;
+            this.props.history.push(`/wizard/edit/${requestId}`);
+            this.state.reloading = true;
         } else {
             let current = this.props.wizard;
             let next = nextProps.wizard;
@@ -132,6 +141,8 @@ class Wizard extends Component {
             , {renderObj: IsStudentHispanicQuestion}
             , {renderObj: IsStudentBornPRQuestion}
             , {renderObj: Address}
+            , {renderObj: NeedTransportationServiceQuestion}
+            , {renderObj: PreEnrollmentSpecializedSchoolsSelections}
             , {renderObj: PreEnrollmentAlternateSchoolsSelection}
             , {renderObj: PreEnrollmentAlternateSchoolsSubmit}
             , {renderObj: PreEnrollmentRecordFoundSubmit}
@@ -166,7 +177,7 @@ class Wizard extends Component {
                 props["vocationalSchool"] = vocationalSchool;
             }
 
-            if(currentPageType === "PERSONAL_INFO"){
+            if (currentPageType === "PERSONAL_INFO") {
                 props["history"] = this.props.history;
             }
 
@@ -181,6 +192,9 @@ class Wizard extends Component {
         if (!this.wizardForms || this.wizardForms.length === 0)
             return (null);
 
+        // let redirectReload = this.state.reloading ? (
+        //     <Redirect to={{pathname: `/wizard/${this.props.requestId}`, state: {from: this.props.location}}}/>) : (null);
+
         return [this.wizardForms[current].form, <ModalHelper ref="modal"/>];
     }
 
@@ -188,6 +202,9 @@ class Wizard extends Component {
     renderFooter() {
         let props = this.props.wizard;
         let commonStyle = {zIndex: 1000};
+        let isSubmitPage = props.currentPageType.endsWith("_SUBMIT");
+        let nextAction = isSubmitPage ? this.previous.bind(this) : this.next.bind(this);
+        let previousAction = isSubmitPage ? this.next.bind(this) : this.previous.bind(this);
         let cssClass = props.currentPageType !== "USER_ADDITIONAL_INFO"
         && props.currentPageType !== "PERSONAL_ADDITIONAL_INFO"
         && props.currentPageType !== "VOCATIONAL_PROGRAMS"
@@ -200,11 +217,11 @@ class Wizard extends Component {
             || props.currentPageType === "VOCATIONAL_REVIEW_SUBMIT")
             return (<div className="row action-section" style={commonStyle}>
                 <div className="col-md-12 text-center text-lg-left p-0">
-                    <a className="button-green mr30 mob-mb30px" onClick={this.next}>
+                    <a className="button-green mr30 mob-mb30px" onClick={nextAction}>
                         <span>y</span>{props.nextLabel}
                     </a>
                     {props.previousLabel
-                        ? (<a className="button-white mob-mb30px" onClick={this.previous}>
+                        ? (<a className="button-white mob-mb30px" onClick={previousAction}>
                             <span>n</span>{props.previousLabel}
                         </a>)
                         : null
@@ -214,7 +231,7 @@ class Wizard extends Component {
         else if (props.currentPageType === "USER_PROFILE") {
             return (<div className="row mt50 bt1p pt40">
                 <div className="col-md-12">
-                    <a className="button-green mr30 mob-mb30px" onClick={this.next}>
+                    <a className="button-green mr30 mob-mb30px" onClick={nextAction}>
                         <span>y</span>{props.nextLabel}
                     </a>
                 </div>
@@ -235,7 +252,11 @@ class Wizard extends Component {
                             </a>
                             <a className="button-white mob-mb30px"
                                onClick={this.onProgramSelection(types.TECHNIQUE_ENROLLMENT)}>
-                                <span>T</span>T&eacute;cnica
+                                <span>I</span>Institutos
+                            </a>
+                            <a className="button-white mob-mb30px"
+                               onClick={this.onProgramSelection(types.SPECIALIZED_SCHOOLS_ENROLLMENT)}>
+                                <span>E</span>Especializadas
                             </a>
                         </div>
                     </div>
@@ -247,11 +268,11 @@ class Wizard extends Component {
                      style={commonStyle}>
             <div className="row action-section">
                 <div className="col-md-12 text-center text-lg-left p-0">
-                    <a className="button-green mr30 mob-mb30px" onClick={this.next}>
+                    <a className="button-green mr30 mob-mb30px" onClick={nextAction}>
                         <span>y</span>{props.nextLabel}
                     </a>
                     {props.previousLabel
-                        ? (<a className="button-white mob-mb30px" onClick={this.previous}>
+                        ? (<a className="button-white mob-mb30px" onClick={previousAction}>
                             <span>n</span>{props.previousLabel}
                         </a>)
                         : null
@@ -271,7 +292,10 @@ function mapStateToProps(store) {
         wizard: store.wizard,
         preEnrollment: store.preEnrollment.info,
         currentVocationalEnrollment: store.preEnrollment.currentVocationalEnrollment,
-        startOver: store.wizard.startOver
+        startOver: store.wizard.startOver,
+        activePreEnrollmentFound: store.preEnrollment.activePreEnrollmentFound,
+        requestId: store.preEnrollment.requestId
+
     };
 }
 
