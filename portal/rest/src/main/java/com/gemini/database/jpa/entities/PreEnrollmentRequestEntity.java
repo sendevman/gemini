@@ -34,7 +34,7 @@ public class PreEnrollmentRequestEntity {
 
     @Enumerated(EnumType.STRING)
     @Column
-    private ReasonForNotAttendingSchool reasonForNotAttendingSchool;
+    private ReasonForNotAttendingSchool reasonForNotAttendSchool;
 
 //    @ManyToOne(targetEntity = UserEntity.class, optional = false)
 //    private UserEntity user;
@@ -128,12 +128,12 @@ public class PreEnrollmentRequestEntity {
 //    }
 
 
-    public ReasonForNotAttendingSchool getReasonForNotAttendingSchool() {
-        return reasonForNotAttendingSchool;
+    public ReasonForNotAttendingSchool getReasonForNotAttendSchool() {
+        return reasonForNotAttendSchool;
     }
 
-    public void setReasonForNotAttendingSchool(ReasonForNotAttendingSchool reasonForNotAttendingSchool) {
-        this.reasonForNotAttendingSchool = reasonForNotAttendingSchool;
+    public void setReasonForNotAttendSchool(ReasonForNotAttendingSchool reasonForNotAttendSchool) {
+        this.reasonForNotAttendSchool = reasonForNotAttendSchool;
     }
 
     public StudentEntity getStudent() {

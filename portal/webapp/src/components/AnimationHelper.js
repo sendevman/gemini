@@ -9,10 +9,10 @@ export default class AnimationHelper extends Component {
     }
 
     componentWillMount() {
-        // let base = `/${env.default.baseContext}-animations`;
-        // if("srs" === env.default.baseContext){
-            let base = "https://prdesietest.dde.pr/schoolmax_tmax2-animations";
-        // }
+        let base = `/${env.default.baseContext}-animations`;
+        if ("srs" === env.default.baseContext) {
+            base = "https://prdesietest.dde.pr/schoolmax_tmax2-animations";
+        }
 
         let style = {border: 0, overflow: "hidden"};
         let animRegistration = (<div className="illustration anim-full">

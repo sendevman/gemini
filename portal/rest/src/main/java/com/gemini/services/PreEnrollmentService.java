@@ -486,7 +486,7 @@ public class PreEnrollmentService {
         PreEnrollmentRequestEntity entity = preEnrollmentRepository.findOne(request.getRequestId());
         if(entity == null)
             return false;
-        entity.setReasonForNotAttendingSchool(request.getReason());
+        entity.setReasonForNotAttendSchool(request.getReason());
         entity = preEnrollmentRepository.save(entity);
         return entity != null;
     }

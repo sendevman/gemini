@@ -6,6 +6,8 @@ import com.gemini.database.dao.beans.*;
 import com.gemini.utils.ValidationUtils;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -24,6 +26,9 @@ import java.util.Map;
  * Time: 12:57 AM
  */
 public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements SchoolMaxDaoInterface {
+
+    final Logger logger = LoggerFactory.getLogger(SchoolMaxDaoImpl.class);
+
     @Autowired
     @Qualifier(value = "smaxDatasource")
     DataSource smaxDatasource;
@@ -73,15 +78,18 @@ public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements Sc
         }
 
         if (ValidationUtils.valid(searchRequest.getDateOfBirth())) {
-            sql.append(" AND trunc(DATE_OF_BIRTH) = :dob");
+            sql.append(" AND DATE_OF_BIRTH = trunc(:dob)");
             params.put("dob", searchRequest.getDateOfBirth());
         }
+
 
         if (ValidationUtils.valid(searchRequest.getStudentNumber())) {
             sql.append(" AND EXT_STUDENT_NUMBER = :studentNumber");
             params.put("studentNumber", searchRequest.getStudentNumber());
         }
+        logger.info("params are " + searchRequest);
 
+        logger.info("sql executed is " + sql.toString());
         List<Student> list = getNamedParameterJdbcTemplate().query(sql.toString(), params, new BeanPropertyRowMapper<>(Student.class));
         return list.isEmpty() ? null : list.get(0);
     }
