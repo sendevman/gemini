@@ -15,6 +15,7 @@ import com.gemini.services.SchoolMaxSearchService;
 import com.gemini.services.SchoolmaxService;
 import com.gemini.utils.CopyUtils;
 import com.gemini.utils.MessageHelper;
+import com.gemini.utils.Utils;
 import com.gemini.utils.ValidationUtils;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
@@ -29,7 +30,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -81,8 +81,10 @@ public class SchoolmaxController {
         Student studentBean = smaxSearchService.retrieveStudentInfo(searchRequest, logged);
         response = CopyUtils.convert(studentBean, StudentResponse.class);
         response.setFound(studentBean != null);
-        if (studentBean != null)
+        if (studentBean != null) {
             response.setStudentNumber(studentBean.getExtStudentNumber());
+            response.setLastSsnFormatted(Utils.obfuscatedSsn(studentBean.getSsn()));
+        }
         return ResponseEntity.ok().body(response);
 
     }

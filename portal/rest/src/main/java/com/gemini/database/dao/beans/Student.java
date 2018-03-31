@@ -93,7 +93,7 @@ public class Student {
     }
 
     public Gender getGender() {
-        return Gender.valueOf(genderValue);
+        return genderValue != null ? Gender.valueOf(genderValue) : null;
     }
 
     public Date getDateOfBirth() {

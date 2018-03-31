@@ -36,6 +36,7 @@ public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements Sc
     private final String SCHOOL_SQL = "SELECT * FROM VW_SCHOOLS S ";
     private final String VOCATIONAL_SCHOOLS = "SELECT * FROM VW_VOCATIONAL_SCHOOLS S ";
     private final String SPECIALIZED_SCHOOLS = "SELECT * FROM VW_SPECIALIZED_SCHOOLS S ";
+    private final String TECHNICAL_SCHOOLS = "SELECT * FROM VW_TECHNICAL_SCHOOLS S ";
     private final String VOCATIONAL_PROGRAMS = "SELECT * FROM VW_VOCATIONAL_PROGRAMS ";
     private final String SCHOOL_GRADE_LEVELS = "SELECT * FROM VW_SCHOOLS_GRADE_LEVELS ";
 
@@ -142,7 +143,7 @@ public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements Sc
 
     @Override
     public List<School> findTechnicalSchools(Long schoolYear) {
-        return null;
+        return getJdbcTemplate().query(TECHNICAL_SCHOOLS, new BeanPropertyRowMapper<>(School.class));
     }
 
     @Override

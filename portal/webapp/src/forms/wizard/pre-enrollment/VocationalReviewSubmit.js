@@ -80,8 +80,10 @@ class VocationalReviewSubmit extends Component {
                     </h2></div>
                     <p className="f22slg mb-1"><i className="icon-teacher mr5"/> <span
                         id="adress">Estudiante {student && student.fullName}</span></p>
-                    <p className="f22slg mb-1"><i className="icon-teacher mr5"/> <span
-                        id="level">{preEnrollment.info.nextGradeLevelDescription}</span></p>
+                    {this.isTechnical
+                        ? (null)
+                        : (<p className="f22slg mb-1"><i className="icon-teacher mr5"/> <span
+                        id="level">{preEnrollment.info.nextGradeLevelDescription}</span></p>)}
                     <h3 style={{textAlign: "right"}}>Desea añadir otra escuela?</h3>
                     <Button size="large" onClick={this.onAdd}>Añadir</Button>
 

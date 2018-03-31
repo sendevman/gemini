@@ -23,7 +23,8 @@ let field = {
     zipcode: {length: 5, regex: onlyNumber},
     addressLine: {min: 1, max: 100, regex: onlyLetterAndNumber},
     password: {min: 4, max: 20, regex: emailAcceptedChar, validation: onlyLetterAndNumber},
-    totalMembers: {regex: rangeFrom0to15}
+    totalMembers: {regex: rangeFrom0to15},
+    text: {max: 11, min: 11, regex: onlyLetterAndNumber}
 };
 
 //TODO: fran check when lost focus weird behaviour
@@ -90,6 +91,10 @@ class TextInput extends Component {
                     break;
                 case 'totalMembers':
                     this.config = field.totalMembers;
+                    break;
+                case 'text':
+                    this.text = field.text;
+                    break;
             }
         }
     }

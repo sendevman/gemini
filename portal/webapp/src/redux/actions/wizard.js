@@ -315,7 +315,7 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
     let currentForm = getForm(current);
     let next = current + 1;
 
-    if (student.studentExistsInSIE && isType(current, "PERSONAL_INFO")) {
+    if (student.existsOnSie && isType(current, "PERSONAL_INFO")) {
         next = getIndexFromFlow("ADDRESS");
     }
 
@@ -378,7 +378,11 @@ export const onPreviousAction = (onPress) => (dispatch, getState) => {
     } else if (currentForm.isSubmit) {
         next = previousOnSubmit(preEnrollment, currentForm)
     } else if (isType(current, "NEED_TRANSPORTATION_QUESTION")) {
-        next = nextOnTransportationPage(preEnrollment, currentForm);
+        if (isOccupationalOrTechnicalFlow(preEnrollment) && wizard.editing) {
+            next =  getIndexFromFlow(currentForm.nextOccupationalWhenEdit)
+        }else {
+            next = nextOnTransportationPage(preEnrollment, currentForm);
+        }
     } else {
         next = flowNavigation.length > 0
             ? pop(flowNavigation, 2)

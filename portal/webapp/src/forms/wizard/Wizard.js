@@ -56,14 +56,14 @@ class Wizard extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.wizardCompleted) {
-            if (nextProps.startOver && !this.state.reloading) {
+        if (nextProps.wizardCompleted && !this.state.reloading) {
+            if (nextProps.startOver) {
                 this.props.history.push("/wizard");
                 window.location.reload();
-                this.state.reloading = true;
             } else {
                 this.props.history.push('/home');
             }
+            this.state.reloading = true;
         } else if (nextProps.activePreEnrollmentFound && !this.state.reloading) {
             let requestId = nextProps.requestId;
             this.props.history.push(`/wizard/${requestId}`);

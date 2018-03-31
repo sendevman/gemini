@@ -38,4 +38,14 @@ public final class Utils {
         form.setLastName(lastName);
     }
 
+    public static String obfuscatedSsn(String ssn){
+        String last = "XXXX";
+        int index = StringUtils.hasText(ssn) && ssn.length() >= 4
+                ? ssn.length() - 4
+                : -1;
+        if (index >= 0)
+            last = ssn.substring(index);
+        return  String.format("XXX-XX-%s", last);
+    }
+
 }

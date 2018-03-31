@@ -149,7 +149,6 @@ public class PreEnrollmentRequestController {
         return ResponseEntity.ok(enumCodes);
     }
 
-
     @RequestMapping(value = "/reason/for/not/attending/school/save", method = RequestMethod.POST)
     public ResponseEntity<ResponseBase> saveReasonForNotAttendingSchool(@Valid @RequestBody ReasonForNotAttendingRequest request, BindingResult result) {
         boolean saved;
@@ -232,7 +231,7 @@ public class PreEnrollmentRequestController {
     @RequestMapping(value = "/vocational/submit", method = RequestMethod.POST)
     public ResponseEntity<ResponseBase> vocationalSubmit(@RequestBody VocationalPreEnrollmentSubmitRequest request, @AuthenticationPrincipal User loggedUser) {
         VocationalPreEnrollmentBean vocational = preEnrollmentService.findVocationalPreEnrollmentById(request.getRequestId());
-        if (commonService.isInvalidMinAlternateSchools(vocational.getEnrollments())) {
+        if (vocational.getEnrollments() == null || vocational.getEnrollments().isEmpty()) {
             ResponseBase base = ResponseBase.error("Validaci\u00f3n", messageHelper.processMessages("enrollment.occupational.validation"));
             return ResponseEntity.badRequest().body(base);
         }
