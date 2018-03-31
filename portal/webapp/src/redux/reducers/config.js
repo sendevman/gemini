@@ -6,7 +6,8 @@ const initialState = {
     gradeLevels: [],
     schools: [],
     vocationalPrograms: [],
-    specializedCategories: []
+    specializedCategories: [],
+    reasonsForNotAttending: []
 };
 const config = (state = Utils.freezeObject(initialState), action) => {
 
@@ -21,6 +22,8 @@ const config = (state = Utils.freezeObject(initialState), action) => {
             return {...state, vocationalPrograms: action.response};
         case types.CATEGORIES_LOAD_END:
             return {...state, specializedCategories: action.response};
+        case types.REASONS_LOAD_END:
+            return {...state, reasonsForNotAttending: action.response};
         default:
             return state;
     }

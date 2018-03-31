@@ -3,21 +3,18 @@
  */
 
 import React, {Component} from "react";
-import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {getVocationalSchools, loadVocationalCodes, partialSaveVocationalPreEnrollment} from "../../../redux/actions";
-import entrollmentIllustration from "../../../style/img/entrollment-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
+import SchoolSelector from "../widgets/SchoolSelector";
+import * as Utils from "../../../Utils";
 
 class VocationalPreEnrollment extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {selectedSchool: null};
-        this.regionChanged = this.regionChanged.bind(this);
-        this.gradeLevelChanged = this.gradeLevelChanged.bind(this);
-        this.schoolChanged = this.schoolChanged.bind(this);
+        this.fetchSchools = this.fetchSchools.bind(this);
     }
 
     componentWillMount() {
@@ -29,62 +26,18 @@ class VocationalPreEnrollment extends Component {
         this.props.partialSaveVocationalPreEnrollment(form, onResult, onError);
     }
 
-    cleanSchoolCode() {
+    fetchSchools() {
         let form = this.props.currentVocationalEnrollment;
-        form.schoolId = -1;
-        this.setState({selectedSchool: null});
-    }
-
-    regionChanged(e) {
-        this.cleanSchoolCode();
-        let form = this.props.currentVocationalEnrollment;
-        let element = e.target;
-        form.regionId = element.value;
-        if (form.nextGradeLevel !== "-1" && form.nextGradeLevel) {
+        if (!(Utils.isEmptyValue(form.nextGradeLevel) || Utils.isEmptyValue(form.regionId))) {
             this.props.getVocationalSchools(form.regionId, form.nextGradeLevel);
         }
     }
 
-    gradeLevelChanged(gradeLevelObject) {
-        this.cleanSchoolCode();
-        let form = this.props.currentVocationalEnrollment;
-        form.nextGradeLevel = gradeLevelObject.name;
-        if (form.regionId !== "-1" && form.regionId) {
-            form.nextGradeLevelDescription = gradeLevelObject.displayName;
-            this.props.getVocationalSchools(form.regionId, form.nextGradeLevel);
-        }
-    }
-
-    schoolChanged(schoolObject) {
-        let form = this.props.currentVocationalEnrollment;
-        form.schoolId = schoolObject.schoolId;
-        if (form.schoolId !== "-1" && form.schoolId) {
-            form.schoolName = schoolObject.schoolName;
-            form.schoolAddress = schoolObject.address;
-        }
-        form.school = schoolObject;
-        // form.schoolName = schoolObject.schoolName;
-        // form.schoolAddress = schoolObject.address;
-
-        this.setState({selectedSchool: schoolObject});
-    }
-
-    render(){
-        let student = this.props.student;
+    render() {
         let regions = this.props.regions;
         let gradeLevels = this.props.gradeLevels;
         let schools = this.props.schools;
-
-        let selectedSchool = this.state.selectedSchool;
         let form = this.props.currentVocationalEnrollment;
-
-        let schoolName = !selectedSchool || selectedSchool.schoolId === -1
-            ? "No ha selecionado escuela aun"
-            : selectedSchool.displayName;
-
-        let schoolAddress = !selectedSchool || selectedSchool.schoolId === -1
-            ? "No ha selecionado escuela aun"
-            : selectedSchool.address.addressFormatted;
 
         return [
             <div className="col-md-7 content-section">
@@ -94,60 +47,14 @@ class VocationalPreEnrollment extends Component {
                 </div>
                 <div className="body d-flex flex-column justify-content-end">
                     <form id="enrollment-form" className="mt50">
-                        <div className="row" style={{margin: 2, marginBottom: 15}}>
-                            <div className="col-md-4">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <span>Estudiante: <h6>{student && student.fullName}</h6></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-md-8">
-                                <div className="row">
-                                    <div className="col-md-12">
-                                        <span>Direcci&oacute;n Escuela: <h6>{schoolAddress}</h6></span>
-                                    </div>
-
-                                </div>
-                                <div className="row"/>
-                            </div>
-                        </div>
-                        <div className="row">
-
-                            <div className="col-md-2">
-                                <RemoteCodeSelect id="gradeLevel"
-                                                  label="Grado"
-                                                  placeholder="Grado"
-                                                  onObjectChange={this.gradeLevelChanged}
-                                                  codes={gradeLevels}
-                                                  target="name"
-                                                  display="displayName"
-                                                  value={form.nextGradeLevel}/>
-                            </div>
-
-                            <div className="col-md-2">
-                                <RemoteCodeSelect id="region"
-                                                  label="Region"
-                                                  placeholder="Region"
-                                                  onChange={this.regionChanged}
-                                                  codes={regions}
-                                                  target="regionId"
-                                                  display="description"
-                                                  value={form.regionId}/>
-                            </div>
-
-
-                            <div className="col-md-8">
-                                <RemoteCodeSelect id="schools"
-                                                  label="Escuela a matricular"
-                                                  placeholder="Escuela"
-                                                  codes={schools}
-                                                  onObjectChange={this.schoolChanged}
-                                                  target="schoolId"
-                                                  display="displayName"
-                                                  value={form.schoolId}/>
-                            </div>
-                        </div>
+                        <SchoolSelector ref="selector"
+                                        form={form}
+                                        maxSchools={2}
+                                        gradeLevels={gradeLevels}
+                                        regions={regions}
+                                        schools={schools}
+                                        fetchSchools={this.fetchSchools}
+                        />
                         {this.props.footer}
                     </form>
                 </div>

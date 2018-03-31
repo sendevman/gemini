@@ -1,6 +1,5 @@
 import * as types from "../types";
 import services from "../setup";
-import {changeCurrentVocationalEnrollment} from "./preEnrollment";
 
 export const loadCodes = (promise) => (dispatch) => {
     Promise.all([getRegions(dispatch), getGradeLevels(dispatch), promise()]).then(() => {
@@ -75,5 +74,12 @@ export const getVocationalPrograms = (schoolId) => (dispatch) => {
     return services().getVocationalProgramsBySchool(schoolId).then((response) => {
         dispatch({type: types.VOCATIONAL_PROGRAMS_END, response: response});
 
+    });
+};
+
+export const getReasonForAttendingCodes = () => (dispatch) => {
+    dispatch({type: types.REASONS_LOAD_START});
+    return services().getReasonsForNotAttendingSchools().then((response) => {
+        dispatch({type: types.REASONS_LOAD_END, response: response});
     });
 };

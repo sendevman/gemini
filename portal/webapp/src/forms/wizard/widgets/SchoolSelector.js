@@ -1,29 +1,93 @@
 import React, {Component} from "react";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
 import Button from "../../../components/Button";
+import * as Utils from "../../../Utils";
 
 export default class SchoolSelector extends Component {
 
     constructor(props) {
         super(props);
-        this.regionChanged = props.regionChanged.bind(this);
-        this.gradeLevelChanged = props.gradeLevelChanged.bind(this);
-        this.schoolChanged = props.schoolChanged.bind(this);
-        this.onAdd = props.onAdd.bind(this);
+        this.state = {selectedSchool: null, schools: null};
+        this.regionChanged = this.regionChanged.bind(this);
+        this.gradeLevelChanged = this.gradeLevelChanged.bind(this);
+        this.schoolChanged = this.schoolChanged.bind(this);
+        this.fetchSchools = props.fetchSchools.bind(this);
+        this.onAdd = this.onAdd.bind(this);
     }
 
-    limit(){
+    onAdd() {
         let schoolsSelected = this.props.schoolsSelected;
-        return this.props.maxSchools ? schoolsSelected.length >= this.props.maxSchools : false;
+        let size = schoolsSelected.length || 0;
+        let school = this.state.selectedSchool;
+        if (size < 2) {
+            let object = {
+                priority: size + 1,
+                school: school,
+                schoolName: school.schoolName,
+                schoolAddress: school.address
+            };
+            schoolsSelected.push(object);
+            this.cleanSchoolCode()
+        } else {
+            alert("Maximo de dos escuela");
+        }
     }
 
     onDelete = (index) => (e) => {
-        let form = this.props.form;
-        let schoolDeleted = form.alternateSchools[index];
-        form.alternateSchoolsToDelete.push(schoolDeleted);
-        form.alternateSchools.splice(index, 1);
+        let schoolsSelected = this.props.schoolsSelected;
+        let schoolsSelectedToDelete = this.props.schoolsSelectedToDelete;
+
+        let schoolDeleted = schoolsSelected[index];
+        schoolsSelectedToDelete.push(schoolDeleted);
+        schoolsSelected.splice(index, 1);
         this.forceUpdate();
     };
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.schools) {
+            this.setState({...this.state, schools: nextProps.schools})
+        }
+    }
+
+    limit() {
+        let schoolsSelected = this.props.schoolsSelected;
+        if(!schoolsSelected)
+            return false;
+        return this.props.maxSchools ? schoolsSelected.length >= this.props.maxSchools : false;
+    }
+
+    cleanSchoolCode() {
+        let form = this.props.form;
+        form.schoolId = -1;
+        this.setState({selectedSchool: null, schools: null});
+    }
+
+    regionChanged(e) {
+        this.cleanSchoolCode();
+        let form = this.props.form;
+        let element = e.target;
+        form.regionId = element.value;
+        this.fetchSchools();
+    }
+
+    gradeLevelChanged(gradeLevelObject) {
+        this.cleanSchoolCode();
+        let form = this.props.form;
+        form.nextGradeLevel = gradeLevelObject.name;
+        form.nextGradeLevelDescription = gradeLevelObject.displayName;
+        this.fetchSchools();
+    }
+
+    schoolChanged(schoolObject) {
+        let form = this.props.form;
+        form.schoolId = schoolObject.schoolId;
+        if (!Utils.isEmpty(form.schoolId)) {
+            form.schoolName = schoolObject.schoolName;
+            form.schoolAddress = schoolObject.address;
+        }
+        this.setState({selectedSchool: schoolObject});
+    }
+
 
     render() {
         let form = this.props.form;
@@ -31,9 +95,14 @@ export default class SchoolSelector extends Component {
         let schoolsSelected = this.props.schoolsSelected;
         let gradeLevels = this.props.gradeLevels;
         let regions = this.props.regions;
-        let schools = this.props.schools;
+        let schools = this.state.schools;
+        let selectedSchool = this.state.selectedSchool;
+        let disabledGradeLevels = (schoolsSelected && schoolsSelected.length > 0) || form.hasPreEnrollment;
+        let schoolSelectDisabled = Utils.isEmptyValue(form.regionId)
+            || Utils.isEmptyValue(form.nextGradeLevel)
+            || limit
+            || Utils.isEmptyValue(schools);
 
-        let selectedSchool = this.props.selectedSchool;
         let schoolName = !selectedSchool || selectedSchool.schoolId === -1
             ? "Sin Selección"
             : selectedSchool.displayName;
@@ -42,10 +111,12 @@ export default class SchoolSelector extends Component {
             ? "Sin Selección"
             : selectedSchool.address.addressFormatted;
 
-        let disabledGradeLevels = (schoolsSelected.length > 0) || form.nextGradeLevel;
+
+        let addSchoolFeature = schoolsSelected && schoolsSelected != null && schoolsSelected !== undefined;
+        let schoolComponentCss = addSchoolFeature ? "col-md-7" : "col-md-8";
 
         return [
-            <div className="row" style={{margin: 2, marginBottom: 15}}>
+            <div className="row pt-2" style={{margin: 2, marginBottom: 15}}>
                 <div className="col-md-4">
                     <span>Escuela: <h6>{schoolName}</h6></span>
                 </div>
@@ -77,7 +148,7 @@ export default class SchoolSelector extends Component {
                                       disabled={limit}
                                       value={form.regionId}/>
                 </div>
-                <div className="col-md-7">
+                <div className={schoolComponentCss}>
                     <RemoteCodeSelect id="schools"
                                       label="Escuela a matricular"
                                       placeholder="Escuela"
@@ -85,25 +156,31 @@ export default class SchoolSelector extends Component {
                                       onObjectChange={this.schoolChanged}
                                       target="schoolId"
                                       display="displayName"
-                                      disabled={limit}
+                                      disabled={schoolSelectDisabled}
                                       value={form.schoolId}/>
                 </div>
-                <div className="col-md-1">
-                    <Button color="primary" onClick={this.onAdd} disabled={limit}><i
-                        className="fa fa-plus"/></Button>
-                </div>
+                {
+                    addSchoolFeature
+                        ? (<div className="col-md-1">
+                            <Button color="primary" onClick={this.onAdd} disabled={schoolSelectDisabled}><i
+                                className="fa fa-plus"/></Button>
+                        </div>)
+                        : (null)
+                }
             </div>,
-            <div className="row mt-3">
-                <div className="col-md-12">
-                    {this.renderSchoolsSelected()}
-                </div>
-            </div>
+            addSchoolFeature ?
+                (<div className="row mt-3">
+                    <div className="col-md-12">
+                        {this.renderSchoolsSelected()}
+                    </div>
+                </div>) : (null)
         ];
     }
 
     renderSchoolsSelected() {
         let specializedSchool = this.props.specializedSchool;
-        let alternateSchools = this.props.form.alternateSchools;
+        let alternateSchools = this.props.schoolsSelected;
+        let span = specializedSchool ? 4 : 3;
         return (
             <table className="table table-striped table-hover ">
                 <thead>
@@ -131,7 +208,7 @@ export default class SchoolSelector extends Component {
                         </tr>
                     ))
                     : <tr>
-                        <td colSpan={3} style={{left: 50, top: 50}}>No posee ningun programa aun</td>
+                        <td colSpan={span} style={{left: 50, top: 50}}>No posee ningun programa aun</td>
                     </tr>}
                 </tbody>
             </table>

@@ -26,7 +26,7 @@ class NeedTransportationServiceQuestion extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb40"><h2 className="f90sbg">07.</h2>
+                    <div className="description mb40"><h2 className="f90sbg">08.</h2>
                         <div className="violet-line"/>
                     </div>
                     <p className="f30sbg text-justify">¿Gracias por validar la dirección física. Esto nos ayudará a

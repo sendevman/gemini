@@ -110,6 +110,7 @@ messages:
       language: "Lenguaje"
       citizenship: "Cuidadanía"
       ethnicCodes: "Debe selecciona al menos un codigo ethnico"
+      reason: "Debe seleccionar una razon"
 
   search:
     student.missing.required.fields: "Debe proveer algunos de estos dos campos (Ultimo SSN o Numero Estudiante)"
@@ -123,6 +124,7 @@ messages:
     invalid.forgot.password.request: "Solicitud de cambio de contraseña invalida"
     cancel.reset.password.invalid: "Solicitud de cancelar reinicio de contraseña invalida"
   enrollment:
+    school.available.space.validation: "no tiene espacio disponible"
     invalid.address.postal: "Dirección postal inválida"
     invalid.address.residential: "Dirección residencial inválida"
     already.active: "Posee una matricula activa"

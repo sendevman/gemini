@@ -110,7 +110,7 @@ export default class Services {
 
     getSpecializedSchoolsByRegionAndGradeLevel(regionId, gradeLevel, category) {
         let param = category ? `?category=${category}` : "";
-        return this._get(`/smax/interface/specialized/school/${regionId}/grade/level/${gradeLevel}${param}`);
+        return this._get(`/smax/interface/retrieve/specialized/school/${regionId}/grade/level/${gradeLevel}/category${param}`);
     }
 
     getVocationalSchoolsByRegionAndGradeLevel(regionId, gradeLevel) {
@@ -122,6 +122,7 @@ export default class Services {
     }
 
     //pre-enrollment
+
     getActivePreEnrollment(requestId) {
         return this._get(`/pre/enrollment/${requestId}`);
     }
@@ -164,6 +165,14 @@ export default class Services {
 
     submitAlternatePreEnrollment(form) {
         return this._securedPost(`/pre/enrollment/alternate/submit`, form);
+    }
+
+    getReasonsForNotAttendingSchools(){
+        return this._get(`/pre/enrollment/reasons/for/not/attending/school`);
+    }
+
+    saveReasonForNotAttending(form) {
+        return this._securedPost(`/pre/enrollment/reason/for/not/attending/school/save`, form);
     }
 
     //student additional info

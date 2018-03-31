@@ -28,7 +28,8 @@ const initialState = {
     foundPreviousEnrollment: false,
     initialPreEnrollmentSaved: false,
     completePreEnrollment: false,
-    activePreEnrollmentFound: false
+    activePreEnrollmentFound: false,
+    reasonSaved: false
 };
 
 const preEnrollment = (state = Utils.freezeObject(initialState), action) => {
@@ -38,6 +39,7 @@ const preEnrollment = (state = Utils.freezeObject(initialState), action) => {
         case types.VOCATIONAL_PRE_ENROLLMENT_RETRIEVE_START:
         case types.ALTERNATE_PRE_ENROLLMENT_RETRIEVE_START:
         case types.PARTIAL_ALT_PRE_ENROLLMENT_SAVE_START:
+        case types.REASON_FOR_NOT_ATTENDING_SAVE_START:
             return state;
         case types.STUDENT_CREATE_PRE_ENROLLMENT_END:
         case types.VOCATIONAL_PRE_ENROLLMENT_RETRIEVE_END:
@@ -84,6 +86,8 @@ const preEnrollment = (state = Utils.freezeObject(initialState), action) => {
                     alternateSchoolsToDelete: []
                 }
             };
+        case types.REASON_FOR_NOT_ATTENDING_SAVE_END:
+            return {...state, reasonSaved: action.saved};
         case types.HOME_LOAD_END:
             return Utils.freezeObject(initialState);
         default:

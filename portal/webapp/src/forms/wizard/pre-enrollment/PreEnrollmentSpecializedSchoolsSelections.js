@@ -10,17 +10,15 @@ import {connect} from "react-redux";
 import AnimationHelper from "../../../components/AnimationHelper";
 import SchoolSelector from "../widgets/SchoolSelector";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
+import * as Utils from "../../../Utils";
 
 class PreEnrollmentSpecializedSchoolsSelections extends Component {
 
     constructor(props) {
         super(props);
         this.state = {selectedCategory: null};
-        this.categoryChanged = this.gradeLevelChanged.bind(this);
-        this.regionChanged = this.regionChanged.bind(this);
-        this.gradeLevelChanged = this.gradeLevelChanged.bind(this);
-        this.schoolChanged = this.schoolChanged.bind(this);
-        this.onAdd = this.onAdd.bind(this);
+        this.categoryChanged = this.categoryChanged.bind(this);
+        this.fetchSchools = this.fetchSchools.bind(this);
     }
 
     componentWillMount() {
@@ -32,23 +30,6 @@ class PreEnrollmentSpecializedSchoolsSelections extends Component {
         });
     }
 
-    onAdd() {
-        let form = this.props.alternateEnrollment;
-        let size = form.alternateSchools.length || 0;
-        let school = this.state.selectedSchool;
-        if (size < 2) {
-            let object = {
-                priority: size + 1,
-                school: school,
-                schoolName: school.schoolName,
-                schoolAddress: school.address
-            };
-            form.alternateSchools.push(object);
-            this.cleanSchoolCode()
-        } else {
-            alert("Maximo de dos escuela");
-        }
-    }
 
     onPress(onResult, onError) {
         let form = this.props.alternateEnrollment;
@@ -58,63 +39,39 @@ class PreEnrollmentSpecializedSchoolsSelections extends Component {
         this.props.partialAlternatePreEnrollmentSave(form, onResult, onError);
     }
 
-    cleanSchoolCode() {
-        let form = this.props.preEnrollment;
-        form.schoolId = -1;
-        this.setState({selectedSchool: null});
+
+    categoryChanged(categoryObject) {
+        this.refs.selector.cleanSchoolCode();
+        this.setState({selectedCategory: categoryObject})
     }
 
-    categoryChanged(e){
-        this.cleanSchoolCode();
-        let element = e.target;
-        this.setState({selectedCategory: element.value})
+    getSelectedCategoryCode() {
+        return this.state.selectedCategory.name;
     }
 
-    regionChanged(e) {
-        this.cleanSchoolCode();
+
+    fetchSchools() {
         let form = this.props.preEnrollment;
-        let element = e.target;
-        form.regionId = element.value;
-        if (form.nextGradeLevel !== "-1") {
-            this.props.getSpecializedSchools(form.regionId, form.nextGradeLevel, this.state.selectedCategory);
+        if (!(Utils.isEmptyValue(form.nextGradeLevel) || Utils.isEmptyValue(form.regionId))) {
+            this.props.getSpecializedSchools(form.regionId, form.nextGradeLevel, this.getSelectedCategoryCode());
         }
-    }
-
-    gradeLevelChanged(gradeLevelObject) {
-        this.cleanSchoolCode();
-        let form = this.props.preEnrollment;
-        form.nextGradeLevel = gradeLevelObject.name;
-        if (form.regionId !== "-1") {
-            form.nextGradeLevelDescription = gradeLevelObject.displayName;
-            this.props.getSpecializedSchools(form.regionId, form.nextGradeLevel);
-        }
-    }
-
-    schoolChanged(schoolObject) {
-        let form = this.props.preEnrollment;
-        form.schoolId = schoolObject.schoolId;
-        if (form.schoolId !== "-1") {
-            form.schoolName = schoolObject.schoolName;
-            form.schoolAddress = schoolObject.address;
-        }
-        this.setState({selectedSchool: schoolObject});
     }
 
     render() {
-        let schoolsSelected = this.props.alternateEnrollment.alternateSchools.length;
+        let schoolsSelected = this.props.alternateEnrollment.alternateSchools;
+        let schoolsSelectedToDelete = this.props.alternateEnrollment.alternateSchoolsToDelete;
         let specializedCategories = this.props.specializedCategories;
         let regions = this.props.regions;
         let gradeLevels = this.props.gradeLevels;
         let schools = this.props.schools;
         let form = this.props.preEnrollment;
-        let schoolSelected = this.state.schoolSelected;
         let selectorDisabled = this.refs.selector && this.refs.selector.limit();
 
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
                     <div className="description mb30"><h2>Registro de <span>Pre-Matricula</span></h2></div>
-                    <span className="f20slg"><span className="f20slb">Vamos a crear el registro.</span> Selecciona dos escuelas como alternativas para la matr&iacute;cula del año escolar 2018-2019:</span>
+                    <span className="f20slg"><span className="f20slb">Vamos a crear el registro.</span> Selecciona dos escuelas especializadas como alternativas para la matr&iacute;cula del año escolar 2018-2019:</span>
                 </div>
                 <div className="body d-flex flex-column justify-content-end" style={{marginTop: -150}}>
                     <div className="row">
@@ -126,21 +83,18 @@ class PreEnrollmentSpecializedSchoolsSelections extends Component {
                                               target="name"
                                               display="description"
                                               disabled={selectorDisabled}
-                                            />
+                            />
                         </div>
                     </div>
                     <SchoolSelector ref="selector"
                                     form={form}
-                                    schoolSelected={schoolSelected}
                                     schoolsSelected={schoolsSelected}
+                                    schoolsSelectedToDelete={schoolsSelectedToDelete}
                                     maxSchools={2}
                                     gradeLevels={gradeLevels}
                                     regions={regions}
                                     schools={schools}
-                                    regionChanged={this.regionChanged}
-                                    gradeLevelChanged={this.gradeLevelChanged}
-                                    schoolChanged={this.schoolChanged}
-                                    onAdd={this.onAdd}
+                                    fetchSchools={this.fetchSchools}
                                     specializedSchool
                     />
                 </div>

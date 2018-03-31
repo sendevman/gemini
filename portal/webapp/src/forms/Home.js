@@ -7,8 +7,6 @@ import moment from "moment";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {loadHome, resetWizard} from "../redux/actions";
-import * as Utils from "../Utils";
-import leisureIllustration from "../style/img/leisure-illustration.png";
 import AnimationHelper from "../components/AnimationHelper";
 
 class Home extends Component {
@@ -35,7 +33,7 @@ class Home extends Component {
     render() {
         return [
             <div className="col-md-7 content-section">
-                <div className="body">
+                <div className="home">
                     {this.renderHome()}
                 </div>
                 {this.props.footer}
