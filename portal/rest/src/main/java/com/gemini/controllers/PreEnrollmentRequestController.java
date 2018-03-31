@@ -11,6 +11,7 @@ import com.gemini.beans.requests.enrollment.PreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.enrollment.VocationalPreEnrollmentSubmitRequest;
 import com.gemini.beans.responses.ResponseBase;
 import com.gemini.beans.types.ReasonForNotAttendingSchool;
+import com.gemini.services.CommonService;
 import com.gemini.services.MailService;
 import com.gemini.services.PreEnrollmentService;
 import com.gemini.utils.MessageHelper;
@@ -46,6 +47,8 @@ public class PreEnrollmentRequestController {
     private MailService mailService;
     @Autowired
     private MessageHelper messageHelper;
+    @Autowired
+    private CommonService commonService;
 
     @RequestMapping(value = "/{requestId}")
     public ResponseEntity<ResponseBase> retrieve(@PathVariable Long requestId) {
@@ -133,22 +136,22 @@ public class PreEnrollmentRequestController {
     }
 
     @RequestMapping(value = "/reasons/for/not/attending/school", method = RequestMethod.GET)
-    public ResponseEntity<List<EnumCode>> getReasonCodes(){
-             List<EnumCode> enumCodes = FluentIterable
-                     .from(ReasonForNotAttendingSchool.values())
-                     .transform(new Function<ReasonForNotAttendingSchool, EnumCode>() {
-                         @Override
-                         public EnumCode apply(ReasonForNotAttendingSchool reason) {
-                             return new EnumCode(reason.name(), reason.getDescription());
-                         }
-                     })
-                     .toList();
-             return ResponseEntity.ok(enumCodes);
+    public ResponseEntity<List<EnumCode>> getReasonCodes() {
+        List<EnumCode> enumCodes = FluentIterable
+                .from(ReasonForNotAttendingSchool.values())
+                .transform(new Function<ReasonForNotAttendingSchool, EnumCode>() {
+                    @Override
+                    public EnumCode apply(ReasonForNotAttendingSchool reason) {
+                        return new EnumCode(reason.name(), reason.getDescription());
+                    }
+                })
+                .toList();
+        return ResponseEntity.ok(enumCodes);
     }
 
 
     @RequestMapping(value = "/reason/for/not/attending/school/save", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBase> saveReasonForNotAttendingSchool(@Valid @RequestBody ReasonForNotAttendingRequest request, BindingResult result){
+    public ResponseEntity<ResponseBase> saveReasonForNotAttendingSchool(@Valid @RequestBody ReasonForNotAttendingRequest request, BindingResult result) {
         boolean saved;
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(messageHelper.missingFormFields(result));
@@ -173,7 +176,7 @@ public class PreEnrollmentRequestController {
     public ResponseEntity<ResponseBase> partialAlternatePreEnrollmentSave(@RequestBody AlternateSchoolPreEnrollmentSubmitRequest request) {
         List<SchoolResponseResponse> validationResponse = doSchoolAvailableSpaceValidation(request);
         ResponseEntity<ResponseBase> response = doValidation(validationResponse);
-        if(response != null){
+        if (response != null) {
             return response;
         }
         boolean saved = preEnrollmentService.partialAlternatePreEnrollmentSave(request);
@@ -184,6 +187,11 @@ public class PreEnrollmentRequestController {
 
     @RequestMapping(value = "/alternate/submit", method = RequestMethod.POST)
     public ResponseEntity<ResponseBase> alternateSchoolSubmit(@RequestBody AlternateSchoolPreEnrollmentSubmitRequest request, @AuthenticationPrincipal User loggedUser) {
+        AlternateSchoolPreEnrollmentBean alternatePreEnrollment = preEnrollmentService.findAlternatePreEnrollmentById(request.getRequestId());
+        if (commonService.isInvalidMinAlternateSchools(alternatePreEnrollment.getAlternateSchools())) {
+            ResponseBase base = ResponseBase.error("Validaci\u00f3n", messageHelper.processMessages("enrollment.regular.validation"));
+            return ResponseEntity.badRequest().body(base);
+        }
         boolean saved = false;
         try {
             mailService.sendPreEnrollmentSubmitEmail(loggedUser, request);
@@ -213,7 +221,7 @@ public class PreEnrollmentRequestController {
 
         List<SchoolResponseResponse> validationResponse = doSchoolAvailableSpaceValidation(request);
         ResponseEntity<ResponseBase> response = doValidation(validationResponse);
-        if(response != null){
+        if (response != null) {
             return response;
         }
         if (saved)
@@ -223,6 +231,12 @@ public class PreEnrollmentRequestController {
 
     @RequestMapping(value = "/vocational/submit", method = RequestMethod.POST)
     public ResponseEntity<ResponseBase> vocationalSubmit(@RequestBody VocationalPreEnrollmentSubmitRequest request, @AuthenticationPrincipal User loggedUser) {
+        VocationalPreEnrollmentBean vocational = preEnrollmentService.findVocationalPreEnrollmentById(request.getRequestId());
+        if (commonService.isInvalidMinAlternateSchools(vocational.getEnrollments())) {
+            ResponseBase base = ResponseBase.error("Validaci\u00f3n", messageHelper.processMessages("enrollment.occupational.validation"));
+            return ResponseEntity.badRequest().body(base);
+        }
+
         boolean saved = false;
         try {
             mailService.sendPreEnrollmentSubmitEmail(loggedUser, request);
@@ -254,7 +268,7 @@ public class PreEnrollmentRequestController {
         return ResponseEntity.ok(ResponseBase.error("Error updating pre-enrollment"));
     }
 
-    private ResponseEntity<ResponseBase> doValidation(List<SchoolResponseResponse> validationResponse){
+    private ResponseEntity<ResponseBase> doValidation(List<SchoolResponseResponse> validationResponse) {
         if (validationResponse != null && !validationResponse.isEmpty()) {
             ResponseBase response =
                     ResponseBase.error("Validaci\u00f3n de Espacios Disponibles en las Escuelas");

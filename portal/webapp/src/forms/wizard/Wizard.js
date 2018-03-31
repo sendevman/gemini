@@ -52,20 +52,22 @@ class Wizard extends Component {
 
     componentWillMount() {
         let requestId = this.props.match.params.id;
-        console.log("...loading...");
         this.props.load(requestId);
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.wizardCompleted) {
-            if (nextProps.startOver) {
-                this.props.history.push("/wizard")
+            if (nextProps.startOver && !this.state.reloading) {
+                this.props.history.push("/wizard");
+                window.location.reload();
+                this.state.reloading = true;
             } else {
                 this.props.history.push('/home');
             }
         } else if (nextProps.activePreEnrollmentFound && !this.state.reloading) {
             let requestId = nextProps.requestId;
-            this.props.history.push(`/wizard/edit/${requestId}`);
+            this.props.history.push(`/wizard/${requestId}`);
+            window.location.reload();
             this.state.reloading = true;
         } else {
             let current = this.props.wizard;
@@ -79,13 +81,13 @@ class Wizard extends Component {
         window.scrollTo(0, 0)
     }
 
-    onError(validationObj) {
+    onError(validationObj, afterCloseAction) {
         if (validationObj) {
             let formattedMessage = validationObj.title ? `${validationObj.title}:\n` : "";
             for (let message of validationObj.messages) {
                 formattedMessage += `*\t${message}\n`;
             }
-            this.refs.modal.open("Validaci\u00f3n", formattedMessage)
+            this.refs.modal.open("Validaci\u00f3n", formattedMessage, afterCloseAction);
         } else {
             this.refs.modal.open("Upps!!!", "Ha ocurrido un error, disculpe el inconveniente")
         }
@@ -190,9 +192,6 @@ class Wizard extends Component {
         if (!this.wizardForms || this.wizardForms.length === 0)
             return (null);
 
-        // let redirectReload = this.state.reloading ? (
-        //     <Redirect to={{pathname: `/wizard/${this.props.requestId}`, state: {from: this.props.location}}}/>) : (null);
-
         return [this.wizardForms[current].form, <ModalHelper ref="modal"/>];
     }
 
@@ -207,6 +206,7 @@ class Wizard extends Component {
         && props.currentPageType !== "PERSONAL_ADDITIONAL_INFO"
         && props.currentPageType !== "VOCATIONAL_PROGRAMS"
         && props.currentPageType !== "VOCATIONAL_SCHOOL_SELECTION"
+        && props.currentPageType !== "TECHNICAL_SCHOOL_SELECTION"
             ? "body d-flex align-items-center flex-column justify-content-end"
             : "";
 

@@ -124,7 +124,28 @@ const technicalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
     getIndexFromCatalog("USER_ADDITIONAL_INFO"),
     getIndexFromCatalog("INSTRUCTIONS"),
+
+    getIndexFromCatalog("DE_PROGRAM_QUESTION"),
+    getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
+    getIndexFromCatalog("STUDENT_LOOKUP"),
+    getIndexFromCatalog("NOT_FOUND_QUESTION"),
+    getIndexFromCatalog("FOUND_INFO"),
     //verify this
+    getIndexFromCatalog("PERSONAL_INFO"),
+    getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
+    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
+    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
+    getIndexFromCatalog("ADDRESS"),
+
+    getIndexFromCatalog("TECHNICAL_SCHOOL_SELECTION"),
+    getIndexFromCatalog("VOCATIONAL_SCHOOL_INFO"),
+    getIndexFromCatalog("VOCATIONAL_PROGRAMS"),
+    getIndexFromCatalog("VOCATIONAL_REVIEW_SUBMIT"),
+    getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
+    getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")
+];
+
+const editTechnicalFlow = [
     getIndexFromCatalog("PERSONAL_INFO"),
     getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
     getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
@@ -210,7 +231,7 @@ export const load = (requestId) => (dispatch, getState) => {
     let editing = requestId;
 
     flow = editing
-        ? (user.userVocationalStudent ? editOccupationalFlow : editNormalFlow)
+        ? editNormalFlow
         : normalFlow;  //always start here
     let startPage = profileCompleted ? getIndexFromFlow("INSTRUCTIONS") : 0;
     if (editing) {
@@ -386,7 +407,7 @@ function changeFormFlow(selection, dispatch, preEnrollment, edited = false) {
             changeToOccupationalForm(dispatch, preEnrollment, edited ? editOccupationalFlow : occupationalFlow);
             break;
         case types.TECHNIQUE_ENROLLMENT:
-            changeToTechniqueForm(dispatch, preEnrollment, technicalFlow);
+            changeToTechniqueForm(dispatch, preEnrollment, edited ? editTechnicalFlow : technicalFlow);
             break;
         case types.REGULAR_ENROLLMENT:
         case types.REGULAR_ALTERNATE_SCHOOLS:

@@ -111,7 +111,6 @@ messages:
       citizenship: "Cuidadanía"
       ethnicCodes: "Debe selecciona al menos un codigo ethnico"
       reason: "Debe seleccionar una razon"
-
   search:
     student.missing.required.fields: "Debe proveer algunos de estos dos campos (Ultimo SSN o Numero Estudiante)"
   user:
@@ -127,9 +126,11 @@ messages:
     school.available.space.validation: "no tiene espacio disponible"
     invalid.address.postal: "Dirección postal inválida"
     invalid.address.residential: "Dirección residencial inválida"
-    already.active: "Posee una matricula activa"
+    already.active: "Posee una matricula activa, cargando registro"
     already.exists: "Matricula ya existe en el sistema"
     already.submitted: "Usted ya sometio Matricula para este estudiante"
+    occupational.validation: "Debe seleccionar al menos una escuela y un programa"
+    regular.validation: "Debe seleccionar dos escuela alternas para completar el proceso"
 
 
 

@@ -165,8 +165,8 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
     }
 
     @Override
-    public List<School> findTechnicalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear) {
-        return findSchoolsByRegionAndGradeLevel(regionId, schoolYear, "00");
+    public List<School> findTechnicalSchools(Long schoolYear) {
+        return findSchoolsByRegionAndGradeLevel(1L, schoolYear, "00");
     }
 
     @Override

@@ -5,8 +5,11 @@ import com.gemini.database.jpa.entities.ConfigEntity;
 import com.gemini.database.jpa.jdbc.CommonDao;
 import com.gemini.database.jpa.respository.ConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -23,7 +26,8 @@ public class CommonService {
     private ConfigRepository configRepository;
 
     //todo: fran this system config can load if the current date is in a specific date range
-    private ConfigEntity systemConfig() {
+    @Cacheable
+    public ConfigEntity systemConfig() {
         return configRepository.findAll().iterator().next();
     }
 
@@ -61,5 +65,10 @@ public class CommonService {
 
     public boolean isPreEnrollmentYear(EnrollmentInfo enrollmentInfo){
         return systemConfig().getPreEnrollmentSchoolYear().equals(enrollmentInfo.getSchoolYear());
+    }
+
+    public boolean isInvalidMinAlternateSchools(Collection collection){
+        Integer min = systemConfig().getMinAlternateSchools();
+        return (collection == null || collection.isEmpty() || collection.size() < min);
     }
 }

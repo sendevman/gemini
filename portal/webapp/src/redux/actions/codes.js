@@ -77,6 +77,13 @@ export const getVocationalPrograms = (schoolId) => (dispatch) => {
     });
 };
 
+export const getTechnicalSchools = () => (dispatch) => {
+    dispatch({type: types.SCHOOL_LOAD_START});
+    return services().getTechnicalSchools().then((response) => {
+        dispatch({type: types.SCHOOL_LOAD_END, response: response});
+    });
+};
+
 export const getReasonForAttendingCodes = () => (dispatch) => {
     dispatch({type: types.REASONS_LOAD_START});
     return services().getReasonsForNotAttendingSchools().then((response) => {

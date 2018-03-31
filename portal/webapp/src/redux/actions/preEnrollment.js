@@ -26,8 +26,11 @@ export const savePreEnrollment = (form, onResult, onError) => (dispatch, getStat
                     onResult();
                 }
                 else {
-                    if (response.found)
-                        dispatch({type: types.PRE_ENROLLMENT_ACTIVE_FOUND});
+                    if (response.found) {
+                        onError(Utils.errorObj(response, dispatch), () => {
+                            dispatch({type: types.PRE_ENROLLMENT_ACTIVE_FOUND});
+                        });
+                    }
                     else onError(Utils.errorObj(response, dispatch));
                 }
             } catch (e) {
@@ -137,7 +140,7 @@ export const changeCurrentVocationalEnrollment = (currentEnrollment) => (dispatc
     dispatch({type: types.CHANGE_VOCATIONAL_PRE_ENROLLMENT, enrollment: currentEnrollment})
 };
 
-export const saveReasonForNotAttendingSchool = (option, onResult, onError) => (dispatch, getState) =>{
+export const saveReasonForNotAttendingSchool = (option, onResult, onError) => (dispatch, getState) => {
     dispatch({type: types.REASON_FOR_NOT_ATTENDING_SAVE_START});
     let preEnrollment = getState().preEnrollment;
     let reason = Utils.normalizeEnumValue(option);

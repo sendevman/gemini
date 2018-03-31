@@ -175,4 +175,18 @@ public class SchoolmaxController {
         return ResponseEntity.ok(Lists.transform(programs, toSelection));
     }
 
+
+    @RequestMapping(value = "/retrieve/technical/schools")
+    public ResponseEntity<List<SchoolResponse>> getTechnicalSchools() {
+        List<School> schools = smaxService.findTechnicalSchools();
+        List<SchoolResponse> schoolReturned = new ArrayList<>();
+        for (School school : schools) {
+            SchoolResponse response = CopyUtils.createSchoolResponse(school);
+            schoolReturned.add(response);
+        }
+
+        return ResponseEntity.ok(schoolReturned);
+    }
+
+
 }

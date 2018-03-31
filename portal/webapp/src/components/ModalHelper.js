@@ -23,7 +23,9 @@ export default class ModalHelper extends Component {
 
     close() {
         if (this.action) {
-            this.action();
+            setTimeout(() => {
+                this.action()
+            }, 300);
         }
         this.setState({modal: false, title: null, message: null});
     }
