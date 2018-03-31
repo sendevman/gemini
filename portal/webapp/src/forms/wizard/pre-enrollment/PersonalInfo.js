@@ -23,7 +23,7 @@ class PersonalInfo extends Component {
     componentWillMount() {
         this.props.loadPersonalInfo(() => {
         }, () => {
-            this.refs.modal.open("Upss!!!", "Ocurrio un error buscando la solicitud", ()=>{
+            this.refs.modal.open("Upss!!!", "Ocurrio un error buscando la solicitud", () => {
                 this.props.history.push("/home")
             });
         });
@@ -47,7 +47,7 @@ class PersonalInfo extends Component {
 
     render() {
         let student = this.props.student;
-        let studentExists = this.props.found;
+        let studentExists = this.props.found || student.existsOnSie;
         return [<div className="col-md-7 content-section">
             <div className="title">
                 <div className="description"><h2 className="f90sbg">OK.</h2>
@@ -60,12 +60,19 @@ class PersonalInfo extends Component {
                 <form>
                     <div className="row">
                         <div className="col-md-12">
-                            <SocialSecurityInput id="ssn"
-                                                 label="Seguro Social"
-                                                 value={student.ssn}
-                                                 onChange={this.inputHandler}
-                                                 required
-                                                 disabled={studentExists}/>
+                            {!studentExists
+                                ? (<SocialSecurityInput id="ssn"
+                                                        label="Seguro Social"
+                                                        value={student.ssn}
+                                                        onChange={this.inputHandler}
+                                                        required
+                                                        disabled={studentExists}/>)
+                                : <TextInput id="lastSsn"
+                                             type="text"
+                                             label="Ultimos 4 Seguro Social"
+                                             value={student.lastSsnFormatted}
+                                             onChange={this.inputHandler}
+                                             disabled={studentExists}/>}
                         </div>
                     </div>
                     <div className="row">
@@ -124,7 +131,7 @@ class PersonalInfo extends Component {
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 {/*<div className="illustration"><img src={entrollmentIllustration} alt=""/></div>*/}
                 <AnimationHelper type="blackboard"/>
-            </div>,<ModalHelper ref="modal"/>];
+            </div>, <ModalHelper ref="modal"/>];
     }
 
 }

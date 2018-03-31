@@ -476,7 +476,7 @@ public class PreEnrollmentService {
 
     public boolean alternatePreEnrollmentSubmit(final AlternateSchoolPreEnrollmentSubmitRequest request) {
         final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
-        requestEntity.setType(EnrollmentType.REGULAR_ALTERNATE_SCHOOLS);
+        requestEntity.setType(request.getType());
         requestEntity.setRequestStatus(RequestStatus.PENDING_TO_REVIEW);
         requestEntity.setSubmitDate(commonService.getCurrentDate());
         return preEnrollmentRepository.save(requestEntity) != null;
@@ -498,6 +498,9 @@ public class PreEnrollmentService {
         Utils.copyLastNames(studentEntity, studentInfo);
         studentInfo.setStudentNumber(studentEntity.getExtStudentNumber());
         studentInfo.setId(studentEntity.getId());
+        if(ValidationUtils.valid(studentEntity.getExtStudentNumber())){
+            studentInfo.setLastSsnFormatted(Utils.obfuscatedSsn(studentEntity.getSsn()));
+        }
         //todo: fran change this!!!
         studentInfo.setType(entity.getType());
         return studentInfo;

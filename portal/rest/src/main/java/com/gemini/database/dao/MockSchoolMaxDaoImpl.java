@@ -9,13 +9,8 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Repository;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,17 +19,12 @@ import java.util.Map;
  * Time: 9:05 AM
  */
 public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
-    private Student student;
     private final String currentGradeLevel = "01";
     private final String nextGradeLevel = "02";
-    private final String nextGradeLevelDescription = "02-Segundo";
+    private Student studentFound = new Student();
+
 
     public MockSchoolMaxDaoImpl() {
-        student = new Student();
-        student.setFirstName("Estudioso");
-        student.setLastName("Sie Smax");
-        student.setGenderValue("M");
-        student.setDateOfBirth(new Date());
     }
 
     @Override
@@ -44,21 +34,23 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
 
     @Override
     public Student findStudent(StudentSearchRequest request) {
-        student.setDateOfBirth(request.getDateOfBirth());
-        if (ValidationUtils.valid(request.getStudentNumber())) {
-            student.setExtStudentNumber(request.getStudentNumber());
-            student.setStudentId(request.getStudentNumber());
-        }
+        studentFound.setFirstName(request.getFirstName());
+        studentFound.setLastName(request.getLastName());
+        studentFound.setGenderValue("M");
+        studentFound.setDateOfBirth(request.getDateOfBirth());
+        studentFound.setSsn("234-56-2712");
+        Random rand = new Random();
+        long value = Math.abs(rand.nextLong());
+        studentFound.setExtStudentNumber(value);
+        studentFound.setStudentId(value);
         if (ValidationUtils.valid(request.getLastSsn()))
-            student.setSsn(request.getLastSsn().toString());
-        return student;
+            studentFound.setSsn(request.getLastSsn().toString());
+        return studentFound;
     }
 
     @Override
     public Student findStudent(Long studentNumber) {
-        student.setExtStudentNumber(studentNumber);
-        student.setStudentId(studentNumber);
-        return student;
+        return studentFound;
     }
 
     @Override

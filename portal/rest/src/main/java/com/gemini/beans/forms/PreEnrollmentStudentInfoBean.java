@@ -1,8 +1,9 @@
 package com.gemini.beans.forms;
 
 import com.gemini.beans.IdentityForm;
-import com.gemini.beans.types.Gender;
+import com.gemini.beans.SsnObfuscated;
 import com.gemini.beans.types.EnrollmentType;
+import com.gemini.beans.types.Gender;
 import com.gemini.utils.Utils;
 import com.gemini.utils.ValidationUtils;
 
@@ -14,7 +15,7 @@ import java.util.Date;
  * Date: 3/8/18
  * Time: 8:15 AM
  */
-public class PreEnrollmentStudentInfoBean implements IdentityForm {
+public class PreEnrollmentStudentInfoBean implements IdentityForm, SsnObfuscated {
 
     private Long id;
     private Long studentNumber;
@@ -25,6 +26,8 @@ public class PreEnrollmentStudentInfoBean implements IdentityForm {
     private Date dateOfBirth;
     private Gender gender;
     private EnrollmentType type;
+    private String lastSsnFormatted;
+
 
     public Long getId() {
         return id;
@@ -35,6 +38,8 @@ public class PreEnrollmentStudentInfoBean implements IdentityForm {
     }
 
     public String getSsn() {
+        if (isExistsOnSie())
+            return this.getLastSsnFormatted();
         return ssn;
     }
 
@@ -99,7 +104,7 @@ public class PreEnrollmentStudentInfoBean implements IdentityForm {
         this.gender = gender;
     }
 
-    public String getFullName(){
+    public String getFullName() {
         return Utils.toFullName(firstName, middleName, lastName);
     }
 
@@ -111,9 +116,17 @@ public class PreEnrollmentStudentInfoBean implements IdentityForm {
         this.type = type;
     }
 
-    public boolean isStudentExistsInSIE() {
+    public boolean isExistsOnSie() {
         return ValidationUtils.valid(studentNumber);
     }
 
+    @Override
+    public String getLastSsnFormatted() {
+        return lastSsnFormatted;
+    }
 
+    @Override
+    public void setLastSsnFormatted(String lastSsnFormatted) {
+        this.lastSsnFormatted = lastSsnFormatted;
+    }
 }

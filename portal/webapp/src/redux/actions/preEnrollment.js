@@ -6,14 +6,18 @@ import services from "../setup";
 export const savePreEnrollment = (form, onResult, onError) => (dispatch, getState) => {
 
     dispatch({type: types.STUDENT_CREATE_PRE_ENROLLMENT_START});
+    let found = getState().studentLookup.found;
     let studentInfo = getState().studentInfo;
     let preEnrollment = getState().preEnrollment;
     let gender = Utils.normalizeEnumValue(form.gender);
+    let ssn = form.ssn;
+    if(found)
+      ssn = "xxx-xx-xxxx";
 
     form.requestId = preEnrollment.requestId;
     form.studentNumber = studentInfo.student.studentNumber;
     form.type = preEnrollment.type;
-    let postObj = {type: null, firstName: null, lastName: null, dateOfBirth: null, ...form, gender: gender};
+    let postObj = {type: null, firstName: null, lastName: null, dateOfBirth: null, ...form, ssn: ssn, gender: gender};
     services()
         .savePreEnrollment(postObj)
         .then((response) => response.json())

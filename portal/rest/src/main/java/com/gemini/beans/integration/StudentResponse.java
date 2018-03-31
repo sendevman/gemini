@@ -1,6 +1,7 @@
 package com.gemini.beans.integration;
 
 import com.gemini.beans.IdentityForm;
+import com.gemini.beans.SsnObfuscated;
 import com.gemini.beans.responses.ResponseBase;
 import com.gemini.beans.types.Gender;
 import com.gemini.utils.Utils;
@@ -13,16 +14,14 @@ import java.util.Date;
  * Date: 2/9/18
  * Time: 12:27 AM
  */
-public class StudentResponse extends ResponseBase implements IdentityForm {
+public class StudentResponse extends ResponseBase implements IdentityForm, SsnObfuscated {
     private Long studentNumber;
     private String firstName;
     private String middleName;
     private String lastName;
     private Date dateOfBirth;
     private Gender gender;
-    //todo: refactoring alert fran check these fields they are not needed
-    private boolean isEnrolled;
-    private int currentGradeLevel;
+    private String lastSsnFormatted;
 
     public Long getStudentNumber() {
         return studentNumber;
@@ -76,20 +75,12 @@ public class StudentResponse extends ResponseBase implements IdentityForm {
         this.gender = gender;
     }
 
-    public boolean isEnrolled() {
-        return isEnrolled;
+    public String getLastSsnFormatted() {
+        return lastSsnFormatted;
     }
 
-    public void setEnrolled(boolean enrolled) {
-        isEnrolled = enrolled;
-    }
-
-    public int getCurrentGradeLevel() {
-        return currentGradeLevel;
-    }
-
-    public void setCurrentGradeLevel(int currentGradeLevel) {
-        this.currentGradeLevel = currentGradeLevel;
+    public void setLastSsnFormatted(String lastSsnFormatted) {
+        this.lastSsnFormatted = lastSsnFormatted;
     }
 
     public String getFullName() {
