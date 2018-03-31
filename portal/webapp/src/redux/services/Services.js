@@ -121,6 +121,10 @@ export default class Services {
         return this._get(`/smax/interface/retrieve/occupational/programs/school/${schoolId}`);
     }
 
+    getTechnicalSchools(){
+        return this._get(`/smax/interface/retrieve/technical/schools`);
+    }
+
     //pre-enrollment
 
     getActivePreEnrollment(requestId) {

@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
-import {Button} from "react-bootstrap";
 import {getVocationalPrograms, partialSaveVocationalPreEnrollment} from "../../../redux/actions";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import Immutable from "immutable";
-import entrollmentIllustration from "../../../style/img/entrollment-illustration.png";
+import * as types from "../../../redux/types";
 import AnimationHelper from "../../../components/AnimationHelper";
+import Button from "../../../components/Button";
 
 class VocationalProgramsSelection extends Component {
 
@@ -69,11 +69,14 @@ class VocationalProgramsSelection extends Component {
     render() {
         let enrollment = this.props.currentVocationalEnrollment;
         let programs = this.state.formPrograms;
+        let vocationalType = this.props.preEnrollment.type === types.TECHNIQUE_ENROLLMENT
+            ? "Institutos"
+            : "Ocupational";
 
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb30"><h2>Pre-Matricula <span>Vocacional</span></h2></div>
+                    <div className="description mb30"><h2>Pre-Matricula <span>{vocationalType}</span></h2></div>
                     <p className="f30slg">Seleccione los programas vocacionales, que desea <span
                         className="f30slb">pre-matricularse.</span></p>
                 </div>
@@ -117,7 +120,7 @@ class VocationalProgramsSelection extends Component {
                         <div className="col-md-4">
                             <div className="form-group">
                                 <label>&nbsp;</label>
-                                <Button className="form-control" bsStyle="primary" onClick={this.onAdd}
+                                <Button size="normal" onClick={this.onAdd}
                                         disabled={!programs || programs.length === 0}>A&ntilde;adir</Button>
                             </div>
                         </div>
@@ -157,13 +160,15 @@ class VocationalProgramsSelection extends Component {
                         <td>{index + 1}</td>
                         <td>{prog.programDescription}</td>
                         <td>
-                            <Button bsSize="xsmall" bsStyle="danger" onClick={this.onDelete(index)}>
+                            <Button size="small" onClick={this.onDelete(index)}>
                                 <i className="fas fa-trash"/>
                             </Button>
                         </td>
                     </tr>
                 ))
-                :  <tr><td colSpan={3} style={{left: 50, top: 50}}>No posee ningun programa a&uacute;n</td></tr>}
+                : <tr>
+                    <td colSpan={3} style={{left: 50, top: 50}}>No posee ningun programa a&uacute;n</td>
+                </tr>}
             </tbody>
         </table>)
     }

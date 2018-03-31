@@ -179,4 +179,8 @@ public class PreEnrollmentBean {
     public String getRequestStatusText() {
         return this.requestStatus != null ? this.requestStatus.getDescription() : RequestStatus.ACTIVE.getDescription();
     }
+
+    public String getEnrollmentTypeText() {
+        return this.type != null ? this.type.getDescription() : "Ninguna";
+    }
 }

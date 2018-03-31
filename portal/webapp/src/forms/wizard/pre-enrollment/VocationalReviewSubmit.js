@@ -11,7 +11,8 @@ import {
     retrieveVocationalPreEnrollment,
     submitVocationalPreEnrollment
 } from "../../../redux/actions";
-import {Button} from "react-bootstrap";
+import * as types from "../../../redux/types";
+import Button from "../../../components/Button";
 
 class VocationalReviewSubmit extends Component {
 
@@ -21,6 +22,11 @@ class VocationalReviewSubmit extends Component {
         this.onError = this.onError.bind(this);
         this.load = this.load.bind(this);
         this.onAdd = this.onAdd.bind(this);
+        this.isTechnical = this.props.preEnrollment.type === types.TECHNIQUE_ENROLLMENT;
+        this.vocationalType = this.isTechnical
+            ? "Institutos"
+            : "Ocupational";
+
     }
 
     componentWillMount() {
@@ -45,7 +51,8 @@ class VocationalReviewSubmit extends Component {
 
     onAdd() {
         this.props.changeCurrentVocationalEnrollment(null);
-        this.props.goToAction("VOCATIONAL_SCHOOL_SELECTION");
+        let goPage = this.isTechnical ? "TECHNICAL_SCHOOL_SELECTION" : "VOCATIONAL_SCHOOL_SELECTION";
+        this.props.goToAction(goPage);
     }
 
     onEdit = (enrollment) => e => {
@@ -64,13 +71,23 @@ class VocationalReviewSubmit extends Component {
     }
 
     render() {
+        let student = this.props.student;
+        let preEnrollment = this.props.preEnrollment;
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb30"><h2>Revise su Pre-Matricula <span>Vocacional</span></h2></div>
+                    <div className="description mb30"><h2>Revise su Pre-Matricula <span>{this.vocationalType}</span>
+                    </h2></div>
+                    <p className="f22slg mb-1"><i className="icon-teacher mr5"/> <span
+                        id="adress">Estudiante {student && student.fullName}</span></p>
+                    <p className="f22slg mb-1"><i className="icon-teacher mr5"/> <span
+                        id="level">{preEnrollment.info.nextGradeLevelDescription}</span></p>
+                    <h3 style={{textAlign: "right"}}>Desea añadir otra escuela?</h3>
+                    <Button size="large" onClick={this.onAdd}>Añadir</Button>
+
                 </div>
                 <div className="body d-flex flex-column justify-content-end">
-                    {this.innerRender()}
+                    <span className="f40sbg">¿Hará algun cambio?</span>
                     {this.props.footer}
                 </div>
             </div>,
@@ -105,7 +122,7 @@ class VocationalReviewSubmit extends Component {
                     <h3 style={{textAlign: "right"}}>Desea añadir otra escuela?</h3>
                 </div>
                 <div className="col-md-2" style={{marginTop: 20}}>
-                    <Button onClick={this.onAdd} bsStyle="primary" block={true}>Añadir</Button>
+                    <Button size="large" onClick={this.onAdd}>Añadir</Button>
                 </div>
             </div>];
     }
@@ -120,11 +137,11 @@ class VocationalReviewSubmit extends Component {
                         <div key={index} className="row">
                             <div className="col-md-12">
                                 <div className="float-right">
-                                    <Button bsSize="xsmall" onClick={this.onEdit(enrollment)}
+                                    <Button size="small" onClick={this.onEdit(enrollment)}
                                             style={{marginBottom: 5, marginRight: 5}}>
                                         <i className="fas fa-edit"/>
                                     </Button>
-                                    <Button bsSize="xsmall" onClick={this.onDelete(enrollment)}
+                                    <Button size="small" onClick={this.onDelete(enrollment)}
                                             style={{marginBottom: 5}}>
                                         <i className="fas fa-trash"/>
                                     </Button>

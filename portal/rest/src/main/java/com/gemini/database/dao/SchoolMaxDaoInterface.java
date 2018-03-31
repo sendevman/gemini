@@ -34,7 +34,7 @@ public interface SchoolMaxDaoInterface {
     List<School> findSpecializedSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear, String gradeLevel, SpecializedSchoolCategory category);
 
     //technical schools
-    List<School> findTechnicalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear);
+    List<School> findTechnicalSchools(Long schoolYear);
 
     School findSchoolById(Long schoolId);
 

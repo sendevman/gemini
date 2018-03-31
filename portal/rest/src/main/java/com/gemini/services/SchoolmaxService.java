@@ -107,6 +107,11 @@ public class SchoolmaxService {
         return smaxDao.findSpecializedSchoolsByRegionAndGradeLevel(regionId, schoolYear, gradeLevel, category);
     }
 
+    public List<School> findTechnicalSchools() {
+        Long schoolYear = commonService.getCurrentSchoolYear();
+        return smaxDao.findTechnicalSchools(schoolYear);
+    }
+
     @Cacheable
     public SchoolGradeLevel findSchoolLevel(Long schoolYear, Long schoolId, String gradeLevel) {
         return smaxDao.findGradeLevelInfo(schoolYear, schoolId, gradeLevel);

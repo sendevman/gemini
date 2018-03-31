@@ -70,23 +70,36 @@ const PrivateRoute = ({component: Component, ...rest}) => (
         render={props =>
             rest.authenticated || rest.loading
                 ? rest.authenticated && !rest.loading ? (<Component {...props} />) : (
-                    <div>Esto no deberia suceder recargue la pagina</div>)
+                    limboPage)
                 : (<Redirect to={{pathname: "/login", state: {from: props.location}}}/>)
         }
     />
 );
 
-const RefreshRoute = ({ path}) => (
+const RefreshRoute = ({path}) => (
     <Route
         path={path}
-        component={({ history, location, match }) => {
+        component={({history, location, match}) => {
             history.replace({
                 ...location,
-                pathname:location.pathname.substring(match.path.length)
+                pathname: location.pathname.substring(match.path.length)
             });
             return null;
         }}
     />
 );
+
+const limboPage = [
+    <div className="col-md-7 content-section">
+        <div className="title">
+            <div className="description mb40"/>
+            <span className="f20slg"/>
+        </div>
+        <div className="body d-flex align-items-center flex-column justify-content-end">
+        </div>
+    </div>,
+    <div className="col-md-4 illustration-section d-flex align-items-center text-center"/>
+
+];
 
 export default withRouter(Routes);

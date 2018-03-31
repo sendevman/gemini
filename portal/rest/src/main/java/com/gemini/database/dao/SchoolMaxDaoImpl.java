@@ -140,11 +140,9 @@ public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements Sc
         return getNamedParameterJdbcTemplate().query(sql, params, new BeanPropertyRowMapper<>(School.class));
     }
 
-    //todo: fran change this!!!
     @Override
-    public List<School> findTechnicalSchoolsByRegionAndGradeLevel(Long regionId, Long schoolYear) {
-        String sql = SCHOOL_SQL.concat("WHERE REGION_ID = ? ORDER BY SCHOOL_NAME");
-        return getJdbcTemplate().query(sql, new BeanPropertyRowMapper<>(School.class), regionId, schoolYear);
+    public List<School> findTechnicalSchools(Long schoolYear) {
+        return null;
     }
 
     @Override

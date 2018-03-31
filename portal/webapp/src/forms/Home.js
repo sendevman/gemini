@@ -110,10 +110,10 @@ class Home extends Component {
                     <div className="col-md-3">
                         Matricula:
                     </div>
-                    <div className="col-md-3">
-                        {pre.type === "VOCATIONAL" ? "Vocacional" : "Regular"}
+                    <div className="col-md-6">
+                        {pre.enrollmentTypeText}
                     </div>
-                    <div className="col-md-6"/>
+                    <div className="col-md-3"/>
 
                 </div>
             </div>));
