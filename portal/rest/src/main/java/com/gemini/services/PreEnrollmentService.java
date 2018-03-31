@@ -2,6 +2,7 @@ package com.gemini.services;
 
 import com.gemini.beans.forms.*;
 import com.gemini.beans.internal.RequestSearchResult;
+import com.gemini.beans.requests.ReasonForNotAttendingRequest;
 import com.gemini.beans.requests.enrollment.AlternateSchoolPreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.enrollment.PreEnrollmentInitialRequest;
 import com.gemini.beans.requests.enrollment.PreEnrollmentSubmitRequest;
@@ -479,6 +480,15 @@ public class PreEnrollmentService {
         requestEntity.setRequestStatus(RequestStatus.PENDING_TO_REVIEW);
         requestEntity.setSubmitDate(commonService.getCurrentDate());
         return preEnrollmentRepository.save(requestEntity) != null;
+    }
+
+    public  boolean saveReasonForNotAttending(ReasonForNotAttendingRequest request){
+        PreEnrollmentRequestEntity entity = preEnrollmentRepository.findOne(request.getRequestId());
+        if(entity == null)
+            return false;
+        entity.setReasonForNotAttendingSchool(request.getReason());
+        entity = preEnrollmentRepository.save(entity);
+        return entity != null;
     }
 
     //    Private Methods

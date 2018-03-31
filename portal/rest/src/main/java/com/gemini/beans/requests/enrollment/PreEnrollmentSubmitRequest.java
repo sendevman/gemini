@@ -1,5 +1,7 @@
 package com.gemini.beans.requests.enrollment;
 
+import com.gemini.beans.types.EnrollmentType;
+
 /**
  * Created with IntelliJ IDEA.
  * User: fran
@@ -8,9 +10,18 @@ package com.gemini.beans.requests.enrollment;
  */
 public class PreEnrollmentSubmitRequest {
 
+    private EnrollmentType type;
     private Long requestId;
     private Long schoolId;
     private String nextGradeLevel;
+
+    public EnrollmentType getType() {
+        return type;
+    }
+
+    public void setType(EnrollmentType type) {
+        this.type = type;
+    }
 
     public Long getRequestId() {
         return requestId;

@@ -59,3 +59,7 @@ export function errorObj(response, dispatch){
         dispatch({type: types.CANCEL_BLOCK_UI});
     return {title: response.titleMessage, messages: response.validationMessages};
 }
+
+export function isEmptyValue(value) {
+    return !value || value === "-1" || value === null;
+}

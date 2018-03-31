@@ -94,7 +94,7 @@ public class SchoolmaxController {
     }
 
 
-    @RequestMapping(value = "/retrieve/vocational/regions")
+    @RequestMapping(value = "/retrieve/occupational/regions")
     public ResponseEntity<List<RegionResponse>> getOccupationalRegions() {
         List<Region> regions = smaxService.getAllRegions();
         return ResponseEntity.ok(CopyUtils.convert(regions, RegionResponse.class));
@@ -133,7 +133,7 @@ public class SchoolmaxController {
         return ResponseEntity.ok(schoolReturned);
     }
 
-    @RequestMapping(value = "/retrieve/specialized/school/{regionId}/grade/level/{gradeLevel}")
+    @RequestMapping(value = "/retrieve/specialized/school/{regionId}/grade/level/{gradeLevel}/category")
     public ResponseEntity<List<SchoolResponse>> getSpecializedSchoolByRegionAndGradeLevel(@PathVariable Long regionId
             , @PathVariable String gradeLevel
             , @RequestParam(name = "category", required = false) SpecializedSchoolCategory category) {

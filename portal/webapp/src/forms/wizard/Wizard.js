@@ -32,6 +32,8 @@ import IsStudentHispanicQuestion from "./pre-enrollment/IsStudentHispanicQuestio
 import IsStudentBornPRQuestion from "./pre-enrollment/IsStudentBornPRQuestion";
 import NeedTransportationServiceQuestion from "./pre-enrollment/NeedTransportationServiceQuestion";
 import PreEnrollmentSpecializedSchoolsSelections from "./pre-enrollment/PreEnrollmentSpecializedSchoolsSelections";
+import ReasonForNotAttendingPreSelectedSchool from "./pre-enrollment/ReasonForNotAttendingPreSelectedSchool";
+import PreEnrollmentTechnicalSchoolsSelection from "./pre-enrollment/PreEnrollmentTechnicalSchoolsSelection";
 
 function form(title, form) {
     return {title: title, form: form};
@@ -104,7 +106,6 @@ class Wizard extends Component {
                 callback();
             }
         })
-
     }
 
     previous() {
@@ -142,6 +143,7 @@ class Wizard extends Component {
             , {renderObj: IsStudentBornPRQuestion}
             , {renderObj: Address}
             , {renderObj: NeedTransportationServiceQuestion}
+            , {renderObj: ReasonForNotAttendingPreSelectedSchool}
             , {renderObj: PreEnrollmentSpecializedSchoolsSelections}
             , {renderObj: PreEnrollmentAlternateSchoolsSelection}
             , {renderObj: PreEnrollmentAlternateSchoolsSubmit}
@@ -150,6 +152,7 @@ class Wizard extends Component {
             , {renderObj: ConfirmedPreEnrollment}
 
             //vocational forms
+            , {renderObj: PreEnrollmentTechnicalSchoolsSelection}
             , {renderObj: VocationalPreEnrollment}
             , {renderObj: VocationalSchoolSelectionInfo}
             , {renderObj: VocationalProgramsSelection}
@@ -164,11 +167,6 @@ class Wizard extends Component {
             let pageConfig = CATALOG[formIndex];
             let RenderObj = pageConfig.renderObj;
             let props = {ref: `page${c++}`, footer: this.renderFooter()};
-            if (pageConfig.question)
-                props.question = pageConfig.question;
-            else if (pageConfig.info)
-                props.info = pageConfig.info;
-
             if (currentPageType === "FOUND_INFO") {
                 props["studentName"] = student && student.fullName;
             }

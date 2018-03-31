@@ -1,5 +1,6 @@
 package com.gemini.database.jpa.entities;
 
+import com.gemini.beans.types.ReasonForNotAttendingSchool;
 import com.gemini.beans.types.RequestStatus;
 import com.gemini.beans.types.EnrollmentType;
 import org.springframework.data.annotation.CreatedDate;
@@ -30,6 +31,10 @@ public class PreEnrollmentRequestEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EnrollmentType type = EnrollmentType.REGULAR;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private ReasonForNotAttendingSchool reasonForNotAttendingSchool;
 
 //    @ManyToOne(targetEntity = UserEntity.class, optional = false)
 //    private UserEntity user;
@@ -121,6 +126,15 @@ public class PreEnrollmentRequestEntity {
 //    public void setUser(UserEntity user) {
 //        this.user = user;
 //    }
+
+
+    public ReasonForNotAttendingSchool getReasonForNotAttendingSchool() {
+        return reasonForNotAttendingSchool;
+    }
+
+    public void setReasonForNotAttendingSchool(ReasonForNotAttendingSchool reasonForNotAttendingSchool) {
+        this.reasonForNotAttendingSchool = reasonForNotAttendingSchool;
+    }
 
     public StudentEntity getStudent() {
         return student;

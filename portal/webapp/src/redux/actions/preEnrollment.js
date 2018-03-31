@@ -43,59 +43,61 @@ export const submitPreEnrollment = (form, onResult, onError) => (dispatch) => {
         .then((response) => response.json())
         .then((response) => {
             dispatch({type: types.PRE_ENROLLMENT_SUBMIT_END, response: response});
-            try {
-                if (response.successfulOperation)
-                    onResult();
-                else
-                    onError();
-            } catch (e) {
-                onError();
-            }
+            handleResult(response, onResult, onError, dispatch);
         });
 
-};
-
-export const partialSaveVocationalPreEnrollment = (form, onResult, onError) => (dispatch, getState) => {
-    dispatch({type: types.PARTIAL_VOC_PRE_ENROLLMENT_SAVE_START});
-    let preEnrollment = getState().preEnrollment;
-    form.requestId = preEnrollment.requestId;
-
-    services()
-        .partialSaveVocationalPreEnrollment(form)
-        .then((response) => response.json())
-        .then((response) => {
-            dispatch({type: types.PARTIAL_VOC_PRE_ENROLLMENT_SAVE_END, response: response});
-
-            try {
-                if (response.successfulOperation)
-                    onResult();
-                else
-                    onError();
-            } catch (e) {
-                onError();
-            }
-        });
 };
 
 export const submitVocationalPreEnrollment = (form, onResult, onError) => (dispatch, getState) => {
     dispatch({type: types.VOCATIONAL_PRE_ENROLLMENT_SUBMIT_START});
     let preEnrollment = getState().preEnrollment;
-    form.requestId = preEnrollment.requestId;
-
+    form = configureSubmitObject(form, preEnrollment);
     services()
         .submitVocationalPreEnrollment(form)
         .then((response) => response.json())
         .then((response) => {
             dispatch({type: types.VOCATIONAL_PRE_ENROLLMENT_SUBMIT_END, response: response});
+            handleResult(response, onResult, onError, dispatch);
+        });
+};
 
-            try {
-                if (response.successfulOperation)
-                    onResult();
-                else
-                    onError();
-            } catch (e) {
-                onError();
-            }
+export const submitAlternatePreEnrollment = (form, onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.ALTERNATE_PRE_ENROLLMENT_SUBMIT_START});
+    let preEnrollment = getState().preEnrollment;
+    form = configureSubmitObject(form, preEnrollment);
+
+    services()
+        .submitAlternatePreEnrollment(form)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.ALTERNATE_PRE_ENROLLMENT_SUBMIT_END, response: response});
+            handleResult(response, onResult, onError, dispatch);
+        });
+};
+
+export const partialSaveVocationalPreEnrollment = (form, onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.PARTIAL_VOC_PRE_ENROLLMENT_SAVE_START});
+    let preEnrollment = getState().preEnrollment;
+    form = configureSubmitObject(form, preEnrollment);
+    services()
+        .partialSaveVocationalPreEnrollment(form)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.PARTIAL_VOC_PRE_ENROLLMENT_SAVE_END, response: response});
+            handleResult(response, onResult, onError, dispatch);
+        });
+};
+
+export const partialAlternatePreEnrollmentSave = (form, onResult, onError) => (dispatch, getState) => {
+    dispatch({type: types.PARTIAL_ALT_PRE_ENROLLMENT_SAVE_START});
+    let preEnrollment = getState().preEnrollment;
+    form = configureSubmitObject(form, preEnrollment);
+    services()
+        .partialAlternatePreEnrollmentSave(form)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.PARTIAL_ALT_PRE_ENROLLMENT_SAVE_END, response: response});
+            handleResult(response, onResult, onError, dispatch);
         });
 };
 
@@ -109,61 +111,10 @@ export const retrieveVocationalPreEnrollment = (onResult, onError) => (dispatch,
         .getActiveVocationalPreEnrollment(requestId)
         .then((response) => {
             dispatch({type: types.VOCATIONAL_PRE_ENROLLMENT_RETRIEVE_END, response: response});
-            try {
-                if (response.successfulOperation)
-                    onResult();
-                else
-                    onError();
-            } catch (e) {
-                onError();
-            }
+            handleResult(response, onResult, onError, dispatch);
         });
 
 
-};
-
-export const partialAlternatePreEnrollmentSave = (form, onResult, onError) => (dispatch, getState) => {
-    dispatch({type: types.PARTIAL_ALT_PRE_ENROLLMENT_SAVE_START});
-    let preEnrollment = getState().preEnrollment;
-    form.requestId = preEnrollment.requestId;
-
-    services()
-        .partialAlternatePreEnrollmentSave(form)
-        .then((response) => response.json())
-        .then((response) => {
-            dispatch({type: types.PARTIAL_ALT_PRE_ENROLLMENT_SAVE_END, response: response});
-
-            try {
-                if (response.successfulOperation)
-                    onResult();
-                else
-                    onError();
-            } catch (e) {
-                onError();
-            }
-        });
-};
-
-export const submitAlternatePreEnrollment = (form, onResult, onError) => (dispatch, getState) => {
-    dispatch({type: types.ALTERNATE_PRE_ENROLLMENT_SUBMIT_START});
-    let preEnrollment = getState().preEnrollment;
-    form.requestId = preEnrollment.requestId;
-
-    services()
-        .submitAlternatePreEnrollment(form)
-        .then((response) => response.json())
-        .then((response) => {
-            dispatch({type: types.ALTERNATE_PRE_ENROLLMENT_SUBMIT_END, response: response});
-
-            try {
-                if (response.successfulOperation)
-                    onResult();
-                else
-                    onError();
-            } catch (e) {
-                onError();
-            }
-        });
 };
 
 export const retrieveAlternatePreEnrollment = (onResult, onError) => (dispatch, getState) => {
@@ -176,14 +127,7 @@ export const retrieveAlternatePreEnrollment = (onResult, onError) => (dispatch, 
         .getActiveAlternatePreEnrollment(requestId)
         .then((response) => {
             dispatch({type: types.ALTERNATE_PRE_ENROLLMENT_RETRIEVE_END, response: response});
-            try {
-                if (response.successfulOperation)
-                    onResult();
-                else
-                    onError();
-            } catch (e) {
-                onError();
-            }
+            handleResult(response, onResult, onError, dispatch);
         });
 
 
@@ -192,3 +136,35 @@ export const retrieveAlternatePreEnrollment = (onResult, onError) => (dispatch, 
 export const changeCurrentVocationalEnrollment = (currentEnrollment) => (dispatch) => {
     dispatch({type: types.CHANGE_VOCATIONAL_PRE_ENROLLMENT, enrollment: currentEnrollment})
 };
+
+export const saveReasonForNotAttendingSchool = (option, onResult, onError) => (dispatch, getState) =>{
+    dispatch({type: types.REASON_FOR_NOT_ATTENDING_SAVE_START});
+    let preEnrollment = getState().preEnrollment;
+    let reason = Utils.normalizeEnumValue(option);
+    let form = {requestId: preEnrollment.requestId, reason: reason};
+    services()
+        .saveReasonForNotAttending(form)
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch({type: types.REASON_FOR_NOT_ATTENDING_SAVE_END, saved: response.successfulOperation});
+            handleResult(response, onResult, onError, dispatch);
+        });
+};
+
+function configureSubmitObject(form, preEnrollment) {
+    form.requestId = preEnrollment.requestId;
+    form.type = preEnrollment.type;
+    return form;
+}
+
+function handleResult(response, onResult, onError, dispatch) {
+    try {
+        if (response.successfulOperation)
+            onResult();
+        else {
+            onError(Utils.errorObj(response, dispatch));
+        }
+    } catch (e) {
+        onError(Utils.errorObj(response, dispatch));
+    }
+}
