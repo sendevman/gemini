@@ -91,7 +91,7 @@ public class PreEnrollmentService {
                         setNextGradeFromNextEnrollment(enrollmentInfo.getSchoolId(), preEnrollmentBean, enrollmentInfo.getGradeLevel(), enrollmentInfo.getSchoolYear());
                         preEnrollmentBean.setHasPreEnrollment(hasPreEnrollment);
                     }
-
+                    entity = CopyUtils.convert(preEnrollmentBean, PreEnrollmentRequestEntity.class);
                 }
                 AddressEntity postal = copyAddressFrom(address, AddressType.POSTAL);
                 AddressEntity physical = copyAddressFrom(address, AddressType.PHYSICAL);
@@ -509,6 +509,12 @@ public class PreEnrollmentService {
     private PreEnrollmentBean getPreEnrollmentBean(PreEnrollmentRequestEntity entity) {
         PreEnrollmentBean enrollmentBean = CopyUtils.convert(entity, PreEnrollmentBean.class);
         enrollmentBean.setStudent(getPreEnrollmentStudentInfoBean(entity));
+        if(ValidationUtils.valid(entity.getSchoolId())){
+            School school = getSchool(entity.getSchoolId());
+            enrollmentBean.setSchoolId(school.getSchoolId());
+            enrollmentBean.setSchoolName(school.getSchoolName());
+            enrollmentBean.setSchoolAddress(CopyUtils.createAddressBean(school));
+        }
         setGradeLevelInfo(entity.getGradeLevel(), enrollmentBean);
         return enrollmentBean;
     }

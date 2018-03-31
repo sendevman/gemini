@@ -23,6 +23,7 @@ const normalFlow = [
     getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
+    getIndexFromCatalog("REASON_FOR_NOT_ATTENDING_QUESTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
     getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")];
@@ -35,6 +36,7 @@ const editNormalFlow = [
     getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
+    getIndexFromCatalog("REASON_FOR_NOT_ATTENDING_QUESTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
     getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")
@@ -59,6 +61,7 @@ const specializedFlow = [
     getIndexFromCatalog("PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION"),
 
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
+    getIndexFromCatalog("REASON_FOR_NOT_ATTENDING_QUESTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
 
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
@@ -73,6 +76,7 @@ const specializedEditFlow = [
     getIndexFromCatalog("PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION"),
     // it is confused
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
+    getIndexFromCatalog("REASON_FOR_NOT_ATTENDING_QUESTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
 
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
