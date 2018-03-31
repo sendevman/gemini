@@ -77,6 +77,7 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
         enrollmentInfo.setGradeLevel(currentGradeLevel);
         enrollmentInfo.setSchoolId(1L);
         enrollmentInfo.setEnrollmentId(1L);
+        enrollmentInfo.setGradeLevel("02");
         return enrollmentInfo;
     }
 

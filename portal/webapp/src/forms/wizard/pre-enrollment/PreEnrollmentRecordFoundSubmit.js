@@ -38,7 +38,7 @@ class PreEnrollmentRecordFound extends Component {
                     id="school">{preEnrollment.schoolName}</span></p>
                 <p className="f22slg mb-1"><i className="icon-teacher mr5"></i> <span id="level">{preEnrollment.nextGradeLevelDescription}</span></p>
                 <p className="f22slg mb-1"><i className="icon-gps mr5"></i> <span id="adress">{preEnrollment.schoolAddress.addressFormatted}</span></p>
-                <p className="f30sbg mt30">¿Permanecer&aacute; el estudiante en la misma escuela?</p>
+                <p className="f30sbg mt30">¿Hará cambios en esta pre-matrícula?</p>
             </div>
             {this.props.footer}
         </div>,
