@@ -58,4 +58,15 @@ public class StudentSearchRequest {
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
+    @Override
+    public String toString() {
+        return "StudentSearchRequest{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", studentNumber=" + studentNumber +
+                ", lastSsn=" + lastSsn +
+                ", dateOfBirth=" + dateOfBirth +
+                '}';
+    }
 }

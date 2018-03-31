@@ -6,7 +6,7 @@ const pmax1o = 'https://prdesieprod.dde.pr/registro-api';
 
 //google sitekey
 //todo: fran generate one for production please
-const pamx1o_sitekey = "";
+const pamx1o_sitekey = "6LfdB1AUAAAAAJBtL4wLWlQYAIJaIuj-qnAOKDmI";
 const tmax1o_sitekey = "6Lffy0sUAAAAAEr5HqHBCLsf013N8K3XSpOLmeQ5";
 const dev_sitekey = "6LfwnkkUAAAAABRldWNGMVuTb3ifCU_e9ZG6oI_J";
 
@@ -18,7 +18,7 @@ const local_base = "srs";
 //todo: fran do logic here to determine these props dynamically
 const BASE_CONTEXT = local_base;
 const REST_URL = local;
-const SITE_KEY = tmax1o_sitekey;
+const SITE_KEY = dev_sitekey;
 
 let config = {
     baseContext: BASE_CONTEXT,

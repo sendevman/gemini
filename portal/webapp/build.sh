@@ -17,12 +17,15 @@ WAR_NAME=""
 if [[ "$ENVIRONMENT" = "DEV" ]]; then
     SERVER="mercury"
     WAR_NAME="ROOT.war"
+    ANIMATION_WAR="animations.war"
 elif [[ "$ENVIRONMENT" = "TMAX" ]]; then
     SERVER="tmax1o1"
     WAR_NAME="schoolmax_tmax2.war"
+    ANIMATION_WAR="schoolmax_tmax2-animations.war"
 elif [[ "$ENVIRONMENT" = "PMAX" ]]; then
     SERVER="pmax1o"
     WAR_NAME="registro.war"
+    ANIMATION_WAR="registro-animations.war"
 fi
 
 
@@ -54,5 +57,14 @@ else
     echo -e "scp ${WAR_NAME} ${SERVER_USER}@${SERVER}:${SERVER_OUTPUT}"
     scp ${WAR_NAME} ${SERVER_USER}@${SERVER}:${SERVER_OUTPUT}
 fi
+
+
+echo -n "Do you want to create Animations WAR please press [ENTER] ..."
+read env
+
+cd animations/
+echo "Generating war ${ANIMATION_WAR}"
+jar -cvf ../${ANIMATION_WAR} .
+
 
 echo "****End Building SRS Portal Frontend****"
