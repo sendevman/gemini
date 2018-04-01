@@ -5,7 +5,6 @@ import com.gemini.database.IdentityEntity;
 import com.google.common.base.Joiner;
 import org.springframework.util.StringUtils;
 
-import java.util.StringTokenizer;
 import java.util.UUID;
 
 
@@ -38,14 +37,18 @@ public final class Utils {
         form.setLastName(lastName);
     }
 
-    public static String obfuscatedSsn(String ssn){
+    public static String obfuscatedSsn(String ssn) {
         String last = "XXXX";
         int index = StringUtils.hasText(ssn) && ssn.length() >= 4
                 ? ssn.length() - 4
                 : -1;
         if (index >= 0)
             last = ssn.substring(index);
-        return  String.format("XXX-XX-%s", last);
+        return String.format("XXX-XX-%s", last);
+    }
+
+    public static String cleanSsn(String ssn) {
+        return StringUtils.hasText(ssn) ? ssn.replaceAll("-", "") : ssn;
     }
 
 }

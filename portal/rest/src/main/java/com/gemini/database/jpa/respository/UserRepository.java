@@ -16,7 +16,7 @@ public interface UserRepository extends CrudRepository<UserEntity, Long> {
 
     UserEntity findByEmail(String email);
 
-    UserEntity findByEmailAndActivationKeyExpireDateIsAfter(String email, Date currentDate);
+    UserEntity findByEmailAndActivationKeyExpireDateIsAfterAndEnabledFalse(String email, Date currentDate);
 
     UserEntity findByEmailAndEnabledTrueAndActivationKeyIsNull(String email);
 

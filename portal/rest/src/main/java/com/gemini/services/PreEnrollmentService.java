@@ -64,6 +64,8 @@ public class PreEnrollmentService {
         entity.setSchoolYear(commonService.getPreEnrollmentYear());
         Student student = null;
         StudentAddress address = null;
+        String cleanSSN = Utils.cleanSsn(request.getSsn());
+        request.setSsn(cleanSSN);
         if (studentNumber != null && studentNumber > 0L) {
             student = smaxService.retrieveStudentInfo(studentNumber);
             if (student != null) {
@@ -322,7 +324,7 @@ public class PreEnrollmentService {
 
     public boolean partialVocationalPreEnrollmentSave(final VocationalPreEnrollmentSubmitRequest request) {
         final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
-
+        requestEntity.setType(request.getType());
         final List<PreEnrollmentVocationalSchoolEntity> vocationalSchoolsDB = requestEntity.getVocationalSchools();
         List<VocationalProgramSelection> selectionsInDBList = CopyUtils.convert(vocationalSchoolsDB, VocationalProgramSelection.class);
         Set<VocationalProgramSelection> selectionsInDB = new HashSet<>(selectionsInDBList);
@@ -389,7 +391,7 @@ public class PreEnrollmentService {
 
     public boolean vocationalPreEnrollmentSubmit(VocationalPreEnrollmentSubmitRequest request) {
         final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
-        requestEntity.setType(EnrollmentType.OCCUPATIONAL);
+        requestEntity.setType(request.getType());
         List<PreEnrollmentVocationalSchoolEntity> list = requestEntity.getVocationalSchools();
         if (list.size() == 1) {
             Long schoolId = list.get(0).getSchoolId();
@@ -424,7 +426,7 @@ public class PreEnrollmentService {
 
     public boolean partialAlternatePreEnrollmentSave(final AlternateSchoolPreEnrollmentSubmitRequest request) {
         final PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
-        requestEntity.setType(EnrollmentType.REGULAR_ALTERNATE_SCHOOLS);
+        requestEntity.setType(request.getType());
 
         final List<PreEnrollmentAlternateSchoolEntity> alternateSchoolsDB = requestEntity.getAlternateSchools();
         List<AlternateSchoolBean> altSchoolsInDBList = CopyUtils.convert(alternateSchoolsDB, AlternateSchoolBean.class);

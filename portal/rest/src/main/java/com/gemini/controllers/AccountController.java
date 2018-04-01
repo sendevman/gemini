@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,7 +34,7 @@ public class AccountController {
     private MessageHelper messageHelper;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<RegisterResponse> registerAccount(@RequestBody RegisterRequest request, HttpServletRequest servletRequest) {
+    public ResponseEntity<RegisterResponse> registerAccount(@Valid @RequestBody RegisterRequest request, HttpServletRequest servletRequest) {
 
         if (userService.existsUserOnRegister(request.getEmail())) {
             return ResponseEntity.ok(RegisterResponse.error(messageHelper.processMessage("user.already.exists")));
@@ -53,7 +54,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/activate", method = RequestMethod.POST)
-    public ResponseEntity<RegisterResponse> activateAccount(@RequestBody UserActivationRequest request) {
+    public ResponseEntity<RegisterResponse> activateAccount(@Valid @RequestBody UserActivationRequest request) {
         if (!request.getPassword().equals(request.getConfirmPassword()))
             return ResponseEntity.ok(RegisterResponse.error(messageHelper.processMessage("password.mismatch")));
         boolean activated = userService.activateUser(request);
@@ -63,7 +64,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/forgot/password", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBase> forgotPassword(@RequestBody ForgotPasswordRequest request, HttpServletRequest servletRequest) {
+    public ResponseEntity<ResponseBase> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request, HttpServletRequest servletRequest) {
         boolean validRequest = userService.processForgetEmailRequest(request, servletRequest);
         if (!validRequest) {
             return ResponseEntity.ok(ResponseBase.error(messageHelper.processMessage("invalid.forgot.password.request")));
@@ -77,7 +78,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/reset/password", method = RequestMethod.POST)
-    public ResponseEntity<ResponseBase> resetPassword(@RequestBody ResetPasswordRequest request) {
+    public ResponseEntity<ResponseBase> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
         boolean reset = userService.resetPassword(request);
         if (!reset) {
             return ResponseEntity.ok().body(ResponseBase.error(messageHelper.processMessage("reset.password.invalid")));

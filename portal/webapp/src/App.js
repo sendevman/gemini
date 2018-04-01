@@ -131,7 +131,7 @@ class App extends Component {
                             <span>© 2018 All Rights Reserved</span>
                         </div>
                         <div className="col-md-3 text-right">
-                            <span>Build Version: 1.0</span>
+                            <span>Build: {env.default.buildVersion}</span>
                         </div>
                     </div>
                 </div>

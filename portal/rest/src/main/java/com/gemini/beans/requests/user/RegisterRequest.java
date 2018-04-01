@@ -1,5 +1,9 @@
 package com.gemini.beans.requests.user;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * Created with IntelliJ IDEA.
  * User: fran
@@ -8,7 +12,11 @@ package com.gemini.beans.requests.user;
  */
 public class RegisterRequest {
 
+    @NotNull
+    @NotBlank
     private String email;
+    @NotNull
+    @NotBlank
     private String confirmEmail;
 
     public String getEmail() {

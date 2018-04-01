@@ -18,6 +18,7 @@ import ResetPassword from "./forms/user/forgot/ResetPassword";
 import ResetPasswordResult from "./forms/user/forgot/ResetPasswordResult";
 import CancelResetPasswordRequest from "./forms/user/forgot/CancelResetPasswordRequest";
 import Welcome from "./forms/Welcome";
+import registrationIllustration from "./style/img/registration-illustration.png";
 
 class Routes extends Component {
 
@@ -96,6 +97,9 @@ const limboPage = [
             <span className="f20slg"/>
         </div>
         <div className="body d-flex align-items-center flex-column justify-content-end">
+            <div style={{paddingBottom: 300}} className="col-md-12 illustration-section d-flex align-items-center text-center">
+                <div className="illustration"><img src={registrationIllustration} alt=""/></div>
+            </div>
         </div>
     </div>,
     <div className="col-md-4 illustration-section d-flex align-items-center text-center"/>

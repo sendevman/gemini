@@ -1,30 +1,16 @@
-//api
-const dev = 'http://34.197.64.57/srs/portal-api';
-const local = 'http://localhost:3000/srs-api';
-const tmaxio = 'https://prdesietest.dde.pr/schoolmax_tmax2-api';
-const pmax1o = 'https://prdesieprod.dde.pr/registro-api';
+const BUILD_VERSION = require('../package.json').version;
+const BASE_CONTEXT = process.env.REACT_APP_BASE_CONTEXT;
+const REST_URL = process.env.REACT_APP_API;
+const SITE_KEY = process.env.REACT_APP_SITE_KEY;
 
-//google sitekey
-//todo: fran generate one for production please
-const pamx1o_sitekey = "6LfdB1AUAAAAAJBtL4wLWlQYAIJaIuj-qnAOKDmI";
-const tmax1o_sitekey = "6Lffy0sUAAAAAEr5HqHBCLsf013N8K3XSpOLmeQ5";
-const dev_sitekey = "6LfwnkkUAAAAABRldWNGMVuTb3ifCU_e9ZG6oI_J";
-
-//base context
-const pmax1o_base = "registro";
-const tmax1o_base = "schoolmax_tmax2";
-const local_base = "srs";
-
-//todo: fran do logic here to determine these props dynamically
-const BASE_CONTEXT = local_base;
-const REST_URL = local;
-const SITE_KEY = dev_sitekey;
+console.log(`SIE-Registro App Version: ${BUILD_VERSION}\nEnv Args:\n\tBASE_CONTEXT=(${BASE_CONTEXT}) \n\tREST_URL=(${REST_URL}) \n\tSITE_KEY=(${SITE_KEY})`);
 
 let config = {
+    buildVersion: BUILD_VERSION,
     baseContext: BASE_CONTEXT,
     restServer: REST_URL,
-    loadingMinimumTime: 1000,
     reCAPTCHASiteKey: SITE_KEY,
+    loadingMinimumTime: 1000,
     userActionPath: ["/login", "/registration", "/activate", "/forgot", "/reset", "/cancel"],
 };
 

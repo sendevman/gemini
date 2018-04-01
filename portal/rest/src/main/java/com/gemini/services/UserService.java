@@ -57,7 +57,7 @@ public class UserService {
     private MailService mailService;
 
     public boolean existsUserOnRegister(String username) {
-        return userRepository.findByEmailAndActivationKeyExpireDateIsAfter(username, commonService.getCurrentDate()) != null;
+        return userRepository.findByEmailAndActivationKeyExpireDateIsAfterAndEnabledFalse(username, commonService.getCurrentDate()) != null;
     }
 
     public User findUserByUsername(String username) {

@@ -9,9 +9,10 @@ import * as types from "./types";
 let instance = null;
 
 export function setupStore() {
-    const logger = createLogger({});
-    const enhancer = compose(applyMiddleware(reduxMiddleware, thunk, logger));
-
+    let middlewares = [reduxMiddleware, thunk];
+    if(process.env.REACT_APP_ENV !== "prod")
+        middlewares.push(createLogger({}));
+    const enhancer = compose(applyMiddleware(...middlewares));
     // persistStore(store, onCompletion);
     console.log("**store configured**");
     let store = createStore(reducers, enhancer);

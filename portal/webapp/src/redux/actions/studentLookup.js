@@ -1,5 +1,6 @@
 import services from "../setup";
 import * as types from "../types";
+import * as Utils from "../../Utils";
 
 export const searchStudent = (criteria, onResult, onError) => (dispatch) => {
     dispatch({type: types.STUDENT_SEARCH_START, form: criteria});
@@ -16,7 +17,7 @@ export const searchStudent = (criteria, onResult, onError) => (dispatch) => {
                     onResult(types.ON_FOUND_CALLBACK);
                 } else {
                     if (response.errorOperation && response.validationMessages) {
-                        onError(response.validationMessages);
+                        onError(Utils.errorObj(response, dispatch));
                         dispatch({type: types.CANCEL_BLOCK_UI});
                     }
                     else {
