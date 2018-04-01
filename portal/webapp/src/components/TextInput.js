@@ -145,6 +145,8 @@ class TextInput extends Component {
 
             <div className={groupClass}>
                 <input {...props}
+                       autoCorrect="none"
+                       autoCapitalize="none"
                        style={customCss}
                        type={isPassword ? "password" : "text"}
                        className={cssClass}

@@ -1,5 +1,9 @@
 package com.gemini.beans.requests.user;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * Created with IntelliJ IDEA.
  * User: fran
@@ -7,9 +11,15 @@ package com.gemini.beans.requests.user;
  * Time: 8:27 PM
  */
 public class UserActivationRequest {
-    
+
+    @NotNull
+    @NotBlank
     private String activationCode;
+    @NotNull
+    @NotBlank
     private String password;
+    @NotNull
+    @NotBlank
     private String confirmPassword;
 
     public String getActivationCode() {

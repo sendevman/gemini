@@ -1,5 +1,9 @@
 package com.gemini.beans.requests.user;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * Created with IntelliJ IDEA.
  * User: fran
@@ -8,8 +12,14 @@ package com.gemini.beans.requests.user;
  */
 public class ResetPasswordRequest {
 
+    @NotNull
+    @NotBlank
     private String credentialLostKey;
+    @NotNull
+    @NotBlank
     private String password;
+    @NotNull
+    @NotBlank
     private String confirmPassword;
 
     public String getCredentialLostKey() {

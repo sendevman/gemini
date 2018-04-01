@@ -1,5 +1,9 @@
 package com.gemini.beans.requests.user;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * Created with IntelliJ IDEA.
  * User: fran
@@ -7,6 +11,8 @@ package com.gemini.beans.requests.user;
  * Time: 1:56 AM
  */
 public class ForgotPasswordRequest {
+    @NotBlank
+    @NotNull
     private String email;
 
     public String getEmail() {

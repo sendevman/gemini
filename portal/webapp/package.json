@@ -1,6 +1,6 @@
 {
   "name": "project-gemini",
-  "version": "0.0.1",
+  "version": "1.0.1RC",
   "private": true,
   "homepage": "https://prdesieprod.dde.pr/registro",
   "dependencies": {
@@ -26,10 +26,13 @@
     "safe-fetch": "^0.2.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "build:tmax": "./react-run.sh build dotenv_config_path=test.env",
+    "build:dev": "./react-run.sh build dotenv_config_path=dev.env",
+    "build": "./react-run.sh build dotenv_config_path=prod.env",
+    "postbuild": "rm build/static/js/*.map",
+    "run:prod": "./react-run.sh start dotenv_config_path=prod.env",
+    "start": "./react-run.sh start dotenv_config_path=local.env",
+    "test": "./react-run.sh start dotenv_config_path=test.env"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
