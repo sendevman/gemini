@@ -2,11 +2,12 @@ import React, {Component} from "react";
 import TextInput from "../../../components/TextInput";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {forgotPassword} from "../../../redux/actions";
-import registrationIllustration from "../../../assets/img/registration-illustration.png";
+import {forgotPassword, unblockUI} from "../../../redux/actions";
 import env from "../../../env";
 import ReCAPTCHA from "react-google-recaptcha";
 import AnimationHelper from "../../../components/AnimationHelper";
+import * as UIHelper from "../../../UIHelper";
+import ModalHelper from "../../../components/ModalHelper";
 
 class ForgotPassword extends Component {
 
@@ -39,14 +40,29 @@ class ForgotPassword extends Component {
         });
     }
 
+
+    getValidationMessages() {
+        let messages = [];
+        if (!this.refs.email.valid())
+            messages.push(UIHelper.getText("emailInvalid"));
+        if (!this.state.token)
+            messages.push(UIHelper.getText("missingReCaptchaToken"));
+        return messages;
+    }
+
     sendEmail(e) {
         e.preventDefault();
         let form = this.props.form;
-        this.props.forgotPassword(form, () => {
-            this.props.history.push(`/forgot/password/result/success`);
-        }, () => {
-            this.props.history.push(`/forgot/password/result/error`);
-        });
+        if (this.state.valid)
+            this.props.forgotPassword(form, () => {
+                this.props.history.push(`/forgot/password/result/success`);
+            }, () => {
+                this.props.history.push(`/forgot/password/result/error`);
+            });
+        else
+            UIHelper.validationDialog(this.refs.modal, {messages: this.getValidationMessages()}, () => {
+                this.props.unblockUI();
+            })
     }
 
     render() {
@@ -54,9 +70,9 @@ class ForgotPassword extends Component {
 
         return [<div className="col-md-5 content-section">
             <div className="title">
-                <div className="description"><h2 className="f60sbg">Olvido su contraseña</h2></div>
+                <div className="description"><h2 className="f60sbg">{UIHelper.getText("forgotPassword")}</h2></div>
                 <span className="f30slg"><span
-                    className="f20slg">Le enviaremos un email con las intrucciones de como reiniciar su contraseña</span></span>
+                    className="f20slg">{UIHelper.getText("forgotPasswordExplanation")}</span></span>
             </div>
             <div className="body d-flex align-items-center flex-column justify-content-end">
                 <form id="recover-form" onSubmit={this.sendEmail}>
@@ -72,8 +88,8 @@ class ForgotPassword extends Component {
                         sitekey={env.reCAPTCHASiteKey}
                         onChange={this.verifyCallback}
                     />
-                    <button className="button-yellow mt50" id="buttonGet" type="submit"
-                            disabled={!this.state.valid}>Enviar Email
+                    <button className="button-yellow mt50" id="buttonGet"
+                            type="submit">{UIHelper.getText("forgotPasswordButton")}
                     </button>
                 </form>
                 <div className="row w-100 mt50"/>
@@ -82,7 +98,8 @@ class ForgotPassword extends Component {
             <div className="col-md-6 illustration-section d-flex align-items-center text-center">
                 {/*<div className="illustration"><img src={registrationIllustration} alt=""/></div>*/}
                 <AnimationHelper type="home"/>
-            </div>]
+            </div>,
+            <ModalHelper ref="modal"/>]
     }
 
 }
@@ -92,7 +109,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({forgotPassword}, dispatch)
+    return bindActionCreators({forgotPassword, unblockUI}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions)(ForgotPassword);

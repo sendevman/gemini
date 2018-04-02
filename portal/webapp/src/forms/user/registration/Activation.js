@@ -2,10 +2,12 @@ import React, {Component} from "react";
 import TextInput from "../../../components/TextInput";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {activateAccount, existsCode} from "../../../redux/actions";
+import {activateAccount, existsCode, unblockUI} from "../../../redux/actions";
 import ReCAPTCHA from "react-google-recaptcha";
 import env from "../../../env";
 import AnimationHelper from "../../../components/AnimationHelper";
+import ModalHelper from "../../../components/ModalHelper";
+import * as UIHelper from "../../../UIHelper";
 
 class Activation extends Component {
 
@@ -22,12 +24,31 @@ class Activation extends Component {
     }
 
 
-
     componentWillMount() {
         let code = this.props.match.params.activationCode;
-        this.props.existsCode(code, ()=>{
+        this.props.existsCode(code, () => {
             this.props.history.push("/activate/result/error")
         })
+    }
+
+
+    getValidationMessages() {
+        let messages = [];
+        let form = this.props.form;
+        let emailAreEquals = form.password === form.confirmPassword;
+        let meetRequirement = emailAreEquals && this.refs.password.valid();
+
+        if (!this.refs.password.valid())
+            messages.push(UIHelper.getText("passwordInvalid"));
+        if (!this.refs.confirmPassword.valid())
+            messages.push(UIHelper.getText("confirmPasswordInvalid"));
+        if (!emailAreEquals)
+            messages.push(UIHelper.getText("passwordAndConfirmAreNotEquals"));
+        if (!meetRequirement)
+            messages.push(UIHelper.getText("passwordMeetRequirement"));
+        if (!this.state.token)
+            messages.push(UIHelper.getText("missingReCaptchaToken"));
+        return messages;
     }
 
     verifyCallback(response) {
@@ -49,9 +70,11 @@ class Activation extends Component {
     validForm() {
         let allValid = true;
         let fields = this.refs;
-        let emailAreEquals = fields.password.value === fields.confirmPassword.value;
+        let form = this.props.form;
+        let emailAreEquals = form.password === form.confirmPassword;
         for (let idx in fields) {
-            allValid &= fields[idx].valid();
+            if (idx !== "modal")
+                allValid &= fields[idx].valid();
         }
 
         this.setState({...this.state, valid: allValid && emailAreEquals && this.state.token})
@@ -62,11 +85,17 @@ class Activation extends Component {
         let form = this.props.form;
         form.activationCode = this.props.match.params.activationCode;
         e.preventDefault();
-        this.props.activateAccount(form, () => {
-            this.props.history.push("/activate/result/success")
-        }, () => {
-            this.props.history.push("/activate/result/error")
-        });
+        if (this.state.valid)
+            this.props.activateAccount(form, () => {
+                this.props.history.push("/activate/result/success")
+            }, () => {
+                this.props.history.push("/activate/result/error")
+            });
+        else {
+            UIHelper.validationDialog(this.refs.modal, {messages: this.getValidationMessages()}, () => {
+                this.props.unblockUI();
+            })
+        }
     }
 
 
@@ -77,7 +106,7 @@ class Activation extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description"><h2>Complete su Registro</h2>
+                    <div className="description"><h2>{UIHelper.getText("completeRegisterPage")}</h2>
                         <div className="violet-line"></div>
                     </div>
                 </div>
@@ -118,8 +147,7 @@ class Activation extends Component {
 
                         <div className="row mt50">
                             <div className="col-md-12 ">
-                                <button className="button-green mr30 mob-mb30px" type="submit"
-                                        disabled={!this.state.valid}><span>s</span>Completar Registraci&oacute;n
+                                <button className="button-green mr30 mob-mb30px" type="submit"><span>s</span>{UIHelper.getText("completeRegisterButton")}
                                 </button>
                             </div>
                         </div>
@@ -129,7 +157,8 @@ class Activation extends Component {
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 {/*<div className="illustration"><img src={profileIllustration} alt=""/></div>*/}
                 <AnimationHelper type="girlsTable"/>
-            </div>
+            </div>,
+            <ModalHelper ref="modal"/>
         ]
     }
 }
@@ -139,7 +168,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({activateAccount, existsCode}, dispatch)
+    return bindActionCreators({activateAccount, existsCode, unblockUI}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions)(Activation);

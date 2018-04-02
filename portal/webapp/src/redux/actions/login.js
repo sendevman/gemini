@@ -86,7 +86,7 @@ async function _login(form, dispatch, getState, onSuccess, onError) {
                 dispatch({type: types.AUTHENTICATED, response: user});
                 await services().token();
                 let canGoHome = user.canGoHome;
-                let requestId = user.workingPreEnrollmentId && parseInt(user.workingPreEnrollmentId) > 0 ?  user.workingPreEnrollmentId : "";
+                let requestId = user.workingPreEnrollmentId && parseInt(user.workingPreEnrollmentId) > 0 ? user.workingPreEnrollmentId : "";
                 let nextPath = canGoHome ? "/home" : `/wizard/${requestId}`;
                 console.log(nextPath);
                 onSuccess(nextPath);
@@ -180,7 +180,7 @@ export const triggerSessionExpiredOn = (message) => (dispatch) => {
 
 export const triggerSessionExpiredOff = (message) => (dispatch) => {
     dispatch({type: types.TRIGGER_SESSION_EXPIRED_OFF, message: message});
-    unblockUI(dispatch);
+    unblockUI()(dispatch);
 };
 
 export const triggerErrorOn = (message) => (dispatch) => {
@@ -190,14 +190,14 @@ export const triggerErrorOn = (message) => (dispatch) => {
 
 export const triggerErrorOff = () => (dispatch) => {
     dispatch({type: types.TRIGGER_ERROR_OFF});
-    unblockUI(dispatch);
+    unblockUI()(dispatch);
 };
 
-function unblockUI(dispatch) {
+export const unblockUI = () => (dispatch) => {
     let times = 0;
     while (times < 3) {
         dispatch({type: types.CANCEL_BLOCK_UI});
         times++;
     }
-}
+};
 

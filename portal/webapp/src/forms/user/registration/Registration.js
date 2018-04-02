@@ -5,10 +5,12 @@ import React, {Component} from "react";
 import TextInput from "../../../components/TextInput";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {cleanRegistration, registerUser} from "../../../redux/actions";
+import {cleanRegistration, registerUser, unblockUI} from "../../../redux/actions";
 import ReCAPTCHA from "react-google-recaptcha";
 import env from "../../../env";
 import AnimationHelper from "../../../components/AnimationHelper";
+import ModalHelper from "../../../components/ModalHelper";
+import * as UIHelper from "../../../UIHelper";
 
 
 class Registration extends Component {
@@ -21,8 +23,6 @@ class Registration extends Component {
         };
         this.register = this.register.bind(this);
         this.inputHandler = this.inputHandler.bind(this);
-        this.onValidDate = this.onValidDate.bind(this);
-        this.onInvalidDate = this.onInvalidDate.bind(this);
         this.validForm = this.validForm.bind(this);
         this.verifyCallback = this.verifyCallback.bind(this);
     }
@@ -31,18 +31,38 @@ class Registration extends Component {
         this.props.cleanRegistration();
     }
 
+    getValidationMessages() {
+        let messages = [];
+        let form = this.props.form;
+        let emailAreEquals = form.email === form.confirmEmail;
+
+        if (!this.refs.email.valid())
+            messages.push(UIHelper.getText("emailInvalid"));
+        if (!this.refs.confirmEmail.valid())
+            messages.push(UIHelper.getText("confirmEmailInvalid"));
+        if (!emailAreEquals)
+            messages.push(UIHelper.getText("emailAndConfirmInvalid"));
+        if (!this.state.token)
+            messages.push(UIHelper.getText("missingReCaptchaToken"));
+        return messages;
+    }
+
     register(e) {
         let user = this.props.form;
         e.preventDefault();
-        this.props.registerUser(user, () => {
-            this.props.history.push("/registration/result/success")
-        }, () => {
-            this.props.history.push("/registration/result/error")
-        });
+        if (this.state.valid)
+            this.props.registerUser(user, () => {
+                this.props.history.push("/registration/result/success")
+            }, () => {
+                this.props.history.push("/registration/result/error")
+            });
+        else
+            UIHelper.validationDialog(this.refs.modal, {messages: this.getValidationMessages()}, () => {
+                this.props.unblockUI();
+            })
     }
 
     verifyCallback(response) {
-        console.log(response);
         let form = this.props.form;
         form.token = response;
         this.setState({...this.state, token: response}, () => {
@@ -53,10 +73,12 @@ class Registration extends Component {
 
     validForm() {
         let allValid = true;
+        let form = this.props.form;
+        let emailAreEquals = form.email === form.confirmEmail;
         let fields = this.refs;
-        let emailAreEquals = fields.email.value === fields.confirmEmail.value;
         for (let idx in fields) {
-            allValid &= fields[idx].valid();
+            if (idx !== "modal")
+                allValid &= fields[idx].valid();
         }
         this.setState({...this.state, valid: allValid && emailAreEquals && this.state.token})
     }
@@ -66,21 +88,6 @@ class Registration extends Component {
         let element = e.target;
         form[element.id] = element.value;
         this.validForm();
-        // this.setState({...this.state, form: form}, () => {
-        //     this.validForm();
-        // });
-    }
-
-    onValidDate(date) {
-        let form = this.props.form;
-        form.dateOfBirth = date;
-        this.setState({...this.state, form: form}, () => {
-            this.validForm();
-        });
-    }
-
-    onInvalidDate() {
-        this.validForm();
     }
 
     render() {
@@ -88,7 +95,7 @@ class Registration extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description"><h2>Registrar Cuenta</h2>
+                    <div className="description"><h2>{UIHelper.getText("registerPage")}</h2>
                         <div className="violet-line"></div>
                     </div>
                 </div>
@@ -129,8 +136,8 @@ class Registration extends Component {
 
                         <div className="row mt50">
                             <div className="col-md-12 ">
-                                <button className="button-green mr30 mob-mb30px" type="submit"
-                                        disabled={!this.state.valid}><span>s</span>Registrar
+                                <button className="button-green mr30 mob-mb30px" type="submit"><span>s</span>
+                                    {UIHelper.getText("registerButton")}
                                 </button>
                             </div>
                         </div>
@@ -140,7 +147,8 @@ class Registration extends Component {
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 {/*<div className="illustration"><img src={profileIllustration} alt=""/></div>*/}
                 <AnimationHelper type="girlsTable"/>
-            </div>
+            </div>,
+            <ModalHelper ref="modal"/>
         ]
     }
 
@@ -151,7 +159,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({registerUser, cleanRegistration}, dispatch)
+    return bindActionCreators({registerUser, cleanRegistration, unblockUI}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions)(Registration);

@@ -183,6 +183,10 @@ class Wizard extends Component {
                 props["history"] = this.props.history;
             }
 
+            if (currentPageType === "REASON_FOR_NOT_ATTENDING_QUESTION") {
+                props["modal"] = this.refs.modal;
+            }
+
             this.wizardForms.push(form(pageConfig.title, <RenderObj {...props}/>));
         }
 

@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import AnimationHelper from "../../../components/AnimationHelper";
-import {getReasonForAttendingCodes, saveReasonForNotAttendingSchool} from "../../../redux/actions";
+import {getReasonForAttendingCodes, saveReasonForNotAttendingSchool, unblockUI} from "../../../redux/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
+import * as types from "../../../redux/types";
 import * as UIHelper from "../../../UIHelper";
 
 class ReasonForNotAttendingPreSelectedSchool extends Component {
@@ -14,16 +15,23 @@ class ReasonForNotAttendingPreSelectedSchool extends Component {
         this.reasonChanged = this.reasonChanged.bind(this);
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.props.getReasonForAttendingCodes();
     }
 
-    reasonChanged(reasonObj){
+    reasonChanged(reasonObj) {
         this.setState({reasonSelected: reasonObj.name})
     }
 
     onPress(onResult, onError) {
-        this.props.saveReasonForNotAttendingSchool(this.state.reasonSelected, onResult, onError);
+        if (this.state.reasonSelected === types.MOVE_OUT_OF_COUNTRY)
+            this.props.modal.confirm(UIHelper.getText("confirmTitle"), UIHelper.getText("reasonConfirmMessage"), () => {
+                this.props.saveReasonForNotAttendingSchool(this.state.reasonSelected, onResult, onError);
+            }, () => {
+                this.props.unblockUI()
+            });
+        else
+            this.props.saveReasonForNotAttendingSchool(this.state.reasonSelected, onResult, onError);
 
     }
 
@@ -34,9 +42,7 @@ class ReasonForNotAttendingPreSelectedSchool extends Component {
                 <div className="description mb40"><h2 className="f90sbg">09.</h2>
                     <div className="violet-line"/>
                 </div>
-                <p className="f30sbg text-justify">¿Seleccione la raz&oacute;n por la cual no esta matriculando su hijo
-                    en la escuela provista?
-                </p>
+                <p className="f30sbg text-justify">{UIHelper.getText("reasonQuestion")}</p>
                 <RemoteCodeSelect id="reasons"
                                   placeholder="Escoja Razón"
                                   codes={reasons}
@@ -64,7 +70,7 @@ function mapStateToProps(store) {
 
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({getReasonForAttendingCodes, saveReasonForNotAttendingSchool}, dispatch)
+    return bindActionCreators({getReasonForAttendingCodes, saveReasonForNotAttendingSchool, unblockUI}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions, null, {withRef: true})(ReasonForNotAttendingPreSelectedSchool);

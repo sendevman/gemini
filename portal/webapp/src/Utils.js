@@ -63,3 +63,4 @@ export function errorObj(response, dispatch){
 export function isEmptyValue(value) {
     return !value || value === "-1" || value === null;
 }
+

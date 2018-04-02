@@ -12,14 +12,14 @@ import javax.validation.constraints.NotNull;
  */
 public class UserActivationRequest {
 
-//    @NotNull
-//    @NotBlank
+    @NotNull
+    @NotBlank
     private String activationCode;
-//    @NotNull
-//    @NotBlank
+    @NotNull
+    @NotBlank
     private String password;
-//    @NotNull
-//    @NotBlank
+    @NotNull
+    @NotBlank
     private String confirmPassword;
 
     public String getActivationCode() {

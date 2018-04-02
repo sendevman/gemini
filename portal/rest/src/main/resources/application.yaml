@@ -112,7 +112,7 @@ messages:
       ethnicCodes: "Debe selecciona al menos un codigo ethnico"
       reason: "Debe seleccionar una razon"
   search:
-    student.missing.required.fields: "Debe proveer algunos de estos dos campos (Ultimo SSN o Numero Estudiante)"
+    student.missing.required.fields: "Campos Requeridos (Ultimo SSN o Numero Estudiante)"
   user:
     missing.required.fields: "Faltan campos requeridos [Nombre, Apellidos, Fecha de Nacimiento, Relacion con el Estudiante]"
     already.exists: "Usuario existente"

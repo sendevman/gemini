@@ -10,13 +10,13 @@ import javax.validation.constraints.NotNull;
  * Date: 3/6/18
  * Time: 2:33 PM
  */
-public class RegisterRequest {
+public class RegisterRequest{
 
-//    @NotNull
-//    @NotBlank
+    @NotNull
+    @NotBlank
     private String email;
-//    @NotNull
-//    @NotBlank
+    @NotNull
+    @NotBlank
     private String confirmEmail;
 
     public String getEmail() {

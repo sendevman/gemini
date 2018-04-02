@@ -2,11 +2,12 @@ import React, {Component} from "react";
 import TextInput from "../../../components/TextInput";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {existsKey, resetPassword} from "../../../redux/actions";
+import {existsKey, resetPassword, unblockUI} from "../../../redux/actions";
 import ReCAPTCHA from "react-google-recaptcha";
 import env from "../../../env";
-import profileIllustration from "../../../assets/img/profile-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
+import ModalHelper from "../../../components/ModalHelper";
+import * as UIHelper from "../../../UIHelper";
 
 class ResetPassword extends Component {
 
@@ -49,11 +50,29 @@ class ResetPassword extends Component {
         let fields = this.refs;
         let emailAreEquals = fields.password.value === fields.confirmPassword.value;
         for (let idx in fields) {
-            allValid &= fields[idx].valid();
+            if (idx !== "modal")
+                allValid &= fields[idx].valid();
         }
 
         this.setState({...this.state, valid: allValid && emailAreEquals && this.state.token})
     }
+
+    getValidationMessages() {
+        let messages = [];
+        let form = this.props.form;
+        let emailAreEquals = form.email === form.confirmEmail;
+
+        if (!this.refs.password.valid())
+            messages.push(UIHelper.getText("passwordInvalid"));
+        if (!this.refs.confirmPassword.valid())
+            messages.push(UIHelper.getText("confirmPasswordInvalid"));
+        if (!emailAreEquals)
+            messages.push(UIHelper.getText("passwordAndConfirmAreNotEquals"));
+        if (!this.state.token)
+            messages.push(UIHelper.getText("missingReCaptchaToken"));
+        return messages;
+    }
+
 
 
     reset(e) {
@@ -65,11 +84,16 @@ class ResetPassword extends Component {
             password: form.password,
             confirmPassword: form.confirmPassword
         };
-        this.props.resetPassword(request, () => {
-            this.props.history.push("/reset/password/result/success")
-        }, () => {
-            this.props.history.push("/reset/password/result/error")
-        });
+        if (this.state.valid)
+            this.props.resetPassword(request, () => {
+                this.props.history.push("/reset/password/result/success")
+            }, () => {
+                this.props.history.push("/reset/password/result/error")
+            });
+        else
+            UIHelper.validationDialog(this.refs.modal, {messages: this.getValidationMessages()}, () => {
+                this.props.unblockUI();
+            })
     }
 
     render() {
@@ -79,7 +103,7 @@ class ResetPassword extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description"><h2>Reinicie su contraseña</h2>
+                    <div className="description"><h2>{UIHelper.getText("resetPasswordPage")}</h2>
                         <div className="violet-line"></div>
                     </div>
                 </div>
@@ -120,8 +144,8 @@ class ResetPassword extends Component {
 
                         <div className="row mt50">
                             <div className="col-md-12 ">
-                                <button className="button-green mr30 mob-mb30px" type="submit"
-                                        disabled={!this.state.valid}><span>s</span>Reiniciar
+                                <button className="button-green mr30 mob-mb30px" type="submit">
+                                    <span>s</span>{UIHelper.getText("resetPasswordButton")}
                                 </button>
                             </div>
                         </div>
@@ -131,7 +155,8 @@ class ResetPassword extends Component {
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 {/*<div className="illustration"><img src={profileIllustration} alt=""/></div>*/}
                 <AnimationHelper type="girlsTable"/>
-            </div>
+            </div>,
+            <ModalHelper ref="modal"/>
         ]
     }
 }
@@ -143,7 +168,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({existsKey, resetPassword}, dispatch)
+    return bindActionCreators({existsKey, resetPassword, unblockUI}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions)(ResetPassword);

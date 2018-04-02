@@ -11,6 +11,7 @@ import com.gemini.services.UserService;
 import com.gemini.utils.MessageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,10 +35,14 @@ public class AccountController {
     private MessageHelper messageHelper;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<RegisterResponse> registerAccount(@Valid @RequestBody RegisterRequest request, HttpServletRequest servletRequest) {
+    public ResponseEntity<ResponseBase> registerAccount(@Valid @RequestBody RegisterRequest request, BindingResult result, HttpServletRequest servletRequest) {
+
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(messageHelper.missingFormFields(result));
+        }
 
         if (userService.existsUserOnRegister(request.getEmail())) {
-            return ResponseEntity.ok(RegisterResponse.error(messageHelper.processMessage("user.already.exists")));
+            return ResponseEntity.ok(ResponseBase.error(messageHelper.processMessage("user.already.exists")));
         }
 
         //todo: make a schedule process to resent activation emails
@@ -45,7 +50,7 @@ public class AccountController {
         boolean mailSent = mailService.sendRegisterEmail(request, key);
         userService.saveSentActivationResult(request.getEmail(), mailSent);
 
-        return ResponseEntity.ok(RegisterResponse.success());
+        return ResponseEntity.ok(ResponseBase.success());
     }
 
     @RequestMapping(value = "/activate/{code}")
@@ -54,13 +59,13 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/activate", method = RequestMethod.POST)
-    public ResponseEntity<RegisterResponse> activateAccount(@Valid @RequestBody UserActivationRequest request) {
+    public ResponseEntity<ResponseBase> activateAccount(@Valid @RequestBody UserActivationRequest request) {
         if (!request.getPassword().equals(request.getConfirmPassword()))
-            return ResponseEntity.ok(RegisterResponse.error(messageHelper.processMessage("password.mismatch")));
+            return ResponseEntity.ok(ResponseBase.error(messageHelper.processMessage("password.mismatch")));
         boolean activated = userService.activateUser(request);
         if (activated)
-            return ResponseEntity.ok(RegisterResponse.success());
-        return ResponseEntity.ok(RegisterResponse.error(messageHelper.processMessage("general.unknown.error")));
+            return ResponseEntity.ok(ResponseBase.success());
+        return ResponseEntity.ok(ResponseBase.error(messageHelper.processMessage("general.unknown.error")));
     }
 
     @RequestMapping(value = "/forgot/password", method = RequestMethod.POST)

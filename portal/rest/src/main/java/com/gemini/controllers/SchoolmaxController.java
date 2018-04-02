@@ -75,8 +75,10 @@ public class SchoolmaxController {
         if (!(ValidationUtils.valid(searchRequest.getLastSsn()) || ValidationUtils.valid(searchRequest.getStudentNumber())))
             response.addError(messageHelper.processMessage("search.student.missing.required.fields"));
 
-        if (response != null && response.hasError())
+        if (response != null && response.hasError()) {
+            response.setErrorOperation(true);
             return ResponseEntity.badRequest().body(response);
+        }
 
         Student studentBean = smaxSearchService.retrieveStudentInfo(searchRequest, logged);
         response = CopyUtils.convert(studentBean, StudentResponse.class);

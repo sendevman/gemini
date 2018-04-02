@@ -1274,14 +1274,14 @@ label {
 
 @media screen and (max-height: 720px){
     .content {
-        height: 85vh;
+        height: 90vh;
         margin-top: 10vh;
     }
 }
 
 @media screen and (max-height: 600px){
     .content {
-        height: 100vh;
+        height: 110vh;
         margin-top: 10vh;
     }
 }
