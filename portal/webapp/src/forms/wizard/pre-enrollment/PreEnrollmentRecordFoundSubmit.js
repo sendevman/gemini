@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {submitPreEnrollment} from "../../../redux/actions";
 import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
+import * as UIHelper from "../../../UIHelper";
 
 class PreEnrollmentRecordFound extends Component {
 

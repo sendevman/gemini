@@ -11,12 +11,14 @@ import AnimationHelper from "../../../components/AnimationHelper";
 import SchoolSelector from "../widgets/SchoolSelector";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
 import * as Utils from "../../../Utils";
+import * as UIHelper from "../../../UIHelper";
+import * as types from "../../../redux/types";
 
 class PreEnrollmentSpecializedSchoolsSelections extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {selectedCategory: null};
+        this.state = {selectedCategory: "-1", selectedCategoryObject: null};
         this.categoryChanged = this.categoryChanged.bind(this);
         this.fetchSchools = this.fetchSchools.bind(this);
     }
@@ -36,17 +38,18 @@ class PreEnrollmentSpecializedSchoolsSelections extends Component {
         let preEnrollment = this.props.preEnrollment;
         form.nextGradeLevel = preEnrollment.nextGradeLevel;
         form.nextGradeLevelDescription = preEnrollment.nextGradeLevelDescription;
+        form.type = types.SPECIALIZED_SCHOOLS_ENROLLMENT;
         this.props.partialAlternatePreEnrollmentSave(form, onResult, onError);
     }
 
 
     categoryChanged(categoryObject) {
         this.refs.selector.cleanSchoolCode();
-        this.setState({selectedCategory: categoryObject})
+        this.setState({selectedCategory: categoryObject ? categoryObject.name : "-1", selectedCategoryObject: categoryObject})
     }
 
     getSelectedCategoryCode() {
-        return this.state.selectedCategory.name;
+        return this.state.selectedCategory ? this.state.selectedCategory.name : "-1";
     }
 
 
@@ -83,6 +86,7 @@ class PreEnrollmentSpecializedSchoolsSelections extends Component {
                                               target="name"
                                               display="description"
                                               disabled={selectorDisabled}
+                                              value={this.state.selectedCategory}
                             />
                         </div>
                     </div>

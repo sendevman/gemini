@@ -6,6 +6,7 @@ import {bindActionCreators} from "redux";
 import CurrencyInput from "../../../components/CurrencyInput";
 import AnimationHelper from "../../../components/AnimationHelper";
 import CodeSelect from "../../../components/CodeSelect";
+import * as UIHelper from "../../../UIHelper";
 
 class UserAdditionalInfoRequest extends Component {
 

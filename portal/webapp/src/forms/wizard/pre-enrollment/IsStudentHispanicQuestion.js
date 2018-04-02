@@ -3,6 +3,7 @@ import AnimationHelper from "../../../components/AnimationHelper";
 import {bindActionCreators} from "redux";
 import {saveHispanic} from "../../../redux/actions";
 import {connect} from "react-redux";
+import * as UIHelper from "../../../UIHelper";
 
 class IsStudentHispanicQuestion extends Component {
 
@@ -28,7 +29,7 @@ class IsStudentHispanicQuestion extends Component {
                 <div className="description mb40"><h2 className="f90sbg">06.</h2>
                     <div className="violet-line"></div>
                 </div>
-                <p className="f60sbg text-justify">El Estudiante es <span className="f60sbb"> hispano/latino?</span></p>
+                <p className="f60sbg text-justify">{UIHelper.getText("studentIsQuestion")}<span className="f60sbb">{UIHelper.getText("hispanicHighlight")}</span></p>
             </div>
             {this.props.footer}
         </div>,

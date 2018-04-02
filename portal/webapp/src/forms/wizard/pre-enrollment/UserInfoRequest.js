@@ -7,6 +7,8 @@ import {bindActionCreators} from "redux";
 import SimpleDateInput from "../../../components/SimpleDateInput";
 import AnimationHelper from "../../../components/AnimationHelper";
 import CurrencyInput from "../../../components/CurrencyInput";
+import * as UIHelper from "../../../UIHelper";
+
 
 class UserInfoRequest extends Component {
 

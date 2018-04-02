@@ -7,6 +7,7 @@ import Immutable from "immutable";
 import * as types from "../../../redux/types";
 import AnimationHelper from "../../../components/AnimationHelper";
 import Button from "../../../components/Button";
+import * as UIHelper from "../../../UIHelper";
 
 class VocationalProgramsSelection extends Component {
 

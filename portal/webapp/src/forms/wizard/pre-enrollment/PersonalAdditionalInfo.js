@@ -5,6 +5,7 @@ import Button from "../../../components/Button";
 import {loadDemographics, saveDemographics} from "../../../redux/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import * as UIHelper from "../../../UIHelper";
 
 class PersonalAdditionalInfo extends Component {
 
@@ -67,8 +68,9 @@ class PersonalAdditionalInfo extends Component {
                 <div className="description"><h2 className="f90sbg">OK.</h2>
                     <div className="violet-line"></div>
                 </div>
-                <span className="f30slg">Por favor ingrese los siguientes<span
-                    className="f30slb"> Datos Demogr&aacute;ficos</span> del estudiante en el sistema</span>
+                <span className="f30slg">{UIHelper.getText("demographicFactsPage")}</span>
+                {/*<span className="f30slg">Por favor ingrese los siguientes<span*/}
+                    {/*className="f30slb"> Datos Demogr&aacute;ficos</span> del estudiante en el sistema</span>*/}
             </div>
             <div className="body d-flex flex-column">
                 <div className="row " style={{marginTop: -120}}>

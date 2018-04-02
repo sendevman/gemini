@@ -34,6 +34,7 @@ import NeedTransportationServiceQuestion from "./pre-enrollment/NeedTransportati
 import PreEnrollmentSpecializedSchoolsSelections from "./pre-enrollment/PreEnrollmentSpecializedSchoolsSelections";
 import ReasonForNotAttendingPreSelectedSchool from "./pre-enrollment/ReasonForNotAttendingPreSelectedSchool";
 import PreEnrollmentTechnicalSchoolsSelection from "./pre-enrollment/PreEnrollmentTechnicalSchoolsSelection";
+import EndPreEnrollmentMoveOutOfCountry from "./pre-enrollment/EndPreEnrollmentMoveOutOfCountry";
 
 function form(title, form) {
     return {title: title, form: form};
@@ -146,6 +147,7 @@ class Wizard extends Component {
             , {renderObj: Address}
             , {renderObj: NeedTransportationServiceQuestion}
             , {renderObj: ReasonForNotAttendingPreSelectedSchool}
+            , {renderObj: EndPreEnrollmentMoveOutOfCountry}
             , {renderObj: PreEnrollmentSpecializedSchoolsSelections}
             , {renderObj: PreEnrollmentAlternateSchoolsSelection}
             , {renderObj: PreEnrollmentAlternateSchoolsSubmit}

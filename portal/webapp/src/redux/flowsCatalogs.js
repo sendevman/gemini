@@ -1,12 +1,14 @@
+import * as UIHelper from "../UIHelper";
 //Responses
-const START = {type: "START", nextButton: "Comenzar"};
-const QUESTION = {type: "YES_NO", nextButton: "Sí", previousButton: "No"};
-const NOT_FOUND_QUESTION = {type: "YES_NO", nextButton: "Buscar Nuevamente", previousButton: "Crear Registro"};
-const SEARCH = {type: "SEARCH", nextButton: "Buscar"};
-const IN_PROGRESS = {type: "NEXT_PREVIOUS", nextButton: "Continuar", previousButton: "Retroceder"};
-const CONTINUE = {type: "START", nextButton: "Continuar"};
-const END = {type: "FINALIZE", nextButton: "Someter"};
-const FINALIZE_OR_CHANGE = {type: "FINALIZE_OR_CHANGE", nextButton: "Someter", previousButton: "Modificar"};
+
+const START = {type: "START", nextButton: UIHelper.getText("startButton")};
+const QUESTION = {type: "YES_NO", nextButton: UIHelper.getText("yesButton"), previousButton: UIHelper.getText("noButton")};
+const NOT_FOUND_QUESTION = {type: "YES_NO", nextButton: UIHelper.getText("searchAgainButton"), previousButton: UIHelper.getText("createRegisterButton")};
+const SEARCH = {type: "SEARCH", nextButton: UIHelper.getText("searchButton")};
+const IN_PROGRESS = {type: "NEXT_PREVIOUS", nextButton: UIHelper.getText("continueButton"), previousButton: UIHelper.getText("moveBackButton")};
+const CONTINUE = {type: "START", nextButton: UIHelper.getText("continueButton")};
+const END = {type: "FINALIZE", nextButton: UIHelper.getText("submitButton")};
+const FINALIZE_OR_CHANGE = {type: "FINALIZE_OR_CHANGE", nextButton:  UIHelper.getText("submitButton"), previousButton:  UIHelper.getText("modifyButton")};
 
 export let catalog = [
     {type: "USER_PROFILE", footerType: CONTINUE}
@@ -73,15 +75,24 @@ export let catalog = [
         //onPreEnrollmentFound
         nextRegular: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION",
         nextSpecialized: "PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION",
+        nextOnOutOfCountry: "END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY",
         footerType: CONTINUE,
+    },
+    {
+        type: "END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY",
+        next: "HOME",
+        footerType: CONTINUE,
+
     }
     , {
         type: "PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION",
         footerType: IN_PROGRESS
     }
 
-    , {type: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION",
-        footerType: IN_PROGRESS}
+    , {
+        type: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION",
+        footerType: IN_PROGRESS
+    }
     , {
         type: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT",
         footerType: QUESTION,

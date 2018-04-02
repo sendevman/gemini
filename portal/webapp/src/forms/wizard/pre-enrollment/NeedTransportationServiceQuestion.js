@@ -3,6 +3,7 @@ import AnimationHelper from "../../../components/AnimationHelper";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {saveNeedTransportationService} from "../../../redux/actions";
+import * as UIHelper from "../../../UIHelper";
 
 class NeedTransportationServiceQuestion extends Component {
 
@@ -29,9 +30,8 @@ class NeedTransportationServiceQuestion extends Component {
                     <div className="description mb40"><h2 className="f90sbg">08.</h2>
                         <div className="violet-line"/>
                     </div>
-                    <p className="f30sbg text-justify">¿Gracias por validar la dirección física. Esto nos ayudará a
-                        identificar si cualifica el estudiante para el servicio de transportación <span
-                            className="f30sbb">¿Deseas solicitar servicio de transportación para este estudiante? </span>
+                    <p className="f30sbg text-justify">{UIHelper.getText("transportationThanksTitle")}<span
+                        className="f30sbb">{UIHelper.getText("transportationQuestion")}</span>
                     </p>
                 </div>
 

@@ -5,6 +5,7 @@ import * as Utils from "../../../Utils";
 import {getTechnicalSchools, partialSaveVocationalPreEnrollment} from "../../../redux/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import * as UIHelper from "../../../UIHelper";
 
 class PreEnrollmentTechnicalSchoolsSelection extends Component{
 

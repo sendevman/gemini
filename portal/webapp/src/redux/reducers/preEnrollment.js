@@ -29,7 +29,8 @@ const initialState = {
     initialPreEnrollmentSaved: false,
     completePreEnrollment: false,
     activePreEnrollmentFound: false,
-    reasonSaved: false
+    reasonSaved: false,
+    reasonSelected: null
 };
 
 const preEnrollment = (state = Utils.freezeObject(initialState), action) => {
@@ -87,7 +88,7 @@ const preEnrollment = (state = Utils.freezeObject(initialState), action) => {
                 }
             };
         case types.REASON_FOR_NOT_ATTENDING_SAVE_END:
-            return {...state, reasonSaved: action.saved};
+            return {...state, reasonSaved: action.saved, reasonSelected: action.regionResponse};
         case types.HOME_LOAD_END:
             return Utils.freezeObject(initialState);
         default:

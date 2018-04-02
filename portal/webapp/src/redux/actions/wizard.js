@@ -24,6 +24,7 @@ const normalFlow = [
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
     getIndexFromCatalog("REASON_FOR_NOT_ATTENDING_QUESTION"),
+    getIndexFromCatalog("END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
     getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")];
@@ -37,6 +38,7 @@ const editNormalFlow = [
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
     getIndexFromCatalog("REASON_FOR_NOT_ATTENDING_QUESTION"),
+    getIndexFromCatalog("END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
     getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")
@@ -62,6 +64,7 @@ const specializedFlow = [
 
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
     getIndexFromCatalog("REASON_FOR_NOT_ATTENDING_QUESTION"),
+    getIndexFromCatalog("END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
 
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
@@ -77,6 +80,7 @@ const specializedEditFlow = [
     // it is confused
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
     getIndexFromCatalog("REASON_FOR_NOT_ATTENDING_QUESTION"),
+    getIndexFromCatalog("END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
 
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
@@ -148,7 +152,6 @@ const technicalFlow = [
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
     getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")
 ];
-
 const editTechnicalFlow = [
     getIndexFromCatalog("PERSONAL_INFO"),
     getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
@@ -319,10 +322,6 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
     let currentForm = getForm(current);
     let next = current + 1;
 
-    if (student.existsOnSie && isType(current, "PERSONAL_INFO")) {
-        next = getIndexFromFlow("ADDRESS");
-    }
-
     if (currentForm.isQuestion || currentForm.isSubmit) {
         next = getIndexFromFlow(currentForm.yes);
     } else if (isType(current, "NEED_TRANSPORTATION_QUESTION") && isRegularOrSpecializedFlow(preEnrollment)) {
@@ -331,7 +330,7 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
         next = nextOnReasonPage(preEnrollment, currentForm);
     } else if (isType(current, "NEED_TRANSPORTATION_QUESTION") && isOccupationalOrTechnicalFlow(preEnrollment) && wizard.editing) {
         next = getIndexFromFlow(currentForm.nextOccupationalWhenEdit);
-    } else if (isType(current, "PRE_ENROLLMENT_CONFIRMED")) {
+    } else if (isType(current, "END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY") || isType(current, "PRE_ENROLLMENT_CONFIRMED")) {
         resetWizard()(dispatch);
     }
 
@@ -343,6 +342,20 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
                 ? getIndexFromFlow(currentForm.success)
                 : getIndexFromFlow(currentForm.failure);
         }
+        student = getState().studentInfo.student;
+        if (student.existsOnSie && isType(current, "PERSONAL_INFO")) {
+            next = getIndexFromFlow("ADDRESS");
+        }
+
+        preEnrollment = getState().preEnrollment;
+        let isOutOfCountry = preEnrollment.reasonSaved && preEnrollment.reasonSelected === types.MOVE_OUT_OF_COUNTRY;
+        if (isOutOfCountry && isType(current, "REASON_FOR_NOT_ATTENDING_QUESTION"))
+            next = getIndexFromFlow(currentForm.nextOnOutOfCountry);
+        else if (isType(current, "END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY")) {
+            dispatch({type: types.ON_WIZARD_COMPLETED, startOver: false});
+            return;
+        }
+
 
         if (maxCurrent === current) {
             dispatch({type: types.ON_WIZARD_COMPLETED, startOver: true});
@@ -383,8 +396,8 @@ export const onPreviousAction = (onPress) => (dispatch, getState) => {
         next = previousOnSubmit(preEnrollment, currentForm)
     } else if (isType(current, "NEED_TRANSPORTATION_QUESTION")) {
         if (isOccupationalOrTechnicalFlow(preEnrollment) && wizard.editing) {
-            next =  getIndexFromFlow(currentForm.nextOccupationalWhenEdit)
-        }else {
+            next = getIndexFromFlow(currentForm.nextOccupationalWhenEdit)
+        } else {
             next = nextOnTransportationPage(preEnrollment, currentForm);
         }
     } else {

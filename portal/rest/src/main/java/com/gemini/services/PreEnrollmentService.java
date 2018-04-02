@@ -79,21 +79,11 @@ public class PreEnrollmentService {
                     boolean hasPrevious = commonService.isPreviousEnrollment(enrollmentInfo);
                     boolean hasPreEnrollment = commonService.isPreEnrollmentYear(enrollmentInfo);
                     boolean hasOld = commonService.isOldEnrollment(enrollmentInfo);
-                    if (hasPrevious) {
-                        entity.setPreviousEnrollmentId(enrollmentInfo.getEnrollmentId());
-                        entity.setPreviousEnrollmentYear(enrollmentInfo.getSchoolYear());
-                        entity.setPreviousGradeLevel(enrollmentInfo.getGradeLevel());
-                        //fran ask if we should do this
-                        setNextGradeFromPreviousEnrollment(enrollmentInfo.getSchoolId(), preEnrollmentBean, enrollmentInfo.getGradeLevel(), enrollmentInfo.getSchoolYear());
-                        preEnrollmentBean.setHasPreviousEnrollment(hasPrevious);
-                    } else if (hasOld) {
-                        setNextGradeFromPreviousEnrollment(enrollmentInfo.getSchoolId(), preEnrollmentBean, enrollmentInfo.getGradeLevel(), enrollmentInfo.getSchoolYear());
+                    if (hasPrevious || hasOld) {
+                        setDataFromSIEEnrollmentOn(enrollmentInfo, entity, true);
                     } else if (hasPreEnrollment) {
-                        entity.setPreEnrollmentId(enrollmentInfo.getEnrollmentId());
-                        setNextGradeFromNextEnrollment(enrollmentInfo.getSchoolId(), preEnrollmentBean, enrollmentInfo.getGradeLevel(), enrollmentInfo.getSchoolYear());
-                        preEnrollmentBean.setHasPreEnrollment(hasPreEnrollment);
+                        setDataFromSIEEnrollmentOn(enrollmentInfo, entity, false);
                     }
-                    entity = CopyUtils.convert(preEnrollmentBean, PreEnrollmentRequestEntity.class);
                 }
                 AddressEntity postal = copyAddressFrom(address, AddressType.POSTAL);
                 AddressEntity physical = copyAddressFrom(address, AddressType.PHYSICAL);
@@ -130,12 +120,11 @@ public class PreEnrollmentService {
             userService.saveUserPreEnrollment(loggedUser.getId(), entity);
         }
 
-        return preEnrollmentBean;
+        return getPreEnrollmentBean(entity);
 
     }
 
     public PreEnrollmentBean updatePreEnrollment(PreEnrollmentInitialRequest request) {
-        PreEnrollmentBean response = null;
         PreEnrollmentRequestEntity requestEntity;
         if (request.getRequestId() != null && request.getRequestId() > 0L)
             requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
@@ -151,16 +140,8 @@ public class PreEnrollmentService {
             studentEntity.setGender(request.getGender());
             studentEntity = studentRepository.save(studentEntity);
         }
-        if (requestEntity != null) {
-            response = CopyUtils.convert(requestEntity, PreEnrollmentBean.class);
-            if (requestEntity.getPreEnrollmentId() != null)
-                response.setHasPreEnrollment(requestEntity.getPreEnrollmentId() != null);
-            else if (requestEntity.getPreviousEnrollmentId() != null)
-                response.setHasPreviousEnrollment(requestEntity.getPreviousEnrollmentId() != null);
-            response.setStudent(getPreEnrollmentStudentInfoBean(requestEntity));
-        }
 
-        return requestEntity != null && response != null ? response : null;
+        return requestEntity != null ? getPreEnrollmentBean(requestEntity) : null;
     }
 
     public PreEnrollmentBean findById(Long id) {
@@ -202,7 +183,8 @@ public class PreEnrollmentService {
         if (!result.isExists()) {
             //do search by firstname, lastname, birthdate & ssn
 //            entity = preEnrollmentRepository.findByDateOfBirthAndFirstNameAndLastName(request.getDateOfBirth(), request.getFirstName(), request.getLastName());
-            entity = preEnrollmentRepository.findBySsn(request.getSsn());
+            String ssn = Utils.cleanSsn(request.getSsn());
+            entity = preEnrollmentRepository.findBySsn(ssn);
             result.setExists(entity != null);
         }
 
@@ -484,9 +466,9 @@ public class PreEnrollmentService {
         return preEnrollmentRepository.save(requestEntity) != null;
     }
 
-    public  boolean saveReasonForNotAttending(ReasonForNotAttendingRequest request){
+    public boolean saveReasonForNotAttending(ReasonForNotAttendingRequest request) {
         PreEnrollmentRequestEntity entity = preEnrollmentRepository.findOne(request.getRequestId());
-        if(entity == null)
+        if (entity == null)
             return false;
         entity.setReasonForNotAttendSchool(request.getReason());
         entity = preEnrollmentRepository.save(entity);
@@ -500,7 +482,7 @@ public class PreEnrollmentService {
         Utils.copyLastNames(studentEntity, studentInfo);
         studentInfo.setStudentNumber(studentEntity.getExtStudentNumber());
         studentInfo.setId(studentEntity.getId());
-        if(ValidationUtils.valid(studentEntity.getExtStudentNumber())){
+        if (ValidationUtils.valid(studentEntity.getExtStudentNumber())) {
             studentInfo.setLastSsnFormatted(Utils.obfuscatedSsn(studentEntity.getSsn()));
         }
         //todo: fran change this!!!
@@ -511,12 +493,14 @@ public class PreEnrollmentService {
     private PreEnrollmentBean getPreEnrollmentBean(PreEnrollmentRequestEntity entity) {
         PreEnrollmentBean enrollmentBean = CopyUtils.convert(entity, PreEnrollmentBean.class);
         enrollmentBean.setStudent(getPreEnrollmentStudentInfoBean(entity));
-        if(ValidationUtils.valid(entity.getSchoolId())){
+        if (ValidationUtils.valid(entity.getSchoolId())) {
             School school = getSchool(entity.getSchoolId());
             enrollmentBean.setSchoolId(school.getSchoolId());
             enrollmentBean.setSchoolName(school.getSchoolName());
             enrollmentBean.setSchoolAddress(CopyUtils.createAddressBean(school));
         }
+        enrollmentBean.setHasPreEnrollment(ValidationUtils.valid(entity.getPreEnrollmentId()));
+        enrollmentBean.setHasPreviousEnrollment(ValidationUtils.valid(entity.getPreviousEnrollmentId()));
         setGradeLevelInfo(entity.getGradeLevel(), enrollmentBean);
         return enrollmentBean;
     }
@@ -568,33 +552,28 @@ public class PreEnrollmentService {
         return entity;
     }
 
-    private School setNextGradeFromPreviousEnrollment(Long schoolId, PreEnrollmentBean enrollmentBean, String previousGradeLevel, Long previousSchoolYear) {
+    private School setDataFromSIEEnrollmentOn(EnrollmentInfo info, PreEnrollmentRequestEntity entity,  boolean isPreviousEnrollment) {
+        Long schoolId = info.getSchoolId();
+        String gradeLevel = info.getGradeLevel();
+        Long schoolYear = info.getSchoolYear();
+        Long enrollmentId = info.getEnrollmentId();
         School school = smaxService.findSchoolById(schoolId);
-        //validating if the schoolYear enrolled is the current school year
-        if (school != null && ValidationUtils.valid(previousSchoolYear, previousGradeLevel)) {
-            SchoolGradeLevel gradeLevelInfo = smaxService.findSchoolLevel(previousSchoolYear, schoolId, previousGradeLevel);
-            enrollmentBean.setSchoolId(schoolId);
-            enrollmentBean.setSchoolName(school.getSchoolName());
-            enrollmentBean.setSchoolAddress(CopyUtils.createAddressBean(school));
-            if (gradeLevelInfo != null) {
-                GradeLevel gradeLevel = smaxService.getGradeLevelByCode(gradeLevelInfo.getNextYearGrade());
-                enrollmentBean.setNextGradeLevel(gradeLevel.getName());
-                enrollmentBean.setNextGradeLevelDescription(gradeLevel.getDisplayName());
+        if (isPreviousEnrollment) {
+            entity.setPreviousEnrollmentId(enrollmentId);
+            entity.setPreviousGradeLevel(gradeLevel);
+            entity.setPreviousEnrollmentYear(schoolYear);
+        } else if (ValidationUtils.valid(schoolYear, gradeLevel)) {
+            entity.setPreEnrollmentId(enrollmentId);
+            if (school != null) {
+                entity.setSchoolId(schoolId);
+                entity.setDistrictId(school.getDistrictId());
+                entity.setRegionId(school.getRegionId());
+                entity.setExtSchoolNumber(school.getExtSchoolNumber());
+                entity.setMunicipalityCode(school.getCityCd());
             }
-        }
-        return school;
-    }
-
-    private School setNextGradeFromNextEnrollment(Long schoolId, PreEnrollmentBean enrollmentBean, String gradeLevel, Long schoolYear) {
-        School school = smaxService.findSchoolById(schoolId);
-        if (school != null && ValidationUtils.valid(schoolYear, gradeLevel)) {
-            enrollmentBean.setSchoolId(schoolId);
-            enrollmentBean.setSchoolName(school.getSchoolName());
-            enrollmentBean.setSchoolAddress(CopyUtils.createAddressBean(school));
-            if (gradeLevel != null) {
+            if (StringUtils.hasText(gradeLevel)) {
                 GradeLevel nextGradeLevel = smaxService.getGradeLevelByCode(gradeLevel);
-                enrollmentBean.setNextGradeLevel(nextGradeLevel.getName());
-                enrollmentBean.setNextGradeLevelDescription(nextGradeLevel.getDisplayName());
+                entity.setGradeLevel(nextGradeLevel.getName());
             }
         }
         return school;

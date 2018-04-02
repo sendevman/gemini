@@ -11,8 +11,8 @@ export const savePreEnrollment = (form, onResult, onError) => (dispatch, getStat
     let preEnrollment = getState().preEnrollment;
     let gender = Utils.normalizeEnumValue(form.gender);
     let ssn = form.ssn;
-    if(found)
-      ssn = "xxx-xx-xxxx";
+    if (found)
+        ssn = "xxx-xx-xxxx";
 
     form.requestId = preEnrollment.requestId;
     form.studentNumber = studentInfo.student.studentNumber;
@@ -98,7 +98,8 @@ export const partialSaveVocationalPreEnrollment = (form, onResult, onError) => (
 export const partialAlternatePreEnrollmentSave = (form, onResult, onError) => (dispatch, getState) => {
     dispatch({type: types.PARTIAL_ALT_PRE_ENROLLMENT_SAVE_START});
     let preEnrollment = getState().preEnrollment;
-    form = configureSubmitObject(form, preEnrollment);
+    form.requestId = preEnrollment.requestId;
+    form = configureAlternateSubmitObject(form, preEnrollment);
     services()
         .partialAlternatePreEnrollmentSave(form)
         .then((response) => response.json())
@@ -153,7 +154,8 @@ export const saveReasonForNotAttendingSchool = (option, onResult, onError) => (d
         .saveReasonForNotAttending(form)
         .then((response) => response.json())
         .then((response) => {
-            dispatch({type: types.REASON_FOR_NOT_ATTENDING_SAVE_END, saved: response.successfulOperation});
+            let reasonSaved = response.successfulOperation ? reason : null;
+            dispatch({type: types.REASON_FOR_NOT_ATTENDING_SAVE_END, regionResponse: reasonSaved, saved: response.successfulOperation});
             handleResult(response, onResult, onError, dispatch);
         });
 };
@@ -161,6 +163,12 @@ export const saveReasonForNotAttendingSchool = (option, onResult, onError) => (d
 function configureSubmitObject(form, preEnrollment) {
     form.requestId = preEnrollment.requestId;
     form.type = preEnrollment.type;
+    return form;
+}
+
+function configureAlternateSubmitObject(form, preEnrollment) {
+    form.requestId = preEnrollment.requestId;
+    preEnrollment.type = form.type;
     return form;
 }
 

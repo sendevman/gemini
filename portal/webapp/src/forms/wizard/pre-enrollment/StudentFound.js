@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
+import * as UIHelper from "../../../UIHelper";
 
 export default class StudentFound extends Component {
 

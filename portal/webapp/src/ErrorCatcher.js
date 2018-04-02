@@ -30,35 +30,34 @@ class ErrorCatcher extends Component {
             // You can render any custom fallback UI
             return <div className="container-fluid">
                 <div className="row content">
-                    <div className="col-md-1 navigation-section d-flex align-items-center"
+                    <div className="col-md-1 navigation-section violet d-flex align-items-center"
                          onClick={this.goBack}>
                         <i className="icon-arrow"/>
                     </div>
                     <div className="col-md-7 content-section">
                         <div className="title">
-                            <div className="description mb40">
-                                <h2>Upps!!! Ha ocurrido un error</h2>
-                            </div>
-                            <img className="mx-auto d-block" src={failLogo}/>
-
-                            <div className="error-message">
-                                <Button size="xlarge" className="mt50" onClick={this.goBack}>Volver</Button>
-                            </div>
-
-
-                            <span className="f20slg"/>
+                            <h2>Upps!!! Ha ocurrido un error</h2>
+                            <div className="description mb40"/>
                         </div>
-                        <div className="body d-flex align-items-center flex-column justify-content-end">
-                            <div style={{paddingBottom: 300}}
-                                 className="col-md-12 illustration-section d-flex align-items-center text-center">
+                        <div className="body">
+                            <div className={"row"} style={{marginTop: -200}}>
+                                <div className="col-md-12 illustration-section">
+                                    <div className="error-message">
+                                        <span className={"f20sbb"}>Disculpe el inconveniente</span>
+                                        <Button size="normal" className="mt50" onClick={this.goBack}>Volver</Button>
+                                    </div>
+                                    <div className="illustration" style={{width: 768}}>
+                                        <img /*className="mx-auto d-block"*/ src={failLogo}/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                         <div className="illustration"><img src={registrationIllustration} alt=""/></div>
                     </div>
-                    <Footer/>
                 </div>
+                <Footer/>
             </div>;
         }
         return this.props.children;

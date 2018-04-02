@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {submitAlternatePreEnrollment} from "../../../redux/actions";
 import AnimationHelper from "../../../components/AnimationHelper";
-
+import * as UIHelper from "../../../UIHelper";
 
 class PreEnrollmentAlternateSchoolsSubmit extends Component {
 

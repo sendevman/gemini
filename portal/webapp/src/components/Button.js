@@ -36,7 +36,7 @@ export default class Button extends Component {
 
     render() {
         return (
-            <button style={this.sizeCss} className={this.color} {...this.props}>
+            <button style={this.sizeCss} {...this.props} className={this.color}>
                 {this.props.children}
             </button>);
     }

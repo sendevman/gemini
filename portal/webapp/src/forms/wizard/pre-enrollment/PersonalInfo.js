@@ -11,6 +11,7 @@ import SimpleDateInput from "../../../components/SimpleDateInput";
 import AnimationHelper from "../../../components/AnimationHelper";
 import SocialSecurityInput from "../../../components/SocialSecurityInput";
 import ModalHelper from "../../../components/ModalHelper";
+import * as UIHelper from "../../../UIHelper";
 
 class PersonalInfo extends Component {
 
@@ -53,8 +54,7 @@ class PersonalInfo extends Component {
                 <div className="description"><h2 className="f90sbg">OK.</h2>
                     <div className="violet-line"></div>
                 </div>
-                <span className="f30slg">Vamos <span
-                    className="f30slb">Registrar o Editar</span> el estudiante en el sistema</span>
+                <span className="f30slg">{UIHelper.getText("studentRegisterStart")}<span className="f30slb">{UIHelper.get("studentRegisterHighlight")}</span> {UIHelper.getText("studentRegisterEnd")}</span>
             </div>
             <div className="body d-flex flex-column justify-content-end ">
                 <form>
