@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import profileIlustration from "../../style/img/profile-illustration.png";
+import profileIlustration from "../../assets/img/profile-illustration.png";
 import AnimationHelper from "../../components/AnimationHelper";
+import * as UIHelper from "../../UIHelper";
 
 export default class Instructions extends Component {
 

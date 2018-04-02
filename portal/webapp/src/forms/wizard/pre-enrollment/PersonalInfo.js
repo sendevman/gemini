@@ -86,7 +86,7 @@ class PersonalInfo extends Component {
                         <div className="col-md-3">
                             <TextInput id="middleName" type="name"
                                        label="Segundo Nombre"
-                                       labelStyle={{left: 0, fontSize: 18}}
+                                       labelStyle={{left: 0}}
                                        value={student.middleName}
                                        onChange={this.inputHandler}
                                        disabled={studentExists}/>

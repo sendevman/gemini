@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {existsKey, resetPassword} from "../../../redux/actions";
 import ReCAPTCHA from "react-google-recaptcha";
 import env from "../../../env";
-import profileIllustration from "../../../style/img/profile-illustration.png";
+import profileIllustration from "../../../assets/img/profile-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
 
 class ResetPassword extends Component {

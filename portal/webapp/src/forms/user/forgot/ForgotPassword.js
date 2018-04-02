@@ -3,7 +3,7 @@ import TextInput from "../../../components/TextInput";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {forgotPassword} from "../../../redux/actions";
-import registrationIllustration from "../../../style/img/registration-illustration.png";
+import registrationIllustration from "../../../assets/img/registration-illustration.png";
 import env from "../../../env";
 import ReCAPTCHA from "react-google-recaptcha";
 import AnimationHelper from "../../../components/AnimationHelper";

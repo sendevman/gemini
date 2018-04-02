@@ -11,6 +11,7 @@ import {connect} from "react-redux";
 import {clean, cleanLogin, login, toggleCleanTimeout} from "../redux/actions";
 import TextInput from "../components/TextInput";
 import AnimationHelper from "../components/AnimationHelper";
+import * as UIHelper from "../UIHelper";
 
 class Authentication extends Component {
     constructor(props) {
@@ -64,8 +65,7 @@ class Authentication extends Component {
                     <div className="violet-line"/>
                 </div>
                 <p className="f20slg text-justify">
-                    Para iniciar sesi&oacute;n, entre a continuación su correo electrónico y contraseña que utiliz&oacute; para crear
-                    su cuenta.
+                    {UIHelper.getText("loginPage")}
                 </p>
 
             </div>

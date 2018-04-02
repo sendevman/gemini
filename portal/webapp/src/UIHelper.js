@@ -1,8 +1,14 @@
 import React from "react";
+import * as message from "./assets/message_ES";
 
 export function toggleFieldValidHtml(valid, required) {
     if (!required)
         return (null);
-    return valid ? (<span className="fas fa-check " style={{fontSize: 12, color: "#5cb85c"}}/>)
-        : (<span className="text-danger">*</span>)
+    return valid ? (<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="fas fa-check " style={{fontSize: 12, color: "#5cb85c"}}/></span>)
+        : (<span className="text-danger">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*</span>)
+}
+
+
+export function getText(attribute){
+    return message.default[attribute];
 }

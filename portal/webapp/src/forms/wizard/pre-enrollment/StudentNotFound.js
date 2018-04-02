@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import leisureIllustration from "../../../style/img/leisure-illustration.png";
-import searchGuy from "../../../style/img/search-guy.png"
-import pot from "../../../style/img/pot.png";
+import leisureIllustration from "../../../assets/img/leisure-illustration.png";
+import searchGuy from "../../../assets/img/search-guy.png"
+import pot from "../../../assets/img/pot.png";
 import AnimationHelper from "../../../components/AnimationHelper";
 
 export default class StudentNotFound extends Component {

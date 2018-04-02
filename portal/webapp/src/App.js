@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {withRouter} from "react-router-dom";
-// import "react-datepicker/dist/react-datepicker.min.css";
-import "./style/app.css";
+import "./assets/app.css";
 import classnames from "classnames";
 import Routes from "./Routes";
 import moment from "moment";
@@ -12,6 +11,7 @@ import ReduxBlockUi from 'react-block-ui/redux';
 import {bindActionCreators} from "redux";
 import * as env from "./env";
 import ModalHelper from "./components/ModalHelper";
+import Footer from "./Footer";
 
 moment.updateLocale('es', esLocale);
 
@@ -125,17 +125,8 @@ class App extends Component {
                         <Routes loading={this.props.loading} authenticated={this.props.authenticated}
                                 onRouteChanged={this.onRouteChanged}/>
                     </div>
-                    <div className="row footer d-flex align-items-center">
-                        <div className="col-md-1"/>
-                        <div className="col-md-8">
-                            <span>© 2018 All Rights Reserved</span>
-                        </div>
-                        <div className="col-md-3 text-right">
-                            <span>Build: {env.default.buildVersion}</span>
-                        </div>
-                    </div>
+                    <Footer/>
                 </div>
-
                 <ModalHelper ref="modal"/>
             </ReduxBlockUi>
         );

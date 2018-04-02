@@ -5,7 +5,7 @@ import React, {Component} from "react";
 import TextInput from "../../../components/TextInput";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {cleanRegistration, registerUser, validateForm} from "../../../redux/actions";
+import {cleanRegistration, registerUser} from "../../../redux/actions";
 import ReCAPTCHA from "react-google-recaptcha";
 import env from "../../../env";
 import AnimationHelper from "../../../components/AnimationHelper";
@@ -151,7 +151,7 @@ function mapStateToProps(store) {
 }
 
 function mapDispatchToActions(dispatch) {
-    return bindActionCreators({validateForm, registerUser, cleanRegistration}, dispatch)
+    return bindActionCreators({registerUser, cleanRegistration}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToActions)(Registration);
