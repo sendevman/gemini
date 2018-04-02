@@ -36,6 +36,7 @@
     position: absolute;
     top: 25%;
     left: 50%;
+    z-index: 1000;
 }
 
 .auth-error {

@@ -3,6 +3,7 @@ import AnimationHelper from "../../../components/AnimationHelper";
 import {saveBornPR} from "../../../redux/actions";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import * as UIHelper from "../../../UIHelper";
 
 class IsStudentBornPRQuestion extends Component {
 
@@ -28,8 +29,8 @@ class IsStudentBornPRQuestion extends Component {
                 <div className="description mb40"><h2 className="f90sbg">07.</h2>
                     <div className="violet-line"></div>
                 </div>
-                <p className="f60sbg">El Estudiante es <span
-                    className="f60sbb"> puertorrique&ntilde;o?</span></p>
+                <p className="f60sbg">{UIHelper.getText("studentIsQuestion")}<span
+                    className="f60sbb">{UIHelper.getText("puertorricanQuestionHighlight")}</span></p>
             </div>
             {this.props.footer}
         </div>,

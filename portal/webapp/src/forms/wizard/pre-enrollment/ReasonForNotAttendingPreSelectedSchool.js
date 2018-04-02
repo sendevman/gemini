@@ -4,6 +4,7 @@ import {getReasonForAttendingCodes, saveReasonForNotAttendingSchool} from "../..
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
+import * as UIHelper from "../../../UIHelper";
 
 class ReasonForNotAttendingPreSelectedSchool extends Component {
 

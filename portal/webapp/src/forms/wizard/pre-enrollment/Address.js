@@ -9,6 +9,8 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import AnimationHelper from "../../../components/AnimationHelper";
 import Button from "../../../components/Button";
+import * as UIHelper from "../../../UIHelper";
+
 
 class Address extends Component {
 
@@ -51,11 +53,11 @@ class Address extends Component {
                         <div className="col-md-6">
                             <div className="row">
                                 <div className="col-md-5">
-                                    <h5 htmlFor="">Residencial</h5>
+                                    <h5 htmlFor="">{UIHelper.getText("physicalAddressButton")}</h5>
                                 </div>
 
                                 <div className="col-md-6" style={{marginLeft: 5}}>
-                                    <Button size="small" onClick={this.copyAddress}>Copiar</Button>
+                                    <Button size="small" onClick={this.copyAddress}>{UIHelper.getText("copyButton")}</Button>
                                 </div>
 
                             </div>
@@ -66,7 +68,7 @@ class Address extends Component {
                         <div className="col-md-6">
                             <div className="row">
                                 <div className="col-md-12">
-                                    <h5 htmlFor="">Postal</h5>
+                                    <h5 htmlFor="">{UIHelper.getText("postalAddressButton")}</h5>
                                 </div>
                             </div>
                             {this.renderAddressForm("postal", props.postal)}

@@ -14,6 +14,8 @@ import {
 import AnimationHelper from "../../../components/AnimationHelper";
 import SchoolSelector from "../widgets/SchoolSelector";
 import * as Utils from "../../../Utils";
+import * as types from "../../../redux/types";
+import * as UIHelper from "../../../UIHelper";
 
 class PreEnrollmentAlternateSchoolsSelection extends Component {
 
@@ -36,6 +38,7 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
         let preEnrollment = this.props.preEnrollment;
         form.nextGradeLevel = preEnrollment.nextGradeLevel;
         form.nextGradeLevelDescription = preEnrollment.nextGradeLevelDescription;
+        form.type = types.REGULAR_ALTERNATE_SCHOOLS;
         this.props.partialAlternatePreEnrollmentSave(form, onResult, onError);
     }
 

@@ -9,6 +9,7 @@ import {getVocationalSchools, loadVocationalCodes, partialSaveVocationalPreEnrol
 import AnimationHelper from "../../../components/AnimationHelper";
 import SchoolSelector from "../widgets/SchoolSelector";
 import * as Utils from "../../../Utils";
+import * as UIHelper from "../../../UIHelper";
 
 class VocationalPreEnrollment extends Component {
 

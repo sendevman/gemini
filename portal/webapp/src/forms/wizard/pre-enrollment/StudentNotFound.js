@@ -3,6 +3,7 @@ import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import searchGuy from "../../../assets/img/search-guy.png"
 import pot from "../../../assets/img/pot.png";
 import AnimationHelper from "../../../components/AnimationHelper";
+import * as UIHelper from "../../../UIHelper";
 
 export default class StudentNotFound extends Component {
 

@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import AnimationHelper from "../../../components/AnimationHelper";
+import * as UIHelper from "../../../UIHelper";
 
 export default class VocationalSchoolSelectionInfo extends Component {
 

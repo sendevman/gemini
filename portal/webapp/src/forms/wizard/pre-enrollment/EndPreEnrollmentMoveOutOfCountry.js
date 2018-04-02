@@ -1,12 +1,10 @@
 import React, {Component} from "react";
-import leisureIllustration from "../../../assets/img/leisure-illustration.png";
-import AnimationHelper from "../../../components/AnimationHelper";
 import * as UIHelper from "../../../UIHelper";
+import AnimationHelper from "../../../components/AnimationHelper";
 
+export default class EndPreEnrollmentMoveOutOfCountry extends Component{
 
-export default class ConfirmedPreEnrollment extends Component {
-
-    constructor(props) {
+    constructor(props){
         super(props);
     }
 
@@ -14,11 +12,11 @@ export default class ConfirmedPreEnrollment extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb40"><h2>{UIHelper.getText("thankYouTitle")}</h2>
+                    <div className="description mb40"><h2>{UIHelper.getText("enrollmentEndByOutOfCountry")}</h2>
                         <div className="violet-line"></div>
                     </div>
                     <p className="f40sllg">
-                        <span className="f40sbgr">{UIHelper.getText("thankYouBody")}</span> {UIHelper.getText("anotherEnrollmentQuestion")}</p>
+                        <span className="f40sbgr">{UIHelper.getText("enrollmentEndByOutOfCountryExplanation")}</span> </p>
                 </div>
                 {this.props.footer}
             </div>,

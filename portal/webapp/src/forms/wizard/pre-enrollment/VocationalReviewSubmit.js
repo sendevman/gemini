@@ -13,6 +13,7 @@ import {
 } from "../../../redux/actions";
 import * as types from "../../../redux/types";
 import Button from "../../../components/Button";
+import * as UIHelper from "../../../UIHelper";
 
 class VocationalReviewSubmit extends Component {
 
