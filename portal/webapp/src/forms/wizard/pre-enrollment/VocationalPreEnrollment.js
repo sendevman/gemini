@@ -43,8 +43,8 @@ class VocationalPreEnrollment extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb30"><h2><span>Registro de</span> Pre-Matricula Vocacional </h2></div>
-                    <span className="f20slg"><span className="f20slb">Vamos a crear una nueva pre-matricula.</span> Por favor seleccione region, grado y escuela:</span>
+                    <div className="description mb30"><h2><span>Registro de</span>Matricula Vocacional </h2></div>
+                    <span className="f20slg"><span className="f20slb">Vamos a crear una nueva matricula.</span> Por favor seleccione region, grado y escuela:</span>
                 </div>
                 <div className="body d-flex flex-column justify-content-end">
                     <form id="enrollment-form" className="mt50">

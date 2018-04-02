@@ -77,7 +77,7 @@ class VocationalReviewSubmit extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb30"><h2>Revise su Pre-Matricula <span>{this.vocationalType}</span>
+                    <div className="description mb30"><h2>Revise su Matricula <span>{this.vocationalType}</span>
                     </h2></div>
                     <p className="f22slg mb-1"><i className="icon-teacher mr5"/> <span
                         id="adress">Estudiante {student && student.fullName}</span></p>

@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
 import * as UIHelper from "../../../UIHelper";
 
@@ -16,7 +15,7 @@ export default class DEProgramQuestion extends Component {
                     <div className="description mb40"><h2 className="f90sbg">01.</h2>
                         <div className="violet-line"/>
                     </div>
-                    <p className="f40sbg text-justify">{UIHelper.getText("programSelectionQuestion")}<span className="f40sbb">{UIHelper.getText("programOptions")}</span>?</p>
+                    <p className="f40sbg text-justify">{UIHelper.getText("programSelectionQuestion")}</p>
                 </div>
 
                 {this.props.footer}

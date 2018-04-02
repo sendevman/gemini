@@ -21,7 +21,7 @@ export function validationDialog(modalRef, validationObj, afterCloseAction) {
         for (let message of validationObj.messages) {
             formattedMessage += `*\t${message}\n`;
         }
-        modalRef.open("Validaci\u00f3n", formattedMessage, afterCloseAction);
+        modalRef.open("Favor cotejar los siguientes campos:", formattedMessage, afterCloseAction, true);
     } else {
         modalRef.open("Upps!!!", "Ha ocurrido un error, disculpe el inconveniente")
     }

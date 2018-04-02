@@ -71,7 +71,7 @@ public class MailService {
         SimpleMailMessage preEnrollmentMail = new SimpleMailMessage();
         preEnrollmentMail.setFrom(fromEmail);
         preEnrollmentMail.setTo(user.getEmail());
-        preEnrollmentMail.setSubject("Pre-Matricula Recibida");
+        preEnrollmentMail.setSubject("Matrícula Recibida");
         Map<String, String> params = ImmutableMap.of("studentName", preEnrollmentBean.getStudent().getFullName());
         preEnrollmentMail.setText(composeBody(params, "emails/pre-enrollment-submit"));
         return preEnrollmentMail;
@@ -105,7 +105,7 @@ public class MailService {
     }
 
     private boolean send(SimpleMailMessage message) {
-        boolean sent = false;
+        boolean sent = true;
         try {
             final MimeMessageHelper helper =
                     new MimeMessageHelper(mailSender.createMimeMessage(), true, "UTF-8"); // true = multipart
@@ -116,7 +116,7 @@ public class MailService {
             mailSender.send(helper.getMimeMessage());
             sent = true;
         } catch (Exception e) {
-            //todo: fran create failover process to manage this
+//            //todo: fran create failover process to manage this
             logger.error("Error while sending email", e);
         }
         return sent;

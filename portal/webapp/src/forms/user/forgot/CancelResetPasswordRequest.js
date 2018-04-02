@@ -4,6 +4,7 @@ import {bindActionCreators} from "redux";
 import {cancelResetPassword} from "../../../redux/actions";
 import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
+import * as UIHelper from "../../../UIHelper";
 
 class CancelResetPasswordRequest extends Component {
 
@@ -37,7 +38,7 @@ class CancelResetPasswordRequest extends Component {
             <div className="body d-flex align-items-center flex-column justify-content-end">
                 <div className="row action-section">
                     <div className="col-md-12 text-center text-lg-left p-0">
-                        <a className="button-green mr30 mob-mb30px" onClick={this.onClick}><span>y</span>Volver</a>
+                        <a className="button-green mr30 mob-mb30px" onClick={this.onClick}><span>y</span>{UIHelper.getText("startSessionButton")}</a>
                     </div>
                 </div>
             </div>

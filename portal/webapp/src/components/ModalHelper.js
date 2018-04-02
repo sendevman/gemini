@@ -35,8 +35,9 @@ export default class ModalHelper extends Component {
         this.setState({modal: false, title: null, message: null});
     }
 
-    open(title, messages, afterCloseAction) {
+    open(title, messages, afterCloseAction, enableWhitespace = false) {
         this.action = afterCloseAction;
+        this.enableWhitespace = enableWhitespace;
         this.setState({modal: true, title: title, message: messages, type: "info"});
     }
 
@@ -65,6 +66,7 @@ export default class ModalHelper extends Component {
 
     render() {
         let footer;
+        let enableWhitespaceCss = this.enableWhitespace ? {whiteSpace: "pre"} : {};
         switch (this.state.type) {
             case 'confirm':
                 footer = this.renderConfirmFooter();
@@ -76,7 +78,7 @@ export default class ModalHelper extends Component {
         return (<div>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.close}>{this.state.title}</ModalHeader>
-                <ModalBody style={{whiteSpace: "pre"}}>
+                <ModalBody style={enableWhitespaceCss}>
                     {this.state.message}
                 </ModalBody>
                 <ModalFooter>

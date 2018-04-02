@@ -10,7 +10,7 @@ public enum RelationType {
 
     FATHER,
     MOTHER,
-    ENCARGADO,
+    ENCA,
     CONYUGE,
     SAME_STUDENT,
     OTHER

@@ -102,7 +102,7 @@ export default class SimpleDateInput extends Component {
             <span className="highlight"/>
             <span className="bar"/>
             <label
-                htmlFor={this.props.id}>{`${this.props.label} ${state.valid ? `${state.value.format("DD/MMMM/YYYY")} - ${age} ` : format}`}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>
+                htmlFor={this.props.id}>{`${this.props.label} ${state.valid ? `- ${age} ` : format}`}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>
         </div>;
     }
 }

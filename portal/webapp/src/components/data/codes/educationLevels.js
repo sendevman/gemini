@@ -7,5 +7,4 @@ module.exports =  [{ name:  'Grados 1-3', description: 'Grados 1-3', value: 'G1-
 { name:  'Grado Asociado', description: 'Grado Asociado', value: 'GRAS', orderBy: '7'},
 { name:  'Bachillerato', description: 'Bachillerato', value: 'BACH', orderBy: '8'},
 { name:  'Maestría', description: 'Maestría', value: 'MAES', orderBy: '9'},
-{ name:  'Doctorado', description: 'Doctorado', value: 'DOCT', orderBy: '10'},
-{ name:  'Datos No Disponibles', description: 'Datos No Disponibles', value: 'NDSP', orderBy: '11'}];
+{ name:  'Doctorado', description: 'Doctorado', value: 'DOCT', orderBy: '10'}];

@@ -42,7 +42,7 @@ class UserAdditionalInfoRequest extends Component {
                         <div className="col-md-6">
                             <CurrencyInput id="income"
                                            ref="income"
-                                           label="Ingreso Anual"
+                                           label="Ingreso Anual Familiar"
                                            onChange={this.inputHandler}
                                            value={form.income}
                                            limit={250001}

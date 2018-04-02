@@ -78,7 +78,7 @@ class UserInfoRequest extends Component {
                     </div>
                     <div className="row">
                         <div className="col-md-6">
-                            <SimpleDateInput label=""
+                            <SimpleDateInput label="Fecha de Nacimiento"
                                              ref="dob"
                                              onValidDate={this.onValidDate}
                                              onInvalidDate={this.onInvalidDate}
@@ -89,7 +89,7 @@ class UserInfoRequest extends Component {
                         <div className="col-md-6">
                             <CodeSelect id="relationType"
                                         mandatory
-                                        label="Seleccione relacion con el estudiante"
+                                        label="Seleccione relación con el estudiante"
                                         ref="registrationRelations"
                                         codeType="registrationRelations"
                                         value={form.relationType}

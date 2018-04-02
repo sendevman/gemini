@@ -13,11 +13,11 @@ export default class CompletedPreEnrollment extends Component {
     render() {
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description mb40"><h2>{UIHelper.getText("completeTitle")}</h2>
+                <div className="description mb40"><h2>{UIHelper.getText("completedPreEnrollment")}</h2>
                     <div className="violet-line"></div>
                 </div>
                 <p className="f40sllg">
-                    <span className="f40sbgr">{UIHelper.getText("enrolledEmail")}</span>
+                    <span className="f40sbgr">{UIHelper.getText("completedPreEnrollmentExplanation")}</span>
                 </p>
             </div>
             {this.props.footer}

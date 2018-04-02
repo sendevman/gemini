@@ -92,10 +92,10 @@ class Authentication extends Component {
                 </form>
                 <div className="row w-100 mt50">
                     <div className="col-md-6 p-0 text-lg-left text-center">
-                        <Link to="/forgot/password/help">Olvido credenciales?</Link>
+                        <Link to="/forgot/password/help">¿Olvid&oacute; contrase&ntilde;a?</Link>
                     </div>
                     <div className="col-md-6 p-0 text-lg-right text-center">
-                        <Link to="/registration">No posee cuenta?</Link>
+                        <Link to="/registration">¿No posee cuenta?</Link>
                     </div>
                 </div>
             </div>

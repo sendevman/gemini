@@ -69,7 +69,7 @@ class PersonalInfo extends Component {
                                                         disabled={studentExists}/>)
                                 : <TextInput id="lastSsn"
                                              type="text"
-                                             label="Ultimos 4 Seguro Social"
+                                             label="Últimos #4 SSN"
                                              value={student.lastSsnFormatted}
                                              onChange={this.inputHandler}
                                              disabled={studentExists}/>}
@@ -102,7 +102,7 @@ class PersonalInfo extends Component {
                     <div className="row">
                         <div className="col-md-6 pt-4">
                             <CodeSelect id="gender"
-                                        label="Genero"
+                                        label="Género"
                                         codeType="gender"
                                         value={student.gender}
                                         required
@@ -114,7 +114,7 @@ class PersonalInfo extends Component {
                         </div>
                         <div className="col-md-6">
                             <SimpleDateInput id="dateOfBirth"
-                                             label="Fecha de Nac."
+                                             label="Fecha de Nacimiento"
                                              required
                                              value={student.dateOfBirth}
                                              onValidDate={this.onValidDate}

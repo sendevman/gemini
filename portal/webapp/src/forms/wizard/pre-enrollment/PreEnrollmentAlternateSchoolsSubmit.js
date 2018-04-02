@@ -27,7 +27,7 @@ class PreEnrollmentAlternateSchoolsSubmit extends Component {
                     <div className="violet-line"></div>
                 </div>
                 <p className="f20sbg">El estudiante <span className="f20sbb">{student.fullName}</span>, se le desea
-                    crear un registro de Pre-Matricula en las siguientes alternativas:</p>
+                    crear un registro de Matrícula en las siguientes alternativas:</p>
 
                 <div className="row">
 
@@ -39,7 +39,7 @@ class PreEnrollmentAlternateSchoolsSubmit extends Component {
 
                 </div>
 
-                <p className="f30sbg mt40">Habrá algun cambio para esta Pre-Matricula?</p>
+                <p className="f30sbg mt40">Habrá algun cambio para esta Matr&iacute;cula?</p>
             </div>
             {this.props.footer}
         </div>,
