@@ -11,8 +11,8 @@ import javax.validation.constraints.NotNull;
  * Time: 1:56 AM
  */
 public class ForgotPasswordRequest {
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     private String email;
 
     public String getEmail() {

@@ -8,6 +8,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {loadHome, resetWizard} from "../redux/actions";
 import AnimationHelper from "../components/AnimationHelper";
+import * as UIHelper from "../UIHelper";
 
 class Home extends Component {
 
@@ -50,10 +51,13 @@ class Home extends Component {
 
             <div className="row">
                 <div className="col-md-8">
-                    <h5 className="f20slb" style={{textAlign: "right"}}>Desea pre-matricular un estudiante?</h5>
+                    <h5 className="f20slb" style={{textAlign: "right"}}>
+                        {UIHelper.getText("enrollmentLabel")}
+                    </h5>
                 </div>
                 <div className="col-md-4">
-                    <button className="button-yellow" style={{padding: 10}} onClick={this.preEnroll}>Pre-Matricular
+                    <button className="button-yellow" style={{padding: 10}} onClick={this.preEnroll}>
+                        {UIHelper.getText("enrollmentButton")}
                     </button>
                 </div>
             </div>,

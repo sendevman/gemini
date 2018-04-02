@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import profileIllustration from "../../../style/img/profile-illustration.png";
+import profileIllustration from "../../../assets/img/profile-illustration.png";
 import {connect} from "react-redux";
 import AnimationHelper from "../../../components/AnimationHelper";
 

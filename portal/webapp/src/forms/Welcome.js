@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import AnimationHelper from "../components/AnimationHelper";
+import * as UIHelper from "../UIHelper";
 
 export default class Welcome extends Component {
 
@@ -21,11 +22,7 @@ export default class Welcome extends Component {
                 </div>
 
                 <p className="f20slg text-justify">
-                    Bienvenidos al proceso de confirmación de matrícula del Departamento de Educación de Puerto
-                    Rico.
-                    Durante este proceso, tendrás la oportunidad de confirmar la matrícula de tu hijo/a o de
-                    solicitarle
-                    matrícula, para el próximo año escolar <span className="f20slb">2018-2019</span>.
+                    {UIHelper.getText("welcomePage")}<span className="f20slb">{UIHelper.getText("enrollmentYear")}</span>.
                 </p>
             </div>
             <div className="body d-flex align-items-center flex-column justify-content-end">

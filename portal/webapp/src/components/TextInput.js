@@ -160,7 +160,7 @@ class TextInput extends Component {
                 <span className="highlight"/>
                 <span className="bar"/>
                 {this.props.includeLabel ? (<label style={labelCss}
-                                                   htmlFor={this.props.id}>{label}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>) : (null)}
+                                                   htmlFor={this.props.id}>{label}{validHtml}</label>) : (null)}
 
             </div>);
     }

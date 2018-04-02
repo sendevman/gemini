@@ -363,7 +363,7 @@ input:-webkit-autofill {
 }
 
 .inputMaterial {
-    font-size: 20px;
+    font-size: 18px;
     color: #383c4b;
     padding: 10px 10px 10px 5px;
     padding-left: 50px;
@@ -630,7 +630,7 @@ input:-webkit-autofill {
 
 label {
     color: #bcbec5;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: normal;
     position: absolute;
     pointer-events: none;
@@ -1272,6 +1272,20 @@ label {
 
 /* END ANIMATIONS */
 
+@media screen and (max-height: 720px){
+    .content {
+        height: 85vh;
+        margin-top: 10vh;
+    }
+}
+
+@media screen and (max-height: 600px){
+    .content {
+        height: 100vh;
+        margin-top: 10vh;
+    }
+}
+
 @media screen and (max-width: 1500px) {
     .content h2 {
         font-size: 80px;
@@ -1338,27 +1352,27 @@ label {
     }
 
     label {
-        font-size: 20px;
+        font-size: 16px;
     }
 }
+
+/*@media screen and (max-width: 991px) {*/
+    /*label {*/
+        /*font-size: 18px;*/
+    /*}*/
+
+    /*.description .green-line {*/
+        /*width: 100%;*/
+        /*margin-left: 0;*/
+    /*}*/
+
+    /*.description .violet-line {*/
+        /*width: 100%;*/
+        /*margin-left: 0;*/
+    /*}*/
+/*}*/
 
 @media screen and (max-width: 991px) {
-    label {
-        font-size: 18px;
-    }
-
-    .description .green-line {
-        width: 100%;
-        margin-left: 0;
-    }
-
-    .description .violet-line {
-        width: 100%;
-        margin-left: 0;
-    }
-}
-
-@media screen and (max-width: 767px) {
     .content {
         height: auto;
         margin-top: 10vh;
@@ -1457,7 +1471,7 @@ label {
     }
 
     label {
-        font-size: 22px;
+        font-size: 16px;
     }
 
     .profile .illustration-section img {

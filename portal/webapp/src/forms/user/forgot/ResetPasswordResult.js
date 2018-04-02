@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import leisureIllustration from "../../../style/img/leisure-illustration.png";
+import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
 
 export default class ResetPasswordResult extends Component {

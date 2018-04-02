@@ -18,13 +18,12 @@ import ResetPassword from "./forms/user/forgot/ResetPassword";
 import ResetPasswordResult from "./forms/user/forgot/ResetPasswordResult";
 import CancelResetPasswordRequest from "./forms/user/forgot/CancelResetPasswordRequest";
 import Welcome from "./forms/Welcome";
-import registrationIllustration from "./style/img/registration-illustration.png";
+import registrationIllustration from "./assets/img/registration-illustration.png";
 
 class Routes extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.location !== prevProps.location) {
-            console.log(`this.props.location = ${this.props.location}`);
             this.props.onRouteChanged(this.props.location);
         }
     }

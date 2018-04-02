@@ -5,7 +5,7 @@ import React, {Component} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {submitPreEnrollment} from "../../../redux/actions";
-import leisureIllustration from "../../../style/img/leisure-illustration.png";
+import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
 
 class PreEnrollmentRecordFound extends Component {

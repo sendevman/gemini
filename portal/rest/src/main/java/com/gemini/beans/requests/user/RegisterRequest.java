@@ -12,11 +12,11 @@ import javax.validation.constraints.NotNull;
  */
 public class RegisterRequest {
 
-    @NotNull
-    @NotBlank
+//    @NotNull
+//    @NotBlank
     private String email;
-    @NotNull
-    @NotBlank
+//    @NotNull
+//    @NotBlank
     private String confirmEmail;
 
     public String getEmail() {
