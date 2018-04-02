@@ -139,8 +139,8 @@ export default class SchoolSelector extends Component {
 
                 <div className="col-md-2">
                     <RemoteCodeSelect id="region"
-                                      label="Region"
-                                      placeholder="Region"
+                                      label="Región"
+                                      placeholder="Región"
                                       onChange={this.regionChanged}
                                       codes={regions}
                                       target="regionId"
@@ -186,9 +186,8 @@ export default class SchoolSelector extends Component {
                 <thead>
                 <tr>
                     <th>Prioridad</th>
-                    {specializedSchool ? <th>Tipo</th> : (null)}
                     <th>Escuela</th>
-                    <th>Direccion</th>
+                    <th>Dirección</th>
                     <th/>
                 </tr>
                 </thead>
@@ -197,7 +196,6 @@ export default class SchoolSelector extends Component {
                     ? alternateSchools.map((school, index) => (
                         <tr key={index}>
                             <td>{school.priority}</td>
-                            {specializedSchool ? (<td>{school.specializedCategory}</td>) : (null)}
                             <td>{school.schoolName}</td>
                             <td>{school.schoolAddress.addressFormatted}</td>
                             <td>

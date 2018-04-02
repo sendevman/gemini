@@ -9,6 +9,11 @@ export default class StudentFound extends Component {
         super(props);
     }
 
+    getArticle(){
+        let gender = this.props.studentGender;
+        return  gender ? (gender === "M"  ? "El" : "La") :("El/la")
+    }
+
     render() {
         return [
             <div className="col-md-7 content-section">
@@ -16,8 +21,7 @@ export default class StudentFound extends Component {
                     <div className="description mb40"><h2 className="f90sbg">05.</h2>
                         <div className="violet-line"></div>
                     </div>
-                    <p className="f45sbg">¡Muy bien! El/la estudiante ha sido encontrado. <span className="f45sbb"
-                                                                                                id="name">{this.props.studentName}</span>
+                    <p className="f45sbg"><span className="f45sbb" id="name">¡Muy bien!</span> {this.getArticle()} estudiante <span className="f45sbb" id="name">{this.props.studentName}</span> ha sido encontrado.
                     </p>
                 </div>
                 {this.props.footer}

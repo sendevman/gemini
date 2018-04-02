@@ -47,8 +47,8 @@ class StudentIdentification extends Component {
                     <div className="description mb40"><h2 className="f90sbg">OK.</h2>
                         <div className="violet-line"></div>
                     </div>
-                    <p className="f30slg">Vamos a buscar su niño/a en el sistema. Por favor facilitenos <span
-                        className="f30slb">la siguiente informaci&oacute;n.</span></p>
+                    <p className="f30slg">{UIHelper.getText("searchPage")}<span
+                        className="f30slb">{UIHelper.getText("searchPageEnd")}</span></p>
                 </div>
                 <div className="body d-flex flex-column justify-content-end">
                     <div className="row" style={{marginTop: -100}}>
@@ -66,7 +66,7 @@ class StudentIdentification extends Component {
                                        value={form.lastSsn}
                                        onChange={this.inputHandler}
                                        required={lastSsnRequired}
-                                       label="Ultimo #4 ssn"/>
+                                       label="Últimos #4 SSN"/>
                         </div>
 
                         <div className="col-md-4">

@@ -36,7 +36,7 @@ public class MockSchoolMaxDaoImpl implements SchoolMaxDaoInterface {
     public Student findStudent(StudentSearchRequest request) {
         studentFound.setFirstName(request.getFirstName());
         studentFound.setLastName(request.getLastName());
-        studentFound.setGenderValue("M");
+        studentFound.setGenderValue("F");
         studentFound.setDateOfBirth(request.getDateOfBirth());
         studentFound.setSsn("234-56-2712");
         Random rand = new Random();

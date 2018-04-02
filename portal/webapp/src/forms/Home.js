@@ -75,7 +75,7 @@ class Home extends Component {
             return (
                 <div className="card">
                     <div className="card-block">
-                        <span className="f20sbgr"><i className="fa fa-times-circle"/> No posee pre-matriculas a&uacute;n</span>
+                        <span className="f20sbgr"><i className="fa fa-times-circle"/> No posee matr&iacute;cula a&uacute;n</span>
                     </div>
                 </div>
             );

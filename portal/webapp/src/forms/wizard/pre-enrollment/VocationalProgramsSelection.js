@@ -77,9 +77,9 @@ class VocationalProgramsSelection extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb30"><h2>Pre-Matricula <span>{vocationalType}</span></h2></div>
+                    <div className="description mb30"><h2>Matricula <span>{vocationalType}</span></h2></div>
                     <p className="f30slg">Seleccione los programas vocacionales, que desea <span
-                        className="f30slb">pre-matricularse.</span></p>
+                        className="f30slb">matricularse.</span></p>
                 </div>
                 <div className="body d-flex flex-column">
                     <div className="row" style={{marginTop: -120}}>

@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import profileIllustration from "../../../assets/img/profile-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
+import * as UIHelper from "../../../UIHelper";
 
 
 export default class ActivationResult extends Component {
@@ -28,7 +29,7 @@ export default class ActivationResult extends Component {
             <div className="body d-flex align-items-center flex-column justify-content-end">
                 <div className="row action-section">
                     <div className="col-md-12 text-center text-lg-left p-0">
-                        <a className="button-green mr30 mob-mb30px" onClick={this.onClick}><span>y</span>Volver</a>
+                        <a className="button-white mr30 mob-mb30px" onClick={this.onClick}><span>y</span>{UIHelper.getText("startSessionButton")}</a>
                     </div>
                 </div>
             </div>
@@ -42,11 +43,10 @@ export default class ActivationResult extends Component {
     renderMessage() {
         let success = this.props.match.params.result === "success";
         if (!success)
-            return (<p>Ha ocurrido un error al completar su registro de su cuenta, proceda registrar nuevamente</p>);
+            return (<p>{UIHelper.getText("enrolledEmailError")}</p>);
 
         return (<p>
-            <span className="f20slb"> ¡Enhorabuena! </span>Ha completado su registro de cuenta en el sistema. Ahora
-            puede proceder a pre-matricular a su hijo/a.
+            <span className="f20slb"> ¡Enhorabuena! </span>{UIHelper.getText("enrolledEmail")}
         </p>)
     }
 

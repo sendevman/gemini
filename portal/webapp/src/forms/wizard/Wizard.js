@@ -88,7 +88,7 @@ class Wizard extends Component {
             for (let message of validationObj.messages) {
                 formattedMessage += `*\t${message}\n`;
             }
-            this.refs.modal.open("Validaci\u00f3n", formattedMessage, afterCloseAction);
+            this.refs.modal.open("Validaci\u00f3n", formattedMessage, afterCloseAction, true);
         } else {
             this.refs.modal.open("Upps!!!", "Ha ocurrido un error, disculpe el inconveniente")
         }
@@ -173,6 +173,7 @@ class Wizard extends Component {
             let props = {ref: `page${c++}`, footer: this.renderFooter()};
             if (currentPageType === "FOUND_INFO") {
                 props["studentName"] = student && student.fullName;
+                props["studentGender"] = student && student.gender
             }
 
             if (currentPageType === "VOCATIONAL_SCHOOL_INFO") {
@@ -221,7 +222,7 @@ class Wizard extends Component {
             || props.currentPageType === "VOCATIONAL_REVIEW_SUBMIT")
             return (<div className="row action-section" style={commonStyle}>
                 <div className="col-md-12 text-center text-lg-left p-0">
-                    <a className="button-green mr30 mob-mb30px" onClick={nextAction}>
+                    <a className="button-white mr30 mob-mb30px" onClick={nextAction}>
                         <span>y</span>{props.nextLabel}
                     </a>
                     {props.previousLabel
@@ -235,7 +236,7 @@ class Wizard extends Component {
         else if (props.currentPageType === "USER_PROFILE") {
             return (<div className="row mt50 bt1p pt40">
                 <div className="col-md-12">
-                    <a className="button-green mr30 mob-mb30px" onClick={nextAction}>
+                    <a className="button-white mr30 mob-mb30px" onClick={nextAction}>
                         <span>y</span>{props.nextLabel}
                     </a>
                 </div>
@@ -246,7 +247,7 @@ class Wizard extends Component {
                      style={commonStyle}>
                     <div className="row action-section">
                         <div className="col-md-12 text-center text-lg-left p-0">
-                            <a className="button-green mr30 mob-mb30px"
+                            <a className="button-white mr30 mob-mb30px"
                                onClick={this.onProgramSelection(types.REGULAR_ENROLLMENT)}>
                                 <span>R</span>Regular
                             </a>
@@ -272,7 +273,7 @@ class Wizard extends Component {
                      style={commonStyle}>
             <div className="row action-section">
                 <div className="col-md-12 text-center text-lg-left p-0">
-                    <a className="button-green mr30 mob-mb30px" onClick={nextAction}>
+                    <a className="button-white mr30 mob-mb30px" onClick={nextAction}>
                         <span>y</span>{props.nextLabel}
                     </a>
                     {props.previousLabel

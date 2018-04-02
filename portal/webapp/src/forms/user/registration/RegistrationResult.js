@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import profileIllustration from "../../../assets/img/profile-illustration.png";
 import {connect} from "react-redux";
 import AnimationHelper from "../../../components/AnimationHelper";
+import * as UIHelper from "../../../UIHelper";
 
 class RegistrationResult extends Component {
 
@@ -27,7 +28,7 @@ class RegistrationResult extends Component {
             <div className="body d-flex align-items-center flex-column justify-content-end">
                 <div className="row action-section">
                     <div className="col-md-12 text-center text-lg-left p-0">
-                        <a className="button-green mr30 mob-mb30px" onClick={this.onClick}><span>y</span>Volver</a>
+                        <a className="button-white mr30 mob-mb30px" onClick={this.onClick}><span>y</span>{UIHelper.getText("startSessionButton")}</a>
                     </div>
                 </div>
             </div>
@@ -45,9 +46,10 @@ class RegistrationResult extends Component {
             return (<p>Ha occurrido un error al registrar su cuenta</p>);
 
         return (<p>
-            Un email con las instrucciones de como completar su registro de cuenta ha sido enviado a <span
+            {UIHelper.getText("confirmationEmailStart")}
+            <span
             className="f20slb">{email}. </span>
-            Por favor verifique sus directorios de spam o junk si no ve el email en su buzon de entrada.
+            {UIHelper.getText("confirmationEmailEnd")}
         </p>)
     }
 

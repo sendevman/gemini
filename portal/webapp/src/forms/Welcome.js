@@ -26,7 +26,7 @@ export default class Welcome extends Component {
                 </p>
             </div>
             <div className="body d-flex align-items-center flex-column justify-content-end">
-                <p>Presione el siguiente boton para comenzar</p>
+                <p>{UIHelper.getText("startDescription")}</p>
                 <a onClick={this.goAuthentication} className="button-blue">Comenzar</a>
             </div>
         </div>,
