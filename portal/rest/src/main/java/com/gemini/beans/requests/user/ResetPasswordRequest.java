@@ -12,14 +12,14 @@ import javax.validation.constraints.NotNull;
  */
 public class ResetPasswordRequest {
 
-//    @NotNull
-//    @NotBlank
+    @NotNull
+    @NotBlank
     private String credentialLostKey;
-//    @NotNull
-//    @NotBlank
+    @NotNull
+    @NotBlank
     private String password;
-//    @NotNull
-//    @NotBlank
+    @NotNull
+    @NotBlank
     private String confirmPassword;
 
     public String getCredentialLostKey() {

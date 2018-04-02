@@ -8,9 +8,10 @@ package com.gemini.beans.types;
  */
 public enum RequestStatus {
     ACTIVE("Activo"),
-    PENDING_TO_REVIEW("Pendiente a Revisar"),
+    PENDING_TO_REVIEW("Sometida"),
     APPROVED("Aprobada"),
-    DENIED("Denegada"),
+    DENIED("Rechazada"),
+    DENIED_BY_PARENT("Rechazada"),
     REVIEWING("En Revision");
 
     String description;

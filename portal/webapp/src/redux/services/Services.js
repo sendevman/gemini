@@ -235,7 +235,7 @@ export default class Services {
             method: "POST",
             body: JSON.stringify(body), ...this._addHeaderOnPublicPOST(token)
         })
-            .then((response) => this._handleHttpCode(response))
+            .then((response) => this._handleHttpCode(response, false))
             .catch((e) => {
             });
     }
@@ -298,7 +298,10 @@ export default class Services {
 
             if (manageException) {
                 console.log(message);
+            }else{
+                return response;
             }
+
         }
     }
 

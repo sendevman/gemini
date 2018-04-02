@@ -7,10 +7,7 @@ import com.gemini.beans.requests.enrollment.AlternateSchoolPreEnrollmentSubmitRe
 import com.gemini.beans.requests.enrollment.PreEnrollmentInitialRequest;
 import com.gemini.beans.requests.enrollment.PreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.enrollment.VocationalPreEnrollmentSubmitRequest;
-import com.gemini.beans.types.AddressType;
-import com.gemini.beans.types.EnrollmentType;
-import com.gemini.beans.types.EntryType;
-import com.gemini.beans.types.RequestStatus;
+import com.gemini.beans.types.*;
 import com.gemini.database.dao.beans.*;
 import com.gemini.database.jpa.entities.*;
 import com.gemini.database.jpa.respository.AddressRepository;
@@ -298,7 +295,7 @@ public class PreEnrollmentService {
         PreEnrollmentRequestEntity requestEntity = preEnrollmentRepository.findOne(request.getRequestId());
         setSchoolInfo(requestEntity, request.getSchoolId(), request.getNextGradeLevel());
         requestEntity.setType(EnrollmentType.REGULAR);
-        requestEntity.setRequestStatus(RequestStatus.PENDING_TO_REVIEW);
+        requestEntity.setRequestStatus(RequestStatus.APPROVED);
         requestEntity.setSubmitDate(commonService.getCurrentDate());
         requestEntity = preEnrollmentRepository.save(requestEntity);
         return requestEntity != null;
@@ -471,6 +468,13 @@ public class PreEnrollmentService {
         if (entity == null)
             return false;
         entity.setReasonForNotAttendSchool(request.getReason());
+
+        if(ReasonForNotAttendingSchool.MOVE_OUT_OF_COUNTRY.equals(request.getReason())){
+            entity.setType(EnrollmentType.REGULAR);
+            entity.setRequestStatus(RequestStatus.DENIED_BY_PARENT);
+            entity.setSubmitDate(commonService.getCurrentDate());
+        }
+
         entity = preEnrollmentRepository.save(entity);
         return entity != null;
     }

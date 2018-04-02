@@ -54,7 +54,7 @@ class PersonalInfo extends Component {
                 <div className="description"><h2 className="f90sbg">OK.</h2>
                     <div className="violet-line"></div>
                 </div>
-                <span className="f30slg">{UIHelper.getText("studentRegisterStart")}<span className="f30slb">{UIHelper.get("studentRegisterHighlight")}</span> {UIHelper.getText("studentRegisterEnd")}</span>
+                <span className="f30slg">{UIHelper.getText("studentRegisterStart")}<span className="f30slb">{UIHelper.getText("studentRegisterHighlight")}</span> {UIHelper.getText("studentRegisterEnd")}</span>
             </div>
             <div className="body d-flex flex-column justify-content-end ">
                 <form>

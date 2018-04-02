@@ -21,6 +21,7 @@ export const searchStudent = (criteria, onResult, onError) => (dispatch) => {
                         dispatch({type: types.CANCEL_BLOCK_UI});
                     }
                     else {
+                        onError(Utils.errorObj(response, dispatch));
                         dispatch({type: types.STUDENT_NOT_FOUND});
                         onResult(types.ON_NOT_FOUND_CALLBACK);
                     }

@@ -62,7 +62,7 @@ public class MessageHelper {
         if(additionalMessage != null){
             msgs.addAll(Arrays.asList(additionalMessage));
         }
-        return  ResponseBase.error("Campos Requeridos", msgs);
+        return  ResponseBase.missingFields(msgs);
     }
 
     public StudentResponse missingFieldsOnStudentSearch(BindingResult result) {

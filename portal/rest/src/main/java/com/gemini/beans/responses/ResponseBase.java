@@ -16,6 +16,7 @@ public class ResponseBase<T> {
     private boolean successfulOperation;
     private boolean errorOperation;
     private boolean found;
+    private boolean missingRequiredFields;
     private T content;
     private String titleMessage;
     private List<String> validationMessages = new ArrayList<>();
@@ -53,6 +54,14 @@ public class ResponseBase<T> {
 
     public void setFound(boolean found) {
         this.found = found;
+    }
+
+    public boolean isMissingRequiredFields() {
+        return missingRequiredFields;
+    }
+
+    public void setMissingRequiredFields(boolean missingRequiredFields) {
+        this.missingRequiredFields = missingRequiredFields;
     }
 
     public T getContent() {
@@ -123,6 +132,12 @@ public class ResponseBase<T> {
         base.errorOperation = true;
         base.titleMessage = titleMessage;
         base.validationMessages = validationMessages;
+        return base;
+    }
+
+    public static ResponseBase missingFields(List<String> validationMessages) {
+        ResponseBase base = error("Campos Requeridos", validationMessages);
+        base.missingRequiredFields = true;
         return base;
     }
 

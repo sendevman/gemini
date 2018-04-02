@@ -32,12 +32,9 @@ export default {
     enrollmentRegisterPage: "Su solicitud será evaluada conforme a la disponibilidad de espacio en el plantel escolar seleccionado",
     enrollmentAlternativePage: "El estudiante hjkl jkl jkl, se le desea crear un registro de Matricula en las siguientes alternativas:",
     changeEnrollmentQuestion: "Habrá algun cambio para esta Matricula?",
-    registerPage: "Registrar Cuenta",
     registeredPage: "Cuenta Registrada!",
     confirmationEmailStart: "Un email con las instrucciones de como completar su registro de cuenta ha sido enviado",
     confirmationEmailEnd: "Por favor verifique sus directorios de spam o junk si no ve el email en su buzon de entrada.",
-    completeRegisterPage: "Seleccione su contraseña ",
-    completeRegisterButton: "Complete su Registro",
     accountCreatedPage: "Cuenta Creada!",
     completedRegisterStart: "¡Enhorabuena!",
     completedRegisterEnd: "Ha completado su registro de cuenta en el sistema. Ahora puede proceder a matricular a su hijo/a según las instrucciones indicadas.",
@@ -61,6 +58,11 @@ export default {
     completeTitle: "Completado!",
     enrolledEmail: "¡Enhorabuena! Registramos al estudiante en el sistema.Le enviaremos un email proximamente",
 
+    confirmTitle: "Confirmación",
+    reasonConfirmMessage: "Esta seguro que desea seleccionar esta opcion?",
+    reasonQuestion: "¿Seleccione la razón por la cual no esta matriculando su hijo en la escuela provista?",
+
+
 //buttons
     physicalAddressButton: "Residencial",
     postalAddressButton: "Postal",
@@ -73,7 +75,36 @@ export default {
     searchButton: "Buscar",
     moveBackButton: "Retroceder",
     searchAgainButton: "Buscar Nuevamente",
-    createRegisterButton: "Crear Registro"
+    createRegisterButton: "Crear Registro",
+
+    // account management messages
+    emailInvalid: "Campo email es inválido",
+    confirmEmailInvalid: "Campo confimar email es inválido",
+    emailAndConfirmInvalid: "Campo email y confirmar email no son iguales",
+    registerPage: "Registrar Cuenta",
+    registerButton: "Registrar",
+
+    passwordInvalid :"Campo contraseña es inválido",
+    confirmPasswordInvalid :"Campo confimar contraseña es inválido",
+    passwordAndConfirmAreNotEquals: "Campo contraseña y confirmar contraseña no son iguales",
+    missingReCaptchaToken: "Debe validar que no es un Robot",
+    passwordMeetRequirement: "Contraseña debe tener al menos 4 caracteres",
+
+    completeRegisterPage: "Complete su Registro",
+    completeRegisterButton: "Completar Registración",
+
+    forgotPassword: "Olvido su contraseña",
+    forgotPasswordExplanation: "Le enviaremos un email con las intrucciones de como reiniciar su contraseña",
+    forgotPasswordButton: "Enviar Email",
+
+    resetPasswordPage: "Reinicie su contraseña",
+    resetPasswordButton: "Reiniciar"
+
+
+
+
+
+
 
 
 }
