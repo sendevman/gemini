@@ -35,6 +35,14 @@ public final class DateUtils {
         return Years.yearsBetween(new DateTime(input), DateTime.now()).getYears();
     }
 
+    public static Date addHours(Date now, int hours){
+        return DateUtils.toDate(LocalDateTime.fromDateFields(now).plusHours(hours));
+    }
+
+    public static Date addMinutes(Date now, int minutes){
+        return DateUtils.toDate(LocalDateTime.fromDateFields(now).plusMinutes(minutes));
+    }
+
     public static void main(String[] args) {
         LocalDate now = LocalDate.now();
         System.out.println(now.toDate());

@@ -14,8 +14,10 @@ export default class SimpleDateInput extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {dateString: "", valid: false, pristine: true, value: null};
+        this.state = {dateString: "", valid: false, pristine: true, value: null, displayFormat: false};
         this.inputHandler = this.inputHandler.bind(this);
+        this.onFocus = this.onFocus.bind(this);
+        this.onBlur = this.onBlur.bind(this);
         this.editing = false;
     }
 
@@ -77,8 +79,16 @@ export default class SimpleDateInput extends Component {
 
     }
 
+    onFocus(){
+        this.setState({...this.state, displayFormat: true})
+    }
+
+    onBlur(){
+        this.setState({...this.state, displayFormat: false})
+    }
+
     render() {
-        let format = "(dd/mm/yyyy)";
+        let format = this.state.displayFormat ? "(dd/mm/yyyy)" : "";
         let props = Object.assign({}, this.props);
         if (props.showFormat)
             delete props.showFormat;
@@ -90,10 +100,11 @@ export default class SimpleDateInput extends Component {
         return <div className="group form-group has-feedback">
             <InputMask {...props}
                        onChange={this.inputHandler}
-                       style={{paddingLeft: 20}}
                        className="inputMaterial"
                        mask="99/99/9999"
                        maskChar=" "
+                       onFocus={this.onFocus}
+                       onBlur={this.onBlur}
                        required
                        value={this.state.dateString}/>
 
@@ -102,7 +113,7 @@ export default class SimpleDateInput extends Component {
             <span className="highlight"/>
             <span className="bar"/>
             <label
-                htmlFor={this.props.id}>{`${this.props.label} ${state.valid ? `- ${age} ` : format}`}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>
+                htmlFor={this.props.id}>{`${this.props.label} ${state.valid ? `- ${age} ` : format}`}{validHtml}</label>
         </div>;
     }
 }

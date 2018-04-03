@@ -31,10 +31,10 @@ export default {
     transportationThanksTitle: "Gracias por validar la dirección física. Esto nos ayudará a identificar si cualifica el estudiante para el servicio de transportación. ",
     transportationQuestion: "¿Deseas solicitar servicio de transportación para este estudiante?",
 
-    enrollmentRegisterTitlePage: "Registro de Matricula",
+    enrollmentRegisterTitlePage: "Registro de Matrícula",
     enrollmentRegisterPage: "Su solicitud será evaluada conforme a la disponibilidad de espacio en el plantel escolar seleccionado",
-    enrollmentAlternativePage: "El estudiante hjkl jkl jkl, se le desea crear un registro de Matricula en las siguientes alternativas:",
-    changeEnrollmentQuestion: "Habrá algun cambio para esta Matricula?",
+    enrollmentAlternativePage: "El estudiante hjkl jkl jkl, se le desea crear un registro de Matrícula en las siguientes alternativas:",
+    changeEnrollmentQuestion: "Habrá algun cambio para esta Matrícula?",
     registeredPage: "Cuenta Registrada!",
     confirmationEmailStart: "Un email con las instrucciones de como completar su registro de cuenta ha sido enviado a ",
     confirmationEmailEnd: "Por favor, verifique en sus directorios de spam o junk si no ve el email en su buzón de entrada.",
@@ -67,7 +67,7 @@ export default {
     enrolledEmail: "¡Enhorabuena! Ha completado su registro de cuenta en el sistema. Ahora puede proceder a matricular a su hijo/a según las instrucciones indicadas.",
 
     confirmTitle: "Confirmación",
-    reasonConfirmMessage: "Al seleccionar esta opción, el proceso de matricula será cancelado automáticamente. ¿Estás seguro de continuar?",
+    reasonConfirmMessage: "Al seleccionar esta opción, el proceso de matrícula será cancelado automáticamente. ¿Estás seguro de continuar?",
     reasonQuestion: "Seleccione la razón por la cual no está matriculando a su hijo/a en la escuela provista",
 
 
@@ -112,12 +112,8 @@ export default {
     resetPasswordButton: "Reiniciar",
     startDescription: "Presione el siguiente botón para comenzar",
 
-    tooltipForgotPasswrod: "Si ya se ha registrado y olvidó su contraseña, utilizando su usuario, haga click aquí para solicitar las misma, la cual será enviada "
-
-
-
-
-
+    tooltipForgotPassword: "Si ya se ha registrado y olvidó su contraseña, haga clic aquí para solicitar la misma, la cual será enviada automáticamente al correo electrónico que usted proporciono al momento de registrarse.",
+    tooltipForUserWithoutAccount: "Si al momento no tiene cuenta creada en el sistema o está accediendo por primera vez, debe proceder a registrarse, haciendo clic aquí."
 
 
 

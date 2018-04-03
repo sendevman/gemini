@@ -33,6 +33,7 @@ spring:
     generate-ddl: true
     properties:
       hibernate.type: trace
+      hibernate.jdbc.time_zone: America/Puerto_Rico
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: @main.db.jdbc.url@
@@ -126,9 +127,9 @@ messages:
     school.available.space.validation: "no tiene espacio disponible"
     invalid.address.postal: "Dirección postal inválida"
     invalid.address.residential: "Dirección residencial inválida"
-    already.active: "Posee una matricula activa, cargando registro"
-    already.exists: "Matricula ya existe en el sistema"
-    already.submitted: "Usted ya sometio Matricula para este estudiante"
+    already.active: "Posee una matrícula activa, cargando registro"
+    already.exists: "Matrícula ya existe en el sistema"
+    already.submitted: "Usted ya sometio Matrícula para este estudiante"
     occupational.validation: "Debe seleccionar al menos una escuela y un programa"
     regular.validation: "Debe seleccionar dos escuela alternas para completar el proceso"
 

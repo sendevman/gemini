@@ -31,6 +31,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
+import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 @SpringBootApplication
@@ -49,7 +51,11 @@ public class SRSPortalApplication extends SpringBootServletInitializer {
     static final String PROPS_DIR;
 
     static {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        System.out.println("Before Setting default timezone :" + new Date());
+//        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        TimeZone.setDefault(TimeZone.getTimeZone("America/Puerto_Rico"));
+        System.out.println("Before setting timezone :" + new Date());
+
 
         logger.info("***Getting props from System***");
         if (StringUtils.hasText(System.getProperty("srs.config.path")))
@@ -147,5 +153,10 @@ public class SRSPortalApplication extends SpringBootServletInitializer {
         filterRegistrationBean.setFilter(filter);
         filterRegistrationBean.setEnabled(false);
         return filterRegistrationBean;
+    }
+
+    @Bean
+    public Locale locale() {
+        return Locale.forLanguageTag("es-PR");
     }
 }

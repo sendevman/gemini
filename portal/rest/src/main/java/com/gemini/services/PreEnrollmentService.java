@@ -1,6 +1,7 @@
 package com.gemini.services;
 
 import com.gemini.beans.forms.*;
+import com.gemini.beans.integration.SchoolResponse;
 import com.gemini.beans.internal.RequestSearchResult;
 import com.gemini.beans.requests.ReasonForNotAttendingRequest;
 import com.gemini.beans.requests.enrollment.AlternateSchoolPreEnrollmentSubmitRequest;
@@ -146,8 +147,33 @@ public class PreEnrollmentService {
         if (entity != null) {
             return getPreEnrollmentBean(entity);
         }
-
         return null;
+    }
+
+    //    todo: fran validate this with client
+    public SchoolResponse findSchoolByPreEnrollmentId(Long id) {
+        PreEnrollmentRequestEntity entity = preEnrollmentRepository.findOne(id);
+        Long schoolId = 0L;
+        switch (entity.getType()) {
+            case REGULAR:
+                schoolId = entity.getSchoolId();
+                break;
+            case REGULAR_ALTERNATE_SCHOOLS:
+            case SPECIALIZED_ALTERNATE_SCHOOLS:
+                if (entity.getAlternateSchools() != null && !entity.getAlternateSchools().isEmpty())
+                    schoolId = entity.getAlternateSchools().get(0).getSchoolId();
+                break;
+            case OCCUPATIONAL:
+            case TECHNIQUE:
+                VocationalPreEnrollmentBean vocational = findVocationalPreEnrollmentById(id);
+                if (vocational.getEnrollments() != null && !vocational.getEnrollments().isEmpty())
+                    schoolId = vocational.getEnrollments().get(0).getSchoolId();
+                break;
+        }
+        School school = getSchool(schoolId);
+        SchoolResponse response = CopyUtils.convert(school, SchoolResponse.class);
+        response.setAddress(CopyUtils.createAddressBean(school));
+        return response;
     }
 
     public List<PreEnrollmentBean> findPreEnrollmentByUser(User loggedUser) {
@@ -469,7 +495,7 @@ public class PreEnrollmentService {
             return false;
         entity.setReasonForNotAttendSchool(request.getReason());
 
-        if(ReasonForNotAttendingSchool.MOVE_OUT_OF_COUNTRY.equals(request.getReason())){
+        if (ReasonForNotAttendingSchool.MOVE_OUT_OF_COUNTRY.equals(request.getReason())) {
             entity.setType(EnrollmentType.REGULAR);
             entity.setRequestStatus(RequestStatus.DENIED_BY_PARENT);
             entity.setSubmitDate(commonService.getCurrentDate());
@@ -556,7 +582,7 @@ public class PreEnrollmentService {
         return entity;
     }
 
-    private School setDataFromSIEEnrollmentOn(EnrollmentInfo info, PreEnrollmentRequestEntity entity,  boolean isPreviousEnrollment) {
+    private School setDataFromSIEEnrollmentOn(EnrollmentInfo info, PreEnrollmentRequestEntity entity, boolean isPreviousEnrollment) {
         Long schoolId = info.getSchoolId();
         String gradeLevel = info.getGradeLevel();
         Long schoolYear = info.getSchoolYear();

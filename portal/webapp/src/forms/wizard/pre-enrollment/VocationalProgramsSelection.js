@@ -77,7 +77,7 @@ class VocationalProgramsSelection extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb30"><h2>Matricula <span>{vocationalType}</span></h2></div>
+                    <div className="description mb30"><h2>Matr&iacute;cula <span>{vocationalType}</span></h2></div>
                     <p className="f30slg">Seleccione los programas vocacionales, que desea <span
                         className="f30slb">matricularse.</span></p>
                 </div>

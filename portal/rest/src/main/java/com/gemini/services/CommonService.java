@@ -4,12 +4,13 @@ import com.gemini.database.dao.beans.EnrollmentInfo;
 import com.gemini.database.jpa.entities.ConfigEntity;
 import com.gemini.database.jpa.jdbc.CommonDao;
 import com.gemini.database.jpa.respository.ConfigRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -20,6 +21,8 @@ import java.util.Date;
  */
 @Service
 public class CommonService {
+    final static Logger logger = LoggerFactory.getLogger(CommonService.class.getName());
+
     @Autowired
     private CommonDao commonDao;
     @Autowired
@@ -32,7 +35,9 @@ public class CommonService {
     }
 
     public Date getCurrentDate() {
-        return commonDao.getCurrentDate();
+        Date currDate = commonDao.getCurrentDate();
+        logger.info("current date is: " + currDate);
+        return currDate;
     }
 
     public Long getPreEnrollmentYear() {

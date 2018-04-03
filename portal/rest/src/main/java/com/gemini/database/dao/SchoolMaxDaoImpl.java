@@ -6,6 +6,9 @@ import com.gemini.database.dao.beans.*;
 import com.gemini.utils.ValidationUtils;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +81,10 @@ public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements Sc
         }
 
         if (ValidationUtils.valid(searchRequest.getDateOfBirth())) {
+            logger.info("Date of birth before UTC :" + searchRequest.getDateOfBirth());
+            DateTime dt = new LocalDateTime(searchRequest.getDateOfBirth().getTime())
+                    .toDateTime(DateTimeZone.UTC);
+            logger.info("Date of birth after UTC :" + dt.toDate());
             sql.append(" AND DATE_OF_BIRTH = trunc(:dob)");
             params.put("dob", searchRequest.getDateOfBirth());
         }

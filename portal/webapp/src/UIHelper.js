@@ -26,3 +26,25 @@ export function validationDialog(modalRef, validationObj, afterCloseAction) {
         modalRef.open("Upps!!!", "Ha ocurrido un error, disculpe el inconveniente")
     }
 }
+
+// export function getTarget(target) {
+//     if (isFunction(target)) {
+//         return target();
+//     }
+//
+//     if (typeof target === 'string' && document) {
+//         let selection = document.querySelector(target);
+//         if (selection === null) {
+//             select = document.querySelector(`#${target}`);
+//             if (selection === null) {
+//                 select = document.getElementById(target);
+//                 if (selection === null) {
+//                     throw new Error(`The target '{target}' could not be identified in the dom, tip: check spelling`);
+//                 }
+//             }
+//         }
+//         return selection;
+//     }
+//
+//     return target;
+// }
