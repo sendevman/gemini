@@ -36,7 +36,7 @@
         <profile>
             <id>dev</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
                 <war.name>srs-api</war.name>
@@ -128,7 +128,7 @@
         <profile>
             <id>dev-aws-mercury</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
                 <war.name>portal-api</war.name>

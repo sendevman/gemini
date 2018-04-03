@@ -22,6 +22,8 @@ import com.gemini.utils.CopyUtils;
 import com.gemini.utils.DateUtils;
 import com.gemini.utils.Utils;
 import org.joda.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.core.annotation.Order;
@@ -195,7 +197,7 @@ public class UserService {
 
     public void saveSentActivationResult(String email, boolean result) {
         UserEntity entity = userRepository.findByEmail(email);
-        Date expireActivation = DateUtils.toDate(LocalDateTime.now().plusHours(commonService.getActivationKeyInHours()));
+        Date expireActivation = DateUtils.addHours(commonService.getCurrentDate(), commonService.getActivationKeyInHours());
         entity.setActivationCodeSent(result ? commonService.getCurrentDate() : null);
         entity.setActivationKeyExpireDate(result ? expireActivation : null);
         userRepository.save(entity);
@@ -206,7 +208,7 @@ public class UserService {
         if (userEntity != null) {
             String key = Utils.generateKey();
             userEntity.setCredLostKey(key);
-            userEntity.setCredLostKeyExpireDate(DateUtils.toDate(LocalDateTime.now().plusMinutes(commonService.getCredentialKeyExpireInMinutes())));
+            userEntity.setCredLostKeyExpireDate(DateUtils.addMinutes(commonService.getCurrentDate(), commonService.getCredentialKeyExpireInMinutes()));
             userRepository.save(userEntity);
             mailService.sendPasswordForgotEmail(request.getEmail(), key);
             logUserAction(key, UserAction.RESET_PASSWORD, userEntity.getId(), servletRequest);

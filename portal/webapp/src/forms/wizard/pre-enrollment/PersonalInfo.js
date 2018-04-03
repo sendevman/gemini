@@ -114,7 +114,7 @@ class PersonalInfo extends Component {
                         </div>
                         <div className="col-md-6">
                             <SimpleDateInput id="dateOfBirth"
-                                             label="Fecha de Nacimiento"
+                                             label="Fecha de Nac."
                                              required
                                              value={student.dateOfBirth}
                                              onValidDate={this.onValidDate}

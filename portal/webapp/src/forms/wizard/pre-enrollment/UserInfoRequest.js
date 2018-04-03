@@ -78,7 +78,7 @@ class UserInfoRequest extends Component {
                     </div>
                     <div className="row">
                         <div className="col-md-6">
-                            <SimpleDateInput label="Fecha de Nacimiento"
+                            <SimpleDateInput label="Fecha de Nac."
                                              ref="dob"
                                              onValidDate={this.onValidDate}
                                              onInvalidDate={this.onInvalidDate}

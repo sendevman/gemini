@@ -57,11 +57,12 @@ class StudentIdentification extends Component {
                                              value={form.dateOfBirth}
                                              required
                                              onValidDate={this.onValidDate}
-                                             label=""/>
+                                             label="Fecha Nac."/>
                         </div>
                         <div className="col-md-4">
 
                             <TextInput id="lastSsn"
+
                                        type="lastSSN"
                                        value={form.lastSsn}
                                        onChange={this.inputHandler}

@@ -2,6 +2,7 @@ package com.gemini.services;
 
 import com.gemini.beans.forms.PreEnrollmentBean;
 import com.gemini.beans.forms.User;
+import com.gemini.beans.integration.SchoolResponse;
 import com.gemini.beans.internal.UserAction;
 import com.gemini.beans.requests.enrollment.PreEnrollmentSubmitRequest;
 import com.gemini.beans.requests.user.RegisterRequest;
@@ -72,7 +73,13 @@ public class MailService {
         preEnrollmentMail.setFrom(fromEmail);
         preEnrollmentMail.setTo(user.getEmail());
         preEnrollmentMail.setSubject("Matrícula Recibida");
-        Map<String, String> params = ImmutableMap.of("studentName", preEnrollmentBean.getStudent().getFullName());
+
+        SchoolResponse school = preEnrollmentService.findSchoolByPreEnrollmentId(enrollmentBean.getRequestId());
+        Map<String, String> params = ImmutableMap.of(
+                "studentName", preEnrollmentBean.getStudent().getFullName(),
+                "schoolName", school.getSchoolName(),
+                "schoolAddress", school.getAddress().getAddressFormatted()
+        );
         preEnrollmentMail.setText(composeBody(params, "emails/pre-enrollment-submit"));
         return preEnrollmentMail;
     }

@@ -3,7 +3,7 @@
  */
 import React, {Component} from "react";
 // import {Alert} from "react-bootstrap";
-import {Alert} from 'reactstrap';
+import {Alert, Tooltip} from 'reactstrap';
 import Immutable from "immutable";
 import {Link} from "react-router-dom";
 import {bindActionCreators} from "redux";
@@ -17,12 +17,17 @@ class Authentication extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showAlert: false
+            showAlert: false,
+            forgotTooltipOpen: false,
+            noAccountTooltipOpen: false
         };
 
         this.login = this.login.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleDismiss = this.handleDismiss.bind(this);
+        this.toggleForgot = this.toggleForgot.bind(this);
+        this.toggleNoAccount = this.toggleNoAccount.bind(this);
+
 
     }
 
@@ -49,6 +54,19 @@ class Authentication extends Component {
         let element = e.target;
         form[element.id] = element.value;
     }
+
+    toggleForgot() {
+        this.setState({
+            forgotTooltipOpen: !this.state.forgotTooltipOpen
+        });
+    }
+
+    toggleNoAccount() {
+        this.setState({
+            noAccountTooltipOpen: !this.state.noAccountTooltipOpen
+        });
+    }
+
 
     render() {
         let form = this.props.form;
@@ -92,11 +110,29 @@ class Authentication extends Component {
                 </form>
                 <div className="row w-100 mt50">
                     <div className="col-md-6 p-0 text-lg-left text-center">
-                        <Link to="/forgot/password/help">¿Olvid&oacute; contrase&ntilde;a?</Link>
+                        <Link id="forgot" to="/forgot/password/help">
+                            ¿Olvid&oacute; contrase&ntilde;a?
+                        </Link>
+
+                        <Tooltip placement="left"
+                                 isOpen={this.state.forgotTooltipOpen}
+                                 target="forgot"
+                                 toggle={this.toggleForgot}>
+                            {UIHelper.getText("tooltipForgotPassword")}
+                        </Tooltip>
+
+
                     </div>
                     <div className="col-md-6 p-0 text-lg-right text-center">
-                        <Link to="/registration">¿No posee cuenta?</Link>
+                        <Link id="noAccount" to="/registration">¿No posee cuenta?</Link>
                     </div>
+
+                    <Tooltip placement="right"
+                             isOpen={this.state.noAccountTooltipOpen}
+                             target="noAccount"
+                             toggle={this.toggleNoAccount}>
+                        {UIHelper.getText("tooltipForUserWithoutAccount")}
+                    </Tooltip>
                 </div>
             </div>
         </div>,
