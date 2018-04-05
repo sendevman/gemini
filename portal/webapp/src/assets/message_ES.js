@@ -5,7 +5,7 @@ export default {
     projectNameFragment: "de Estudiante",
 
     enrollmentYear: "2018-2019",
-    welcomePage: " Bienvenidos al proceso de confirmación de matrícula del Departamento de Educación de Puerto Rico. Durante este proceso, tendrás la oportunidad de confirmar o solicitar la matrícula de tu hijo/a, para el próximo año escolar ",
+    welcomePage: " Bienvenidos al proceso de confirmación de matrícula del Departamento de Educación de Puerto Rico. Durante este proceso, tendrás la oportunidad de confirmar o solicitar la matrícula de tu hijo, para el próximo año escolar ",
     startDescription: "Presione el siguiente botón para comenzar",
     welcomeStartButton: "Comenzar",
 
@@ -30,12 +30,12 @@ export default {
     instructionFragmentEnd: " para comenzar.",
 
     //DE Program Selections
-    programQuestionNumber: "01.",
+    programQuestionNumber: "02.",
     programSelectionQuestion: "Favor de seleccionar el programa en el cual vas a solicitar matrícula para tu hijo: ",
     programOptions: "Regular, Ocupacional y Especializadas",
 
     //Is Student Enrolled Question
-    enrollmentQuestionNumber: "02.",
+    enrollmentQuestionNumber: "01.",
     enrollmentQuestionStart: "Actualmente, tienes ",
     enrollmentQuestionHighlight: "un estudiante matriculado ",
     enrollmentQuestionEnd: "en alguna escuela del Departamento de Educación de Puerto Rico?",
@@ -108,7 +108,7 @@ export default {
     alternateEnrollmentTitleStart: "Registro de ",
     alternateEnrollmentTitleEnd: "matrícula ",
     alternateEnrollmentMessageStart: "Vamos a crear un registro.",
-    alternateEnrollmentMessageEnd: "Selecciona dos opciones de escuelas para la matrícula del año escolar 2018-2019",
+    alternateEnrollmentMessage: "Selecciona dos opciones de escuelas para la matrícula del año escolar ",
 
     //Alternate Specialized Enrollment Page
     alternateSpecializedEnrollmentError: "Ha Ocurrido un error disculpe el inconveniente",
@@ -137,9 +137,14 @@ export default {
     schoolSelectorTableEmptyMessage: "No posee ninguna escuela aún.",
     schoolSelectorMaxExceed: "Máximo de dos escuela",
 
+    //Occupational Pages
+    occupationalChangeQuestion: "¿Confirma usted estas preferencias como correctas?",
+    instituteChangeQuestion: "¿Confirma usted estas preferencias como correctas?",
+
+
     //Technical Page
     institutePageTitleStart: "Registro de",
-    institutePageTitleEnd: "Matrícula Institutos ",
+    institutePageTitleEnd: "matrícula institutos ",
     institutePageHighlight: "Matrícula Institutos",
     institutePageMessageStart: "Vamos a crear una nueva matrícula.",
     institutePageMessageEnd: " Por favor seleccione un instituto:",

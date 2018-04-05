@@ -7,7 +7,6 @@ import Immutable from "immutable";
 import * as types from "../../../redux/types";
 import AnimationHelper from "../../../components/AnimationHelper";
 import Button from "../../../components/Button";
-import * as UIHelper from "../../../UIHelper";
 
 class VocationalProgramsSelection extends Component {
 
@@ -42,7 +41,8 @@ class VocationalProgramsSelection extends Component {
         this.setState({selectedProgram: programObject})
     }
 
-    onAdd() {
+    onAdd(e) {
+        e.preventDefault();
         let form = this.props.currentVocationalEnrollment;
         let program = this.state.selectedProgram;
         program.schoolId = this.schoolId;
@@ -55,6 +55,7 @@ class VocationalProgramsSelection extends Component {
     }
 
     onDelete = (index) => (e) => {
+        e.preventDefault();
         let form = this.props.currentVocationalEnrollment;
         let programDeleted = form.programs[index];
         form.programsToDelete.push(programDeleted);
@@ -72,66 +73,68 @@ class VocationalProgramsSelection extends Component {
         let programs = this.state.formPrograms;
         let vocationalType = this.props.preEnrollment.type === types.TECHNIQUE_ENROLLMENT
             ? "Institutos"
-            : "Ocupational";
+            : "Ocupacional";
 
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
                     <div className="description mb30"><h2>Matr&iacute;cula <span>{vocationalType}</span></h2></div>
-                    <p className="f30slg">Seleccione los programas vocacionales, que desea <span
+                    <p className="f30slg">Seleccione los programas ocupacionales, que desea <span
                         className="f30slb">matricularse.</span></p>
                 </div>
-                <div className="body d-flex flex-column">
-                    <div className="row" style={{marginTop: -120}}>
-                        <div className="col-md-12">
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <span>Escuela: </span>
-                                </div>
-                                <div className="col-md-8">
-                                    <h5>{enrollment && enrollment.schoolName}</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <span>Direccion Escuela: </span>
-                                </div>
-                                <div className="col-md-8">
-                                    <h6>{enrollment && enrollment.schoolAddress.addressFormatted}</h6>
+                <div className="body d-flex flex-column justify-content-end">
+                    <form>
+                        <div className="row" style={{marginTop: -120}}>
+                            <div className="col-md-12">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <span>Escuela: </span>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <h5>{enrollment && enrollment.schoolName}</h5>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-8">
-                            <RemoteCodeSelect id="program"
-                                              label="Programa"
-                                              placeholder="Programa"
-                                              codes={programs}
-                                              onObjectChange={this.onProgramChange}
-                                              target="programCode"
-                                              display="programDescription"
-                                              value={this.state.selectedProgram}
-                            />
-                        </div>
-                        <div className="col-md-4">
-                            <div className="form-group">
-                                <label>&nbsp;</label>
-                                <Button size="normal" onClick={this.onAdd}
-                                        disabled={!programs || programs.length === 0}>A&ntilde;adir</Button>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <span>Direccion Escuela: </span>
+                                    </div>
+                                    <div className="col-md-8">
+                                        <h6>{enrollment && enrollment.schoolAddress.addressFormatted}</h6>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-12">
-                            {this.renderProgramsSelections()}
+                        <div className="row">
+                            <div className="col-md-8">
+                                <RemoteCodeSelect id="program"
+                                                  label="Programa"
+                                                  placeholder="Programa"
+                                                  codes={programs}
+                                                  onObjectChange={this.onProgramChange}
+                                                  target="programCode"
+                                                  display="programDescription"
+                                                  value={this.state.selectedProgram}
+                                />
+                            </div>
+                            <div className="col-md-4">
+                                <div className="form-group">
+                                    <label>&nbsp;</label>
+                                    <Button size="normal" onClick={this.onAdd}
+                                            disabled={!programs || programs.length === 0}>A&ntilde;adir</Button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div style={{marginTop: -40}}>
+                        <div className="row">
+                            <div className="col-md-12 tableScrollable">
+                                {this.renderProgramsSelections()}
+                            </div>
+                        </div>
+                    </form>
+                    <div style={{marginTop: -20}}>
                         {this.props.footer}
                     </div>
                 </div>

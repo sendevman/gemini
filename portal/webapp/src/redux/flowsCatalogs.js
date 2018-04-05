@@ -14,18 +14,19 @@ export let catalog = [
     {type: "USER_PROFILE", footerType: CONTINUE}
     , {type: "USER_ADDITIONAL_INFO", footerType: CONTINUE}
     , {type: "INSTRUCTIONS", footerType: CONTINUE}
+    ,{
+        type: "DEPR_ENROLLED_QUESTION",
+        yes: "STUDENT_LOOKUP",
+        no: "PERSONAL_INFO",
+        footerType: QUESTION,
+        triggerAnswerOn: "DE_PROGRAM_QUESTION",
+        isQuestionConditioned: true
+    }
     , {
         type: "DE_PROGRAM_QUESTION",
         footerType: QUESTION,
         yes: "DEPR_ENROLLED_QUESTION",
         no: "DEPR_ENROLLED_QUESTION",
-        isQuestion: true
-    }
-    , {
-        type: "DEPR_ENROLLED_QUESTION",
-        yes: "STUDENT_LOOKUP",
-        no: "PERSONAL_INFO",
-        footerType: QUESTION,
         isQuestion: true
     }
     , {

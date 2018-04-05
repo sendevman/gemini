@@ -45,7 +45,10 @@ class PreEnrollmentSpecializedSchoolsSelections extends Component {
 
     categoryChanged(categoryObject) {
         this.refs.selector.cleanSchoolCode();
-        this.setState({selectedCategory: categoryObject ? categoryObject.name : "-1", selectedCategoryObject: categoryObject})
+        this.setState({
+            selectedCategory: categoryObject ? categoryObject.name : "-1",
+            selectedCategoryObject: categoryObject
+        })
     }
 
     getSelectedCategoryCode() {
@@ -73,38 +76,43 @@ class PreEnrollmentSpecializedSchoolsSelections extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb30"><h2>{UIHelper.getText("alternateSpecializedEnrollmentTitleStart")} <span>{UIHelper.getText("alternateSpecializedEnrollmentTitleEnd")} </span></h2></div>
-                    <span className="f20slg"><span className="f20slb">{UIHelper.getText("alternateSpecializedEnrollmentMessageStart")}</span> {UIHelper.getText("alternateSpecializedEnrollmentMessageEnd")}</span>
+                    <div className="description mb30"><h2>{UIHelper.getText("alternateSpecializedEnrollmentTitleStart")}
+                        <span>{UIHelper.getText("alternateSpecializedEnrollmentTitleEnd")} </span></h2></div>
+                    <span className="f20slg"><span
+                        className="f20slb">{UIHelper.getText("alternateSpecializedEnrollmentMessageStart")}</span> {UIHelper.getText("alternateSpecializedEnrollmentMessageEnd")}</span>
                 </div>
-                <div className="body d-flex flex-column justify-content-end" style={{marginTop: -150}}>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <RemoteCodeSelect id="specializedCategory"
-                                              placeholder="Categorías"
-                                              onObjectChange={this.categoryChanged}
-                                              codes={specializedCategories}
-                                              target="name"
-                                              display="description"
-                                              disabled={selectorDisabled}
-                                              value={this.state.selectedCategory}
-                            />
+                <div className="body d-flex flex-column justify-content-end">
+                    <form>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <RemoteCodeSelect id="specializedCategory"
+                                                  placeholder="Categorías"
+                                                  onObjectChange={this.categoryChanged}
+                                                  codes={specializedCategories}
+                                                  target="name"
+                                                  display="description"
+                                                  disabled={selectorDisabled}
+                                                  value={this.state.selectedCategory}
+                                />
+                            </div>
                         </div>
+                        <SchoolSelector ref="selector"
+                                        form={form}
+                                        schoolsSelected={schoolsSelected}
+                                        schoolsSelectedToDelete={schoolsSelectedToDelete}
+                                        maxSchools={2}
+                                        gradeLevels={gradeLevels}
+                                        regions={regions}
+                                        schools={schools}
+                                        fetchSchools={this.fetchSchools}
+                                        specializedSchool
+                        />
+                    </form>
+                    <div style={{marginTop: -60}}>
+                        {this.props.footer}
                     </div>
-                    <SchoolSelector ref="selector"
-                                    form={form}
-                                    schoolsSelected={schoolsSelected}
-                                    schoolsSelectedToDelete={schoolsSelectedToDelete}
-                                    maxSchools={2}
-                                    gradeLevels={gradeLevels}
-                                    regions={regions}
-                                    schools={schools}
-                                    fetchSchools={this.fetchSchools}
-                                    specializedSchool
-                    />
                 </div>
-                <div style={{marginTop: -120}}>
-                    {this.props.footer}
-                </div>
+
             </div>, <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 {/*<div className="illustration"><img src={entrollmentIllustration} alt=""/></div>*/}
                 <AnimationHelper type="blackboard"/>

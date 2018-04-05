@@ -156,25 +156,21 @@ CREATE OR REPLACE VIEW VW_SPECIALIZED_SCHOOLS AS
       THEN 1
      ELSE 0 END)                          AS IS_VOCATIONAL,
     (CASE
-     WHEN TRIM(ESC_BELLAS_ARTES) = 'true'
-       THEN 'Bellas Artes'
+     WHEN TRIM(ESC_BELLAS_ARTES) = 'true' OR TRIM(ESC_MUSICA) = 'true'
+       THEN 'Bellas Artes (Cinematografía, Música y Radio y Televisión)'
      WHEN TRIM(ESC_CIENCIAS_MATEMATICAS) = 'true'
-       THEN 'Ciencias y Matemáticas'
-     WHEN TRIM(ESC_MUSICA) = 'true'
-       THEN 'Música'
+       THEN 'STEM (Ciencias y Matemáticas)'
      WHEN TRIM(ESC_CURR_METODO_MONTESSORI) = 'true'
        THEN 'Montessori'
      WHEN TRIM(ESC_BILINGUE) = 'true'
-       THEN 'Bilingüe'
+       THEN 'Bilingüe e Idiomas'
      ELSE 'NONE'
      END)                                 AS SPECIALIZED_CATEGORY,
     (CASE
-     WHEN TRIM(ESC_BELLAS_ARTES) = 'true'
+     WHEN TRIM(ESC_BELLAS_ARTES) = 'true' OR TRIM(ESC_MUSICA) = 'true'
        THEN 'FINE_ARTS'
      WHEN TRIM(ESC_CIENCIAS_MATEMATICAS) = 'true'
        THEN 'SCIENCE_AND_MATHEMATHICS'
-     WHEN TRIM(ESC_MUSICA) = 'true'
-       THEN 'MUSIC'
      WHEN TRIM(ESC_CURR_METODO_MONTESSORI) = 'true'
        THEN 'MONTESSORI'
      WHEN TRIM(ESC_BILINGUE) = 'true'

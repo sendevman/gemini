@@ -1,5 +1,6 @@
 package com.gemini;
 
+import com.gemini.security.SupportPasswordEncoder;
 import com.gemini.utils.ValidationUtils;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.http.HttpHost;

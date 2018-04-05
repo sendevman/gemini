@@ -288,11 +288,11 @@ export default class Services {
             return response;
         } else if (httpStatus === 403) {
             if (manageException) {
-                this.store.dispatch(triggerSessionExpiredOn("Su sessión ha expirado"));
+                this.store.dispatch(triggerSessionExpiredOn("Su sesión ha expirado"));
             }
         } else {
             if (manageException)
-                this.store.dispatch(triggerErrorOn("Occurio un error interno, disculpe el inconveniente"));
+                this.store.dispatch(triggerErrorOn("Occurió un error interno, disculpe el inconveniente"));
             console.log(`internal server error, error info: ${response && response.statusText}`);
             let message = (response && response.statusText) || "unknown error";
 

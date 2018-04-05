@@ -2,13 +2,13 @@
  * Created by fran on 2/2/18.
  */
 import React, {Component} from "react";
-import {Button} from "react-bootstrap";
 import moment from "moment";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {loadHome, resetWizard} from "../redux/actions";
 import AnimationHelper from "../components/AnimationHelper";
 import * as UIHelper from "../UIHelper";
+import Button from "../components/Button";
 
 class Home extends Component {
 
@@ -42,31 +42,24 @@ class Home extends Component {
                     <div className="violet-line"/>
 
                     <span
-                        className="f30slg">A continuaci&oacute;n un resumen de las matr&iacute;culas realizadas o en proceso&nbsp;&nbsp;&nbsp;
-                        <span className="f22slg">
+                        className="f20slg">A continuaci&oacute;n un resumen de las matr&iacute;culas realizadas o en proceso.&nbsp;&nbsp;&nbsp;
+                        <span className="f20slb">
                                 {UIHelper.getText("enrollmentLabel")}
                             </span>&nbsp;&nbsp;&nbsp;
-                        <a href="#" onClick={this.preEnroll}>
-                                {UIHelper.getText("enrollmentButton")}
-                            </a>
+                        {/*<a href="#" onClick={this.preEnroll}>*/}
+                        {/*{UIHelper.getText("enrollmentButton")}*/}
+                        {/*</a>*/}
+                        <Button size="small" style={{width: '40%'}} onClick={this.preEnroll}>
+                            {UIHelper.getText("enrollmentButton")}
+                        </Button>
                     </span>
-                    {/*<div className="row">*/}
-                    {/*<div className="col-md-8">*/}
-                    {/*<h5 className="f20slb" style={{textAlign: "right"}}>*/}
-                    {/*{UIHelper.getText("enrollmentLabel")}*/}
-                    {/*</h5>*/}
-                    {/*</div>*/}
-                    {/*<div className="col-md-4">*/}
-                    {/*<button className="button-yellow" style={{padding: 5}} onClick={this.preEnroll}>*/}
-                    {/*{UIHelper.getText("enrollmentButton")}*/}
-                    {/*</button>*/}
-                    {/*</div>*/}
-                    {/*</div>*/}
+
                 </div>
-                <div className="home">
+                <div className="body d-flex flex-column justify-content-end">
                     {this.renderHome()}
+                    <div style={{marginBottom: 275}}/>
                 </div>
-                {this.props.footer}
+                {/*{this.props.footer}*/}
             </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 {/*<div className="illustration"><img src={leisureIllustration} alt=""/></div>*/}
@@ -77,8 +70,8 @@ class Home extends Component {
 
     renderHome() {
         return [
-            <div className="row" style={{marginTop: 20}}>
-                <div className="col-md-12">
+            <div className="row">
+                <div className="col-md-12 enrollmentList">
                     {this.renderPreEnrollmentList()}
                 </div>
             </div>
@@ -96,48 +89,56 @@ class Home extends Component {
                     </div>
                 </div>
             );
-
         return preEnrollments.map((pre, index) => (
-            <div key={index} style={{height: 150, marginTop: 5, padding: 20, borderBottom: "1px solid #edeef2"}}>
 
-                <h5>Estudiante {pre.student.fullName}</h5>
-                <div className="float-right" style={{marginTop: -40}}>
-                    {pre.requestStatus === "ACTIVE"
-                        ?
-                        (<Button bsSize="small" bsStyle="info" onClick={this.editPreEnroll(pre.id)}>
-                            <i className="fas fa-edit"/>
-                        </Button>)
-                        : (null)
-                    }
-                </div>
-                <div className="row">
-                    <div className="col-md-3">
-                        Estatus:
+            <div className="row pt-2" key={index} style={{borderBottom: "1px solid #edeef2"}}>
+                <div className="col-md-12">
+                    <div className="row">
+                        <div className="col-md-9">
+                            <h5>Estudiante {pre.student.fullName}</h5>
+                        </div>
+                        <div className="col-md-3">
+                            {pre.requestStatus === "ACTIVE"
+                                ?
+                                (<Button bsSize="small" bsStyle="info" onClick={this.editPreEnroll(pre.id)}>
+                                    <i className="fas fa-edit"/>
+                                </Button>)
+                                : (null)
+                            }
+                        </div>
                     </div>
-                    <div className="col-md-6">
-                        <span className="text-danger">{pre.requestStatusText}</span>
+                    <div className="row">
+                        <div className="col-md-3">
+                            Estatus:
+                        </div>
+                        <div className="col-md-6">
+                            <span className="text-danger">{pre.requestStatusText}</span>
+                        </div>
+                        <div className="col-md-3"/>
                     </div>
-                    <div className="col-md-3"/>
-                </div>
-                <div className="row">
-                    <div className="col-md-3">
-                        Fecha:
+                    <div className="row">
+                        <div className="col-md-3">
+                            Fecha:
+                        </div>
+                        <div className="col-md-9">
+                            {(pre.submitDate && moment(pre.submitDate).format('LL, h:mm:ss a')) || "Aún no ha sido sometida"}
+                        </div>
                     </div>
-                    <div className="col-md-9">
-                        {(pre.submitDate && moment(pre.submitDate).format('LL, h:mm:ss a')) || "Aún no ha sido sometida"}
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-3">
-                        Matrícula:
-                    </div>
-                    <div className="col-md-6">
-                        {pre.enrollmentTypeText}
-                    </div>
-                    <div className="col-md-3"/>
+                    <div className="row">
+                        <div className="col-md-3">
+                            Matrícula:
+                        </div>
+                        <div className="col-md-6">
+                            {pre.enrollmentTypeText}
+                        </div>
+                        <div className="col-md-3"/>
 
+                    </div>
                 </div>
-            </div>));
+
+            </div>
+
+        ));
     }
 
 }
