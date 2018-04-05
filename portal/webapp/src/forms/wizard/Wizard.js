@@ -35,6 +35,8 @@ import PreEnrollmentSpecializedSchoolsSelections from "./pre-enrollment/PreEnrol
 import ReasonForNotAttendingPreSelectedSchool from "./pre-enrollment/ReasonForNotAttendingPreSelectedSchool";
 import PreEnrollmentTechnicalSchoolsSelection from "./pre-enrollment/PreEnrollmentTechnicalSchoolsSelection";
 import EndPreEnrollmentMoveOutOfCountry from "./pre-enrollment/EndPreEnrollmentMoveOutOfCountry";
+import * as UIHelper from "../../UIHelper";
+import {Tooltip} from "reactstrap";
 
 function form(title, form) {
     return {title: title, form: form};
@@ -44,10 +46,14 @@ class Wizard extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {reloading: false};
+        this.state = {reloading: false, regularTooltip: false, occupationalTooltip: false, specializedTooltip: false};
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
         this.onError = this.onError.bind(this);
+        this.toggleRegularTooltip = this.toggleRegularTooltip.bind(this);
+        this.toggleOccupationalTooltip = this.toggleOccupationalTooltip.bind(this);
+        this.toggleSpecializedTooltip = this.toggleSpecializedTooltip.bind(this);
+
         this.state.reloading = false;
     }
 
@@ -83,15 +89,7 @@ class Wizard extends Component {
     }
 
     onError(validationObj, afterCloseAction) {
-        if (validationObj) {
-            let formattedMessage = validationObj.title ? `${validationObj.title}:\n` : "";
-            for (let message of validationObj.messages) {
-                formattedMessage += `*\t${message}\n`;
-            }
-            this.refs.modal.open("Validaci\u00f3n", formattedMessage, afterCloseAction, true);
-        } else {
-            this.refs.modal.open("Upps!!!", "Ha ocurrido un error, disculpe el inconveniente")
-        }
+        UIHelper.validationDialog(this.refs.modal, validationObj, afterCloseAction)
     }
 
     onProgramSelection = (selection) => e => {
@@ -99,6 +97,8 @@ class Wizard extends Component {
     };
 
     next() {
+        this.state ={...this.state, regularTooltip: false, occupationalTooltip: false, specializedTooltip: false};
+
         let idx = `page${this.props.current}`;
         let pageRef = this.refs[idx].getWrappedInstance ? this.refs[idx].getWrappedInstance() : null;
         this.props.onNextAction((callback) => {
@@ -202,13 +202,32 @@ class Wizard extends Component {
         return [this.wizardForms[current].form, <ModalHelper ref="modal"/>];
     }
 
+    toggleRegularTooltip() {
+        this.setState({
+            ...this.state, regularTooltip: !this.state.regularTooltip
+        });
+    }
+
+    toggleOccupationalTooltip() {
+        this.setState({
+            ...this.state, occupationalTooltip: !this.state.occupationalTooltip
+        });
+    }
+
+    toggleSpecializedTooltip() {
+        this.setState({
+            ...this.state, specializedTooltip: !this.state.specializedTooltip
+        });
+    }
+
+
     //todo: fran this needs improvements
     renderFooter() {
         let props = this.props.wizard;
         let commonStyle = {zIndex: 1000};
         let isSubmitPage = props.currentPageType.endsWith("_SUBMIT");
-        let nextAction = isSubmitPage ? this.previous.bind(this) : this.next.bind(this);
-        let previousAction = isSubmitPage ? this.next.bind(this) : this.previous.bind(this);
+        let nextAction = this.next.bind(this);//isSubmitPage ? this.previous.bind(this) : this.next.bind(this);
+        let previousAction = this.previous.bind(this);//isSubmitPage ? this.next.bind(this) : this.previous.bind(this);
         let cssClass = props.currentPageType !== "USER_ADDITIONAL_INFO"
         && props.currentPageType !== "PERSONAL_ADDITIONAL_INFO"
         && props.currentPageType !== "VOCATIONAL_PROGRAMS"
@@ -247,22 +266,40 @@ class Wizard extends Component {
                      style={commonStyle}>
                     <div className="row action-section">
                         <div className="col-md-12 text-center text-lg-left p-0">
-                            <a className="button-white mr30 mob-mb30px"
+                            <a id="regular" className="button-white mr30 mob-mb30px"
                                onClick={this.onProgramSelection(types.REGULAR_ENROLLMENT)}>
                                 <span>R</span>Regular
                             </a>
-                            <a className="button-white mob-mb30px"
+                            <Tooltip placement="left"
+                                     isOpen={this.state.regularTooltip}
+                                     target="regular"
+                                     toggle={this.toggleRegularTooltip}>
+                                {UIHelper.getText("tooltipRegularProgramExplanation")}
+                            </Tooltip>
+                            <a id="occupational" className="button-white mob-mb30px"
                                onClick={this.onProgramSelection(types.OCCUPATIONAL_ENROLLMENT)}>
                                 <span>O</span>Ocupacional
                             </a>
-                            <a className="button-white mob-mb30px"
-                               onClick={this.onProgramSelection(types.TECHNIQUE_ENROLLMENT)}>
-                                <span>I</span>Institutos
-                            </a>
-                            <a className="button-white mob-mb30px"
+                            <Tooltip placement="left"
+                                     isOpen={this.state.occupationalTooltip}
+                                     target="occupational"
+                                     toggle={this.toggleOccupationalTooltip}>
+                                {UIHelper.getText("tooltipOccupationalProgramExplanation")}
+                            </Tooltip>
+                            {/*<a className="button-white mob-mb30px"*/}
+                            {/*onClick={this.onProgramSelection(types.TECHNIQUE_ENROLLMENT)}>*/}
+                            {/*<span>I</span>Institutos*/}
+                            {/*</a>*/}
+                            <a id="specialized" className="button-white mob-mb30px"
                                onClick={this.onProgramSelection(types.SPECIALIZED_SCHOOLS_ENROLLMENT)}>
                                 <span>E</span>Especializadas
                             </a>
+                            <Tooltip placement="left"
+                                     isOpen={this.state.specializedTooltip}
+                                     target="specialized"
+                                     toggle={this.toggleSpecializedTooltip}>
+                                {UIHelper.getText("tooltipSpecializedProgramExplanation")}
+                            </Tooltip>
                         </div>
                     </div>
                 </div>

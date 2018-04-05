@@ -32,7 +32,7 @@ class UserAdditionalInfoRequest extends Component {
 
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description"><h2>Datos sobre su composici&oacute;n Familiar</h2>
+                <div className="description"><h2>{UIHelper.getText("userAdditionalInfoRequestTitle")}</h2>
                     <div className="violet-line"></div>
                 </div>
             </div>

@@ -2,7 +2,7 @@
   "name": "project-gemini",
   "version": "1.0.1RC_3",
   "private": true,
-  "homepage": "https://prdesieprod.dde.pr/registro",
+  "homepage": ".",
   "dependencies": {
     "classnames": "^2.2.5",
     "immutable": "^3.8.2",

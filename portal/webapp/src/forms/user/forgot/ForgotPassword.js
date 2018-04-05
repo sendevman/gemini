@@ -70,7 +70,7 @@ class ForgotPassword extends Component {
 
         return [<div className="col-md-5 content-section">
             <div className="title">
-                <div className="description"><h2 className="f60sbg">{UIHelper.getText("forgotPassword")}</h2></div>
+                <div className="description"><h2 className="f60sbg">{UIHelper.getText("forgotPasswordTitle")}</h2></div>
                 <span className="f30slg"><span
                     className="f20slg">{UIHelper.getText("forgotPasswordExplanation")}</span></span>
             </div>

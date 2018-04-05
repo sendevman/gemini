@@ -44,11 +44,11 @@ class StudentIdentification extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb40"><h2 className="f90sbg">OK.</h2>
+                    <div className="description mb40"><h2 className="f90sbg">{UIHelper.getText("searchPageQuestionNumber")}</h2>
                         <div className="violet-line"></div>
                     </div>
-                    <p className="f30slg">{UIHelper.getText("searchPage")}<span
-                        className="f30slb">{UIHelper.getText("searchPageEnd")}</span></p>
+                    <p className="f30slg">{UIHelper.getText("searchPageMessageStart")}<span
+                        className="f30slb">{UIHelper.getText("searchPageMessageEnd")}</span></p>
                 </div>
                 <div className="body d-flex flex-column justify-content-end">
                     <div className="row" style={{marginTop: -100}}>

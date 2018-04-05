@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
 import * as UIHelper from "../../../UIHelper";
 
@@ -15,13 +14,14 @@ export default class ResetPasswordResult extends Component {
     }
 
     render() {
-        let result = this.props.match.params.result === "success";
-        let title = result? "Contraseña reiniciada" : "¡Upss!";
+        let result = this.props.match.params.result;
+        let isSuccess = this.props.match.params.result === "success";
+        let title = isSuccess ? UIHelper.getText("resetSuccessTitle") : UIHelper.getText("resetErrorTitle");
         let content;
         if (result === "invalid")
-            content = "Lo siento, este enlace para reiniciar su contraseña ya no es valido. Por favor solicite otro";
+            content = UIHelper.getText("resetErrorInvalidLinkMessage");
         else
-            content = result ? "Su contraseña ha sido reiniciada" : "Ocurrio un error reiniciando su contraseña";
+            content = isSuccess ? UIHelper.getText("resetSuccessMessage") : UIHelper.getText("resetErrorMessage");
 
 
         return [<div className="col-md-7 content-section">
@@ -34,7 +34,8 @@ export default class ResetPasswordResult extends Component {
             <div className="body d-flex align-items-center flex-column justify-content-end">
                 <div className="row action-section">
                     <div className="col-md-12 text-center text-lg-left p-0">
-                        <a className="button-white mr30 mob-mb30px" onClick={this.onClick}><span>I</span>{UIHelper.getText("startSessionButton")}</a>
+                        <a className="button-white mr30 mob-mb30px"
+                           onClick={this.onClick}><span>I</span>{UIHelper.getText("startSessionButton")}</a>
                     </div>
                 </div>
             </div>
@@ -45,16 +46,4 @@ export default class ResetPasswordResult extends Component {
             </div>];
     }
 
-    renderSuccess() {
-        let success = this.props.match.params.result === "success";
-        if (!success)
-            return (null);
-        return (<div className="row">
-            <div className="col-md-12">
-                <p>
-                    Su contraseña ha sido reiniciada, ahora proceda autenticarse
-                </p>
-            </div>
-        </div>)
-    }
 }

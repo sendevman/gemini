@@ -288,7 +288,7 @@ export default class Services {
             return response;
         } else if (httpStatus === 403) {
             if (manageException) {
-                this.store.dispatch(triggerSessionExpiredOn("Su session ha expirado"));
+                this.store.dispatch(triggerSessionExpiredOn("Su sessión ha expirado"));
             }
         } else {
             if (manageException)

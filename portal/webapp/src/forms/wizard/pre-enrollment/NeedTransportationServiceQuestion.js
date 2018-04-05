@@ -27,11 +27,11 @@ class NeedTransportationServiceQuestion extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb40"><h2 className="f90sbg">08.</h2>
+                    <div className="description mb40"><h2 className="f90sbg">{UIHelper.getText("transportationPageQuestionNumber")}</h2>
                         <div className="violet-line"/>
                     </div>
-                    <p className="f30sbg text-justify">{UIHelper.getText("transportationThanksTitle")}<span
-                        className="f30sbb">{UIHelper.getText("transportationQuestion")}</span>
+                    <p className="f30sbg text-justify">{UIHelper.getText("transportationPageTitle")}<span
+                        className="f30sbb">{UIHelper.getText("transportationPageQuestion")}</span>
                     </p>
                 </div>
 

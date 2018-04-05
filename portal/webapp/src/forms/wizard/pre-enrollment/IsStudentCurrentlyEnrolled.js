@@ -11,7 +11,7 @@ export default class IsStudentCurrentlyEnrolled extends Component {
     render() {
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description mb40"><h2 className="f90sbg">02.</h2>
+                <div className="description mb40"><h2 className="f90sbg">{UIHelper.getText("enrollmentQuestionNumber")}</h2>
                     <div className="violet-line"></div>
                 </div>
                 <p className="f40sbg text-justify">{UIHelper.getText("enrollmentQuestionStart")}<span

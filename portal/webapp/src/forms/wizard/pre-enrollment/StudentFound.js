@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
 import * as UIHelper from "../../../UIHelper";
 
@@ -9,19 +8,22 @@ export default class StudentFound extends Component {
         super(props);
     }
 
-    getArticle(){
+    getArticle() {
         let gender = this.props.studentGender;
-        return  gender ? (gender === "M"  ? "El" : "La") :("El/la")
+        return gender ? (gender === "M" ? "El" : "La") : ("El/la")
     }
 
     render() {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb40"><h2 className="f90sbg">05.</h2>
+                    <div className="description mb40"><h2
+                        className="f90sbg">{UIHelper.getText("foundStudentPageNumber")}</h2>
                         <div className="violet-line"></div>
                     </div>
-                    <p className="f45sbg"><span className="f45sbb" id="name">¡Muy bien!</span> {this.getArticle()} estudiante <span className="f45sbb" id="name">{this.props.studentName}</span> ha sido encontrado.
+                    <p className="f45sbg"><span className="f45sbb"
+                                                id="name">{UIHelper.getText("foundStudentPageInfoHighlight")}</span> {this.getArticle()} {UIHelper.getText("foundStudentPageInfoFragmentStart")}
+                        <span className="f45sbb" id="name">{this.props.studentName}</span> {UIHelper.getText("foundStudentPageInfoFragmentEnd")}
                     </p>
                 </div>
                 {this.props.footer}

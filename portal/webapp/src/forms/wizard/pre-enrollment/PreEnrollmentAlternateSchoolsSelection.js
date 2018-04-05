@@ -28,7 +28,7 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
         this.props.loadCodes(() => {
             this.props.retrieveAlternatePreEnrollment(() => {
             }, () => {
-                alert("Error loading")
+                alert(UIHelper.getText("alternateEnrollmentError"))
             });
         });
     }
@@ -59,20 +59,24 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
 
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description mb30"><h2>Registro de <span>Matrícula</span></h2></div>
-                <span className="f20slg"><span className="f20slb">Vamos a crear el registro.</span> Selecciona dos escuelas como alternativas para la matr&iacute;cula del año escolar 2018-2019:</span>
+                <div className="description mb30"><h2>{UIHelper.getText("alternateEnrollmentTitleStart")}
+                    <span>{UIHelper.getText("alternateEnrollmentTitleEnd")}</span></h2></div>
+                <span className="f20slg"><span
+                    className="f20slb">{UIHelper.getText("alternateEnrollmentMessageEnd")}</span> :</span>
             </div>
-            <div className="body d-flex flex-column justify-content-end" style={{marginTop: -150}}>
-                <SchoolSelector ref="selector"
-                                form={form}
-                                schoolsSelected={schoolsSelected}
-                                schoolsSelectedToDelete={schoolsSelectedToDelete}
-                                maxSchools={2}
-                                gradeLevels={gradeLevels}
-                                regions={regions}
-                                schools={schools}
-                                fetchSchools={this.fetchSchools}
-                />
+            <div className="body d-flex flex-column justify-content-end" style={{marginTop: -120}}>
+                <form>
+                    <SchoolSelector ref="selector"
+                                    form={form}
+                                    schoolsSelected={schoolsSelected}
+                                    schoolsSelectedToDelete={schoolsSelectedToDelete}
+                                    maxSchools={2}
+                                    gradeLevels={gradeLevels}
+                                    regions={regions}
+                                    schools={schools}
+                                    fetchSchools={this.fetchSchools}
+                    />
+                </form>
             </div>
             <div style={{marginTop: -120}}>
                 {this.props.footer}

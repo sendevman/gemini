@@ -103,7 +103,7 @@ class ResetPassword extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description"><h2>{UIHelper.getText("resetPasswordPage")}</h2>
+                    <div className="description"><h2>{UIHelper.getText("resetPasswordTitle")}</h2>
                         <div className="violet-line"></div>
                     </div>
                 </div>

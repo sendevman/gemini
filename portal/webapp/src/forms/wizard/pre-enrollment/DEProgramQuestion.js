@@ -12,7 +12,7 @@ export default class DEProgramQuestion extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb40"><h2 className="f90sbg">01.</h2>
+                    <div className="description mb40"><h2 className="f90sbg">{UIHelper.getText("programQuestionNumber")}</h2>
                         <div className="violet-line"/>
                     </div>
                     <p className="f40sbg text-justify">{UIHelper.getText("programSelectionQuestion")}</p>

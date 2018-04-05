@@ -26,11 +26,11 @@ class IsStudentBornPRQuestion extends Component {
     render() {
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description mb40"><h2 className="f90sbg">07.</h2>
-                    <div className="violet-line"></div>
+                <div className="description mb40"><h2 className="f90sbg">{UIHelper.getText("isStudentBornPRQuestionNumber")}</h2>
+                    <div className="violet-line"/>
                 </div>
-                <p className="f60sbg">{UIHelper.getText("studentIsQuestion")}<span
-                    className="f60sbb">{UIHelper.getText("puertorricanQuestionHighlight")}</span></p>
+                <p className="f60sbg text-left">{UIHelper.getText("isStudentBornPRQuestionStart")}<span
+                    className="f60sbb">{UIHelper.getText("isStudentBornPRQuestionEnd")}</span></p>
             </div>
             {this.props.footer}
         </div>,

@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import profileIlustration from "../../assets/img/profile-illustration.png";
 import AnimationHelper from "../../components/AnimationHelper";
 import * as UIHelper from "../../UIHelper";
 
@@ -14,17 +13,20 @@ export default class Instructions extends Component {
 
             <div key="inst" className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description"><h2>Instrucciones</h2>
+                    <div className="description"><h2>{UIHelper.getText("instructionPageTitle")}</h2>
                         <div className="violet-line"/>
                     </div>
                     <p className="f22slg text-justify mt-3">
-                        Bienvenidos al proceso de confirmación de matrícula del Departamento de Educación de Puerto
-                        Rico.
-                        Durante este proceso, tendrás la oportunidad de confirmar la matrícula de tu hijo/a o de
-                        solicitarle
-                        matrícula, para el próximo año escolar 2018-2019. Este proceso solo te tomará unos minutos.
-                        Presiona
-                        el botón de <span className="f20slb">‘continuar’</span> para comenzar el proceso.
+                        {UIHelper.getText("instructionPageMessageStart")}
+                        &nbsp;&nbsp;&nbsp;&nbsp;{UIHelper.getText("instructionPageMessageFragment")}
+                        <li style={{paddingLeft: 10}}>Confirmar matrícula</li>
+                        <li style={{paddingLeft: 10}}>Solicitar matrícula nuevo ingreso</li>
+                        {UIHelper.getText("instructionPageMessageEnd")}
+                        <span className="f20slb">{UIHelper.getText("enrollmentYear")}</span>.&nbsp;&nbsp;&nbsp;&nbsp;
+                        {/*{UIHelper.getText("instructionFragmentStart")}*/}
+                        Este proceso solo te tomará unos minutos. &nbsp;&nbsp;&nbsp;&nbsp;Presiona el botón de&nbsp;
+                        <span className="f20slb">{UIHelper.getText("instructionFragmentHighlight")}</span>
+                        {UIHelper.getText("instructionFragmentEnd")}
                     </p>
                 </div>
 

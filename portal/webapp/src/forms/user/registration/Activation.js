@@ -106,7 +106,7 @@ class Activation extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description"><h2>{UIHelper.getText("completeRegisterPage")}</h2>
+                    <div className="description"><h2>{UIHelper.getText("activationTitle")}</h2>
                         <div className="violet-line"></div>
                     </div>
                 </div>
@@ -147,7 +147,7 @@ class Activation extends Component {
 
                         <div className="row mt50">
                             <div className="col-md-12 ">
-                                <button className="button-green mr30 mob-mb30px" type="submit"><span>s</span>{UIHelper.getText("completeRegisterButton")}
+                                <button className="button-green mr30 mob-mb30px" type="submit"><span>C</span>{UIHelper.getText("activationButton")}
                                 </button>
                             </div>
                         </div>

@@ -73,8 +73,8 @@ class PreEnrollmentSpecializedSchoolsSelections extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb30"><h2>Registro de <span>Matrícula</span></h2></div>
-                    <span className="f20slg"><span className="f20slb">Vamos a crear el registro.</span> Selecciona dos escuelas especializadas como alternativas para la matr&iacute;cula del año escolar 2018-2019:</span>
+                    <div className="description mb30"><h2>{UIHelper.getText("alternateSpecializedEnrollmentTitleStart")} <span>{UIHelper.getText("alternateSpecializedEnrollmentTitleEnd")} </span></h2></div>
+                    <span className="f20slg"><span className="f20slb">{UIHelper.getText("alternateSpecializedEnrollmentMessageStart")}</span> {UIHelper.getText("alternateSpecializedEnrollmentMessageEnd")}</span>
                 </div>
                 <div className="body d-flex flex-column justify-content-end" style={{marginTop: -150}}>
                     <div className="row">

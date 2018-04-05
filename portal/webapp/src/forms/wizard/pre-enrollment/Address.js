@@ -49,20 +49,24 @@ class Address extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description"><h2>Direcci&oacute;n</h2>
+                    <div className="description"><h2>{UIHelper.getText("addressPageTitleStart")}<span className="f40sbb">{UIHelper.getText("addressPageTitleEnd")}</span></h2>
                         <div className="violet-line"></div>
                     </div>
+                    <span className="f20slg">{UIHelper.getText("addressPageMessage")}
+                        <span className="f20slb">{UIHelper.getText("addressPageMessageHighlight")}</span>
+                    </span>
                 </div>
                 <div className="body">
-                    <div className="row" style={{marginTop: -200}}>
+                    <div className="row" style={{marginTop: -160}}>
                         <div className="col-md-6">
                             <div className="row">
                                 <div className="col-md-5">
-                                    <h5 htmlFor="">{UIHelper.getText("physicalAddressButton")}</h5>
+                                    <h5 htmlFor="">{UIHelper.getText("addressPagePhysicalAddressButton")}</h5>
                                 </div>
 
                                 <div className="col-md-6" style={{marginLeft: 5}}>
-                                    <Button size="small" onClick={this.copyAddress}>{UIHelper.getText("copyButton")}</Button>
+                                    <Button size="small"
+                                            onClick={this.copyAddress}>{UIHelper.getText("copyButton")}</Button>
                                 </div>
 
                             </div>
@@ -73,7 +77,7 @@ class Address extends Component {
                         <div className="col-md-6">
                             <div className="row">
                                 <div className="col-md-12">
-                                    <h5 htmlFor="">{UIHelper.getText("postalAddressButton")}</h5>
+                                    <h5 htmlFor="">{UIHelper.getText("addressPagePostalAddressButton")}</h5>
                                 </div>
                             </div>
                             {this.renderAddressForm("postal", props.postal)}
