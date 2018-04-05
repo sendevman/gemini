@@ -9,8 +9,8 @@ const normalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
     getIndexFromCatalog("USER_ADDITIONAL_INFO"),
     getIndexFromCatalog("INSTRUCTIONS"),
-    getIndexFromCatalog("DE_PROGRAM_QUESTION"),
     getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
+    getIndexFromCatalog("DE_PROGRAM_QUESTION"),
     getIndexFromCatalog("STUDENT_LOOKUP"),
     getIndexFromCatalog("NOT_FOUND_QUESTION"),
     getIndexFromCatalog("FOUND_INFO"),
@@ -49,8 +49,8 @@ const specializedFlow = [
     getIndexFromCatalog("USER_PROFILE"),
     getIndexFromCatalog("USER_ADDITIONAL_INFO"),
     getIndexFromCatalog("INSTRUCTIONS"),
-    getIndexFromCatalog("DE_PROGRAM_QUESTION"),
     getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
+    getIndexFromCatalog("DE_PROGRAM_QUESTION"),
     getIndexFromCatalog("STUDENT_LOOKUP"),
     getIndexFromCatalog("NOT_FOUND_QUESTION"),
     getIndexFromCatalog("FOUND_INFO"),
@@ -92,8 +92,8 @@ const occupationalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
     getIndexFromCatalog("USER_ADDITIONAL_INFO"),
     getIndexFromCatalog("INSTRUCTIONS"),
-    getIndexFromCatalog("DE_PROGRAM_QUESTION"),
     getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
+    getIndexFromCatalog("DE_PROGRAM_QUESTION"),
     getIndexFromCatalog("STUDENT_LOOKUP"),
     getIndexFromCatalog("NOT_FOUND_QUESTION"),
     getIndexFromCatalog("FOUND_INFO"),
@@ -133,8 +133,8 @@ const technicalFlow = [
     getIndexFromCatalog("USER_ADDITIONAL_INFO"),
     getIndexFromCatalog("INSTRUCTIONS"),
 
-    getIndexFromCatalog("DE_PROGRAM_QUESTION"),
     getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
+    getIndexFromCatalog("DE_PROGRAM_QUESTION"),
     getIndexFromCatalog("STUDENT_LOOKUP"),
     getIndexFromCatalog("NOT_FOUND_QUESTION"),
     getIndexFromCatalog("FOUND_INFO"),
@@ -231,6 +231,15 @@ function changeToTechniqueForm(dispatch, preEnrollment, formToChange) {
     changeForms(dispatch, formToChange)
 }
 
+function conditionedQuestionAnswer(dispatch, currentForm, answer) {
+    if (currentForm.isQuestionConditioned) {
+        dispatch({
+            type: types.ON_WIZARD_CONDITIONED_QUESTION,
+            answer: {answer: answer, type: currentForm.type, trigger: currentForm.trigger}
+        })
+    }
+}
+
 export const load = (requestId) => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_LOAD_START});
     let user = getState().profile.user;
@@ -313,6 +322,7 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
     let maxForms = wizard.maxForms;
     let maxCurrent = (maxForms - 1);
 
+
     //changing forms
     if (isType(current, "PERSONAL_INFO") && wizard.editing) {
         // !user.userVocationalStudent
@@ -321,6 +331,8 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
 
     let currentForm = getForm(current);
     let next = current + 1;
+
+    conditionedQuestionAnswer(dispatch, currentForm, currentForm.yes);
 
     if (currentForm.isQuestion || currentForm.isSubmit) {
         next = getIndexFromFlow(currentForm.yes);
@@ -390,8 +402,12 @@ export const onPreviousAction = (onPress) => (dispatch, getState) => {
 
     let currentForm = getForm(current);
     let next;
+    conditionedQuestionAnswer(dispatch, currentForm, currentForm.no);
+
     if (currentForm.isQuestion) {
         next = getIndexFromFlow(currentForm.no);
+    } else if (currentForm.isQuestionConditioned) {
+        next = getIndexFromFlow(currentForm.triggerAnswerOn);
     } else if (currentForm.isSubmit) {
         next = previousOnSubmit(preEnrollment, currentForm)
     } else if (isType(current, "NEED_TRANSPORTATION_QUESTION")) {
@@ -443,13 +459,18 @@ function changeFormFlow(selection, dispatch, preEnrollment, edited = false) {
 
 export const onProgramSelectionAction = (selection) => (dispatch, getState) => {
     // selection can be: TECHNIQUE, OCCUPATIONAL, REGULAR
-    dispatch({type: types.ON_WIZARD_PREVIOUS_START});
+    dispatch({type: types.ON_WIZARD_NEXT_START});
     let preEnrollment = getState().preEnrollment;
     let wizard = getState().wizard;
     let current = wizard.current;
     let next = current + 1;
+    let lastQuestion = wizard.lastQuestion;
 
     changeFormFlow(selection, dispatch, preEnrollment);
+
+    if (lastQuestion && lastQuestion.answer) {
+        next = getIndexFromFlow(lastQuestion.answer)
+    }
 
     let nextForm = getForm(next);
     dispatch({

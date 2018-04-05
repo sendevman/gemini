@@ -1,8 +1,8 @@
 {
   "name": "project-gemini",
-  "version": "1.0.1RC_3",
+  "version": "1.0.1RC_4",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://prdesieprod.dde.pr/registro/",
   "dependencies": {
     "classnames": "^2.2.5",
     "immutable": "^3.8.2",

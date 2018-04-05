@@ -16,7 +16,7 @@ class PersonalAdditionalInfo extends Component {
         this.inputHandler = this.inputHandler.bind(this);
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.props.loadDemographics();
     }
 
@@ -32,7 +32,9 @@ class PersonalAdditionalInfo extends Component {
         this.props.saveDemographics(form, onResult, onError);
     }
 
-    addEthnicCode() {
+    addEthnicCode(e) {
+        e.preventDefault();
+
         let form = this.props.form;
         let size = form.ethnicCodes.length || 0;
         let ethnicCode = this.refs.ethnicCodes.getRawObject();
@@ -49,8 +51,10 @@ class PersonalAdditionalInfo extends Component {
     }
 
     deleteEthnicCode = (index) => (e) => {
+        e.preventDefault();
+
         let form = this.props.form;
-        form.ethnicCodesToDelete =  form.ethnicCodesToDelete || [];
+        form.ethnicCodesToDelete = form.ethnicCodesToDelete || [];
         let ethnicCodeDeleted = form.ethnicCodes[index];
         form.ethnicCodesToDelete.push(ethnicCodeDeleted);
         form.ethnicCodes.splice(index, 1);
@@ -63,10 +67,10 @@ class PersonalAdditionalInfo extends Component {
 
     render() {
         let form = this.props.form;
-        let studentExists = false;//this.props.found;
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description"><h2 className="f90sbg">{UIHelper.getText("personalAdditionalPageQuestionNumber")}</h2>
+                <div className="description"><h2
+                    className="f90sbg">{UIHelper.getText("personalAdditionalPageQuestionNumber")}</h2>
                     <div className="violet-line"></div>
                 </div>
                 <span className="f30slg">
@@ -74,54 +78,54 @@ class PersonalAdditionalInfo extends Component {
                     <span className="f30slb">{UIHelper.getText("personalAdditionalPageMessageHighlight")}</span>
                     {UIHelper.getText("personalAdditionalPageMessageEnd")}
                 </span>
-                {/*<span className="f30slg">Por favor ingrese los siguientes<span*/}
-                    {/*className="f30slb"> Datos Demogr&aacute;ficos</span> del estudiante en el sistema</span>*/}
             </div>
-            <div className="body d-flex flex-column">
-                <div className="row " style={{marginTop: -120}}>
-                    <div className="col-md-6 ">
-                        <CodeSelect id="citizenship"
-                                    label="Cuidadanía"
-                                    codeType="residentialStatus"
-                                    value={form.citizenship}
-                                    required
-                                    onChange={this.inputHandler}
-                                    placeholder=""
-                        />
+            <div className="body d-flex flex-column justify-content-end">
+                <form>
+                    <div className="row ">
+                        <div className="col-md-6 ">
+                            <CodeSelect id="citizenship"
+                                        label="Cuidadanía"
+                                        codeType="residentialStatus"
+                                        value={form.citizenship}
+                                        required
+                                        onChange={this.inputHandler}
+                                        placeholder=""
+                            />
+                        </div>
+                        <div className="col-md-6">
+                            <CodeSelect id="language"
+                                        label="Idioma"
+                                        codeType="languageCodes"
+                                        value={form.language}
+                                        required
+                                        onChange={this.inputHandler}
+                                        placeholder=""
+                            />
+                        </div>
                     </div>
-                    <div className="col-md-6">
-                        <CodeSelect id="language"
-                                    label="Idioma"
-                                    codeType="languageCodes"
-                                    value={form.language}
-                                    required
-                                    onChange={this.inputHandler}
-                                    placeholder=""
-                        />
+                    <div className="row pt-4">
+                        <div className="col-md-10">
+                            <CodeSelect id="ethnicCodes"
+                                        ref="ethnicCodes"
+                                        label="Códigos Étnicos"
+                                        codeType="ethnicCodes"
+                                        required
+                                        value={this.state.selectedCode}
+                                        placeholder=""
+                            />
+                        </div>
+                        <div className="col-md-2">
+                            <Button color="primary" size="small" onClick={this.addEthnicCode}><i
+                                className="fa fa-plus"/></Button>
+                        </div>
                     </div>
-                </div>
-                <div className="row pt-4">
-                    <div className="col-md-10">
-                        <CodeSelect id="ethnicCodes"
-                                    ref="ethnicCodes"
-                                    label="Códigos Étnicos"
-                                    codeType="ethnicCodes"
-                                    required
-                                    value={this.state.selectedCode}
-                                    placeholder=""
-                        />
+                    <div className="row">
+                        <div className="col-md-12 tableScrollable">
+                            {this.renderEthnicCodesSelected()}
+                        </div>
                     </div>
-                    <div className="col-md-2">
-                        <Button color="primary" size="small" onClick={this.addEthnicCode}><i
-                            className="fa fa-plus"/></Button>
-                    </div>
-                </div>
-                <div className="row pt-4">
-                    <div className="col-md-12">
-                        {this.renderEthnicCodesSelected()}
-                    </div>
-                </div>
-                <div style={{marginTop: -20}}>
+                </form>
+                <div style={{marginTop: -40}}>
                     {this.props.footer}
                 </div>
             </div>
@@ -156,7 +160,8 @@ class PersonalAdditionalInfo extends Component {
                         </tr>
                     ))
                     : <tr>
-                        <td colSpan={3} style={{left: 50, top: 50}}>{UIHelper.getText("personalAdditionalNoEthnicCode")}</td>
+                        <td colSpan={3}
+                            style={{left: 50, top: 50}}>{UIHelper.getText("personalAdditionalNoEthnicCode")}</td>
                     </tr>}
                 </tbody>
             </table>

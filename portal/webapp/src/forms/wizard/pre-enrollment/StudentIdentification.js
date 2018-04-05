@@ -44,61 +44,62 @@ class StudentIdentification extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description mb40"><h2 className="f90sbg">{UIHelper.getText("searchPageQuestionNumber")}</h2>
+                    <div className="description mb40"><h2
+                        className="f90sbg">{UIHelper.getText("searchPageQuestionNumber")}</h2>
                         <div className="violet-line"></div>
                     </div>
                     <p className="f30slg">{UIHelper.getText("searchPageMessageStart")}<span
                         className="f30slb">{UIHelper.getText("searchPageMessageEnd")}</span></p>
                 </div>
                 <div className="body d-flex flex-column justify-content-end">
-                    <div className="row" style={{marginTop: -100}}>
-                        <div className="col-md-4">
-                            <SimpleDateInput id="dateOfBirth"
-                                             value={form.dateOfBirth}
-                                             required
-                                             onValidDate={this.onValidDate}
-                                             label="Fecha Nac."/>
-                        </div>
-                        <div className="col-md-4">
+                    <form>
+                        <div className="row">
+                            <div className="col-md-4">
+                                <SimpleDateInput id="dateOfBirth"
+                                                 value={form.dateOfBirth}
+                                                 required
+                                                 onValidDate={this.onValidDate}
+                                                 label="Fecha Nac."/>
+                            </div>
+                            <div className="col-md-4">
+                                <TextInput id="lastSsn"
+                                           type="lastSSN"
+                                           value={form.lastSsn}
+                                           onChange={this.inputHandler}
+                                           required={lastSsnRequired}
+                                           label="Últimos #4 SSN"/>
+                            </div>
 
-                            <TextInput id="lastSsn"
-
-                                       type="lastSSN"
-                                       value={form.lastSsn}
-                                       onChange={this.inputHandler}
-                                       required={lastSsnRequired}
-                                       label="Últimos #4 SSN"/>
+                            <div className="col-md-4">
+                                <TextInput id="studentNumber"
+                                           type="studentNumber"
+                                           value={form.studentNumber}
+                                           onChange={this.inputHandler}
+                                           required={studentNumberRequired}
+                                           label="# Estudiante SIE"/>
+                            </div>
                         </div>
-
-                        <div className="col-md-4">
-                            <TextInput id="studentNumber"
-                                       type="studentNumber"
-                                       value={form.studentNumber}
-                                       onChange={this.inputHandler}
-                                       required={studentNumberRequired}
-                                       label="# Estudiante SIE"/>
+                        <div className="row">
+                            <div className="col-md-4">
+                                <TextInput id="firstName"
+                                           type="firstName"
+                                           value={form.firstName}
+                                           onChange={this.inputHandler}
+                                           required
+                                           label="Nombre"/>
+                            </div>
+                            <div className="col-md-4">
+                                <TextInput id="lastName"
+                                           type="lastname"
+                                           value={form.lastName}
+                                           onChange={this.inputHandler}
+                                           required
+                                           label="Apellidos"/>
+                            </div>
+                            <div className="col-md-4"/>
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-4">
-                            <TextInput id="firstName"
-                                       type="firstName"
-                                       value={form.firstName}
-                                       onChange={this.inputHandler}
-                                       required
-                                       label="Nombre"/>
-                        </div>
-                        <div className="col-md-4">
-                            <TextInput id="lastName"
-                                       type="lastname"
-                                       value={form.lastName}
-                                       onChange={this.inputHandler}
-                                       required
-                                       label="Apellidos"/>
-                        </div>
-                        <div className="col-md-4"/>
-                    </div>
-                    <div style={{marginTop: -20}}>
+                    </form>
+                    <div style={{marginTop: -50}}>
                         {this.props.footer}
                     </div>
                 </div>

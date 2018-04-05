@@ -2,6 +2,7 @@ import * as types from "../types";
 import * as Utils from "../../Utils";
 
 const initialState = {
+    lastQuestion: {answer: null, type: null, trigger: null}, //can be yes or no that means the next page and type is the page inside the catalog
     current: 0,
     currentPageType: null,
     initForm: false,
@@ -44,6 +45,7 @@ const wizard = (state = Utils.freezeObject(initialState), action) => {
 
             };
         case types.ON_WIZARD_NEXT_START:
+        case types.ON_WIZARD_PREVIOUS_START:
             return state;
         case types.ON_WIZARD_NEXT_END:
             state.flowNavigation.push(action.current);
@@ -64,8 +66,6 @@ const wizard = (state = Utils.freezeObject(initialState), action) => {
                 nextLabel: btnType.nextButton,
                 currentPageType: action.pageType,
             };
-        case types.ON_WIZARD_PREVIOUS_START:
-            return state;
         case types.ON_WIZARD_PREVIOUS_END:
             state.flowNavigation.push(action.current);
             return {
@@ -83,6 +83,8 @@ const wizard = (state = Utils.freezeObject(initialState), action) => {
             return Utils.freezeObject(initialState);
         case types.ON_WIZARD_FORMS_CHANGE:
             return {...state, formsToDisplay: action.forms, maxForms: action.forms.length};
+        case types.ON_WIZARD_CONDITIONED_QUESTION:
+            return {...state, lastQuestion: action.answer};
         default:
             return state;
 

@@ -7,7 +7,6 @@ package com.gemini.beans.types;
  * Time: 2:37 AM
  */
 public enum SpecializedSchoolCategory {
-//    MUSIC("Música"),
     SCIENCE_AND_MATHEMATHICS("STEM (Ciencias y Matemáticas)"),
     FINE_ARTS("Bellas Artes (Cinematografía, Música y Radio y Televisión)"),
     BILINGUE("Bilingüe e Idiomas"),

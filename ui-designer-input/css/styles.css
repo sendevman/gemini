@@ -170,7 +170,7 @@ input:-webkit-autofill {-webkit-animation-name: autofill;-webkit-animation-fill-
 
 /* Content */
 
-.content {height: 80vh;margin-top: 10vh;}
+.content {height: 85vh;margin-top: 10vh;}
 .navigation-section {background-color: #4cc3c0;color:#fff;cursor: pointer;transition: background-color 200ms;}
 .navigation-section:hover {background-color: #2cb4b1;}
 .content-section {padding-left: 2%;}

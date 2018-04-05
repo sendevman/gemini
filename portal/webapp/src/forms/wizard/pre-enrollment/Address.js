@@ -34,6 +34,7 @@ class Address extends Component {
     }
 
     copyAddress(e) {
+        e.preventDefault();
         this.props.copyPhysicalToPostal();
     }
 
@@ -49,45 +50,49 @@ class Address extends Component {
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
-                    <div className="description"><h2>{UIHelper.getText("addressPageTitleStart")}<span className="f40sbb">{UIHelper.getText("addressPageTitleEnd")}</span></h2>
+                    <div className="description"><h2>{UIHelper.getText("addressPageTitleStart")}<span
+                        className="f40sbb">{UIHelper.getText("addressPageTitleEnd")}</span></h2>
                         <div className="violet-line"></div>
                     </div>
                     <span className="f20slg">{UIHelper.getText("addressPageMessage")}
                         <span className="f20slb">{UIHelper.getText("addressPageMessageHighlight")}</span>
                     </span>
                 </div>
-                <div className="body">
-                    <div className="row" style={{marginTop: -160}}>
-                        <div className="col-md-6">
-                            <div className="row">
-                                <div className="col-md-5">
-                                    <h5 htmlFor="">{UIHelper.getText("addressPagePhysicalAddressButton")}</h5>
-                                </div>
+                <div className="body d-flex flex-column justify-content-end">
+                    <form>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-5">
+                                        <h5 htmlFor="">{UIHelper.getText("addressPagePhysicalAddressButton")}</h5>
+                                    </div>
 
-                                <div className="col-md-6" style={{marginLeft: 5}}>
-                                    <Button size="small"
-                                            onClick={this.copyAddress}>{UIHelper.getText("copyButton")}</Button>
+                                    <div className="col-md-6" style={{marginLeft: 5}}>
+                                        <Button size="small"
+                                                onClick={this.copyAddress}>{UIHelper.getText("copyButton")}</Button>
+                                    </div>
+
                                 </div>
+                                {this.renderAddressForm("physical", props.physical)}
 
                             </div>
-                            {this.renderAddressForm("physical", props.physical)}
 
-                        </div>
-
-                        <div className="col-md-6">
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <h5 htmlFor="">{UIHelper.getText("addressPagePostalAddressButton")}</h5>
+                            <div className="col-md-6">
+                                <div className="row">
+                                    <div className="col-md-12">
+                                        <h5 htmlFor="">{UIHelper.getText("addressPagePostalAddressButton")}</h5>
+                                    </div>
                                 </div>
-                            </div>
-                            {this.renderAddressForm("postal", props.postal)}
+                                {this.renderAddressForm("postal", props.postal)}
 
+                            </div>
                         </div>
+                    </form>
+                    <div style={{marginTop: -50}}>
+                        {this.props.footer}
                     </div>
                 </div>
-                <div style={{marginTop: -300}}>
-                    {this.props.footer}
-                </div>
+
             </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 {/*<div className="illustration"><img src={leisureIllustration} alt=""/></div>*/}
@@ -98,19 +103,19 @@ class Address extends Component {
 
     renderAddressForm(type, address) {
         address.city = !address.city ? "-1" : address.city;
-        return (<div className="mt-4">
+        return [
             <div className="row">
                 <div className="col-md-12">
                     <TextInput type="addressLine" id={`${type}.line1`} label="Línea 1"
                                value={address.line1} onChange={this.inputHandler}/>
                 </div>
-            </div>
+            </div>,
             <div className="row">
                 <div className="col-md-12">
                     <TextInput type="addressLine" id={`${type}.line2`} label="Línea 2"
                                value={address.line2} onChange={this.inputHandler}/>
                 </div>
-            </div>
+            </div>,
             <div className="row">
                 <div className="col-md-7">
                     <CodeSelect id={`${type}.city`}
@@ -130,7 +135,7 @@ class Address extends Component {
                                value={address.zipcode} onChange={this.inputHandler}/>
                 </div>
             </div>
-        </div>);
+        ];
     }
 }
 

@@ -35,8 +35,9 @@ export default class Button extends Component {
     }
 
     render() {
+        let style = this.props.style ? {...this.props.style, ...this.sizeCss} : {...this.sizeCss};
         return (
-            <button style={this.sizeCss} {...this.props} className={this.color}>
+            <button {...this.props} className={this.color} style={style} >
                 {this.props.children}
             </button>);
     }

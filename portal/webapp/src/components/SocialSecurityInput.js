@@ -67,8 +67,8 @@ export default class SocialSecurityInput extends Component {
         let validHtml = UIHelper.toggleFieldValidHtml(this.state.valid, this.props.required);
         return <div className="form-group has-feedback">
             <InputMask {...props}
+                       style={{paddingLeft: 10}}
                        onChange={this.inputHandler}
-                       style={{paddingLeft: 20}}
                        className="inputMaterial"
                        mask="999-99-9999"
                        maskChar=" "
@@ -77,8 +77,7 @@ export default class SocialSecurityInput extends Component {
             {/*<i className="n fa fa-birthday-cake"/>*/}
             <span className="highlight"/>
             <span className="bar"/>
-            <label
-                htmlFor={this.props.id}>{`${this.props.label} ${format}`}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>
+            <label style={{left: 10}} htmlFor={this.props.id}>{`${this.props.label} ${format}`}{validHtml}</label>
         </div>;
     }
 }

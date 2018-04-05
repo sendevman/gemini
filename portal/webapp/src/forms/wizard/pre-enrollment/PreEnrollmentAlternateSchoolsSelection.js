@@ -60,11 +60,14 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
         return [<div className="col-md-7 content-section">
             <div className="title">
                 <div className="description mb30"><h2>{UIHelper.getText("alternateEnrollmentTitleStart")}
-                    <span>{UIHelper.getText("alternateEnrollmentTitleEnd")}</span></h2></div>
-                <span className="f20slg"><span
-                    className="f20slb">{UIHelper.getText("alternateEnrollmentMessageEnd")}</span> :</span>
+                    <span>{UIHelper.getText("alternateEnrollmentTitleEnd")}</span></h2>
+                </div>
+                <span className="f20slg">
+                    {UIHelper.getText("alternateEnrollmentMessage")}
+                    <span className="f20slb">{UIHelper.getText("enrollmentYear")}</span>:
+                </span>
             </div>
-            <div className="body d-flex flex-column justify-content-end" style={{marginTop: -120}}>
+            <div className="body d-flex flex-column justify-content-end">
                 <form>
                     <SchoolSelector ref="selector"
                                     form={form}
@@ -77,8 +80,6 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
                                     fetchSchools={this.fetchSchools}
                     />
                 </form>
-            </div>
-            <div style={{marginTop: -120}}>
                 {this.props.footer}
             </div>
         </div>, <div className="col-md-4 illustration-section d-flex align-items-center text-center">

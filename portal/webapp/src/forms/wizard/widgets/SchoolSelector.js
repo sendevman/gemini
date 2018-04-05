@@ -16,7 +16,8 @@ export default class SchoolSelector extends Component {
         this.onAdd = this.onAdd.bind(this);
     }
 
-    onAdd() {
+    onAdd(e) {
+        e.preventDefault();
         let schoolsSelected = this.props.schoolsSelected;
         let size = schoolsSelected.length || 0;
         let school = this.state.selectedSchool;
@@ -35,6 +36,7 @@ export default class SchoolSelector extends Component {
     }
 
     onDelete = (index) => (e) => {
+        e.preventDefault();
         let schoolsSelected = this.props.schoolsSelected;
         let schoolsSelectedToDelete = this.props.schoolsSelectedToDelete;
 
@@ -102,6 +104,13 @@ export default class SchoolSelector extends Component {
         let schoolSelectDisabled = Utils.isEmptyValue(form.regionId)
             || Utils.isEmptyValue(form.nextGradeLevel)
             || limit;
+        let addButtonDisabled = Utils.isEmptyValue(form.regionId)
+            || Utils.isEmptyValue(form.nextGradeLevel)
+            || limit
+            || Utils.isEmptyValue(schools)
+            || schools.length === 0
+            || Utils.isEmptyValue(selectedSchool);
+
 
         let schoolName = !selectedSchool || selectedSchool.schoolId === -1
             ? UIHelper.getText("schoolSelectorEmptySchoolMessage")
@@ -113,10 +122,10 @@ export default class SchoolSelector extends Component {
 
 
         let addSchoolFeature = schoolsSelected && schoolsSelected != null && schoolsSelected !== undefined;
-        let schoolComponentCss = addSchoolFeature ? "col-md-7" : "col-md-8";
+        let schoolComponentCss = addSchoolFeature ? "col-md-6" : "col-md-8";
 
         return [
-            <div className="row pt-2" style={{margin: 2, marginBottom: 15}}>
+            <div className="row">
                 <div className="col-md-4">
                     <span>Escuela: <h6>{schoolName}</h6></span>
                 </div>
@@ -124,7 +133,7 @@ export default class SchoolSelector extends Component {
                     <span>{UIHelper.getText("schoolSelectorAddressLabel")} <h6>{schoolAddress}</h6></span>
                 </div>
             </div>,
-            <div className="row mt-2">
+            <div className="row">
                 <div className="col-md-2">
                     <RemoteCodeSelect id="gradeLevel"
                                       label="Grado"
@@ -161,16 +170,16 @@ export default class SchoolSelector extends Component {
                 </div>
                 {
                     addSchoolFeature
-                        ? (<div className="col-md-1">
-                            <Button color="primary" onClick={this.onAdd} disabled={schoolSelectDisabled}><i
+                        ? (<div className="col-md-2">
+                            <Button color="primary" onClick={this.onAdd} disabled={addButtonDisabled}><i
                                 className="fa fa-plus"/></Button>
                         </div>)
                         : (null)
                 }
             </div>,
             addSchoolFeature ?
-                (<div className="row mt-3">
-                    <div className="col-md-12">
+                (<div className="row">
+                    <div className="col-md-12 tableScrollable">
                         {this.renderSchoolsSelected()}
                     </div>
                 </div>) : (null)
