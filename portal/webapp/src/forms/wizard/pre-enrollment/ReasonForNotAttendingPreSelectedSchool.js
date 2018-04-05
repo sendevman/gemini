@@ -25,7 +25,7 @@ class ReasonForNotAttendingPreSelectedSchool extends Component {
 
     onPress(onResult, onError) {
         if (this.state.reasonSelected === types.MOVE_OUT_OF_COUNTRY)
-            this.props.modal.confirm(UIHelper.getText("confirmTitle"), UIHelper.getText("reasonConfirmMessage"), () => {
+            this.props.modal.confirm(UIHelper.getText("reasonConfirmTitle"), UIHelper.getText("reasonConfirmMessage"), () => {
                 this.props.saveReasonForNotAttendingSchool(this.state.reasonSelected, onResult, onError);
             }, () => {
                 this.props.unblockUI()
@@ -39,18 +39,20 @@ class ReasonForNotAttendingPreSelectedSchool extends Component {
         let reasons = this.props.reasons;
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description mb40"><h2 className="f90sbg">09.</h2>
+                <div className="description mb40"><h2 className="f90sbg">{UIHelper.getText("reasonQuestionNumber")}</h2>
                     <div className="violet-line"/>
                 </div>
                 <p className="f30sbg text-justify">{UIHelper.getText("reasonQuestion")}</p>
                 <RemoteCodeSelect id="reasons"
-                                  placeholder="Escoja Razón"
+                                  placeholder={UIHelper.getText("reasonSelection")}
                                   codes={reasons}
                                   target="name"
                                   display="description"
                                   onObjectChange={this.reasonChanged}
                                   value={this.state.reasonSelected}
                 />
+                <span style={{fontStyle: "italic"}} className="f20slb text-justify">{UIHelper.getText("enrollmentEndByOutOfCountryExplanation")}</span>
+
             </div>
 
             {this.props.footer}

@@ -17,6 +17,8 @@ export default class EndPreEnrollmentMoveOutOfCountry extends Component{
                     </div>
                     <p className="f40sllg">
                         <span className="f40sbgr">{UIHelper.getText("enrollmentEndByOutOfCountryExplanation")}</span> </p>
+                    <a href="https://srx.dde.pr/" target="_self">Pulse Aquí</a>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;Solicitud de transcripción de créditos </span>
                 </div>
                 {this.props.footer}
             </div>,

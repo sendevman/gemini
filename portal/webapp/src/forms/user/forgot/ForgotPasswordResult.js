@@ -17,7 +17,7 @@ class ForgotPasswordResult extends Component {
 
     render() {
         let success = this.props.match.params.result === "success";
-        let title = success ? "Correo electr\u00f3nico fue enviado" : "¡Upss!";
+        let title = success ? UIHelper.getText("forgotPasswordErrorTitle") : UIHelper.getText("forgotPasswordErrorTitle") ;
         return [<div className="col-md-7 content-section">
             <div className="title">
                 <div className="description mb40"><h2>{title}!</h2>
@@ -43,11 +43,11 @@ class ForgotPasswordResult extends Component {
         let success = this.props.match.params.result === "success";
         let email = this.props.form.email;
         if (!success)
-            return (<p>No existe una cuenta para el email ingresado.</p>);
+            return (<p>{UIHelper.getText("forgotPasswordErrorMessage")}</p>);
         return (
             <p>
-                Un email con las instrucciones de como reiniciar su contraseña ha sido enviado a <span className="f20slb">{email}. </span>
-                 Por favor verifique sus directorios de spam o junk si no ve el email en su buzon de entrada.
+                {UIHelper.getText("forgotPasswordSuccessStart")} <span className="f20slb">{email}. </span>
+                {UIHelper.getText("forgotPasswordSuccessEnd")}
             </p>)
     }
 }

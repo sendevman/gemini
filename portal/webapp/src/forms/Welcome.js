@@ -16,8 +16,8 @@ export default class Welcome extends Component {
     render() {
         return [<div className="col-md-5 content-section">
             <div className="title">
-                <h2>SIE-Registro</h2>
-                <div className="description"><p>de Estudiante</p>
+                <h2>{UIHelper.getText("projectName")}</h2>
+                <div className="description"><p>{UIHelper.getText("projectNameFragment")}</p>
                     <div className="green-line"/>
                 </div>
 
@@ -27,7 +27,7 @@ export default class Welcome extends Component {
             </div>
             <div className="body d-flex align-items-center flex-column justify-content-end">
                 <p>{UIHelper.getText("startDescription")}</p>
-                <a onClick={this.goAuthentication} className="button-blue">Comenzar</a>
+                <a onClick={this.goAuthentication} className="button-blue">{UIHelper.getText("welcomeStartButton")}</a>
             </div>
         </div>,
             <div className="col-md-6 illustration-section d-flex align-items-center text-center">

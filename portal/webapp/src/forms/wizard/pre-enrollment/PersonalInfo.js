@@ -24,7 +24,7 @@ class PersonalInfo extends Component {
     componentWillMount() {
         this.props.loadPersonalInfo(() => {
         }, () => {
-            this.refs.modal.open("Upss!!!", "Ocurrio un error buscando la solicitud", () => {
+            this.refs.modal.open(UIHelper.getText("personalErrorTitle"), UIHelper.getText("personalPageLoadError"), () => {
                 this.props.history.push("/home")
             });
         });
@@ -51,10 +51,10 @@ class PersonalInfo extends Component {
         let studentExists = this.props.found || student.existsOnSie;
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description"><h2 className="f90sbg">OK.</h2>
+                <div className="description"><h2 className="f90sbg">{UIHelper.getText("personalPageQuestionNumber")}</h2>
                     <div className="violet-line"></div>
                 </div>
-                <span className="f30slg">{UIHelper.getText("studentRegisterStart")}<span className="f30slb">{UIHelper.getText("studentRegisterHighlight")}</span> {UIHelper.getText("studentRegisterEnd")}</span>
+                <span className="f30slg">{UIHelper.getText("personalPageMessageStart")}<span className="f30slb">{UIHelper.getText("personalPageMessageHighlight")}</span> {UIHelper.getText("personalPageMessageEnd")}</span>
             </div>
             <div className="body d-flex flex-column justify-content-end ">
                 <form>
@@ -100,14 +100,14 @@ class PersonalInfo extends Component {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-md-6 pt-4">
+                        <div className="col-md-6 pt-3">
                             <CodeSelect id="gender"
                                         label="Género"
                                         codeType="gender"
                                         value={student.gender}
                                         required
                                         onChange={this.inputHandler}
-                                        placeholder="Genero"
+                                        placeholder="Género"
                                         disabled={studentExists}
                             />
 

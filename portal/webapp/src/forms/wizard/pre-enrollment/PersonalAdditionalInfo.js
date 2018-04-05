@@ -44,12 +44,13 @@ class PersonalAdditionalInfo extends Component {
             form.ethnicCodes.push(object);
             this.cleanEthnicCode()
         } else {
-            alert("Ya ha alcanzado el maximo de codigos permitidos")
+            alert(UIHelper.getText("personalAdditionalEthnicCodeValidation"))
         }
     }
 
     deleteEthnicCode = (index) => (e) => {
         let form = this.props.form;
+        form.ethnicCodesToDelete =  form.ethnicCodesToDelete || [];
         let ethnicCodeDeleted = form.ethnicCodes[index];
         form.ethnicCodesToDelete.push(ethnicCodeDeleted);
         form.ethnicCodes.splice(index, 1);
@@ -65,10 +66,14 @@ class PersonalAdditionalInfo extends Component {
         let studentExists = false;//this.props.found;
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description"><h2 className="f90sbg">OK.</h2>
+                <div className="description"><h2 className="f90sbg">{UIHelper.getText("personalAdditionalPageQuestionNumber")}</h2>
                     <div className="violet-line"></div>
                 </div>
-                <span className="f30slg">{UIHelper.getText("demographicFactsPage")}</span>
+                <span className="f30slg">
+                    {UIHelper.getText("personalAdditionalPageMessageStart")}
+                    <span className="f30slb">{UIHelper.getText("personalAdditionalPageMessageHighlight")}</span>
+                    {UIHelper.getText("personalAdditionalPageMessageEnd")}
+                </span>
                 {/*<span className="f30slg">Por favor ingrese los siguientes<span*/}
                     {/*className="f30slb"> Datos Demogr&aacute;ficos</span> del estudiante en el sistema</span>*/}
             </div>
@@ -76,7 +81,7 @@ class PersonalAdditionalInfo extends Component {
                 <div className="row " style={{marginTop: -120}}>
                     <div className="col-md-6 ">
                         <CodeSelect id="citizenship"
-                                    label="Cuidadania"
+                                    label="Cuidadanía"
                                     codeType="residentialStatus"
                                     value={form.citizenship}
                                     required
@@ -99,7 +104,7 @@ class PersonalAdditionalInfo extends Component {
                     <div className="col-md-10">
                         <CodeSelect id="ethnicCodes"
                                     ref="ethnicCodes"
-                                    label="Códigos Ethnicos"
+                                    label="Códigos Étnicos"
                                     codeType="ethnicCodes"
                                     required
                                     value={this.state.selectedCode}
@@ -134,7 +139,6 @@ class PersonalAdditionalInfo extends Component {
             <table className="table table-striped table-hover ">
                 <thead>
                 <tr>
-                    <th>Índice</th>
                     <th>Raza</th>
                     <th>Acci&oacute;n</th>
                 </tr>
@@ -143,7 +147,6 @@ class PersonalAdditionalInfo extends Component {
                 {ethnicCodes && ethnicCodes.length > 0
                     ? ethnicCodes.map((code, index) => (
                         <tr key={index}>
-                            <td>{index + 1}</td>
                             <td>{code.description}</td>
                             <td>
                                 <Button size="sm" color="danger" onClick={this.deleteEthnicCode(index)}>
@@ -153,7 +156,7 @@ class PersonalAdditionalInfo extends Component {
                         </tr>
                     ))
                     : <tr>
-                        <td colSpan={3} style={{left: 50, top: 50}}>No posee ningun codigo ethnico aun</td>
+                        <td colSpan={3} style={{left: 50, top: 50}}>{UIHelper.getText("personalAdditionalNoEthnicCode")}</td>
                     </tr>}
                 </tbody>
             </table>

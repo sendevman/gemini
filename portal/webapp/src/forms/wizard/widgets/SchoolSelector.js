@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
 import Button from "../../../components/Button";
 import * as Utils from "../../../Utils";
+import * as UIHelper from "../../../UIHelper"
 
 export default class SchoolSelector extends Component {
 
@@ -29,7 +30,7 @@ export default class SchoolSelector extends Component {
             schoolsSelected.push(object);
             this.cleanSchoolCode()
         } else {
-            alert("Maximo de dos escuela");
+            alert(UIHelper.getText("schoolSelectorMaxExceed"));
         }
     }
 
@@ -51,7 +52,7 @@ export default class SchoolSelector extends Component {
 
     limit() {
         let schoolsSelected = this.props.schoolsSelected;
-        if(!schoolsSelected)
+        if (!schoolsSelected)
             return false;
         return this.props.maxSchools ? schoolsSelected.length >= this.props.maxSchools : false;
     }
@@ -100,15 +101,14 @@ export default class SchoolSelector extends Component {
         let disabledGradeLevels = (schoolsSelected && schoolsSelected.length > 0) || form.hasPreEnrollment;
         let schoolSelectDisabled = Utils.isEmptyValue(form.regionId)
             || Utils.isEmptyValue(form.nextGradeLevel)
-            || limit
-            || Utils.isEmptyValue(schools);
+            || limit;
 
         let schoolName = !selectedSchool || selectedSchool.schoolId === -1
-            ? "Sin Selección"
+            ? UIHelper.getText("schoolSelectorEmptySchoolMessage")
             : selectedSchool.displayName;
 
         let schoolAddress = !selectedSchool || selectedSchool.schoolId === -1
-            ? "Sin Selección"
+            ? UIHelper.getText("schoolSelectorEmptySchoolMessage")
             : selectedSchool.address.addressFormatted;
 
 
@@ -121,7 +121,7 @@ export default class SchoolSelector extends Component {
                     <span>Escuela: <h6>{schoolName}</h6></span>
                 </div>
                 <div className="col-md-8">
-                    <span>Direcci&oacute;n: <h6>{schoolAddress}</h6></span>
+                    <span>{UIHelper.getText("schoolSelectorAddressLabel")} <h6>{schoolAddress}</h6></span>
                 </div>
             </div>,
             <div className="row mt-2">
@@ -206,7 +206,7 @@ export default class SchoolSelector extends Component {
                         </tr>
                     ))
                     : <tr>
-                        <td colSpan={span} style={{left: 50, top: 50}}>No posee ningun programa aun</td>
+                        <td colSpan={span} style={{left: 50, top: 50}}>{UIHelper.getText("schoolSelectorTableEmptyMessage")}</td>
                     </tr>}
                 </tbody>
             </table>

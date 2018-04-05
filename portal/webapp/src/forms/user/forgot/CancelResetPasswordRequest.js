@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {cancelResetPassword} from "../../../redux/actions";
-import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
 import * as UIHelper from "../../../UIHelper";
 
@@ -26,8 +25,8 @@ class CancelResetPasswordRequest extends Component {
         let form = this.props.form;
         if (form.loading)
             return (null);
-        let message = form.validKey ? "Su solicitud de reiniciar su contraseña ha sido cancelada" : "Enlace ha caducado, ya no es valido";
-        let title = form.validKey ? "Enlace cancelado" : "¡Upss!";
+        let message = form.validKey ? UIHelper.getText("cancelLinkSuccessMessage") : UIHelper.getText("cancelLinkErrorMessage");
+        let title = form.validKey ? UIHelper.getText("cancelLinkSuccessTitle") : UIHelper.getText("cancelLinkErrorTitle");
         return [<div className="col-md-7 content-section">
             <div className="title">
                 <div className="description mb40"><h2>{title}!</h2>
@@ -38,7 +37,8 @@ class CancelResetPasswordRequest extends Component {
             <div className="body d-flex align-items-center flex-column justify-content-end">
                 <div className="row action-section">
                     <div className="col-md-12 text-center text-lg-left p-0">
-                        <a className="button-green mr30 mob-mb30px" onClick={this.onClick}><span>I</span>{UIHelper.getText("startSessionButton")}</a>
+                        <a className="button-green mr30 mob-mb30px"
+                           onClick={this.onClick}><span>I</span>{UIHelper.getText("startSessionButton")}</a>
                     </div>
                 </div>
             </div>

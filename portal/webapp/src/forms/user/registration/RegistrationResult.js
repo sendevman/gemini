@@ -17,7 +17,7 @@ class RegistrationResult extends Component {
 
     render() {
         let success = this.props.match.params.result === "success";
-        let title = success ? "Cuenta Registrada" : "¡Upss!";
+        let title = success ? UIHelper.getText("registrationSuccessTitle") : UIHelper.getText("registrationErrorTitle");
         return [<div className="col-md-7 content-section">
             <div className="title">
                 <div className="description mb40"><h2>{title}!</h2>
@@ -43,13 +43,13 @@ class RegistrationResult extends Component {
         let email = this.props.form.email;
         let success = this.props.match.params.result === "success";
         if (!success)
-            return (<p>Ha occurrido un error al registrar su cuenta</p>);
+            return (<p>{UIHelper.getText("registrationError")}</p>);
 
         return (<p>
-            {UIHelper.getText("confirmationEmailStart")}
+            {UIHelper.getText("registrationSuccessStart")}
             <span
             className="f20slb">{email}. </span>
-            {UIHelper.getText("confirmationEmailEnd")}
+            {UIHelper.getText("registrationSuccessEnd")}
         </p>)
     }
 

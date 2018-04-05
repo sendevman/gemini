@@ -18,7 +18,7 @@ export default class ActivationResult extends Component {
 
     render() {
         let success = this.props.match.params.result === "success";
-        let title = success ? "Cuenta Creada" : "¡Upss!";
+        let title = success ? UIHelper.getText("activationSuccessTitle") : UIHelper.getText("activationErrorTitle");
         return [<div className="col-md-7 content-section">
             <div className="title">
                 <div className="description mb40"><h2>{title}!</h2>
@@ -43,10 +43,10 @@ export default class ActivationResult extends Component {
     renderMessage() {
         let success = this.props.match.params.result === "success";
         if (!success)
-            return (<p>{UIHelper.getText("enrolledEmailError")}</p>);
+            return (<p>{UIHelper.getText("activationErrorMessage")}</p>);
 
         return (<p>
-            <span className="f20slb"> ¡Enhorabuena! </span>{UIHelper.getText("enrolledEmail")}
+            <span className="f20slb"> {UIHelper.getText("activationSuccessStart")}</span>{UIHelper.getText("activationSuccessEnd")}
         </p>)
     }
 

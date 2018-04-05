@@ -34,6 +34,35 @@ class Home extends Component {
     render() {
         return [
             <div className="col-md-7 content-section">
+
+                <div className="title">
+                    <div className="description"/>
+                    <span className="f30sbg"> Resumen de&nbsp;<span
+                        className="f30sbb">{UIHelper.getText("homeTitle")}</span></span>
+                    <div className="violet-line"/>
+
+                    <span
+                        className="f30slg">A continuaci&oacute;n un resumen de las matr&iacute;culas realizadas o en proceso&nbsp;&nbsp;&nbsp;
+                        <span className="f22slg">
+                                {UIHelper.getText("enrollmentLabel")}
+                            </span>&nbsp;&nbsp;&nbsp;
+                        <a href="#" onClick={this.preEnroll}>
+                                {UIHelper.getText("enrollmentButton")}
+                            </a>
+                    </span>
+                    {/*<div className="row">*/}
+                    {/*<div className="col-md-8">*/}
+                    {/*<h5 className="f20slb" style={{textAlign: "right"}}>*/}
+                    {/*{UIHelper.getText("enrollmentLabel")}*/}
+                    {/*</h5>*/}
+                    {/*</div>*/}
+                    {/*<div className="col-md-4">*/}
+                    {/*<button className="button-yellow" style={{padding: 5}} onClick={this.preEnroll}>*/}
+                    {/*{UIHelper.getText("enrollmentButton")}*/}
+                    {/*</button>*/}
+                    {/*</div>*/}
+                    {/*</div>*/}
+                </div>
                 <div className="home">
                     {this.renderHome()}
                 </div>
@@ -48,19 +77,6 @@ class Home extends Component {
 
     renderHome() {
         return [
-
-            <div className="row">
-                <div className="col-md-8">
-                    <h5 className="f20slb" style={{textAlign: "right"}}>
-                        {UIHelper.getText("enrollmentLabel")}
-                    </h5>
-                </div>
-                <div className="col-md-4">
-                    <button className="button-yellow" style={{padding: 10}} onClick={this.preEnroll}>
-                        {UIHelper.getText("enrollmentButton")}
-                    </button>
-                </div>
-            </div>,
             <div className="row" style={{marginTop: 20}}>
                 <div className="col-md-12">
                     {this.renderPreEnrollmentList()}
@@ -75,7 +91,8 @@ class Home extends Component {
             return (
                 <div className="card">
                     <div className="card-block">
-                        <span className="f20sbgr"><i className="fa fa-times-circle"/> No posee matr&iacute;cula a&uacute;n</span>
+                        <span className="f20sbgr"><i
+                            className="fa fa-times-circle"/> No posee matr&iacute;cula a&uacute;n</span>
                     </div>
                 </div>
             );
@@ -107,12 +124,12 @@ class Home extends Component {
                         Fecha:
                     </div>
                     <div className="col-md-9">
-                        {(pre.submitDate && moment(pre.submitDate).format('LL, h:mm:ss a')) || "Aun no ha sido sometida"}
+                        {(pre.submitDate && moment(pre.submitDate).format('LL, h:mm:ss a')) || "Aún no ha sido sometida"}
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-3">
-                        Matricula:
+                        Matrícula:
                     </div>
                     <div className="col-md-6">
                         {pre.enrollmentTypeText}

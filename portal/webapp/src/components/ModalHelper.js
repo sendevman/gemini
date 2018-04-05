@@ -19,7 +19,7 @@ export default class ModalHelper extends Component {
         this.doConfirm = this.doConfirm.bind(this);
     }
 
-    confirm(title, messages, confirm, onClose) {
+    confirm(title, messages, confirm, onClose, enableWhitespace = false) {
         this.confirmAction = confirm;
         this.onClose = onClose;
         this.setState({modal: true, title: title, message: messages, type: "confirm"});

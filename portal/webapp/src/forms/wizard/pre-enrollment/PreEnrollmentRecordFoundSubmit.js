@@ -5,7 +5,6 @@ import React, {Component} from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {submitPreEnrollment} from "../../../redux/actions";
-import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
 import * as UIHelper from "../../../UIHelper";
 
@@ -28,18 +27,20 @@ class PreEnrollmentRecordFound extends Component {
 
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description mb40"><h2 className="f90sbg">08.</h2>
+                <div className="description mb40"><h2 className="f90sbg">{UIHelper.getText("enrollmentPageQuestionNumber")}</h2>
                     <div className="violet-line"></div>
                 </div>
                 <p className="f30sbg">
-                    Su hijo/a tiene un expediente de matr&iacute;cula para el pr&oacute;ximo año escolar <span
-                    className="f30sbb">2018-2019</span>:
+                    {UIHelper.getText("enrollmentPageMessagePage")} <span
+                    className="f30sbb">{UIHelper.getText("enrollmentYear")}</span>:
                 </p>
                 <p className="f22slg mb-1"><i className="fas fa-university mr5"></i> <span
                     id="school">{preEnrollment.schoolName}</span></p>
-                <p className="f22slg mb-1"><i className="icon-teacher mr5"></i> <span id="level">{preEnrollment.nextGradeLevelDescription}</span></p>
-                <p className="f22slg mb-1"><i className="icon-gps mr5"></i> <span id="adress">{preEnrollment.schoolAddress.addressFormatted}</span></p>
-                <p className="f30sbg mt30">¿Hará cambios en esta matrícula?</p>
+                <p className="f22slg mb-1"><i className="icon-teacher mr5"></i> <span
+                    id="level">{preEnrollment.nextGradeLevelDescription}</span></p>
+                <p className="f22slg mb-1"><i className="icon-gps mr5"></i> <span
+                    id="adress">{preEnrollment.schoolAddress.addressFormatted}</span></p>
+                <p className="f30sbg mt30">{UIHelper.getText("enrollmentChangeQuestion")}</p>
             </div>
             {this.props.footer}
         </div>,

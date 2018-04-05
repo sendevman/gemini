@@ -23,11 +23,12 @@ class PreEnrollmentAlternateSchoolsSubmit extends Component {
         let alternateSchools = this.props.alternatePreEnrollment.alternateSchools;
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description mb40"><h2 className="f90sbg">06.</h2>
+                <div className="description mb40"><h2
+                    className="f90sbg">{UIHelper.getText("alternateSubmitPageQuestionNumber")}</h2>
                     <div className="violet-line"></div>
                 </div>
-                <p className="f20sbg">El estudiante <span className="f20sbb">{student.fullName}</span>, se le desea
-                    crear un registro de Matrícula en las siguientes alternativas:</p>
+                <p className="f20sbg">{UIHelper.getText("alternateSubmitMessageStart")} <span
+                    className="f20sbb">{student.fullName}</span>{UIHelper.getText("alternateSubmitMessageEnd")}</p>
 
                 <div className="row">
 
@@ -35,11 +36,11 @@ class PreEnrollmentAlternateSchoolsSubmit extends Component {
                         ? alternateSchools.map((school, index) => (
                             this.renderAlternateSchool(school)
                         ))
-                        : (<span className="f20sbb">Debe seleccionar dos esculas alternativas!!!</span>)}
+                        : (<span style={{paddingLeft: 100, color: "#ff8700"}} className="f20sbb">{UIHelper.getText("alternateSubmitValidationMessage")}</span>)}
 
                 </div>
 
-                <p className="f30sbg mt40">Habrá algun cambio para esta Matr&iacute;cula?</p>
+                <p className="f30sbg mt40">{UIHelper.getText("alternateChangeQuestion")}</p>
             </div>
             {this.props.footer}
         </div>,
@@ -56,22 +57,22 @@ class PreEnrollmentAlternateSchoolsSubmit extends Component {
                 <span className="f20sbb">{altSchool.priority}.</span>
             </div>,
             <div className="col-md-5">
-            <p className="f22slg mb-1"><i className="fas fa-university mr5"></i> <span
-                id="school">{altSchool.schoolName}</span></p>
-            <p className="f22slg mb-1"><i className="icon-teacher mr5"></i> <span
-                id="level">{nextGradeLevelDescription}</span></p>
-            <div className="row">
-                <div className="col-md-1">
-                    <i className="icon-gps mr5"/>
+                <p className="f22slg mb-1"><i className="fas fa-university mr5"></i> <span
+                    id="school">{altSchool.schoolName}</span></p>
+                <p className="f22slg mb-1"><i className="icon-teacher mr5"></i> <span
+                    id="level">{nextGradeLevelDescription}</span></p>
+                <div className="row">
+                    <div className="col-md-1">
+                        <i className="icon-gps mr5"/>
+                    </div>
+                    <div className="col-md-9">
+                        <p className="f22slg mb-1">
+                            <span id="adress">{altSchool.schoolAddress.addressFormatted}</span>
+                        </p>
+                    </div>
                 </div>
-                <div className="col-md-9">
-                    <p className="f22slg mb-1">
-                        <span id="adress">{altSchool.schoolAddress.addressFormatted}</span>
-                    </p>
-                </div>
-            </div>
 
-        </div>];
+            </div>];
     }
 
 }

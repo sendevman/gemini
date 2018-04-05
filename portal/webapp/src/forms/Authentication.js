@@ -12,6 +12,7 @@ import {clean, cleanLogin, login, toggleCleanTimeout} from "../redux/actions";
 import TextInput from "../components/TextInput";
 import AnimationHelper from "../components/AnimationHelper";
 import * as UIHelper from "../UIHelper";
+import Button from "../components/Button";
 
 class Authentication extends Component {
     constructor(props) {
@@ -75,11 +76,11 @@ class Authentication extends Component {
         let invalidCredentials = this.props.invalidCredentials;
         return [<div className="col-md-5 content-section">
             <Alert className="auth-error" color="danger" isOpen={this.state.showAlert} toggle={this.handleDismiss}>
-                <strong>Error!</strong> {invalidCredentials ? "Crendenciales invalidos" : "Ha ocurrido un error"}
+                <strong>{UIHelper.getText("messageTitle")}</strong> {invalidCredentials ? UIHelper.getText("invalidCredentials") : UIHelper.getText("errorLogin")}
             </Alert>
             <div className="title">
                 <div className="description">
-                    <h2>Iniciar Sesi&oacute;n</h2>
+                    <h2>{UIHelper.getText("initiateSectionTitle")}</h2>
                     <div className="violet-line"/>
                 </div>
                 <p className="f20slg text-justify">
@@ -106,25 +107,29 @@ class Authentication extends Component {
                                value={password}
                                iconName="icon-lock"
                                grouped/>
-                    <button className="button-yellow" id="buttonGet" type="submit">Entrar</button>
+                    <Button size="xlarge" id="buttonGet" className="button-yellow"
+                            type="submit">{UIHelper.getText("loginButton")}</Button>
                 </form>
                 <div className="row w-100 mt50">
                     <div className="col-md-6 p-0 text-lg-left text-center">
-                        <Link id="forgot" to="/forgot/password/help">
-                            ¿Olvid&oacute; contrase&ntilde;a?
+                        <Link className="red-tooltip" id="forgot" to="/forgot/password/help">
+                            {UIHelper.getText("forgotPasswordLink")}
                         </Link>
 
                         <Tooltip placement="left"
                                  isOpen={this.state.forgotTooltipOpen}
                                  target="forgot"
                                  toggle={this.toggleForgot}>
+
                             {UIHelper.getText("tooltipForgotPassword")}
                         </Tooltip>
 
 
                     </div>
                     <div className="col-md-6 p-0 text-lg-right text-center">
-                        <Link id="noAccount" to="/registration">¿No posee cuenta?</Link>
+                        <Link className="red-tooltip" id="noAccount" to="/registration">
+                            {UIHelper.getText("noAccountLink")}
+                        </Link>
                     </div>
 
                     <Tooltip placement="right"
@@ -150,7 +155,7 @@ class Authentication extends Component {
                 this.props.history.push(nextPath)
             },
             () => {
-                alert("Error autenticando");
+                alert(UIHelper.getText("errorLogging"));
             })
     }
 

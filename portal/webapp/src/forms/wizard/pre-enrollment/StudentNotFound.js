@@ -1,9 +1,7 @@
 import React, {Component} from "react";
-import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import searchGuy from "../../../assets/img/search-guy.png"
 import pot from "../../../assets/img/pot.png";
 import AnimationHelper from "../../../components/AnimationHelper";
-import * as UIHelper from "../../../UIHelper";
 
 export default class StudentNotFound extends Component {
 
@@ -22,10 +20,11 @@ export default class StudentNotFound extends Component {
                         <img className="search-guy" src={searchGuy} alt=""/>
                         <img className="pot" src={pot} alt=""/>
                         <div className="row">
+                            <span style={{paddingLeft: 50}} className="f40sbb">¡Oh! ¡Oh!</span>
                             <div className="col-md-12 text-center">
-                                <p>¡Oh! ¡Oh! La búsqueda no fue exitosa. Si crees que ingresaste algún dato equivocado,
-                                    presiona el botón de ‘buscar nuevamente’. Por otro lado, si ingresaste los datos
-                                    correctos, presiona el botón de ‘crear registro’.</p>
+                                <p style={{textAlign: "justify"}}> La búsqueda no fue exitosa. Si crees que ingresaste algún dato equivocado,
+                                    presiona el botón de <span className="f20slb">‘buscar nuevamente’</span>.&nbsp;&nbsp;Por otro lado, si ingresaste los datos
+                                    correctos, presiona el botón de <span className="f20slb">‘crear registro’</span>.</p>
                             </div>
                             <div className="col-md-12 text-center" style={{minHeight: 120}}/>
                         </div>
