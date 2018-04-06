@@ -15,7 +15,7 @@ public class StudentSearchRequest {
     @NotNull
     private String lastName;
     private Long studentNumber;
-    private Long lastSsn;
+    private String lastSsn;
     @NotNull
     private Date dateOfBirth;
 
@@ -35,11 +35,11 @@ public class StudentSearchRequest {
         this.lastName = lastName;
     }
 
-    public Long getLastSsn() {
+    public String getLastSsn() {
         return lastSsn;
     }
 
-    public void setLastSsn(Long lastSsn) {
+    public void setLastSsn(String lastSsn) {
         this.lastSsn = lastSsn;
     }
 

@@ -12,6 +12,7 @@ import {clean, cleanLogin, login, toggleCleanTimeout} from "../redux/actions";
 import TextInput from "../components/TextInput";
 import AnimationHelper from "../components/AnimationHelper";
 import * as UIHelper from "../UIHelper";
+import * as Utils from "../Utils";
 import Button from "../components/Button";
 
 class Authentication extends Component {
@@ -68,6 +69,9 @@ class Authentication extends Component {
         });
     }
 
+    componentWillMount(){
+        this.isMobile = Utils.isMobile();
+    }
 
     render() {
         let form = this.props.form;
@@ -117,7 +121,7 @@ class Authentication extends Component {
                         </Link>
 
                         <Tooltip placement="left"
-                                 isOpen={this.state.forgotTooltipOpen}
+                                 isOpen={this.state.forgotTooltipOpen && !this.isMobile}
                                  target="forgot"
                                  toggle={this.toggleForgot}>
 
@@ -133,7 +137,7 @@ class Authentication extends Component {
                     </div>
 
                     <Tooltip placement="right"
-                             isOpen={this.state.noAccountTooltipOpen}
+                             isOpen={this.state.noAccountTooltipOpen && !this.isMobile}
                              target="noAccount"
                              toggle={this.toggleNoAccount}>
                         {UIHelper.getText("tooltipForUserWithoutAccount")}

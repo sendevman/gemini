@@ -29,6 +29,7 @@ public class PreEnrollmentBean {
     private String comments;
     private boolean hasPreviousEnrollment;
     private boolean hasPreEnrollment;
+    private boolean deniedByUser;
     private Date submitDate;
     private PreEnrollmentStudentInfoBean student;
 
@@ -158,6 +159,14 @@ public class PreEnrollmentBean {
 
     public void setHasPreEnrollment(boolean hasPreEnrollment) {
         this.hasPreEnrollment = hasPreEnrollment;
+    }
+
+    public boolean isDeniedByUser() {
+        return deniedByUser;
+    }
+
+    public void setDeniedByUser(boolean deniedByUser) {
+        this.deniedByUser = deniedByUser;
     }
 
     public Date getSubmitDate() {

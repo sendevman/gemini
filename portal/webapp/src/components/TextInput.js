@@ -7,6 +7,7 @@ import * as UIHelper from "../UIHelper";
 let rangeFrom0to15 = /^([0-9]|[1][0-5])$/;
 let onlyLetter = /^[a-zA-Z]*$/;
 let onlyLetterAndSpace = /^[a-zA-Z ]*$/;
+let namesRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ ]*$/;
 let onlyNumber = /^[0-9]*$/;
 let onlyLetterAndNumber = /^.*$/;
 let emailAcceptedChar = /^\S*$/;
@@ -15,8 +16,8 @@ let passwordValidation = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&'])[^ ]{8,
 let field = {
     string: {min: 1, max: 128, regex: onlyLetter},
     number: {min: 1, max: 6, regex: onlyNumber},
-    name: {min: 1, max: 128, regex: onlyLetter},
-    lastname: {min: 1, max: 128, regex: onlyLetterAndSpace},
+    name: {min: 1, max: 128, regex: namesRegex},
+    lastName: {min: 1, max: 128, regex: namesRegex},
     email: {regex: emailAcceptedChar, validation: emailValidation},
     lastSSN: {length: 4, regex: onlyNumber},
     studentNumber: {min: 4, max: 9, regex: onlyNumber},
@@ -69,7 +70,7 @@ class TextInput extends Component {
                     this.config = field.name;
                     break;
                 case 'lastname':
-                    this.config = field.lastname;
+                    this.config = field.lastName;
                     break;
                 case 'email':
                     this.config = field.email;

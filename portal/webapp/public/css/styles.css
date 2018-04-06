@@ -450,8 +450,8 @@ input:-webkit-autofill {
 .search-empty {
     position: relative;
     height: 0;
-    overflow: hidden;
-    background-color: #f5fcfd;
+    overflow: inherit;
+    /*background-color: #f5fcfd;*/
     transition: all 300ms;
     z-index: 10;
 }
@@ -489,14 +489,14 @@ input:-webkit-autofill {
 
 .search-empty .search-guy {
     position: absolute;
-    left: -90px;
-    bottom: 25px;
+    left: -70px;
+    bottom: -15px;
 }
 
 .search-empty .pot {
     position: absolute;
     right: 15px;
-    bottom: 25px;
+    bottom: 5px;
 }
 
 .search-result-more {
@@ -1130,16 +1130,6 @@ label {
     color: #4cc3c0 !important;
 }
 
-.home {
-    height: 50%;
-    overflow: auto;
-    max-width: 100%;
-    overflow-y: scroll;
-    background-color: #fff;
-    width: 100%;
-    padding: 60px;
-}
-
 /* END BASE */
 
 /* ENTRY ANIMATIONS */
@@ -1615,6 +1605,16 @@ label {
     border-color: transparent;
 }
 
+.home {
+    height: 50%;
+    overflow: auto;
+    max-width: 100%;
+    overflow-y: scroll;
+    background-color: #fff;
+    width: 100%;
+    padding: 60px;
+}
+
 .tooltip-inner {
     max-width: 300px;
     padding: 3px 8px;
@@ -1653,8 +1653,12 @@ label {
     padding: 5px;
     margin-bottom: 0;
     background-color: #f9f9f9;
-    border-bottom: 1px solid rgba(0,0,0,.125);
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
 }
+
+/*select option[value="-1"] {*/
+    /*background: red;*/
+/*}*/
 
 /* ANIMATIONS */
 

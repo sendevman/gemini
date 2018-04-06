@@ -36,7 +36,6 @@ import ReasonForNotAttendingPreSelectedSchool from "./pre-enrollment/ReasonForNo
 import PreEnrollmentTechnicalSchoolsSelection from "./pre-enrollment/PreEnrollmentTechnicalSchoolsSelection";
 import EndPreEnrollmentMoveOutOfCountry from "./pre-enrollment/EndPreEnrollmentMoveOutOfCountry";
 import * as UIHelper from "../../UIHelper";
-import {UncontrolledTooltip} from "reactstrap";
 
 function form(title, form) {
     return {title: title, form: form};
@@ -199,13 +198,18 @@ class Wizard extends Component {
 
     //todo: fran this needs improvements
     renderFooter() {
-        console.log("estado = " + JSON.stringify(this.state));
-
         let props = this.props.wizard;
         let commonStyle = {zIndex: 1000};
         let isSubmitPage = props.currentPageType.endsWith("_SUBMIT");
         let nextAction = this.next.bind(this);//isSubmitPage ? this.previous.bind(this) : this.next.bind(this);
         let previousAction = this.previous.bind(this);//isSubmitPage ? this.next.bind(this) : this.previous.bind(this);
+        let previousInitialLetter = props.previousLabel && props.previousLabel.length > 1
+            ? props.previousLabel.charAt(0).toUpperCase()
+            : "N";
+        let nextInitialLetter = props.nextLabel && props.nextLabel.length > 1
+            ? props.nextLabel.charAt(0).toUpperCase()
+            : "S";
+
         let cssClass = props.currentPageType !== "USER_ADDITIONAL_INFO"
         && props.currentPageType !== "PERSONAL_ADDITIONAL_INFO"
         && props.currentPageType !== "VOCATIONAL_PROGRAMS"
@@ -215,6 +219,7 @@ class Wizard extends Component {
         && props.currentPageType !== "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"
         && props.currentPageType !== "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"
         && props.currentPageType !== "PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION"
+        && props.currentPageType !== "NEED_TRANSPORTATION_QUESTION"
             ? "body d-flex align-items-center flex-column justify-content-end"
             : "";
 
@@ -224,11 +229,11 @@ class Wizard extends Component {
             return (<div className="row action-section" style={commonStyle}>
                 <div className="col-md-12 text-center text-lg-left p-0">
                     <a className="button-white mr30 mob-mb30px" onClick={nextAction}>
-                        <span>y</span>{props.nextLabel}
+                        <span>{nextInitialLetter}</span>{props.nextLabel}
                     </a>
                     {props.previousLabel
                         ? (<a className="button-white mob-mb30px" onClick={previousAction}>
-                            <span>n</span>{props.previousLabel}
+                            <span>{previousInitialLetter}</span>{props.previousLabel}
                         </a>)
                         : null
                     }
@@ -238,7 +243,7 @@ class Wizard extends Component {
             return (<div className="row mt50 bt1p pt40">
                 <div className="col-md-12">
                     <a className="button-white mr30 mob-mb30px" onClick={nextAction}>
-                        <span>y</span>{props.nextLabel}
+                        <span>{nextInitialLetter}</span>{props.nextLabel}
                     </a>
                 </div>
             </div>)
@@ -253,14 +258,14 @@ class Wizard extends Component {
                                 <span>R</span>Regular
                             </a>
                             {/*<UncontrolledTooltip placement="top" target="regular">*/}
-                                {/*{UIHelper.getText("tooltipRegularProgramExplanation")}*/}
+                            {/*{UIHelper.getText("tooltipRegularProgramExplanation")}*/}
                             {/*</UncontrolledTooltip>*/}
                             <a id="occupational" className="button-white mob-mb30px"
                                onClick={this.onProgramSelection(types.OCCUPATIONAL_ENROLLMENT)}>
                                 <span>O</span>Ocupacional
                             </a>
                             {/*<UncontrolledTooltip placement="top" target="occupational">*/}
-                                {/*{UIHelper.getText("tooltipOccupationalProgramExplanation")}*/}
+                            {/*{UIHelper.getText("tooltipOccupationalProgramExplanation")}*/}
                             {/*</UncontrolledTooltip>*/}
 
                             {/*<a className="button-white mob-mb30px"*/}
@@ -272,7 +277,7 @@ class Wizard extends Component {
                                 <span>E</span>Especializadas
                             </a>
                             {/*<UncontrolledTooltip placement="left" target="specialized">*/}
-                                {/*{UIHelper.getText("tooltipSpecializedProgramExplanation")}*/}
+                            {/*{UIHelper.getText("tooltipSpecializedProgramExplanation")}*/}
                             {/*</UncontrolledTooltip>*/}
                         </div>
                     </div>
@@ -285,11 +290,11 @@ class Wizard extends Component {
             <div className="row action-section">
                 <div className="col-md-12 text-center text-lg-left p-0">
                     <a className="button-white mr30 mob-mb30px" onClick={nextAction}>
-                        <span>y</span>{props.nextLabel}
+                        <span>{nextInitialLetter}</span>{props.nextLabel}
                     </a>
                     {props.previousLabel
                         ? (<a className="button-white mob-mb30px" onClick={previousAction}>
-                            <span>n</span>{props.previousLabel}
+                            <span>{previousInitialLetter}</span>{props.previousLabel}
                         </a>)
                         : null
                     }

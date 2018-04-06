@@ -37,7 +37,8 @@ class PreEnrollmentAlternateSchoolsSubmit extends Component {
                             this.renderAlternateSchool(school)
                         ))
                         : (<span style={{paddingLeft: 100, color: "#ff8700"}}
-                                 className="f20sbb">{UIHelper.getText("alternateSubmitValidationMessage")}</span>)}
+                                 className="f20sbb"><i
+                            className="fas fa-exclamation-triangle"/>&nbsp;&nbsp;{UIHelper.getText("alternateSubmitValidationMessage")}</span>)}
 
                 </div>
 
@@ -46,7 +47,10 @@ class PreEnrollmentAlternateSchoolsSubmit extends Component {
                 <form>
                     <div className="row">
                         <div className="col-md-12">
-                            <span className="f22slb" style={{color: "#000",  fontWeight: 600}}>{UIHelper.getText("alternateChangeQuestion")}</span>
+                            <span className="f22slb" style={{
+                                color: "#000",
+                                fontWeight: 600
+                            }}>{UIHelper.getText("alternateChangeQuestion")}</span>
                         </div>
                     </div>
                 </form>
@@ -67,7 +71,7 @@ class PreEnrollmentAlternateSchoolsSubmit extends Component {
             <div className="col-md-1">
                 <span className="f20sbb">{altSchool.priority}.</span>
             </div>,
-            <div className="col-md-5">
+            <div className="col-md-5" style={{paddingLeft: 0}}>
                 <p className="f20slg mb-1"><i className="fas fa-university mr5"></i> <span
                     id="school">{altSchool.schoolName}</span></p>
                 <p className="f20slg mb-1"><i className="icon-teacher mr5"></i> <span

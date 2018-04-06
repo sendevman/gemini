@@ -131,7 +131,7 @@ messages:
     already.exists: "Matrícula ya existe en el sistema"
     already.submitted: "Usted ya sometió Matrícula para este estudiante"
     occupational.validation: "Debe seleccionar al menos una escuela y un programa"
-    regular.validation: "Debe seleccionar dos opciones de escuelas para completar el proceso"
+    regular.validation: "Dos opciones de escuelas son requeridas"
 
 
 
