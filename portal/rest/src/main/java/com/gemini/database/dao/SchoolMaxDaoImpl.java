@@ -3,6 +3,7 @@ package com.gemini.database.dao;
 import com.gemini.beans.requests.StudentSearchRequest;
 import com.gemini.beans.types.SpecializedSchoolCategory;
 import com.gemini.database.dao.beans.*;
+import com.gemini.utils.Utils;
 import com.gemini.utils.ValidationUtils;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -66,29 +67,24 @@ public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements Sc
         Map<String, Object> params = Maps.newTreeMap();
 
         if (ValidationUtils.valid(searchRequest.getFirstName())) {
-            sql.append(" AND FIRST_NAME_CANON = GET_CANON_NAME(:firstName)");
-            params.put("firstName", searchRequest.getFirstName());
+            sql.append(" AND CLEAN_NAME(FIRST_NAME_CANON) like :firstName || '%'");
+            params.put("firstName", Utils.removeAccents(searchRequest.getFirstName()));
         }
 
         if (ValidationUtils.valid(searchRequest.getLastName())) {
-            sql.append(" AND LAST_NAME_CANON like GET_CANON_NAME(:lastName) || '%'");
-            params.put("lastName", searchRequest.getLastName());
+            sql.append(" AND CLEAN_NAME(LAST_NAME_CANON) like :lastName || '%'");
+            params.put("lastName", Utils.removeAccents(searchRequest.getLastName()));
         }
 
         if (ValidationUtils.valid(searchRequest.getLastSsn())) {
             sql.append(" AND SUBSTR(SSN, -4) = :lastSsn");
-            params.put("lastSsn", searchRequest.getLastSsn().toString());
+            params.put("lastSsn", searchRequest.getLastSsn());
         }
 
         if (ValidationUtils.valid(searchRequest.getDateOfBirth())) {
-            logger.info("Date of birth before UTC :" + searchRequest.getDateOfBirth());
-            DateTime dt = new LocalDateTime(searchRequest.getDateOfBirth().getTime())
-                    .toDateTime(DateTimeZone.UTC);
-            logger.info("Date of birth after UTC :" + dt.toDate());
             sql.append(" AND DATE_OF_BIRTH = trunc(:dob)");
             params.put("dob", searchRequest.getDateOfBirth());
         }
-
 
         if (ValidationUtils.valid(searchRequest.getStudentNumber())) {
             sql.append(" AND EXT_STUDENT_NUMBER = :studentNumber");

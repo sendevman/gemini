@@ -54,9 +54,12 @@ class Address extends Component {
                         className="f40sbb">{UIHelper.getText("addressPageTitleEnd")}</span></h2>
                         <div className="violet-line"></div>
                     </div>
-                    <span className="f20slg">{UIHelper.getText("addressPageMessage")}
-                        <span className="f20slb">{UIHelper.getText("addressPageMessageHighlight")}</span>
-                    </span>
+                    <span className="f20slg">{UIHelper.getText("addressPageMessage")}</span>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <span className="f20slb">{UIHelper.getText("addressPageMessageHighlight")}</span>
+                        </div>
+                    </div>
                 </div>
                 <div className="body d-flex flex-column justify-content-end">
                     <form>
@@ -88,7 +91,7 @@ class Address extends Component {
                             </div>
                         </div>
                     </form>
-                    <div style={{marginTop: -50}}>
+                    <div style={{marginTop: -90}}>
                         {this.props.footer}
                     </div>
                 </div>
@@ -104,7 +107,7 @@ class Address extends Component {
     renderAddressForm(type, address) {
         address.city = !address.city ? "-1" : address.city;
         return [
-            <div className="row">
+            <div className="row pt-2">
                 <div className="col-md-12">
                     <TextInput type="addressLine" id={`${type}.line1`} label="Línea 1"
                                value={address.line1} onChange={this.inputHandler}/>

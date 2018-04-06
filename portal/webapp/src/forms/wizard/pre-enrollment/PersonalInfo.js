@@ -99,12 +99,13 @@ class PersonalInfo extends Component {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-md-6 pt-3">
+                        <div className="col-md-6">
                             <CodeSelect id="gender"
                                         label="Género"
                                         codeType="gender"
                                         value={student.gender}
                                         required
+                                        grouped
                                         onChange={this.inputHandler}
                                         placeholder="Género"
                                         disabled={studentExists}

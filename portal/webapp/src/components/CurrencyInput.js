@@ -44,8 +44,10 @@ export default class CurrencyInput extends Component {
                               displayType='input'
                               thousandSeparator={true}
                               prefix={'$'}/>
+                <span className="highlight"/>
+                <span className="bar"/>
                 <label
-                    htmlFor={this.props.id}>{this.props.label || this.props.placeholder}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>
+                    htmlFor={this.props.id}>{this.props.label || this.props.placeholder}{validHtml}</label>
             </div>);
     }
 }

@@ -41,23 +41,19 @@ class Home extends Component {
                         className="f30sbb">{UIHelper.getText("homeTitle")}</span></span>
                     <div className="violet-line"/>
 
-                    <span
-                        className="f20slg">A continuaci&oacute;n un resumen de las matr&iacute;culas realizadas o en proceso.&nbsp;&nbsp;&nbsp;
-                        <span className="f20slb">
-                                {UIHelper.getText("enrollmentLabel")}
-                            </span>&nbsp;&nbsp;&nbsp;
-                        {/*<a href="#" onClick={this.preEnroll}>*/}
-                        {/*{UIHelper.getText("enrollmentButton")}*/}
-                        {/*</a>*/}
-                        <Button size="small" style={{width: '40%'}} onClick={this.preEnroll}>
-                            {UIHelper.getText("enrollmentButton")}
-                        </Button>
-                    </span>
-
+                    <span className="f20slg">A continuaci&oacute;n un resumen de las matr&iacute;culas realizadas o en proceso.&nbsp;&nbsp;&nbsp;</span>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <span className="f20slb">{UIHelper.getText("enrollmentLabel")}&nbsp;&nbsp;&nbsp;
+                                <Button size="small" style={{width: '40%'}}
+                                        onClick={this.preEnroll}>{UIHelper.getText("enrollmentButton")}</Button>
+                            </span>
+                        </div>
+                    </div>
                 </div>
                 <div className="body d-flex flex-column justify-content-end">
                     {this.renderHome()}
-                    <div style={{marginBottom: 275}}/>
+                    <div style={{marginBottom: 300}}/>
                 </div>
                 {/*{this.props.footer}*/}
             </div>,
@@ -111,10 +107,19 @@ class Home extends Component {
                         <div className="col-md-3">
                             Estatus:
                         </div>
-                        <div className="col-md-6">
-                            <span className="text-danger">{pre.requestStatusText}</span>
+                        <div className="col-md-9">
+                            <span className="text-danger">{pre.requestStatusText}
+                                &nbsp;&nbsp;
+                                {
+                                    pre.deniedByUser
+                                        ? [<span className="text-info"
+                                                 style={{fontSize: 14}}>&nbsp;&nbsp;&nbsp;&nbsp;Solicitud de transcripción de créditos </span>,
+                                            <a style={{fontSize: 14}} href={UIHelper.getText("transcriptAppUrl")}
+                                               target="_blank">Pulse Aquí</a>]
+                                        : (null)
+                                }
+                            </span>
                         </div>
-                        <div className="col-md-3"/>
                     </div>
                     <div className="row">
                         <div className="col-md-3">
@@ -128,11 +133,9 @@ class Home extends Component {
                         <div className="col-md-3">
                             Matrícula:
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-9">
                             {pre.enrollmentTypeText}
                         </div>
-                        <div className="col-md-3"/>
-
                     </div>
                 </div>
 

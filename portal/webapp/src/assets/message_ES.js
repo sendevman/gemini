@@ -1,3 +1,5 @@
+import * as UIHelper from "../UIHelper";
+
 export default {
 
     //welcome page
@@ -187,6 +189,8 @@ export default {
     enrollmentEndByOutOfCountryExplanation: "Se podrá solicitar evidencia de la respuesta de ser requerida por las autoridades escolares.",
     completeTitle: "Completado!",
 
+    transcriptAppUrl: "https://srx.dde.pr/",
+
     //buttons
     copyButton: "Copiar",
     startButton: "Comenzar",
@@ -209,6 +213,7 @@ export default {
     activationTitle: "Complete su Registro",
     activationButton: "Completar Registración",
 
+    registrationPageTitle: "Registrar Cuenta",
     registrationError: "Ha ocurrido un error al registrar su cuenta",
     registeredPage: "Cuenta Registrada!",
     registrationSuccessTitle: "Registrar Cuenta",
@@ -263,7 +268,7 @@ export default {
     tooltipOccupationalProgramExplanation: "",
     tooltipSpecializedProgramExplanation: "",
 
-    tooltipForgotPassword: "Si ya se ha registrado y olvidó su contraseña, haga clic aquí para solicitar la misma, la cual será enviada automáticamente al correo electrónico que usted proporciono al momento de registrarse.",
+    tooltipForgotPassword: "Si ya se ha registrado y olvidó su contraseña, haga clic aquí para solicitar la misma, la cual será enviada automáticamente al correo electrónico que usted proporcionó al momento de registrarse.",
     tooltipForUserWithoutAccount: "Si al momento no tiene cuenta creada en el sistema o está accediendo por primera vez, debe proceder a registrarse, haciendo clic aquí."
 
 

@@ -5,6 +5,7 @@ import com.gemini.database.IdentityEntity;
 import com.google.common.base.Joiner;
 import org.springframework.util.StringUtils;
 
+import java.text.Normalizer;
 import java.util.UUID;
 
 
@@ -50,5 +51,18 @@ public final class Utils {
     public static String cleanSsn(String ssn) {
         return StringUtils.hasText(ssn) ? ssn.replaceAll("-", "") : ssn;
     }
+
+    public static String removeAccents(String field) {
+        if (StringUtils.hasText(field)) {
+            String normalized = Normalizer.normalize(field, Normalizer.Form.NFD);
+            normalized = normalized.replaceAll("[^\\p{ASCII}]", "");
+            return normalized.toUpperCase().trim();
+        }
+        return field;
+    }
+
+//    public static void main(String[] args) {
+//        System.out.println(removeAccents("ÁÉÍÓÚáéíóúñÑ"));
+//    }
 
 }

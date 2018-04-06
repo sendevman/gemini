@@ -115,7 +115,7 @@ class CodeSelect extends Component {
     }
 
     render() {
-        let formGroupCss = "form-group has-feedback";
+        let formGroupCss = this.props.grouped ? "form-group has-feedback".concat(" group ") : "form-group has-feedback";
         let elementProps = Object.assign({}, this.props);
         delete elementProps.codeType;
         let validHtml = UIHelper.toggleFieldValidHtml(this.valid(), this.props.required);
@@ -124,6 +124,7 @@ class CodeSelect extends Component {
             <div className={formGroupCss}>
                 <select ref="codeSelect" className="inputMaterial"
                         {...elementProps}
+                        required
                         style={styleCss}
                         onChange={this.onChange}
                         value={this.state.value}>
@@ -132,8 +133,9 @@ class CodeSelect extends Component {
                         <option key={i} value={code.value}>{code.description}</option>
                     ))}
                 </select>
-                <label htmlFor={this.props.id}>{this.props.label}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{validHtml}</label>
-
+                <span className="highlight"/>
+                <span className="bar"/>
+                <label htmlFor={this.props.id}>{this.props.label}{validHtml}</label>
             </div>);
     }
 }

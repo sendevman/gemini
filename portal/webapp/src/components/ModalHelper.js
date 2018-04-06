@@ -22,6 +22,7 @@ export default class ModalHelper extends Component {
     confirm(title, messages, confirm, onClose, enableWhitespace = false) {
         this.confirmAction = confirm;
         this.onClose = onClose;
+        this.enableWhitespace = enableWhitespace;
         this.setState({modal: true, title: title, message: messages, type: "confirm"});
     }
 
@@ -76,7 +77,7 @@ export default class ModalHelper extends Component {
         }
 
         return (<div>
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} onClosed={this.close}>
                 <ModalHeader toggle={this.close}>{this.state.title}</ModalHeader>
                 <ModalBody style={enableWhitespaceCss}>
                     {this.state.message}

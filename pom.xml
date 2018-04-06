@@ -46,57 +46,11 @@
                 <main.db.password>pr234Srs987</main.db.password>
                 <main.db.driver.name>oracle.jdbc.driver.OracleDriver</main.db.driver.name>
                 <main.db.platform>oracle</main.db.platform>
-                <main.db.jpa.mode>none</main.db.jpa.mode>
+                <main.db.jpa.mode>create-drop</main.db.jpa.mode>
                 <!--smax db props-->
                 <smax.db.jdbc.url>jdbc:oracle:thin:@auohsmaxi76-vip.oracleoutsourcing.com:11010/PMAX1O.ORACLEOUTSOURCING.COM</smax.db.jdbc.url>
                 <smax.db.user>PRDE_SRS</smax.db.user>
                 <smax.db.password>pr234Srs987</smax.db.password>
-                <smax.db.driver.name>oracle.jdbc.driver.OracleDriver</smax.db.driver.name>
-                <!--mail props-->
-                <email.from>DE-SIE@de.pr.gov</email.from>
-                <mail.host>smtp.gmail.com</mail.host>
-                <mail.port>587</mail.port>
-                <mail.username>de.pentaho@gmail.com</mail.username>
-                <mail.password>d3r3ply2@!4</mail.password>
-                <mail.test-conection>true</mail.test-conection>
-                <!--mail extra props-->
-                <mail.smtp.auth>true</mail.smtp.auth>
-                <mail.smtp.starttls.enable>true</mail.smtp.starttls.enable>
-                <!--server props-->
-                <website.base.url>http://localhost:3000</website.base.url>
-                <website.base.context-path>/srs</website.base.context-path>
-                <api.base.context-path>/srs-api</api.base.context-path>
-                <!--time are given in seconds -->
-                <session.timeout>900</session.timeout>
-                <cookie.max-age>900</cookie.max-age>
-                <!--google reCAPTCHA-->
-                <google.recaptcha.secret.key>6LfwnkkUAAAAAGFlz-H8iIGF7ZsNuvRcZxKi5xwE</google.recaptcha.secret.key>
-                <google.recaptcha.activate>true</google.recaptcha.activate>
-                <!--oracle-->
-                <oracle.proxy.host></oracle.proxy.host>
-                <oracle.proxy.port></oracle.proxy.port>
-                <!--smax in-use-->
-                <smax.interface.in-use>real</smax.interface.in-use>
-            </properties>
-        </profile>
-        <profile>
-            <id>tmaxio-dev-test</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <properties>
-                <war.name>srs-api</war.name>
-                <!--main db props-->
-                <main.db.jdbc.url>jdbc:mysql://localhost:3306/SRS</main.db.jdbc.url>
-                <main.db.user>srs</main.db.user>
-                <main.db.password>12345678</main.db.password>
-                <main.db.driver.name>com.mysql.jdbc.Driver</main.db.driver.name>
-                <main.db.platform>mysql</main.db.platform>
-                <main.db.jpa.mode>create-drop</main.db.jpa.mode>
-                <!--smax db props-->
-                <smax.db.jdbc.url>jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM</smax.db.jdbc.url>
-                <smax.db.user>PRDE_SRS</smax.db.user>
-                <smax.db.password>depl0y2@!8</smax.db.password>
                 <smax.db.driver.name>oracle.jdbc.driver.OracleDriver</smax.db.driver.name>
                 <!--mail props-->
                 <email.from>DE-SIE@de.pr.gov</email.from>
@@ -171,6 +125,53 @@
                 <smax.interface.in-use>mock</smax.interface.in-use>
             </properties>
         </profile>
+        <profile>
+            <id>tmaxio-dev-test</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <war.name>srs-api</war.name>
+                <!--main db props-->
+                <main.db.jdbc.url>jdbc:mysql://localhost:3306/SRS</main.db.jdbc.url>
+                <main.db.user>srs</main.db.user>
+                <main.db.password>12345678</main.db.password>
+                <main.db.driver.name>com.mysql.jdbc.Driver</main.db.driver.name>
+                <main.db.platform>mysql</main.db.platform>
+                <main.db.jpa.mode>create-drop</main.db.jpa.mode>
+                <!--smax db props-->
+                <smax.db.jdbc.url>jdbc:oracle:thin:@auohsmaxi72-vip.oracleoutsourcing.com:11510/TMAX1O.ORACLEOUTSOURCING.COM</smax.db.jdbc.url>
+                <smax.db.user>PRDE_SRS</smax.db.user>
+                <smax.db.password>depl0y2@!8</smax.db.password>
+                <smax.db.driver.name>oracle.jdbc.driver.OracleDriver</smax.db.driver.name>
+                <!--mail props-->
+                <email.from>DE-SIE@de.pr.gov</email.from>
+                <mail.host>smtp.gmail.com</mail.host>
+                <mail.port>587</mail.port>
+                <mail.username>de.pentaho@gmail.com</mail.username>
+                <mail.password>d3r3ply2@!4</mail.password>
+                <mail.test-conection>true</mail.test-conection>
+                <!--mail extra props-->
+                <mail.smtp.auth>true</mail.smtp.auth>
+                <mail.smtp.starttls.enable>true</mail.smtp.starttls.enable>
+                <!--server props-->
+                <website.base.url>http://localhost:3000</website.base.url>
+                <website.base.context-path>/srs</website.base.context-path>
+                <api.base.context-path>/srs-api</api.base.context-path>
+                <!--time are given in seconds -->
+                <session.timeout>900</session.timeout>
+                <cookie.max-age>900</cookie.max-age>
+                <!--google reCAPTCHA-->
+                <google.recaptcha.secret.key>6LfwnkkUAAAAAGFlz-H8iIGF7ZsNuvRcZxKi5xwE</google.recaptcha.secret.key>
+                <google.recaptcha.activate>true</google.recaptcha.activate>
+                <!--oracle-->
+                <oracle.proxy.host></oracle.proxy.host>
+                <oracle.proxy.port></oracle.proxy.port>
+                <!--smax in-use-->
+                <smax.interface.in-use>real</smax.interface.in-use>
+            </properties>
+        </profile>
+
         <profile>
             <id>tmaxio</id>
             <activation>

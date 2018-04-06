@@ -472,6 +472,10 @@ public class PreEnrollmentService {
                 })
                 .toList();
 
+        if (toSave != null && !toSave.isEmpty() && toSave.size() == 1) {
+            toSave.get(0).setPriority(1);
+        }
+
         if (request.getNextGradeLevel() != null)
             requestEntity.setGradeLevel(request.getNextGradeLevel());
 
@@ -531,6 +535,7 @@ public class PreEnrollmentService {
         }
         enrollmentBean.setHasPreEnrollment(ValidationUtils.valid(entity.getPreEnrollmentId()));
         enrollmentBean.setHasPreviousEnrollment(ValidationUtils.valid(entity.getPreviousEnrollmentId()));
+        enrollmentBean.setDeniedByUser(ReasonForNotAttendingSchool.MOVE_OUT_OF_COUNTRY.equals(entity.getReasonForNotAttendSchool()));
         setGradeLevelInfo(entity.getGradeLevel(), enrollmentBean);
         return enrollmentBean;
     }
