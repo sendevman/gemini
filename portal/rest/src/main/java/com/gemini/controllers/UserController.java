@@ -54,7 +54,7 @@ public class UserController {
         if (!saved)
             return ResponseEntity.ok(ResponseBase.error(messageHelper.processMessage("error.saving.profile")));
         else
-            updatePrincipal(request, loggedUser);
+            completeProfile(request, loggedUser);
 
         return ResponseEntity.ok(ResponseBase.success(loggedUser));
     }
@@ -73,10 +73,11 @@ public class UserController {
         return ResponseEntity.ok(ResponseBase.success(loggedUser));
     }
 
-    private void updatePrincipal(ParentProfileInfoRequest request, User loggedUser) {
+    private void completeProfile(ParentProfileInfoRequest request, User loggedUser) {
         loggedUser.setFirstName(request.getFirstName());
         loggedUser.setMiddleName(request.getMiddleName());
         loggedUser.setLastName(request.getLastName());
+        loggedUser.setProfileCompleted(true);
     }
 
 

@@ -34,7 +34,10 @@ class NeedTransportationServiceQuestion extends Component {
                     <p className="f30sbg text-justify">{UIHelper.getText("transportationPageTitle")}</p>
                 </div>
                 <div className="body d-flex flex-column justify-content-end">
-                    <span className="f30sbb">{UIHelper.getText("transportationPageQuestion")}</span>
+                    <span className="f30sbb" style={{zIndex: 2000}}>{UIHelper.getText("transportationPageQuestion")}</span>
+                    <span className="f20slg" style={{fontStyle: "italic"}}>
+                        * Si la respuesta es <span className="f20sbb">Sí</span>, la misma será referida para el debido análisis
+                    </span>
                     {this.props.footer}
                 </div>
             </div>,

@@ -272,10 +272,10 @@ class Wizard extends Component {
                             {/*onClick={this.onProgramSelection(types.TECHNIQUE_ENROLLMENT)}>*/}
                             {/*<span>I</span>Institutos*/}
                             {/*</a>*/}
-                            <a id="specialized" className="button-white mob-mb30px"
-                               onClick={this.onProgramSelection(types.SPECIALIZED_SCHOOLS_ENROLLMENT)}>
-                                <span>E</span>Especializadas
-                            </a>
+                            {/*<a id="specialized" className="button-white mob-mb30px"*/}
+                               {/*onClick={this.onProgramSelection(types.SPECIALIZED_SCHOOLS_ENROLLMENT)}>*/}
+                                {/*<span>E</span>Especializadas*/}
+                            {/*</a>*/}
                             {/*<UncontrolledTooltip placement="left" target="specialized">*/}
                             {/*{UIHelper.getText("tooltipSpecializedProgramExplanation")}*/}
                             {/*</UncontrolledTooltip>*/}

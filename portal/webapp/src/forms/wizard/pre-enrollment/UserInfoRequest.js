@@ -44,6 +44,7 @@ class UserInfoRequest extends Component {
                 <div className="description"><h2>{UIHelper.getText("userInfoRequestTitle")}</h2>
                     <div className="violet-line"></div>
                 </div>
+                <span>Ingrese la informaci&oacute;n requerida para completar su perfil.</span>
             </div>
             <div className="body d-flex align-items-center flex-column justify-content-end">
                 <form id="profile-form">

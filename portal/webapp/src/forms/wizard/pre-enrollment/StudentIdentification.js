@@ -55,13 +55,6 @@ class StudentIdentification extends Component {
                     <form>
                         <div className="row">
                             <div className="col-md-4">
-                                <SimpleDateInput id="dateOfBirth"
-                                                 value={form.dateOfBirth}
-                                                 required
-                                                 onValidDate={this.onValidDate}
-                                                 label="Fecha Nac."/>
-                            </div>
-                            <div className="col-md-4">
                                 <TextInput id="lastSsn"
                                            type="lastSSN"
                                            value={form.lastSsn}
@@ -69,7 +62,9 @@ class StudentIdentification extends Component {
                                            required={lastSsnRequired}
                                            label="Últimos #4 SSN"/>
                             </div>
-
+                            <div className="col-md-1">
+                                <span className="f20sbgr">o</span>
+                            </div>
                             <div className="col-md-4">
                                 <TextInput id="studentNumber"
                                            type="studentNumber"
@@ -78,8 +73,21 @@ class StudentIdentification extends Component {
                                            required={studentNumberRequired}
                                            label="# Estudiante SIE"/>
                             </div>
+                            <div className="col-md-3"/>
                         </div>
                         <div className="row">
+                            <div className="col-md-12">
+                                <span>Completa la siguiente informacion requerida</span>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-4">
+                                <SimpleDateInput id="dateOfBirth"
+                                                 value={form.dateOfBirth}
+                                                 required
+                                                 onValidDate={this.onValidDate}
+                                                 label="Fecha Nac."/>
+                            </div>
                             <div className="col-md-4">
                                 <TextInput id="firstName"
                                            type="firstName"
@@ -96,7 +104,6 @@ class StudentIdentification extends Component {
                                            required
                                            label="Apellidos"/>
                             </div>
-                            <div className="col-md-4"/>
                         </div>
                     </form>
                     <div style={{marginTop: -50}}>

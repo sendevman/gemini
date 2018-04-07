@@ -14,6 +14,10 @@ export default class AnimationHelper extends Component {
             base = "https://prdesietest.dde.pr/schoolmax_tmax2-animations";
         }
 
+        if ("registro-pruebas" === env.default.baseContext) {
+            base = "https://prdesieprod.dde.pr/registro-animations";
+        }
+
         let style = {border: 0, overflow: "hidden"};
         let animRegistration = (<div className="illustration anim-full">
             <iframe width="1000" height="856" src={`${base}/anim-registration/index.html`} style={style}/>

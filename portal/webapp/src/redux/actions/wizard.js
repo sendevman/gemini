@@ -7,7 +7,6 @@ let catalog = catalogs.catalog;
 //escuelas regulares
 const normalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
-    getIndexFromCatalog("USER_ADDITIONAL_INFO"),
     getIndexFromCatalog("INSTRUCTIONS"),
     getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
     getIndexFromCatalog("DE_PROGRAM_QUESTION"),
@@ -23,8 +22,6 @@ const normalFlow = [
     getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
-    getIndexFromCatalog("REASON_FOR_NOT_ATTENDING_QUESTION"),
-    getIndexFromCatalog("END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
     getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")];
@@ -37,8 +34,6 @@ const editNormalFlow = [
     getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
-    getIndexFromCatalog("REASON_FOR_NOT_ATTENDING_QUESTION"),
-    getIndexFromCatalog("END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
     getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")
@@ -47,7 +42,6 @@ const editNormalFlow = [
 //escuelas especializadas
 const specializedFlow = [
     getIndexFromCatalog("USER_PROFILE"),
-    getIndexFromCatalog("USER_ADDITIONAL_INFO"),
     getIndexFromCatalog("INSTRUCTIONS"),
     getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
     getIndexFromCatalog("DE_PROGRAM_QUESTION"),
@@ -63,8 +57,6 @@ const specializedFlow = [
     getIndexFromCatalog("PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION"),
 
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
-    getIndexFromCatalog("REASON_FOR_NOT_ATTENDING_QUESTION"),
-    getIndexFromCatalog("END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
 
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
@@ -79,8 +71,6 @@ const specializedEditFlow = [
     getIndexFromCatalog("PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION"),
     // it is confused
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SUBMIT"),
-    getIndexFromCatalog("REASON_FOR_NOT_ATTENDING_QUESTION"),
-    getIndexFromCatalog("END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY"),
     getIndexFromCatalog("PRE_ENROLLMENT_FOUND_SUBMIT"),
 
     getIndexFromCatalog("PRE_ENROLLMENT_COMPLETED"),
@@ -90,7 +80,6 @@ const specializedEditFlow = [
 //escuelas ocupacionales
 const occupationalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
-    getIndexFromCatalog("USER_ADDITIONAL_INFO"),
     getIndexFromCatalog("INSTRUCTIONS"),
     getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
     getIndexFromCatalog("DE_PROGRAM_QUESTION"),
@@ -130,7 +119,6 @@ const editOccupationalFlow = [
 //institutos tecnicos
 const technicalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
-    getIndexFromCatalog("USER_ADDITIONAL_INFO"),
     getIndexFromCatalog("INSTRUCTIONS"),
 
     getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
@@ -311,6 +299,12 @@ function nextOnReasonPage(preEnrollment, currentForm) {
     return getIndexFromFlow(next);
 }
 
+function nextOnSubmitPage(preEnrollment, currentForm) {
+    let isSpecializedFlow = preEnrollment.type === types.SPECIALIZED_SCHOOLS_ENROLLMENT;
+    let next = isSpecializedFlow ? currentForm.noNextSpecialized : currentForm.noNextRegular;
+    return getIndexFromFlow(next);
+}
+
 export const onNextAction = (onPress) => (dispatch, getState) => {
     dispatch({type: types.ON_WIZARD_NEXT_START});
     let wizard = getState().wizard;
@@ -342,6 +336,8 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
         next = nextOnReasonPage(preEnrollment, currentForm);
     } else if (isType(current, "NEED_TRANSPORTATION_QUESTION") && isOccupationalOrTechnicalFlow(preEnrollment) && wizard.editing) {
         next = getIndexFromFlow(currentForm.nextOccupationalWhenEdit);
+    } else if (isType(current, "PRE_ENROLLMENT_FOUND_SUBMIT")) {
+        next = nextOnSubmitPage(preEnrollment, currentForm);
     } else if (isType(current, "END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY") || isType(current, "PRE_ENROLLMENT_CONFIRMED")) {
         resetWizard()(dispatch);
     }

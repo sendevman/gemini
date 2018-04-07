@@ -16,18 +16,22 @@ export default class Instructions extends Component {
                     <div className="description"><h2>{UIHelper.getText("instructionPageTitle")}</h2>
                         <div className="violet-line"/>
                     </div>
+                    {/*<p className="f22slg text-justify mt-3">*/}
+                    {/*{UIHelper.getText("instructionPageMessageStart")}*/}
+                    {/*&nbsp;&nbsp;&nbsp;&nbsp;{UIHelper.getText("instructionPageMessageFragment")}*/}
+                    {/*<li style={{paddingLeft: 10}}>Confirmar matrícula</li>*/}
+                    {/*<li style={{paddingLeft: 10}}>Solicitar matrícula nuevo ingreso</li>*/}
+                    {/*{UIHelper.getText("instructionPageMessageEnd")}*/}
+                    {/*<span className="f20slb">{UIHelper.getText("enrollmentYear")}</span>.&nbsp;&nbsp;&nbsp;&nbsp;*/}
+                    {/*/!*{UIHelper.getText("instructionFragmentStart")}*!/*/}
+                    {/*Este proceso solo te tomará unos minutos. &nbsp;&nbsp;&nbsp;&nbsp;Presiona el botón de&nbsp;*/}
+                    {/*<span className="f20slb">{UIHelper.getText("instructionFragmentHighlight")}</span>*/}
+                    {/*{UIHelper.getText("instructionFragmentEnd")}*/}
+                    {/*</p>*/}
                     <p className="f22slg text-justify mt-3">
-                        {UIHelper.getText("instructionPageMessageStart")}
-                        &nbsp;&nbsp;&nbsp;&nbsp;{UIHelper.getText("instructionPageMessageFragment")}
-                        <li style={{paddingLeft: 10}}>Confirmar matrícula</li>
-                        <li style={{paddingLeft: 10}}>Solicitar matrícula nuevo ingreso</li>
-                        {UIHelper.getText("instructionPageMessageEnd")}
-                        <span className="f20slb">{UIHelper.getText("enrollmentYear")}</span>.&nbsp;&nbsp;&nbsp;&nbsp;
-                        {/*{UIHelper.getText("instructionFragmentStart")}*/}
-                        Este proceso solo te tomará unos minutos. &nbsp;&nbsp;&nbsp;&nbsp;Presiona el botón de&nbsp;
-                        <span className="f20slb">{UIHelper.getText("instructionFragmentHighlight")}</span>
-                        {UIHelper.getText("instructionFragmentEnd")}
-                    </p>
+                        Seleccione una de las siguientes opciones para comenzar el proceso de confirmación de
+                        matrícula. Una vez seleccionada la opción, usted contestará una serie de preguntas con la
+                        intención de confirmar la matrícula para el próximo año escolar <span className="f20slb">2018-2019.</span></p>
                 </div>
 
                 {this.props.footer}
