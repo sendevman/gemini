@@ -96,8 +96,9 @@ class Registration extends Component {
             <div className="col-md-7 content-section">
                 <div className="title">
                     <div className="description"><h2>{UIHelper.getText("registrationPageTitle")}</h2>
-                        <div className="violet-line"></div>
+                        <div className="violet-line"/>
                     </div>
+                    <span className="f20slg">{UIHelper.getText("registrationPageMessage")}</span>
                 </div>
                 <div className="body d-flex align-items-center flex-column justify-content-end">
                     <form onSubmit={this.register}>

@@ -25,13 +25,7 @@ class RegistrationResult extends Component {
                 </div>
                 {this.renderMessage()}
             </div>
-            <div className="body d-flex align-items-center flex-column justify-content-end">
-                <div className="row action-section">
-                    <div className="col-md-12 text-center text-lg-left p-0">
-                        <a className="button-white mr30 mob-mb30px" onClick={this.onClick}><span>I</span>{UIHelper.getText("startSessionButton")}</a>
-                    </div>
-                </div>
-            </div>
+            <div className="body d-flex align-items-center flex-column justify-content-end"/>
         </div>,
             <div className="col-md-4 illustration-section d-flex align-items-center text-center">
                 {/*<div className="illustration"><img src={profileIllustration} alt=""/></div>*/}

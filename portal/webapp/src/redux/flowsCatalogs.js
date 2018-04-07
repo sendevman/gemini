@@ -9,11 +9,13 @@ const IN_PROGRESS = {type: "NEXT_PREVIOUS", nextButton: UIHelper.getText("contin
 const CONTINUE = {type: "START", nextButton: UIHelper.getText("continueButton")};
 const END = {type: "FINALIZE", nextButton: UIHelper.getText("submitButton")};
 const FINALIZE_OR_CHANGE = {type: "FINALIZE_OR_CHANGE", nextButton:  UIHelper.getText("submitButton"), previousButton:  UIHelper.getText("modifyButton")};
+const ROUTE_FOOTER = {type: "ROUTE_FOOTER", nextButton:  UIHelper.getText("confirmEnrollmentButton"), previousButton:  UIHelper.getText("newEnrollmentButton")};
+
 
 export let catalog = [
     {type: "USER_PROFILE", footerType: CONTINUE}
     , {type: "USER_ADDITIONAL_INFO", footerType: CONTINUE}
-    , {type: "INSTRUCTIONS", footerType: CONTINUE}
+    , {type: "INSTRUCTIONS", footerType: ROUTE_FOOTER}
     ,{
         type: "DEPR_ENROLLED_QUESTION",
         yes: "STUDENT_LOOKUP",
@@ -107,7 +109,10 @@ export let catalog = [
         type: "PRE_ENROLLMENT_FOUND_SUBMIT",
         footerType: QUESTION,
         yes: "PRE_ENROLLMENT_COMPLETED",
-        no: "REASON_FOR_NOT_ATTENDING_QUESTION",
+        // no: "REASON_FOR_NOT_ATTENDING_QUESTION",
+        //onPreEnrollmentFound
+        noNextRegular: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION",
+        noNextSpecialized: "PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION",
         isQuestion: true
     }
 

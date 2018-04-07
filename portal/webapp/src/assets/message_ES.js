@@ -3,19 +3,19 @@ import * as UIHelper from "../UIHelper";
 export default {
 
     //welcome page
-    projectName: "SIE-Registro",
+    projectName: "Confirmación de Matrícula",
     projectNameFragment: "de Estudiante",
 
     enrollmentYear: "2018-2019",
     welcomePage: " Bienvenidos al proceso de confirmación de matrícula del Departamento de Educación de Puerto Rico. Durante este proceso, tendrás la oportunidad de confirmar o solicitar la matrícula de tu hijo, para el próximo año escolar ",
     startDescription: "Presione el siguiente botón para comenzar",
-    welcomeStartButton: "Comenzar",
+    welcomeStartButton: "Continuar",
 
     //login page
     initiateSectionTitle: "Iniciar sesión",
     loginPage: " Para iniciar sesión, entre a continuación su correo electrónico y contraseña que utilizó para crear su cuenta.",
     loginButton: "Entrar",
-    noAccountLink: "¿No posee cuenta?",
+    noAccountLink: "¿Registrate?",
     messageTitle: "Error!",
     forgotPasswordLink: "¿Olvidó contraseña?",
     invalidCredentials: "Crendenciales inválidos",
@@ -24,9 +24,9 @@ export default {
 
     //instruction page
     instructionPageTitle: "Instrucciones",
-    instructionPageMessageStart: "Bienvenidos al proceso de matrícula del Departamento de Educación de Puerto Rico.",
+    instructionPageMessageStart: "Bienvenidos al proceso de confirmación de matrícula del Departamento de Educación de Puerto Rico.",
     instructionPageMessageFragment: "Durante este proceso, tendrás la oportunidad de: ",
-    instructionPageMessageEnd: "para tu hijo, en el próximo año escolar ",
+    instructionPageMessageEnd: "para el próximo año escolar ",
     instructionFragmentStart: "  Este proceso solo te tomará unos minutos. Presiona el botón de ",
     instructionFragmentHighlight: "‘continuar’",
     instructionFragmentEnd: " para comenzar.",
@@ -64,7 +64,7 @@ export default {
     personalErrorTitle: "Upss!!!",
     personalPageLoadError: "Ocurrio un error buscando la solicitud",
     personalPageMessageStart: "Vamos a ",
-    personalPageMessageHighlight: "registrar o revisar",
+    personalPageMessageHighlight: "registrar ",
     personalPageMessageEnd: "el estudiante en el sistema.",
 
     //Personal Additional Info Request -> Informacion del Estudiante
@@ -107,7 +107,7 @@ export default {
 
     //Alternate Enrollment Page
     alternateEnrollmentError: "Ha Ocurrido un error disculpe el inconveniente",
-    alternateEnrollmentTitleStart: "Registro de ",
+    alternateEnrollmentTitleStart: "Confirmación de ",
     alternateEnrollmentTitleEnd: "matrícula ",
     alternateEnrollmentMessageStart: "Vamos a crear un registro.",
     alternateEnrollmentMessage: "Selecciona dos opciones de escuelas para la matrícula del año escolar ",
@@ -129,7 +129,7 @@ export default {
     //Alternate Submit Page
     alternateSubmitPageQuestionNumber: "08.",
     alternateSubmitMessageStart: "El estudiante",
-    alternateSubmitMessageEnd: ", se le desea crear un registro de matrícula en las siguientes escuelas:",
+    alternateSubmitMessageEnd: ", se le desea crear un registro de confirmación matrícula en las siguientes escuelas:",
     alternateSubmitValidationMessage: "Debe seleccionar dos opciones!!!",
     alternateChangeQuestion: "¿Confirma usted estas preferencias como correctas?",
 
@@ -182,7 +182,7 @@ export default {
 
 
     thankYouTitle: "¡Gracias!",
-    thankYouBody: "El expediente de matrícula fue creado exitosamente.",
+    thankYouBody: "El expediente de confirmación de matrícula fue creado exitosamente.",
     anotherEnrollmentQuestion: "¿Desea matricular otro estudiante?",
 
     enrollmentEndByOutOfCountry: "¡Proceso de Matrícula Terminado!",
@@ -196,6 +196,8 @@ export default {
     startButton: "Comenzar",
     submitButton: "Someter",
     modifyButton: "Modificar",
+    confirmEnrollmentButton: "Confirmar Matrícula",
+    newEnrollmentButton: "Nuevo Ingreso",
     continueButton: "Continuar",
     searchButton: "Buscar",
     moveBackButton: "Retroceder",
@@ -211,22 +213,23 @@ export default {
     registerButton: "Registrar",
 
     activationTitle: "Complete su Registro",
-    activationButton: "Completar Registración",
+    activationButton: "Completar Registro",
 
     registrationPageTitle: "Registrar Cuenta",
+    registrationPageMessage: "Favor ingrese su correo electrónico para validar la autenticidad del mismo.",
     registrationError: "Ha ocurrido un error al registrar su cuenta",
-    registeredPage: "Cuenta Registrada!",
-    registrationSuccessTitle: "Registrar Cuenta",
+    registeredPage: "¡Cuenta Registrada!",
+    registrationSuccessTitle: "¡Correo enviado",
     registrationErrorTitle: "¡Upss!",
     registrationSuccessStart: "Un email con las instrucciones de como completar su registro de cuenta ha sido enviado a ",
     registrationSuccessEnd: "Por favor, verifique en sus directorios de spam o junk si no ve el email en su buzón de entrada.",
 
     //activation page
-    activationSuccessTitle: "Cuenta Creada",
+    activationSuccessTitle: "¡Cuenta Creada",
     activationErrorTitle: "¡Upss!",
     activationErrorMessage: "Ha ocurrido un error al completar el registro de su cuenta, proceda a registrarse nuevamente.",
     activationSuccessStart: "¡Enhorabuena!",
-    activationSuccessEnd: " Ha completado su registro de cuenta en el sistema. Ahora puede proceder a matricular a su hijo según las instrucciones indicadas.",
+    activationSuccessEnd: " Ha completado su registro de cuenta en el sistema. Ahora puede proceder a confirmar la matrícula según las instrucciones indicadas.",
 
     //forgot password page
     forgotPasswordTitle: "Olvidó su contraseña",
@@ -261,7 +264,7 @@ export default {
     cancelLinkErrorMessage: "Enlace ha caducado, ya no es valido",
 
     //home page
-    homeTitle: "matrículas:",
+    homeTitle: " confirmación matrícula:",
 
     //tooltips
     tooltipRegularProgramExplanation: "",

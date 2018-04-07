@@ -26,9 +26,9 @@ class Activation extends Component {
 
     componentWillMount() {
         let code = this.props.match.params.activationCode;
-        this.props.existsCode(code, () => {
-            this.props.history.push("/activate/result/error")
-        })
+        // this.props.existsCode(code, () => {
+        //     this.props.history.push("/activate/result/error")
+        // })
     }
 
 
@@ -101,14 +101,17 @@ class Activation extends Component {
 
     render() {
         let form = this.props.form;
-        if (!this.props.validCode)
-            return (null);
+        // if (!this.props.validCode)
+        //     return (null);
         return [
             <div className="col-md-7 content-section">
                 <div className="title">
                     <div className="description"><h2>{UIHelper.getText("activationTitle")}</h2>
                         <div className="violet-line"></div>
                     </div>
+                    <p className="f20slg">
+                        Introduce la contrase&ntilde;a deseada para completar el registro.
+                    </p>
                 </div>
                 <div className="body d-flex align-items-center flex-column justify-content-end">
                     <form onSubmit={this.activate}>

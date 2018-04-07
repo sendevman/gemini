@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import leisureIllustration from "../../../assets/img/leisure-illustration.png";
 import AnimationHelper from "../../../components/AnimationHelper";
 import * as UIHelper from "../../../UIHelper";
 
@@ -17,8 +16,14 @@ export default class ConfirmedPreEnrollment extends Component {
                     <div className="description mb40"><h2>{UIHelper.getText("thankYouTitle")}</h2>
                         <div className="violet-line"></div>
                     </div>
-                    <p className="f40sllg">
-                        <span className="f40sbgr">{UIHelper.getText("thankYouBody")}</span> {UIHelper.getText("anotherEnrollmentQuestion")}</p>
+                    <div className="row">
+                        <div className="col-md-12">
+                            <p className="f40sllg">
+                                <span
+                                    className="f40sbgr">{UIHelper.getText("thankYouBody")}</span> {UIHelper.getText("anotherEnrollmentQuestion")}
+                            </p>
+                        </div>
+                    </div>
                 </div>
                 {this.props.footer}
             </div>,
