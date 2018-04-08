@@ -4,11 +4,11 @@ import Button from "../../../components/Button";
 import * as Utils from "../../../Utils";
 import * as UIHelper from "../../../UIHelper"
 
-export default class SchoolSelector extends Component {
+export default class SimpleSchoolSelector extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {selectedSchool: null, schools: null};
+        this.state = {selectedSchool: null, schools: null, schools2: null};
         this.regionChanged = this.regionChanged.bind(this);
         this.gradeLevelChanged = this.gradeLevelChanged.bind(this);
         this.schoolChanged = this.schoolChanged.bind(this);
@@ -91,7 +91,6 @@ export default class SchoolSelector extends Component {
         this.setState({selectedSchool: schoolObject});
     }
 
-
     render() {
         let form = this.props.form;
         let limit = this.limit();
@@ -104,13 +103,6 @@ export default class SchoolSelector extends Component {
         let schoolSelectDisabled = Utils.isEmptyValue(form.regionId)
             || Utils.isEmptyValue(form.nextGradeLevel)
             || limit;
-        let addButtonDisabled = Utils.isEmptyValue(form.regionId)
-            || Utils.isEmptyValue(form.nextGradeLevel)
-            || limit
-            || Utils.isEmptyValue(schools)
-            || schools.length === 0
-            || Utils.isEmptyValue(selectedSchool);
-
 
         let schoolName = !selectedSchool || selectedSchool.schoolId === -1
             ? UIHelper.getText("schoolSelectorEmptySchoolMessage")
@@ -120,9 +112,6 @@ export default class SchoolSelector extends Component {
             ? UIHelper.getText("schoolSelectorEmptySchoolMessage")
             : selectedSchool.address.addressFormatted;
 
-
-        let addSchoolFeature = schoolsSelected && schoolsSelected != null && schoolsSelected !== undefined;
-        let schoolComponentCss = addSchoolFeature ? "col-md-6" : "col-md-8";
 
         return [
             <div className="row">
@@ -157,7 +146,7 @@ export default class SchoolSelector extends Component {
                                       disabled={limit}
                                       value={form.regionId}/>
                 </div>
-                <div className={schoolComponentCss}>
+                <div className="col-md-8">
                     <RemoteCodeSelect id="schools"
                                       label="Escuela a matricular"
                                       placeholder="Escuela"
@@ -168,21 +157,7 @@ export default class SchoolSelector extends Component {
                                       disabled={schoolSelectDisabled}
                                       value={form.schoolId}/>
                 </div>
-                {
-                    addSchoolFeature
-                        ? (<div className="col-md-2">
-                            <Button color="primary" onClick={this.onAdd} disabled={addButtonDisabled}><i
-                                className="fa fa-plus"/></Button>
-                        </div>)
-                        : (null)
-                }
-            </div>,
-            addSchoolFeature ?
-                (<div className="row">
-                    <div className="col-md-12 tableScrollable">
-                        {this.renderSchoolsSelected()}
-                    </div>
-                </div>) : (null)
+            </div>
         ];
     }
 
@@ -215,7 +190,8 @@ export default class SchoolSelector extends Component {
                         </tr>
                     ))
                     : <tr>
-                        <td colSpan={span} style={{left: 50, top: 50}}>{UIHelper.getText("schoolSelectorTableEmptyMessage")}</td>
+                        <td colSpan={span}
+                            style={{left: 50, top: 50}}>{UIHelper.getText("schoolSelectorTableEmptyMessage")}</td>
                     </tr>}
                 </tbody>
             </table>

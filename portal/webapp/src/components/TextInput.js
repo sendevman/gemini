@@ -126,7 +126,7 @@ class TextInput extends Component {
     }
 
     render() {
-        let cssClass = "inputMaterial " + (this.props.alignCenter ? "text-center" : "");
+        let cssClass = "inputMaterial" + (this.props.alignCenter ? "text-center" : "");
         let isPassword = this.props.type === 'password';
         let hasError = this.state.hasError && this.props.required;
         let grouped = this.props.grouped ? "group" : "";
@@ -142,6 +142,7 @@ class TextInput extends Component {
         let customCss = !props.iconName ? {paddingLeft: 10} : props.style;
         let labelCss = props.labelStyle ? props.labelStyle : (!props.iconName ? {left: 10} : props.style);
         let validHtml = UIHelper.toggleFieldValidHtml(!hasError, props.required);
+        cssClass = cssClass.concat(props.disabledBlock ? " block-input " : "");
         return (
 
             <div className={groupClass}>

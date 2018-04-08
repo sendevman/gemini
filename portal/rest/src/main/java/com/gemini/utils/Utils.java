@@ -52,6 +52,13 @@ public final class Utils {
         return StringUtils.hasText(ssn) ? ssn.replaceAll("-", "") : ssn;
     }
 
+    public static String canonString(String field){
+        if (StringUtils.hasText(field)) {
+            return field.replaceAll(" ", "").toUpperCase();
+        }
+        return field;
+    }
+
     public static String removeAccents(String field) {
         if (StringUtils.hasText(field)) {
             String normalized = Normalizer.normalize(field, Normalizer.Form.NFD);
@@ -63,6 +70,8 @@ public final class Utils {
 
 //    public static void main(String[] args) {
 //        System.out.println(removeAccents("ÁÉÍÓÚáéíóúñÑ"));
+//        System.out.println(canonString(""));
+//
 //    }
 
 }

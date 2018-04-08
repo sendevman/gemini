@@ -7,9 +7,9 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {getVocationalSchools, loadVocationalCodes, partialSaveVocationalPreEnrollment} from "../../../redux/actions";
 import AnimationHelper from "../../../components/AnimationHelper";
-import SchoolSelector from "../widgets/SchoolSelector";
 import * as Utils from "../../../Utils";
 import * as UIHelper from "../../../UIHelper";
+import SimpleSchoolSelector from "../widgets/SimpleSchoolSelector";
 
 class VocationalPreEnrollment extends Component {
 
@@ -48,7 +48,7 @@ class VocationalPreEnrollment extends Component {
                 </div>
                 <div className="body d-flex flex-column justify-content-end">
                     <form id="enrollment-form" className="mt50">
-                        <SchoolSelector ref="selector"
+                        <SimpleSchoolSelector ref="selector"
                                         form={form}
                                         maxSchools={2}
                                         gradeLevels={gradeLevels}

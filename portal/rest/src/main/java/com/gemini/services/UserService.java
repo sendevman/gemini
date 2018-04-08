@@ -123,11 +123,12 @@ public class UserService {
         entity.setFirstName(request.getFirstName());
         entity.setMiddleName(request.getMiddleName());
         entity.setLastName(request.getLastName());
-        entity.setProfileCompleted(false);
+        entity.setProfileCompleted(true);
         entity = userRepository.save(entity);
         return entity != null;
     }
 
+    @Deprecated
     public boolean completeProfile(FamilyInfoRequest request) {
         UserEntity entity = userRepository.findOne(request.getUserId());
         entity.setIncome(request.getIncome());

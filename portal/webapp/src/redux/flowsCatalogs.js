@@ -15,7 +15,12 @@ const ROUTE_FOOTER = {type: "ROUTE_FOOTER", nextButton:  UIHelper.getText("confi
 export let catalog = [
     {type: "USER_PROFILE", footerType: CONTINUE}
     , {type: "USER_ADDITIONAL_INFO", footerType: CONTINUE}
-    , {type: "INSTRUCTIONS", footerType: ROUTE_FOOTER}
+    , {type: "INSTRUCTIONS",
+        yes: "STUDENT_LOOKUP",
+        no: "PERSONAL_INFO",
+        triggerAnswerOn: "DE_PROGRAM_QUESTION",
+        isQuestionConditioned: true,
+        footerType: ROUTE_FOOTER}
     ,{
         type: "DEPR_ENROLLED_QUESTION",
         yes: "STUDENT_LOOKUP",
@@ -111,9 +116,9 @@ export let catalog = [
         yes: "PRE_ENROLLMENT_COMPLETED",
         // no: "REASON_FOR_NOT_ATTENDING_QUESTION",
         //onPreEnrollmentFound
-        noNextRegular: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION",
-        noNextSpecialized: "PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION",
-        isQuestion: true
+        noRegular: "PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION",
+        noSpecialized: "PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION",
+        isSubmit: true
     }
 
     , {type: "PRE_ENROLLMENT_COMPLETED", footerType: CONTINUE}

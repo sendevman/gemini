@@ -96,7 +96,7 @@ public class SRSPortalApplication extends SpringBootServletInitializer {
         requestFactory.setReadTimeout(1000 * 60 * 2);
         return new RestTemplate(requestFactory);
     }
-
+                                                 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);

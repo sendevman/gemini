@@ -6,6 +6,7 @@ import InputMask from 'react-input-mask';
 import moment from "moment";
 import * as UIHelper from "../UIHelper";
 
+const EMPTY_DATE = "  /  /    ";
 export default class SimpleDateInput extends Component {
 
     static defaultProps = {
@@ -63,6 +64,8 @@ export default class SimpleDateInput extends Component {
         form.dateString = element.value;
         form.pristine = false;
 
+        console.log(`value = ${element.value} = ${EMPTY_DATE === element.value}`);
+
         let result = this.checkValid();
         form.valid = result.valid;
         form.value = result.value;
@@ -71,8 +74,8 @@ export default class SimpleDateInput extends Component {
             if (this.props.onValidDate && form.valid) {
                 this.props.onValidDate(form.value.toDate());
             } else {
-                if (this.props.onInvalidDate)
-                    this.props.onInvalidDate();
+                if (this.props.onCleanDate && element.value === EMPTY_DATE)
+                    this.props.onCleanDate();
             }
         });
 

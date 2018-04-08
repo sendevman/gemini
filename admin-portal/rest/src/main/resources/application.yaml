@@ -1,5 +1,5 @@
 server:
-  context-path: /srs-api
+  context-path: /srs-admin-api
   port: 8081
   session:
     timeout: 900  # in seconds
@@ -20,7 +20,7 @@ spring:
     test-connection: false
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     show-sql: true
     generate-ddl: true
     properties:

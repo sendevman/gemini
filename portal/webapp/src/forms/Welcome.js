@@ -26,17 +26,8 @@ export default class Welcome extends Component {
                 <div className="description"><p>{UIHelper.getText("projectNameFragment")}</p>
                     <div className="green-line"/>
                 </div>
-
-                {/*<p className="f20slg text-justify">*/}
-                {/*{UIHelper.getText("welcomePage")}<span className="f20slb">{UIHelper.getText("enrollmentYear")}</span>.*/}
-                {/*</p>*/}
-
                 <p className="f20slg text-justify">
                     {UIHelper.getText("instructionPageMessageStart")}
-                    {/*{UIHelper.getText("instructionFragmentStart")}*/}
-                    {/*Este proceso solo te tomará unos minutos. &nbsp;&nbsp;&nbsp;&nbsp;*/}
-                    {/*<span className="f20slb">{UIHelper.getText("instructionFragmentHighlight")}</span>*/}
-                    {/*{UIHelper.getText("instructionFragmentEnd")}*/}
                 </p>
                 <p className="f20slg text-justify">
                     {UIHelper.getText("instructionPageMessageFragment")}
@@ -46,7 +37,8 @@ export default class Welcome extends Component {
                     <span className="f20slb">{UIHelper.getText("enrollmentYear")}</span>.
                 </p>
                 <p className="f20slg text-justify">
-                    Presione el botón de <span className="f20slb">Regístrate</span> para registrarte por primera vez o presione el botón <span className="f20slb">Conéctate</span> para iniciar sesión.
+                    Presione el botón de <span className="f20slb">Regístrate</span> para registrarte por primera vez o
+                    presione el botón <span className="f20slb">Conéctate</span> para iniciar sesión.
                 </p>
             </div>
             <div className="body d-flex align-items-center flex-column justify-content-end">
@@ -63,7 +55,6 @@ export default class Welcome extends Component {
             </div>
         </div>,
             <div className="col-md-5 illustration-section d-flex align-items-center text-center">
-                {/*<div className="illustration"><img src={registrationIllustration} alt=""/></div>*/}
                 <AnimationHelper type="home"/>
             </div>
         ];
