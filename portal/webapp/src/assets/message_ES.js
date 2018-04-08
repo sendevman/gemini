@@ -1,5 +1,3 @@
-import * as UIHelper from "../UIHelper";
-
 export default {
 
     //welcome page
@@ -32,7 +30,7 @@ export default {
     instructionFragmentEnd: " para comenzar.",
 
     //DE Program Selections
-    programQuestionNumber: "02.",
+    programQuestionNumber: "01.",
     programSelectionQuestion: "Favor de seleccionar el programa en el cual vas a solicitar matrícula para tu hijo: ",
     programOptions: "Regular, Ocupacional y Especializadas",
 
@@ -45,7 +43,7 @@ export default {
     //Student Identification
     searchPageQuestionNumber: "OK.",
     searchPageMessageStart: "Vamos a buscar su estudiante en el sistema. Por favor, facilítenos ",
-    searchPageMessageEnd: "la siguiente información.",
+    searchPageMessageEnd: "(últimos #4 seguro social o #Estudiante del SIE), fecha de nacimiento, nombre y apellidos.",
 
     //Found Student Page
     foundStudentPageNumber: "05.",
@@ -66,6 +64,10 @@ export default {
     personalPageMessageStart: "Vamos a ",
     personalPageMessageHighlight: "registrar ",
     personalPageMessageEnd: "el estudiante en el sistema.",
+
+    personalPageMessageOnFoundStart: "Revisemos ",
+    personalPageMessageOnFoundHighlight: "los datos encontrados ",
+    personalPageMessageOnFoundEnd: "del estudiante en el sistema.",
 
     //Personal Additional Info Request -> Informacion del Estudiante
     personalAdditionalPageQuestionNumber: "OK.",

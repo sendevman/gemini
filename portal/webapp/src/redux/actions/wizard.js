@@ -8,15 +8,11 @@ let catalog = catalogs.catalog;
 const normalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
     getIndexFromCatalog("INSTRUCTIONS"),
-    getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
     getIndexFromCatalog("DE_PROGRAM_QUESTION"),
     getIndexFromCatalog("STUDENT_LOOKUP"),
     getIndexFromCatalog("NOT_FOUND_QUESTION"),
     getIndexFromCatalog("FOUND_INFO"),
     getIndexFromCatalog("PERSONAL_INFO"),
-    getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
-    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
-    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
 
     getIndexFromCatalog("ADDRESS"),
     getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
@@ -27,9 +23,6 @@ const normalFlow = [
     getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")];
 const editNormalFlow = [
     getIndexFromCatalog("PERSONAL_INFO"),
-    getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
-    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
-    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
     getIndexFromCatalog("ADDRESS"),
     getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_ALTERNATE_SCHOOLS_SELECTION"),
@@ -43,15 +36,11 @@ const editNormalFlow = [
 const specializedFlow = [
     getIndexFromCatalog("USER_PROFILE"),
     getIndexFromCatalog("INSTRUCTIONS"),
-    getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
     getIndexFromCatalog("DE_PROGRAM_QUESTION"),
     getIndexFromCatalog("STUDENT_LOOKUP"),
     getIndexFromCatalog("NOT_FOUND_QUESTION"),
     getIndexFromCatalog("FOUND_INFO"),
     getIndexFromCatalog("PERSONAL_INFO"),
-    getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
-    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
-    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
     getIndexFromCatalog("ADDRESS"),
     getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION"),
@@ -63,9 +52,6 @@ const specializedFlow = [
     getIndexFromCatalog("PRE_ENROLLMENT_CONFIRMED")];
 const specializedEditFlow = [
     getIndexFromCatalog("PERSONAL_INFO"),
-    getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
-    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
-    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
     getIndexFromCatalog("ADDRESS"),
     getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
     getIndexFromCatalog("PRE_ENROLLMENT_SPECIALIZED_ALTERNATE_SCHOOLS_SELECTION"),
@@ -81,16 +67,11 @@ const specializedEditFlow = [
 const occupationalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
     getIndexFromCatalog("INSTRUCTIONS"),
-    getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
     getIndexFromCatalog("DE_PROGRAM_QUESTION"),
     getIndexFromCatalog("STUDENT_LOOKUP"),
     getIndexFromCatalog("NOT_FOUND_QUESTION"),
     getIndexFromCatalog("FOUND_INFO"),
     getIndexFromCatalog("PERSONAL_INFO"),
-    getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
-    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
-    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
-
     getIndexFromCatalog("ADDRESS"),
     getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
     getIndexFromCatalog("VOCATIONAL_SCHOOL_SELECTION"),
@@ -102,9 +83,6 @@ const occupationalFlow = [
 ];
 const editOccupationalFlow = [
     getIndexFromCatalog("PERSONAL_INFO"),
-    getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
-    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
-    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
     getIndexFromCatalog("ADDRESS"),
     getIndexFromCatalog("NEED_TRANSPORTATION_QUESTION"),
 
@@ -120,17 +98,12 @@ const editOccupationalFlow = [
 const technicalFlow = [
     getIndexFromCatalog("USER_PROFILE"),
     getIndexFromCatalog("INSTRUCTIONS"),
-
-    getIndexFromCatalog("DEPR_ENROLLED_QUESTION"),
     getIndexFromCatalog("DE_PROGRAM_QUESTION"),
     getIndexFromCatalog("STUDENT_LOOKUP"),
     getIndexFromCatalog("NOT_FOUND_QUESTION"),
     getIndexFromCatalog("FOUND_INFO"),
     //verify this
     getIndexFromCatalog("PERSONAL_INFO"),
-    getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
-    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
-    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
     getIndexFromCatalog("ADDRESS"),
 
     getIndexFromCatalog("TECHNICAL_SCHOOL_SELECTION"),
@@ -142,9 +115,6 @@ const technicalFlow = [
 ];
 const editTechnicalFlow = [
     getIndexFromCatalog("PERSONAL_INFO"),
-    getIndexFromCatalog("PERSONAL_ADDITIONAL_INFO"),
-    getIndexFromCatalog("IS_STUDENT_HISPANIC_QUESTION"),
-    getIndexFromCatalog("IS_STUDENT_BORN_PR_QUESTION"),
     getIndexFromCatalog("ADDRESS"),
 
     getIndexFromCatalog("TECHNICAL_SCHOOL_SELECTION"),
@@ -336,8 +306,6 @@ export const onNextAction = (onPress) => (dispatch, getState) => {
         next = nextOnReasonPage(preEnrollment, currentForm);
     } else if (isType(current, "NEED_TRANSPORTATION_QUESTION") && isOccupationalOrTechnicalFlow(preEnrollment) && wizard.editing) {
         next = getIndexFromFlow(currentForm.nextOccupationalWhenEdit);
-    } else if (isType(current, "PRE_ENROLLMENT_FOUND_SUBMIT")) {
-        next = nextOnSubmitPage(preEnrollment, currentForm);
     } else if (isType(current, "END_PRE_ENROLLMENT_BY_MOVE_OUT_OF_COUNTRY") || isType(current, "PRE_ENROLLMENT_CONFIRMED")) {
         resetWizard()(dispatch);
     }

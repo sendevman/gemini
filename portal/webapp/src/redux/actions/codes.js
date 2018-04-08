@@ -48,10 +48,13 @@ function getSpecializedSchoolCategories(dispatch) {
     });
 }
 
-export const getSchools = (regionId, gradeLevel) => (dispatch) => {
+export const getSchools = (regionId, gradeLevel, onResult) => (dispatch) => {
     dispatch({type: types.SCHOOL_LOAD_START});
     return services().getSchoolsByRegionAndGradeLevel(regionId, gradeLevel).then((response) => {
         dispatch({type: types.SCHOOL_LOAD_END, response: response});
+        if(onResult){
+            onResult();
+        }
     });
 };
 

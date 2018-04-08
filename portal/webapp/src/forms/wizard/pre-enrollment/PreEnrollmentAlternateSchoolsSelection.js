@@ -12,15 +12,16 @@ import {
     retrieveAlternatePreEnrollment
 } from "../../../redux/actions";
 import AnimationHelper from "../../../components/AnimationHelper";
-import SchoolSelector from "../widgets/SchoolSelector";
 import * as Utils from "../../../Utils";
 import * as types from "../../../redux/types";
 import * as UIHelper from "../../../UIHelper";
+import MultipleSchoolSelector from "../widgets/MultipleSchoolSelector";
 
 class PreEnrollmentAlternateSchoolsSelection extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {schools1: null, schools2: null};
         this.fetchSchools = this.fetchSchools.bind(this);
     }
 
@@ -42,20 +43,26 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
         this.props.partialAlternatePreEnrollmentSave(form, onResult, onError);
     }
 
-    fetchSchools() {
+    fetchSchools(priorityId, regionId) {
         let form = this.props.preEnrollment;
-        if (!(Utils.isEmptyValue(form.nextGradeLevel) || Utils.isEmptyValue(form.regionId))) {
-            this.props.getSchools(form.regionId, form.nextGradeLevel);
+        if (!(Utils.isEmptyValue(form.nextGradeLevel) || Utils.isEmptyValue(regionId))) {
+            this.props.getSchools(regionId, form.nextGradeLevel, () => {
+                let stateChanged = this.state;
+                stateChanged[`schools${priorityId}`] = this.props.schools;
+                this.setState({...this.state})
+            });
         }
-    }
+    };
 
     render() {
         let schoolsSelected = this.props.alternateEnrollment.alternateSchools;
         let schoolsSelectedToDelete = this.props.alternateEnrollment.alternateSchoolsToDelete;
         let regions = this.props.regions;
         let gradeLevels = this.props.gradeLevels;
-        let schools = this.props.schools;
+        let schools1 = this.state.schools1;
+        let schools2 = this.state.schools2;
         let form = this.props.preEnrollment;
+        console.log(`alternatePreEnrollmentLoad = ${this.props.alternatePreEnrollmentLoad}`);
 
         return [<div className="col-md-7 content-section">
             <div className="title">
@@ -69,18 +76,21 @@ class PreEnrollmentAlternateSchoolsSelection extends Component {
             </div>
             <div className="body d-flex flex-column justify-content-end">
                 <form>
-                    <SchoolSelector ref="selector"
+                    <MultipleSchoolSelector ref="selector"
+                                    loadPreEnrollment={this.props.alternatePreEnrollmentLoad}
                                     form={form}
                                     schoolsSelected={schoolsSelected}
                                     schoolsSelectedToDelete={schoolsSelectedToDelete}
-                                    maxSchools={2}
                                     gradeLevels={gradeLevels}
                                     regions={regions}
-                                    schools={schools}
+                                    schools1={schools1}
+                                    schools2={schools2}
                                     fetchSchools={this.fetchSchools}
                     />
                 </form>
-                {this.props.footer}
+                <div style={{marginTop: -20}}>
+                    {this.props.footer}
+                </div>
             </div>
         </div>, <div className="col-md-4 illustration-section d-flex align-items-center text-center">
             {/*<div className="illustration"><img src={entrollmentIllustration} alt=""/></div>*/}
@@ -96,7 +106,8 @@ function mapStateToProps(store) {
         gradeLevels: store.config.gradeLevels,
         schools: store.config.schools,
         preEnrollment: store.preEnrollment.info,
-        alternateEnrollment: store.preEnrollment.alternateSchoolEnrollment
+        alternateEnrollment: store.preEnrollment.alternateSchoolEnrollment,
+        alternatePreEnrollmentLoad: store.preEnrollment.alternatePreEnrollmentLoad
     };
 }
 

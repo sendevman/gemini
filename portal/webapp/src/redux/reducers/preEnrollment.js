@@ -2,6 +2,7 @@ import * as types from "../types";
 import * as Utils from "../../Utils";
 
 const initialState = {
+    alternatePreEnrollmentLoad: false,
     requestId: null,
     type: "REGULAR",
     info: {
@@ -38,7 +39,6 @@ const preEnrollment = (state = Utils.freezeObject(initialState), action) => {
 
         case types.STUDENT_CREATE_PRE_ENROLLMENT_START:
         case types.VOCATIONAL_PRE_ENROLLMENT_RETRIEVE_START:
-        case types.ALTERNATE_PRE_ENROLLMENT_RETRIEVE_START:
         case types.PARTIAL_ALT_PRE_ENROLLMENT_SAVE_START:
         case types.REASON_FOR_NOT_ATTENDING_SAVE_START:
             return state;
@@ -76,12 +76,15 @@ const preEnrollment = (state = Utils.freezeObject(initialState), action) => {
                     programsToDelete: []
                 }
             };
+        case types.ALTERNATE_PRE_ENROLLMENT_RETRIEVE_START:
+            return {...state, alternatePreEnrollmentLoad: false};
         case types.ALTERNATE_PRE_ENROLLMENT_RETRIEVE_END:
             let altResp = action.response.content;
             return {
                 ...state,
                 info: altResp,
                 requestId: action.response.requestId,
+                alternatePreEnrollmentLoad: true,
                 alternateSchoolEnrollment: {
                     alternateSchools: altResp.alternateSchools,
                     alternateSchoolsToDelete: []

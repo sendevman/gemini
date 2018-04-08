@@ -665,6 +665,16 @@ label {
     color: #4cc3c0;
 }
 
+.inputMaterial.block-input:disabled ~ label{
+    text-decoration: line-through;
+    top: 14px;
+    left: 50px;
+    font-size: 16px;
+    font-weight: normal;
+    color: #bcbec5;
+}
+
+
 .has-error.pl50 .inputMaterial:invalid ~ label {
     top: -15px;
     left: 50px;
@@ -1648,7 +1658,7 @@ label {
 }
 
 .form-control:focus {
-    font-size: 14px;
+    /*font-size: 14px;*/
     font-weight: 600;
     border-color: #4cc3c0;
 

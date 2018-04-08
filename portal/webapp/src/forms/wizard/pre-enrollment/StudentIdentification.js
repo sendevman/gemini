@@ -17,6 +17,7 @@ class StudentIdentification extends Component {
         super(props);
         this.inputHandler = this.inputHandler.bind(this);
         this.onValidDate = this.onValidDate.bind(this);
+        this.onCleanDate = this.onCleanDate.bind(this);
     }
 
     inputHandler(e) {
@@ -29,6 +30,11 @@ class StudentIdentification extends Component {
     onValidDate(date) {
         let form = this.props.form;
         form.dateOfBirth = date;
+    }
+
+    onCleanDate() {
+        let form = this.props.form;
+        form.dateOfBirth = null;
     }
 
     onPress(onResult, onError) {
@@ -46,10 +52,10 @@ class StudentIdentification extends Component {
                 <div className="title">
                     <div className="description mb40"><h2
                         className="f90sbg">{UIHelper.getText("searchPageQuestionNumber")}</h2>
-                        <div className="violet-line"></div>
+                        <div className="violet-line"/>
                     </div>
                     <p className="f30slg">{UIHelper.getText("searchPageMessageStart")}<span
-                        className="f30slb">{UIHelper.getText("searchPageMessageEnd")}</span></p>
+                        className="f20slb">{UIHelper.getText("searchPageMessageEnd")}</span></p>
                 </div>
                 <div className="body d-flex flex-column justify-content-end">
                     <form>
@@ -60,10 +66,14 @@ class StudentIdentification extends Component {
                                            value={form.lastSsn}
                                            onChange={this.inputHandler}
                                            required={lastSsnRequired}
+                                           disabled={!lastSsnRequired}
+                                           disabledBlock
                                            label="Últimos #4 SSN"/>
                             </div>
-                            <div className="col-md-1">
-                                <span className="f20sbgr">o</span>
+                            <div className="col-md-1" style={{position: "relative"}}>
+                                <div style={{position: "relative", height: "100%"}}>
+                                    <span style={{position: "absolute", bottom: "25%"}} className="f20sbgr">o</span>
+                                </div>
                             </div>
                             <div className="col-md-4">
                                 <TextInput id="studentNumber"
@@ -71,14 +81,11 @@ class StudentIdentification extends Component {
                                            value={form.studentNumber}
                                            onChange={this.inputHandler}
                                            required={studentNumberRequired}
+                                           disabled={!studentNumberRequired}
+                                           disabledBlock
                                            label="# Estudiante SIE"/>
                             </div>
                             <div className="col-md-3"/>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <span>Completa la siguiente informacion requerida</span>
-                            </div>
                         </div>
                         <div className="row">
                             <div className="col-md-4">
@@ -86,6 +93,7 @@ class StudentIdentification extends Component {
                                                  value={form.dateOfBirth}
                                                  required
                                                  onValidDate={this.onValidDate}
+                                                 onCleanDate={this.onCleanDate}
                                                  label="Fecha Nac."/>
                             </div>
                             <div className="col-md-4">
@@ -106,7 +114,7 @@ class StudentIdentification extends Component {
                             </div>
                         </div>
                     </form>
-                    <div style={{marginTop: -50}}>
+                    <div style={{marginTop: -80}}>
                         {this.props.footer}
                     </div>
                 </div>

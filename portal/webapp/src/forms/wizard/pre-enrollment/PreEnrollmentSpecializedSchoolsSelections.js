@@ -8,11 +8,11 @@ import {
 } from "../../../redux/actions";
 import {connect} from "react-redux";
 import AnimationHelper from "../../../components/AnimationHelper";
-import SchoolSelector from "../widgets/SchoolSelector";
 import RemoteCodeSelect from "../../../components/RemoteCodeSelect";
 import * as Utils from "../../../Utils";
 import * as UIHelper from "../../../UIHelper";
 import * as types from "../../../redux/types";
+import MultipleSchoolSelector from "../widgets/MultipleSchoolSelector";
 
 class PreEnrollmentSpecializedSchoolsSelections extends Component {
 
@@ -96,7 +96,7 @@ class PreEnrollmentSpecializedSchoolsSelections extends Component {
                                 />
                             </div>
                         </div>
-                        <SchoolSelector ref="selector"
+                        <MultipleSchoolSelector ref="selector"
                                         form={form}
                                         schoolsSelected={schoolsSelected}
                                         schoolsSelectedToDelete={schoolsSelectedToDelete}

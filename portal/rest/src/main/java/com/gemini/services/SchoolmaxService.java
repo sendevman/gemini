@@ -49,9 +49,9 @@ public class SchoolmaxService {
         gradeLevels.put("12", "Duodécimo");
 
 //        Educacion Especial
-        gradeLevels.put("EE", "EE-Elemental");
-        gradeLevels.put("EI", "EE-Intermedia");
-        gradeLevels.put("ES", "EE-Superior");
+        gradeLevels.put("EE", "Educación Especial - Elemental");
+        gradeLevels.put("EI", "Educación Especial - Intermedia");
+        gradeLevels.put("ES", "Educación Especial - Superior");
 
     }
 

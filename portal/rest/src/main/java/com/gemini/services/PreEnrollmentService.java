@@ -420,6 +420,7 @@ public class PreEnrollmentService {
                 AlternateSchoolBean bean = new AlternateSchoolBean();
                 School school = smaxService.findSchoolById(altEntity.getSchoolId());
                 bean.setPriority(altEntity.getPriority());
+                bean.setRegionId(school.getRegionId());
                 bean.setSchool(CopyUtils.createSchoolResponse(school));
                 return bean;
             }
@@ -437,10 +438,19 @@ public class PreEnrollmentService {
         List<AlternateSchoolBean> altSchoolsInDBList = CopyUtils.convert(alternateSchoolsDB, AlternateSchoolBean.class);
         Set<AlternateSchoolBean> alternateSchoolsFormInDb = new HashSet<>(altSchoolsInDBList);
 
+        List<AlternateSchoolBean> cleanedList = FluentIterable
+                .from(request.getAlternateSchools())
+                .filter(new Predicate<AlternateSchoolBean>() {
+                    @Override
+                    public boolean apply(AlternateSchoolBean alternateSchoolBean) {
+                        return ValidationUtils.valid(alternateSchoolBean.getSchoolId());
+                    }
+                }).toList();
+
 
         Set<AlternateSchoolBean> alternateSchoolToSave = Sets.newHashSet();
         boolean deleting = request.getAlternateSchoolsToDelete() != null && !request.getAlternateSchoolsToDelete().isEmpty();
-        boolean adding = request.getAlternateSchools() != null && !request.getAlternateSchools().isEmpty();
+        boolean adding = cleanedList != null && !cleanedList.isEmpty();
         //deleting
         if (deleting) {
             alternateSchoolToSave = Sets.difference(alternateSchoolsFormInDb, Sets.newHashSet(request.getAlternateSchoolsToDelete()));
@@ -448,7 +458,7 @@ public class PreEnrollmentService {
         }
         //adding
         if (adding)
-            alternateSchoolToSave = Sets.union(alternateSchoolsFormInDb, new HashSet<>(request.getAlternateSchools()));
+            alternateSchoolToSave = Sets.union(alternateSchoolsFormInDb, new HashSet<>(cleanedList));
 
         if (!(adding || deleting)) {
             alternateSchoolToSave = alternateSchoolsFormInDb;

@@ -7,9 +7,6 @@ import com.gemini.utils.Utils;
 import com.gemini.utils.ValidationUtils;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +64,16 @@ public class SchoolMaxDaoImpl extends NamedParameterJdbcDaoSupport implements Sc
         Map<String, Object> params = Maps.newTreeMap();
 
         if (ValidationUtils.valid(searchRequest.getFirstName())) {
+
+            String firstName = Utils.removeAccents(searchRequest.getFirstName());
             sql.append(" AND CLEAN_NAME(FIRST_NAME_CANON) like :firstName || '%'");
-            params.put("firstName", Utils.removeAccents(searchRequest.getFirstName()));
+            params.put("firstName", Utils.canonString(firstName));
         }
 
         if (ValidationUtils.valid(searchRequest.getLastName())) {
+            String lastName = Utils.removeAccents(searchRequest.getLastName());
             sql.append(" AND CLEAN_NAME(LAST_NAME_CANON) like :lastName || '%'");
-            params.put("lastName", Utils.removeAccents(searchRequest.getLastName()));
+            params.put("lastName", Utils.canonString(lastName));
         }
 
         if (ValidationUtils.valid(searchRequest.getLastSsn())) {

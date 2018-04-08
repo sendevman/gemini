@@ -13,6 +13,7 @@ import java.util.Objects;
 public class AlternateSchoolBean {
 
     private Integer priority;
+    private Long regionId;
     private SchoolResponse school = new SchoolResponse();
 
     public Integer getPriority() {
@@ -21,6 +22,14 @@ public class AlternateSchoolBean {
 
     public void setPriority(Integer priority) {
         this.priority = priority;
+    }
+
+    public Long getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Long regionId) {
+        this.regionId = regionId;
     }
 
     public SchoolResponse getSchool() {

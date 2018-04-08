@@ -46,15 +46,28 @@ class PersonalInfo extends Component {
         this.props.savePreEnrollment(form, onResult, onError);
     }
 
+    getDescriptionText() {
+        let student = this.props.student;
+        let studentExists = this.props.found || student.existsOnSie;
+        if (studentExists) {
+            return (<span className="f30slg">{UIHelper.getText("personalPageMessageOnFoundStart")}<span
+                className="f30slb">{UIHelper.getText("personalPageMessageOnFoundHighlight")}</span> {UIHelper.getText("personalPageMessageOnFoundEnd")}</span>)
+        }
+
+        return (<span className="f30slg">{UIHelper.getText("personalPageMessageStart")}<span
+            className="f30slb">{UIHelper.getText("personalPageMessageHighlight")}</span> {UIHelper.getText("personalPageMessageEnd")}</span>)
+    }
+
     render() {
         let student = this.props.student;
         let studentExists = this.props.found || student.existsOnSie;
         return [<div className="col-md-7 content-section">
             <div className="title">
-                <div className="description"><h2 className="f90sbg">{UIHelper.getText("personalPageQuestionNumber")}</h2>
-                    <div className="violet-line"></div>
+                <div className="description"><h2
+                    className="f90sbg">{UIHelper.getText("personalPageQuestionNumber")}</h2>
+                    <div className="violet-line"/>
                 </div>
-                <span className="f30slg">{UIHelper.getText("personalPageMessageStart")}<span className="f30slb">{UIHelper.getText("personalPageMessageHighlight")}</span> {UIHelper.getText("personalPageMessageEnd")}</span>
+                {this.getDescriptionText()}
             </div>
             <div className="body d-flex flex-column justify-content-end ">
                 <form>
