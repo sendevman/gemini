@@ -26,9 +26,9 @@ class Activation extends Component {
 
     componentWillMount() {
         let code = this.props.match.params.activationCode;
-        // this.props.existsCode(code, () => {
-        //     this.props.history.push("/activate/result/error")
-        // })
+        this.props.existsCode(code, () => {
+            this.props.history.push("/activate/result/error")
+        })
     }
 
 
@@ -101,8 +101,8 @@ class Activation extends Component {
 
     render() {
         let form = this.props.form;
-        // if (!this.props.validCode)
-        //     return (null);
+        if (!this.props.validCode)
+            return (null);
         return [
             <div className="col-md-7 content-section">
                 <div className="title">

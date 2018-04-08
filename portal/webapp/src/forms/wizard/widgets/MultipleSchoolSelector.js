@@ -54,7 +54,6 @@ export default class MultipleSchoolSelector extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.schools1 || nextProps.schools2 || nextProps.schoolsSelected || nextProps.loadPreEnrollment) {
             if (nextProps.loadPreEnrollment && this.initialLoad) {
-                let form = this.props.form;
                 this.initialLoad = false;
                 let school1 = this.getSchoolPriorityFromProps(1, nextProps);
                 let school2 = this.getSchoolPriorityFromProps(2, nextProps);
@@ -110,8 +109,10 @@ export default class MultipleSchoolSelector extends Component {
         let schoolToSet = this.getSchoolPriority(priority);
 
 
-        schoolsSelectedToDelete.push(schoolToSet);
-        schoolsSelected.splice(this.getSchoolPriorityIndex(priority), 1);
+        if (schoolToSet) {
+            schoolsSelectedToDelete.push(schoolToSet);
+            schoolsSelected.splice(this.getSchoolPriorityIndex(priority), 1);
+        }
 
         schoolToSet = {
             priority: priority,
