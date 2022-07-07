@@ -6,7 +6,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "immutable": "^3.8.2",
-    "moment": "^2.20.1",
+    "moment": "^2.29.4",
     "react": "^16.2.0",
     "react-async-script": "^0.9.1",
     "react-block-ui": "^1.1.1",
